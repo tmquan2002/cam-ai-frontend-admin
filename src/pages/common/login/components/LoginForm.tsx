@@ -47,7 +47,7 @@ export const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={form.onSubmit((values) => console.log(values))}
+        <form onSubmit={form.onSubmit((values) => onSubmitForm(values))}
             style={{ marginTop: '20px', textAlign: 'left' }}>
             <TextInput
                 withAsterisk

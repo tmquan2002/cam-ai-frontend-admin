@@ -1,12 +1,10 @@
-$primary-red: #ee5a5b;
-
 .container-main {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    padding: 100px 0;
+    padding: 100px 2rem;
 
     .image-container {
         width: 400px;

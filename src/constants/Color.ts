@@ -1,5 +1,6 @@
 import { MantineColorsTuple } from '@mantine/core';
 
+//Tips: Install "Colorize" extention and Add Typescript file in settings.json for easier to see color
 export const light_yellow: MantineColorsTuple = [
     '#fdfce5',
     '#f8f6d3',
