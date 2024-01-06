@@ -2,8 +2,11 @@ import { TextInput, Button, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useLogin } from '../../../../hooks/useLogin';
 import { LoginParams } from '../../../../apis/LoginAPI';
+import { useNavigate } from 'react-router-dom';
+import { TOKEN } from '../../../../constants/LocalStorageItems';
 
 export const LoginForm = () => {
+    const navigate = useNavigate();
     const {
         mutate: login,
         isLoading: isCreatePlanLoading,
@@ -36,9 +39,10 @@ export const LoginForm = () => {
 
         await login(loginParams, {
             onSuccess(data, variables, context) {
-                //TODO: Need to handle if this manager is new or not
                 //TODO: Handle refresh token, access token
                 console.log(data)
+                localStorage.setItem(TOKEN, JSON.stringify(data));
+                navigate("/dashboard")
             },
             onError(error, variables, context) {
                 console.log(error);

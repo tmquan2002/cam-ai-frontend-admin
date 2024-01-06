@@ -5,9 +5,14 @@ export type LoginParams = {
     password: string;
 };
 
+export type GetLoginResult = {
+    accessToken: number;
+    refreshToken: string;
+  };
+
 export const LoginAPI = {
     login: async (params: LoginParams) => {
-        const res = await http.post("/api/Auth", params);
+        const res = await http.post<GetLoginResult>("/api/Auth", params);
         return res.data;
     },
 }
