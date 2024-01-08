@@ -41,13 +41,69 @@ export type GetBrandsPagingResult = {
     totalCount: number;
     values: GetBrandsResult[];
 };
+export type AddBrandParams = {
+    name: string;
+    email: string;
+    phone: string;
+};
 
 export const BrandAPI = {
-    getBrands: async (params: GetBrandsParams) => {
+    getAllFilter: async (params: GetBrandsParams) => {
         const token = getToken();
         const accessToken = token?.accessToken
-        const res = await http.get<GetBrandsPagingResult>(
-            `/api/brands?${toQueryParams(params)}`,
+        const res = await http.get<GetBrandsPagingResult>(`/api/brands?${toQueryParams(params)}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                },
+            }
+        );
+        return res.data;
+    },
+    getById: async (id: string) => {
+        const token = getToken();
+        const accessToken = token?.accessToken
+        const res = await http.get<GetBrandsPagingResult>(`/api/brands?${id}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                },
+            }
+        );
+        return res.data;
+    },
+    add: async (params: AddBrandParams) => {
+        const res = await http.post<GetBrandsResult>("/api/brands", params);
+        return res.data;
+    },
+    update: async (id: string) => {
+        const token = getToken();
+        const accessToken = token?.accessToken
+        const res = await http.put<GetBrandsResult>(`/api/brands?${id}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                },
+            }
+        );
+        return res.data;
+    },
+    delete: async (id: string) => {
+        const token = getToken();
+        const accessToken = token?.accessToken
+        const res = await http.delete(`/api/brands?${id}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                },
+            }
+        );
+        return res.data;
+    },
+    reactivate: async (id: string) => {
+        const token = getToken();
+        const accessToken = token?.accessToken
+        const res = await http.put(`/api/brands?${id}/reactivate`,
             {
                 headers: {
                     Authorization: "Bearer " + accessToken,

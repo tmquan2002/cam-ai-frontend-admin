@@ -15,7 +15,7 @@ export const useGetAllPlans = (params: GetBrandsParams) => {
   }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
     queryKey: ["plans", params?.name],
     queryFn: async () => {
-      return await BrandAPI.getBrands(params);
+      return await BrandAPI.getAllFilter(params);
     },
   });
 

@@ -3,7 +3,15 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { BrandAPI, GetBrandsPagingResult } from '../../../../apis/BrandAPI';
 import { useState } from 'react';
 
-const loadingData = [...Array(5)].map((_, i) => <Table.Td key={i}><Loader color="gray" type="bars" /></Table.Td>)
+const loadingData = [...Array(5)].map((_, i) => (
+    <Table.Tr key={i}>
+        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+    </Table.Tr>
+))
 
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(0)
@@ -16,7 +24,7 @@ const BrandList = () => {
         refetch
     }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery(
         ["brandList", pageIndex, size],
-        async () => await BrandAPI.getBrands({ pageIndex, size })
+        async () => await BrandAPI.getAllFilter({ pageIndex, size })
     );
 
     const rows = brandList?.values.map((e, i) => (
