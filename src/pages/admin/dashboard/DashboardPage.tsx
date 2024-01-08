@@ -1,7 +1,7 @@
 import { SideBar } from "../../../components/sidebar/SideBar";
 import styled from "./styles/dashboard.module.scss";
 
-const Dashboard = () => {
+const DashboardPage = () => {
 
     return (
         <>
@@ -12,4 +12,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

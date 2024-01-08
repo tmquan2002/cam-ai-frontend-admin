@@ -1,17 +1,15 @@
 import { TextInput, Button, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useLogin } from '../../../../hooks/useLogin';
-import { LoginParams } from '../../../../apis/LoginAPI';
+import { useLogin } from '../../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { TOKEN } from '../../../../constants/LocalStorageItems';
+import { Login } from '../../../../models/Auth';
+import { storeToken } from '../../../../utils/LocalStorageUtil';
 
 export const LoginForm = () => {
     const navigate = useNavigate();
     const {
         mutate: login,
-        isLoading: isCreatePlanLoading,
-        error: errorCreate,
-        data: dataCreate,
     } = useLogin();
 
     const form = useForm({
@@ -32,7 +30,7 @@ export const LoginForm = () => {
     const onSubmitForm = async (values: { email: string; password: string; }) => {
         console.log(values)
 
-        var loginParams: LoginParams = {
+        var loginParams: Login = {
             username: values.email,
             password: values.password
         }
@@ -41,7 +39,7 @@ export const LoginForm = () => {
             onSuccess(data, variables, context) {
                 //TODO: Handle refresh token, access token
                 console.log(data)
-                localStorage.setItem(TOKEN, JSON.stringify(data));
+                storeToken(data)
                 navigate("/dashboard")
             },
             onError(error, variables, context) {

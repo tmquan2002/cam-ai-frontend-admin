@@ -2,19 +2,9 @@ import { AiFillHome } from "react-icons/ai";
 import styled from './sidebar.module.scss';
 import { LinksGroup } from './LinksGroup';
 
-const mockdata = [
+const data = [
     { label: 'Dashboard', icon: AiFillHome, path: '/dashboard' },
-    {
-        label: 'Manage Brand',
-        icon: AiFillHome,
-        initiallyOpened: true,
-        links: [
-            { label: 'Create Brand', path: '/' },
-            { label: 'Read Brand', path: '/' },
-            { label: 'Update Brand', path: '/' },
-            { label: 'Delete Brand', path: '/' },
-        ],
-    },
+    { label: 'Manage Brand', icon: AiFillHome, path: '/brand' },
     {
         label: 'Manage Shop',
         icon: AiFillHome,
@@ -29,7 +19,7 @@ const mockdata = [
 ];
 
 export function SideBar() {
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+    const links = data.map((item) => <LinksGroup {...item} key={item.label} />);
 
     return (
         <nav className={styled.sidebar}>

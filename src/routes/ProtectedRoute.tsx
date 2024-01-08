@@ -1,17 +1,17 @@
 import { useRoutes } from "react-router-dom";
-import LoginPageProtected from "../pages/common/login/LoginPageProtected";
-import Dashboard from "../pages/admin/dashboard/Dashboard";
+import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import BrandPage from "../pages/admin/brand/BrandPage";
 
 const ProtectedRoute = () => {
   let element = useRoutes([
     {
-      path: "/profile",
-      element: <LoginPageProtected />,
+      path: "/dashboard",
+      element: <DashboardPage />,
       index: true,
     },
     {
-      path: "/dashboard",
-      element: <Dashboard />,
+      path: "/brand",
+      element: <BrandPage />,
       index: true,
     }
   ]);
