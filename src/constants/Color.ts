@@ -52,3 +52,7 @@ export const pale_red: MantineColorsTuple = [
     '#b41149',
     '#9f003e'
 ];
+
+
+export const dark_background = "#242424"
+export const dark_background_container = "#1f1f1f"

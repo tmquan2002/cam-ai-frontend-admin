@@ -28,7 +28,7 @@ const theme = createTheme({
 function App() {
 
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme='light'>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AppRoute />

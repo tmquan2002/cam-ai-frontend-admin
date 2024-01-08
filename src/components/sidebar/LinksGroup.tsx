@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
+import { Group, Box, Collapse, ThemeIcon, rem, Text } from '@mantine/core';
 import { AiFillCaretRight } from "react-icons/ai";
 import styled from './sidebar.module.scss';
 import { Link, NavLink } from 'react-router-dom';
@@ -36,7 +36,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, path }: 
             </ThemeIcon>
             {(path && !hasLinks) ?
               <Link to={path} className={styled.label}>{label}</Link> :
-              <div className={styled.label}>{label}</div>
+              <Text className={styled.label}>{label}</Text>
             }
           </Box>
           {hasLinks && (

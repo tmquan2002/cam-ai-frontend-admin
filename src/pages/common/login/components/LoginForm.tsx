@@ -69,7 +69,7 @@ export const LoginForm = () => {
 
             <Group justify="flex-start" mt="md">
                 <Button
-                    type="submit" variant="gradient" size='md'
+                    type="submit" variant="gradient" size='md' mt={20}
                     gradient={{ from: 'light-blue.5', to: 'light-blue.7', deg: 90 }}
                 >Login</Button>
             </Group>
