@@ -4,6 +4,7 @@ import AppRoute from './routes/AppRoute'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { light_blue, light_yellow, pale_red, shading } from './constants/Color';
 import { MantineProvider, createTheme } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,7 @@ function App() {
     <MantineProvider theme={theme} defaultColorScheme='light'>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <Notifications position="top-right"/>
           <AppRoute />
         </BrowserRouter>
       </QueryClientProvider>

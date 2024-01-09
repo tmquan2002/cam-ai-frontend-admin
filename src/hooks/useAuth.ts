@@ -2,6 +2,12 @@ import { useMutation } from "react-query";
 import { AuthAPI } from "../apis/AuthAPI";
 import { AuthToken, Login, Password } from "../models/Auth";
 
+export interface ApiErrorResponse {
+  statusCode: number;
+  detailed: string;
+  message: string;
+}
+
 export const useLogin = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "login",

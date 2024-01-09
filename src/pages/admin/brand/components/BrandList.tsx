@@ -5,11 +5,11 @@ import { useState } from 'react';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>
-        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
-        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
-        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
-        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
-        <Table.Td><Loader color="gray" type="bars" size={'xs'}/></Table.Td>
+        <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+        <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+        <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+        <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+        <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
     </Table.Tr>
 ))
 
