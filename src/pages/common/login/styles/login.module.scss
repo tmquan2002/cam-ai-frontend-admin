@@ -54,7 +54,9 @@
         0px 1px 5px rgba(0, 0, 0, 0.2);
 
         .title {
-            text-align: left;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             font-weight: bold;
             font-size: 40px;
         }

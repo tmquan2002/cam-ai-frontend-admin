@@ -1,5 +1,5 @@
-import LightDarkSwitch from "../../../components/LightDarkSwirch";
-import CustomBreadcrumb, { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import Navbar from "../../../components/navbar/Navbar";
 import { SideBar } from "../../../components/sidebar/SideBar";
 import BrandList from "./components/BrandList";
 import styled from "./styles/brand.module.scss";
@@ -20,8 +20,7 @@ const BrandPage = () => {
         <div className={styled["container-main"]}>
             <SideBar />
             <div className={styled["container-detail"]}>
-                <CustomBreadcrumb items={breadcrumbs} />
-                <LightDarkSwitch />
+                <Navbar items={breadcrumbs} />
                 <div className={styled["table-container"]}>
                     <BrandList />
                 </div>

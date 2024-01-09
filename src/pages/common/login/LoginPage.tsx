@@ -1,6 +1,7 @@
 import styled from "./styles/login.module.scss";
 import AuthImage from "../../../assets/images/login_signup_main.png"
 import { LoginForm } from "./components/LoginForm";
+import LightDarkSwitch from "../../../components/LightDarkSwirch";
 
 const LoginPage = () => {
 
@@ -14,7 +15,8 @@ const LoginPage = () => {
         </div>
         <div className={styled["container"]}>
           <div className={styled["title"]}>
-            LOGIN
+            <div>LOGIN</div>
+            <LightDarkSwitch />
           </div>
           <LoginForm />
         </div>

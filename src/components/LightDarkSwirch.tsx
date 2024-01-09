@@ -9,9 +9,7 @@ const LightDarkSwitch = () => {
     return (
         <ActionIcon
             onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-            variant="default"
-            size="xl"
-            aria-label="Toggle color scheme"
+            variant="default" size="xl" aria-label="Toggle color scheme"
         >
             {computedColorScheme === "dark" ? (
                 <MdLightMode style={{ width: 18, height: 18 }} />
