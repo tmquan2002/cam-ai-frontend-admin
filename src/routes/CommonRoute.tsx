@@ -1,28 +1,46 @@
-import { useRoutes } from "react-router-dom";
-import LoginPage from "../pages/common/login/LoginPage";
-import DashboardPage from "../pages/admin/dashboard/DashboardPage";
-import BrandPage from "../pages/admin/brand/BrandPage";
+import { Navigate, Outlet } from "react-router-dom";
+import { getUserRoles, useSession } from "../context/AuthContext";
+import { useEffect, useState } from "react";
+import { RoleEnum } from "../types/enum";
+import { isEmpty } from "../utils/helperFunction";
 
 const CommonRoute = () => {
+  const sessionHook = useSession();
 
-  let element = useRoutes([
-    {
-      path: "",
-      element: <LoginPage />,
-      index: true,
-    },
-    {
-      path: "/dashboard",
-      element: <DashboardPage />,
-      index: true,
-    },
-    {
-      path: "/brand",
-      element: <BrandPage />,
-      index: true,
+  const [{ isAdminRole, isSessionAvailable }, setAuthenticatedValue] =
+    useState<{
+      isAdminRole: boolean;
+      isSessionAvailable: boolean;
+    }>({
+      isAdminRole: false,
+      isSessionAvailable: false,
+    });
+  useEffect(() => {
+    const userRole = getUserRoles();
+    let isAdminRoles = false;
+    let isSessionAvailables = false;
+    if (userRole) {
+      isAdminRoles = userRole[0].Id == RoleEnum.Admin;
+      isSessionAvailables = !isEmpty(sessionHook?.session);
+
+      // console.log(location, isAdminRole, isSessionAvailable);
     }
-  ]);
-  return element;
+    setAuthenticatedValue({
+      isAdminRole: isAdminRoles,
+      isSessionAvailable: isSessionAvailables,
+    });
+  }, [sessionHook?.session]);
+
+  if (isSessionAvailable && isAdminRole) {
+    return (
+      <Navigate
+        to={"/dashboard"}
+        replace
+      />
+    );
+  } else {
+    return <Outlet />;
+  }
 };
 
 export default CommonRoute;

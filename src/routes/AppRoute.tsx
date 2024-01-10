@@ -1,31 +1,45 @@
-import { useEffect, useState } from "react";
-import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import { TOKEN } from "../constants/LocalStorageItems";
-import { useNavigate } from "react-router-dom";
+import LoginPage from "../pages/common/login/LoginPage";
+import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import BrandPage from "../pages/admin/brand/BrandPage";
+import { useRoutes } from "react-router-dom";
+import CommonRoute from "./CommonRoute";
+
+const InitialLayout = () => {
+  return useRoutes([
+    {
+      element: <CommonRoute />,
+      children: [
+        {
+          path: "/login",
+          element: <LoginPage />,
+        },
+      ],
+    },
+    {
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <DashboardPage />,
+          index: true,
+        },
+        {
+          path: "/brand",
+          element: <BrandPage />,
+          index: true,
+        },
+        {
+          path: "*",
+          element: <DashboardPage />,
+        },
+      ],
+    },
+  ]);
+};
 
 const AppRoute = () => {
-  //TODO: Replace with proper redux or local storage later
-  let token = localStorage.getItem(TOKEN)
-  const [login, setLogin] = useState(false)
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (token) {
-  //     setLogin(true)
-  //   } else {
-  //     setLogin(false)
-  //     localStorage.clear();
-  //     navigate("/");
-  //   }
-  // }, [])
-
-  return (
-    <>
-      <CommonRoute />
-      {/* {login && <ProtectedRoute />} */}
-    </>
-  );
+  return <InitialLayout />;
 };
 
 export default AppRoute;
