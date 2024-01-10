@@ -5,7 +5,7 @@ import {
   BrandAPI,
 } from "../apis/BrandAPI";
 
-export const useGetAllPlans = (params: GetBrandsParams) => {
+export const useGetAllBrands = (params: GetBrandsParams) => {
   const {
     isError,
     isLoading,
@@ -13,7 +13,7 @@ export const useGetAllPlans = (params: GetBrandsParams) => {
     error,
     refetch,
   }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
-    queryKey: ["plans", params?.name],
+    queryKey: ["brandList", params?.name],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);
     },

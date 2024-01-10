@@ -104,8 +104,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   setAccessToken(null);
                   setRefreshToken(null);
                   setSession(null);
-                  //   router.replace("/login");
-                  navigate("/login");
+                  //   router.replace("/");
+                  navigate("/");
                 })
                 .finally(async () => {
                   localStorage.removeItem(
@@ -121,7 +121,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
             return retryOriginalRequest;
           } else {
-            window.location.href = "/login";
+            window.location.href = "/";
           }
         }
 
@@ -148,7 +148,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           setSession(null);
-          navigate("/login");
+          navigate("/");
         },
         session: session,
         isLoading: isLoading || isAccessTokenLoading || isRefreshTokenLoading,

@@ -1,7 +1,5 @@
-import { TOKEN } from "../constants/LocalStorageItems";
 import { getAccessToken } from "../context/AuthContext";
 import { BrandStatus } from "../models/Brand";
-import { getToken } from "../utils/LocalStorageUtil";
 import http, { toQueryParams } from "../utils/http";
 
 //TODO: Searchbar Param

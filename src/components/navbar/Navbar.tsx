@@ -1,26 +1,28 @@
 import styled from "./navbar.module.scss";
-import { Button, Group } from "@mantine/core";
+import { ActionIcon, Button, Group } from "@mantine/core";
 import CustomBreadcrumb, {
   BreadcrumbItem,
 } from "../breadcrumbs/CustomBreadcrumb";
 import LightDarkSwitch from "../LightDarkSwirch";
 import { useSession } from "../../context/AuthContext";
+import { MdLogout } from "react-icons/md";
 
 export const Navbar = ({ items }: { items: BreadcrumbItem[] }) => {
+
   const sessionHook = useSession();
+
   return (
     <div className={styled["container-main"]}>
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
       <CustomBreadcrumb items={items} />
       <Group>
         <LightDarkSwitch />
-        <Button
-          variant="filled"
+        <ActionIcon
           onClick={sessionHook?.signOut}
+          variant="default" size="xl" aria-label="Logout"
         >
-          Logout
-        </Button>
-        ;
+          <MdLogout style={{ width: 18, height: 18 }} />
+        </ActionIcon>
       </Group>
     </div>
   );

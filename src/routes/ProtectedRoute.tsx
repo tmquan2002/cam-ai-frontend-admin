@@ -33,7 +33,7 @@ const ProtectedRoute = () => {
     return <Outlet />;
   } else {
     <Navigate
-      to={"/login"}
+      to={"/"}
       replace
     />;
   }
