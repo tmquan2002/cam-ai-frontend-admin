@@ -61,7 +61,7 @@ export const BrandAPI = {
   },
   getById: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.get<GetBrandsPagingResult>(`/api/brands?${id}`, {
+    const res = await http.get<GetBrandsResult>(`/api/brands/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },

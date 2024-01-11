@@ -4,6 +4,7 @@ import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import BrandPage from "../pages/admin/brand/BrandPage";
 import { useRoutes } from "react-router-dom";
 import CommonRoute from "./CommonRoute";
+import BrandDetail from "../pages/admin/brand/BrandDetail";
 
 const InitialLayout = () => {
   return useRoutes([
@@ -27,6 +28,11 @@ const InitialLayout = () => {
         {
           path: "/brand",
           element: <BrandPage />,
+          index: true,
+        },
+        {
+          path: "/brand/:brandId",
+          element: <BrandDetail />,
           index: true,
         },
         {

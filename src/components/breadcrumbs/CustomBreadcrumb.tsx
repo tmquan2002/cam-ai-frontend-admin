@@ -1,5 +1,5 @@
 import { Breadcrumbs, Text } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from './breadcrumb.module.scss';
 
 export interface BreadcrumbItem {
@@ -8,8 +8,13 @@ export interface BreadcrumbItem {
 }
 
 const CustomBreadcrumb = ({ items }: { items: BreadcrumbItem[] }) => {
+    const navigate = useNavigate();
+
     return (
         <Breadcrumbs>
+            <Text className={styled.text} onClick={() => navigate(-1)}>
+                &#60;
+            </Text>
             {items.map((item, index) => (
                 !item.link ?
                     <Text key={index} className={styled.text}>

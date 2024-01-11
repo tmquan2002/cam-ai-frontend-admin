@@ -3,6 +3,7 @@ import {
   GetBrandsPagingResult,
   GetBrandsParams,
   BrandAPI,
+  GetBrandsResult,
 } from "../apis/BrandAPI";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
@@ -16,6 +17,23 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
     queryKey: ["brandList", params?.name],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);
+    },
+  });
+
+  return { isError, isLoading, data, error, refetch };
+};
+
+export const useGetBrandById = (id: string) => {
+  const {
+    isError,
+    isLoading,
+    data,
+    error,
+    refetch,
+  }: UseQueryResult<GetBrandsResult, Error> = useQuery({
+    queryKey: ["brandDetail", id],
+    queryFn: async () => {
+      return await BrandAPI.getById(id);
     },
   });
 
