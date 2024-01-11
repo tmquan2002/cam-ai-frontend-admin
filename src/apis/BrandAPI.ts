@@ -30,7 +30,7 @@ export type GetBrandsResult = {
 export type GetBrandsParams = {
   statusId?: number;
   name?: string;
-  size?: number;
+  size?: string | null;
   pageIndex: number;
 };
 

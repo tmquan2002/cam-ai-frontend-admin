@@ -1,20 +1,21 @@
 import styled from "./navbar.module.scss";
 import { ActionIcon, Group, Indicator, Tooltip } from "@mantine/core";
 import CustomBreadcrumb, {
+  BreadCrumbParams,
   BreadcrumbItem,
 } from "../breadcrumbs/CustomBreadcrumb";
 import LightDarkSwitch from "../LightDarkSwirch";
 import { useSession } from "../../context/AuthContext";
 import { MdLogout, MdNotifications } from "react-icons/md";
 
-export const Navbar = ({ items }: { items: BreadcrumbItem[] }) => {
+export const Navbar = ({ items, goBackLink }: BreadCrumbParams) => {
 
   const sessionHook = useSession();
 
   return (
     <div className={styled["container-main"]}>
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
-      <CustomBreadcrumb items={items} />
+      <CustomBreadcrumb items={items} goBackLink={goBackLink} />
       <Group>
         <LightDarkSwitch />
         <Tooltip label="Notification" withArrow>

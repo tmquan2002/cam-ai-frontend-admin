@@ -6,12 +6,8 @@ import styled from "./styles/brand.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: "Dashboard",
-        link: "/dashboard"
+        title: "Brand",
     },
-    {
-        title: "Brand"
-    }
 ]
 
 const BrandPage = () => {
@@ -20,7 +16,7 @@ const BrandPage = () => {
         <div className={styled["container-main"]}>
             <SideBar />
             <div className={styled["container-detail"]}>
-                <Navbar items={breadcrumbs} />
+                <Navbar items={breadcrumbs} goBackLink="/dashboard"/>
                 <div className={styled["table-container"]}>
                     <BrandList />
                 </div>

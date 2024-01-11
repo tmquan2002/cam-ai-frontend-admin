@@ -10,6 +10,7 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
   const {
     isError,
     isLoading,
+    isFetching,
     data,
     error,
     refetch,
@@ -20,7 +21,7 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
     },
   });
 
-  return { isError, isLoading, data, error, refetch };
+  return { isError, isLoading, isFetching, data, error, refetch };
 };
 
 export const useGetBrandById = (id: string) => {

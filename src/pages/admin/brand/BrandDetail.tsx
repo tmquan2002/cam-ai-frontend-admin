@@ -29,7 +29,7 @@ const BrandDetail = () => {
         <div className={styled["container-main"]}>
             <SideBar />
             <div className={styled["container-right"]}>
-                <Navbar items={breadcrumbs} />
+                <Navbar items={breadcrumbs} goBackLink="/brand"/>
                 <div className={styled["container-detail"]}>
                     {isLoading ? "AAAAAAAAAAA" : brandDetail?.name}
                 </div>

@@ -121,7 +121,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
             return retryOriginalRequest;
           } else {
-            window.location.href = "/";
+            navigate("/");
           }
         }
 
