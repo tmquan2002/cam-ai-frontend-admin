@@ -5,6 +5,7 @@ import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
 import { MdOutlineSearch } from 'react-icons/md';
+import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>
@@ -37,15 +38,13 @@ const BrandList = () => {
             <Table.Tr key={e.id} onClick={() => navigate(`/brand/${e.id}`, { replace: true })}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>
-                    <Image w={100} h={100}
-                        src={e.logoUri ? e.logoUri : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"}
-                    />
+                    <Image w={100} h={100} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
                 </Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate))}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"} color="yellow">
-                        {e.brandStatus !== null ? e.brandStatus.name : "None"}
+                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
+                        {e.brandStatus ? e.brandStatus.name : "None"}
                     </Badge>
                 </Table.Td>
             </Table.Tr>

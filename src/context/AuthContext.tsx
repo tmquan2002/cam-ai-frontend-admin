@@ -91,7 +91,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
               );
 
               await axios
-                .post("/Auth/refresh", {
+                .post("/api/auth/refresh", {
                   accessToken: accessToken,
                   refreshToken: refreshToken,
                 })
