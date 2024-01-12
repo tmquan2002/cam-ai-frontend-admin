@@ -1,10 +1,11 @@
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "../pages/common/login/LoginPage";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
-import BrandPage from "../pages/admin/brand/BrandPage";
+import BrandMainPage from "../pages/admin/brand/BrandMainPage";
 import { useRoutes } from "react-router-dom";
 import CommonRoute from "./CommonRoute";
 import BrandDetail from "../pages/admin/brand/BrandDetail";
+import BrandAdd from "../pages/admin/brand/BrandAdd";
 
 const InitialLayout = () => {
   return useRoutes([
@@ -27,12 +28,17 @@ const InitialLayout = () => {
         },
         {
           path: "/brand",
-          element: <BrandPage />,
+          element: <BrandMainPage />,
           index: true,
         },
         {
           path: "/brand/:brandId",
           element: <BrandDetail />,
+          index: true,
+        },
+        {
+          path: "/brand/add",
+          element: <BrandAdd />,
           index: true,
         },
         {

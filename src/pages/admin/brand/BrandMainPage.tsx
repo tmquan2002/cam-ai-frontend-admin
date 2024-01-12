@@ -10,7 +10,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ]
 
-const BrandPage = () => {
+const BrandMainPage = () => {
 
     return (
         <div className={styled["container-main"]}>
@@ -25,4 +25,4 @@ const BrandPage = () => {
     );
 };
 
-export default BrandPage;
+export default BrandMainPage;

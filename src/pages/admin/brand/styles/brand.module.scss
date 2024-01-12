@@ -4,6 +4,7 @@
 
     .container-detail {
         width: calc(100% - 250px);
+        padding-bottom: 20px;
 
         @include light {
             background-color: #f6f8fc;

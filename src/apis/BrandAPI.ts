@@ -40,7 +40,7 @@ export type GetBrandsPagingResult = {
   totalCount: number;
   values: GetBrandsResult[];
 };
-export type AddBrandParams = {
+export type AddUpdateBrandParams = {
   name: string;
   email: string;
   phone: string;
@@ -68,13 +68,18 @@ export const BrandAPI = {
     });
     return res.data;
   },
-  add: async (params: AddBrandParams) => {
-    const res = await http.post<GetBrandsResult>("/api/brands", params);
+  add: async (params: AddUpdateBrandParams) => {
+    const token = getAccessToken();
+    const res = await http.post<GetBrandsResult>("/api/brands", params, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
     return res.data;
   },
-  update: async (id: string) => {
+  update: async (id: string, params: AddUpdateBrandParams) => {
     const token = getAccessToken();
-    const res = await http.put<GetBrandsResult>(`/api/brands?${id}`, {
+    const res = await http.put<GetBrandsResult>(`/api/brands/${id}`, params, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -83,7 +88,7 @@ export const BrandAPI = {
   },
   delete: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.delete(`/api/brands?${id}`, {
+    const res = await http.delete(`/api/brands/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -92,7 +97,7 @@ export const BrandAPI = {
   },
   reactivate: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.put(`/api/brands?${id}/reactivate`, {
+    const res = await http.put(`/api/brands/${id}/reactivate`, {
       headers: {
         Authorization: "Bearer " + token,
       },

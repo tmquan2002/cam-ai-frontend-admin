@@ -1,9 +1,10 @@
-import { UseQueryResult, useQuery } from "react-query";
+import { UseQueryResult, useMutation, useQuery } from "react-query";
 import {
   GetBrandsPagingResult,
   GetBrandsParams,
   BrandAPI,
   GetBrandsResult,
+  AddUpdateBrandParams,
 } from "../apis/BrandAPI";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
@@ -15,7 +16,7 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
     error,
     refetch,
   }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
-    queryKey: ["brandList", params?.name],
+    queryKey: ["brandList", params?.size, params.pageIndex],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);
     },
@@ -39,4 +40,15 @@ export const useGetBrandById = (id: string) => {
   });
 
   return { isError, isLoading, data, error, refetch };
+};
+
+export const useAddBrand = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "addBrand",
+    mutationFn: async (params: AddUpdateBrandParams) => {
+      return await BrandAPI.add(params);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
 };
