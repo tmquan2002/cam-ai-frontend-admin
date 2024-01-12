@@ -24,7 +24,7 @@ const BrandAdd = () => {
             <div className={styled["container-detail"]}>
                 <Navbar items={breadcrumbs} goBackLink="/brand" />
                 <div className={styled["table-container"]}>
-                    <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.9"}>NEW BRAND</Text>
+                    <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW BRAND</Text>
                     <AddBrandForm />
                 </div>
             </div>

@@ -32,13 +32,18 @@ const InitialLayout = () => {
           index: true,
         },
         {
+          path: "/brand/add",
+          element: <BrandAdd />,
+          index: true,
+        },
+        {
           path: "/brand/:brandId",
           element: <BrandDetail />,
           index: true,
         },
         {
-          path: "/brand/add",
-          element: <BrandAdd />,
+          path: "/brand/:brandId/update",
+          element: <BrandDetail />,
           index: true,
         },
         {

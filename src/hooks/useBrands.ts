@@ -16,7 +16,7 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
     error,
     refetch,
   }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
-    queryKey: ["brandList", params?.size, params.pageIndex],
+    queryKey: ["brandList", params.size, params.pageIndex],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);
     },
@@ -47,6 +47,17 @@ export const useAddBrand = () => {
     mutationKey: "addBrand",
     mutationFn: async (params: AddUpdateBrandParams) => {
       return await BrandAPI.add(params);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
+export const useDeleteBrand = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "deleteBrand",
+    mutationFn: async (id: string) => {
+      return await BrandAPI.delete(id);
     },
   });
 

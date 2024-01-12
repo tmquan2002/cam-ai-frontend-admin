@@ -20,11 +20,17 @@ const loadingData = [...Array(5)].map((_, i) => (
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
+    const [searchTerm, setSearchTerm] = useState("")
     const navigate = useNavigate();
 
     const onSizeChange = useCallback(() => {
-        setPageIndex(1)
+        setPageIndex(1);
     }, [size, pageIndex]);
+
+    const onSearch = useCallback((value: string) => {
+        // setSearchTerm(value);
+        console.log(value)
+    }, [searchTerm]);
 
     useEffect(() => {
         refetch();
@@ -42,14 +48,14 @@ const BrandList = () => {
         isLoading,
         isFetching,
         refetch
-    } = useGetAllBrands({ pageIndex: (pageIndex - 1), size });
+    } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
             <Table.Tr onClick={() => navigate(`/brand/${e.id}`, { replace: true })}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>
-                    <Image w={100} h={100} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
+                    <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
                 </Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate))}</Table.Td>
@@ -66,7 +72,7 @@ const BrandList = () => {
         <>
             <div className={styled["table-header"]}>
                 <Text size='lg' fw="bold" fz='25px' mb={20}
-                    c={"light-blue.9"}
+                    c={"light-blue.4"}
                 >BRAND LIST</Text>
                 <Button
                     onClick={() => navigate("/brand/add")}
@@ -77,9 +83,9 @@ const BrandList = () => {
                 </Button>
             </div>
             <Autocomplete mb={20}
-                placeholder="Search"
-                leftSection={<MdOutlineSearch />}
-                data={['Huy Brand', 'Test Brand']}
+                placeholder="Search" limit={5} leftSection={<MdOutlineSearch />}
+                data={(isLoading || isFetching) ? [] : [... new Set(brandList?.values.map(a => a.name))]}
+                value={searchTerm} onChange={setSearchTerm} onOptionSubmit={e => onSearch(e)}
             />
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
@@ -97,7 +103,7 @@ const BrandList = () => {
             </Table.ScrollContainer>
             {/* //TODO: Hide when total page is higher than 1 */}
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || brandList?.totalCount && Math.ceil(brandList.totalCount / Number(size)) > 0 &&
+                {isLoading || isFetching || brandList?.totalCount &&
                     <>
                         <Pagination total={Math.ceil(brandList.totalCount / Number(size))} value={pageIndex} onChange={setPageIndex} mt="sm" />
                         <Group style={{ marginTop: '12px' }}>
