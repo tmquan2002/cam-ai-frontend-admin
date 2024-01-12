@@ -2,12 +2,14 @@ import { TextInput, Button, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
-import { AddUpdateBrandParams } from "../../../../apis/BrandAPI";
+import { AddBrandParams } from "../../../../apis/BrandAPI";
 import { useAddBrand } from "../../../../hooks/useBrands";
+import { useNavigate } from "react-router-dom";
 
 export const AddBrandForm = () => {
 
     const { mutate: addBrand, isLoading } = useAddBrand();
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -29,10 +31,10 @@ export const AddBrandForm = () => {
         },
     });
 
-    const onSubmitForm = async (values: AddUpdateBrandParams) => {
+    const onSubmitForm = async (values: AddBrandParams) => {
         // console.log(values)
 
-        const addBrandParams: AddUpdateBrandParams = {
+        const addBrandParams: AddBrandParams = {
             name: values.name,
             email: values.email,
             phone: values.phone,
@@ -41,6 +43,12 @@ export const AddBrandForm = () => {
         addBrand(addBrandParams, {
             onSuccess(data) {
                 console.log(data)
+                notifications.show({
+                    message: "Added!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+                navigate(`/brand/${data.id}`)
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {

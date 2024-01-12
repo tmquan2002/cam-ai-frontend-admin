@@ -6,6 +6,7 @@ import { useRoutes } from "react-router-dom";
 import CommonRoute from "./CommonRoute";
 import BrandDetail from "../pages/admin/brand/BrandDetail";
 import BrandAdd from "../pages/admin/brand/BrandAdd";
+import BrandUpdate from "../pages/admin/brand/BrandUpdate";
 
 const InitialLayout = () => {
   return useRoutes([
@@ -43,7 +44,7 @@ const InitialLayout = () => {
         },
         {
           path: "/brand/:brandId/update",
-          element: <BrandDetail />,
+          element: <BrandUpdate />,
           index: true,
         },
         {

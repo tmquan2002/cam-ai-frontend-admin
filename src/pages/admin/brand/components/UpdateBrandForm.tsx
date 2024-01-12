@@ -1,13 +1,20 @@
-import { TextInput, Button, Group } from "@mantine/core";
+import { TextInput, Button, Group, Loader } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
-import { AddUpdateBrandParams } from "../../../../apis/BrandAPI";
-import { useAddBrand } from "../../../../hooks/useBrands";
+import { AddBrandParams, UpdateBrandParams } from "../../../../apis/BrandAPI";
+import { useGetBrandById, useUpdateBrand } from "../../../../hooks/useBrands";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const AddBrandForm = () => {
+export const UpdateBrandForm = ({ id }: { id: string }) => {
 
-    const { mutate: addBrand, isLoading } = useAddBrand();
+    const { mutate: updateBrand, isLoading } = useUpdateBrand();
+    const {
+        data,
+        isLoading: initialDataLoading
+    } = useGetBrandById(id);
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -29,24 +36,43 @@ export const AddBrandForm = () => {
         },
     });
 
-    const onSubmitForm = async (values: AddUpdateBrandParams) => {
+    useEffect(() => {
+        if (data) {
+            form.setValues({
+                email: data?.email,
+                name: data?.name,
+                phone: data?.phone,
+            });
+        }
+    }, [data]);
+
+    const onSubmitForm = async (values: AddBrandParams) => {
         // console.log(values)
 
-        const addBrandParams: AddUpdateBrandParams = {
-            name: values.name,
-            email: values.email,
-            phone: values.phone,
+        const updateBrandParams: UpdateBrandParams = {
+            id: id,
+            values: {
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+            }
         };
 
-        addBrand(addBrandParams, {
+        updateBrand(updateBrandParams, {
             onSuccess(data) {
                 console.log(data)
+                notifications.show({
+                    message: "Update successful!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+                navigate(`/brand/${id}`)
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: "Something wrong happen trying to add a new brand",
+                        message: "Something wrong happen trying to update this brand",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
@@ -58,47 +84,50 @@ export const AddBrandForm = () => {
     };
 
     return (
-        <form
-            onSubmit={form.onSubmit((values) => onSubmitForm(values))}
-            style={{ textAlign: "left" }}
-        >
-            <TextInput
-                withAsterisk
-                label="Name"
-                placeholder="Brand Name"
-                size="md"
-                {...form.getInputProps("name")}
-            />
-            <TextInput
-                withAsterisk
-                label="Email"
-                placeholder="your@email.com"
-                size="md"
-                {...form.getInputProps("email")}
-            />
-
-            <TextInput
-                label="Phone"
-                placeholder="Phone Number"
-                size="md"
-                {...form.getInputProps("phone")}
-            />
-
-            <Group
-                justify="flex-start"
-                mt="md"
+        <>
+            {initialDataLoading ? <Loader /> : <form
+                onSubmit={form.onSubmit((values) => onSubmitForm(values))}
+                style={{ textAlign: "left" }}
             >
-                <Button
-                    loading={isLoading}
-                    type="submit"
-                    variant="gradient"
+                <TextInput
+                    withAsterisk
+                    label="Name"
+                    placeholder="Brand Name"
                     size="md"
-                    mt={20}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    {...form.getInputProps("name")}
+                />
+                <TextInput
+                    withAsterisk
+                    label="Email"
+                    placeholder="your@email.com"
+                    size="md"
+                    {...form.getInputProps("email")}
+                />
+
+                <TextInput
+                    label="Phone"
+                    placeholder="Phone Number"
+                    size="md"
+                    {...form.getInputProps("phone")}
+                />
+
+                <Group
+                    justify="flex-start"
+                    mt="md"
                 >
-                    Add
-                </Button>
-            </Group>
-        </form>
+                    <Button
+                        loading={isLoading}
+                        type="submit"
+                        variant="gradient"
+                        size="md"
+                        mt={20}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        Update
+                    </Button>
+                </Group>
+            </form>
+            }
+        </>
     );
 };

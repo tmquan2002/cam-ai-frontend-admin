@@ -4,7 +4,8 @@ import {
   GetBrandsParams,
   BrandAPI,
   GetBrandsResult,
-  AddUpdateBrandParams,
+  AddBrandParams,
+  UpdateBrandParams,
 } from "../apis/BrandAPI";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
@@ -45,8 +46,19 @@ export const useGetBrandById = (id: string) => {
 export const useAddBrand = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "addBrand",
-    mutationFn: async (params: AddUpdateBrandParams) => {
+    mutationFn: async (params: AddBrandParams) => {
       return await BrandAPI.add(params);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
+export const useUpdateBrand = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "updateBrand",
+    mutationFn: async (params: UpdateBrandParams) => {
+      return await BrandAPI.update(params);
     },
   });
 

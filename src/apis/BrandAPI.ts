@@ -40,10 +40,19 @@ export type GetBrandsPagingResult = {
   totalCount: number;
   values: GetBrandsResult[];
 };
-export type AddUpdateBrandParams = {
+export type AddBrandParams = {
   name: string;
   email: string;
   phone: string;
+};
+
+export type UpdateBrandParams = {
+  id: string;
+  values: {
+    name: string;
+    email: string;
+    phone: string;
+  }
 };
 
 export const BrandAPI = {
@@ -68,7 +77,7 @@ export const BrandAPI = {
     });
     return res.data;
   },
-  add: async (params: AddUpdateBrandParams) => {
+  add: async (params: AddBrandParams) => {
     const token = getAccessToken();
     const res = await http.post<GetBrandsResult>("/api/brands", params, {
       headers: {
@@ -77,9 +86,9 @@ export const BrandAPI = {
     });
     return res.data;
   },
-  update: async (id: string, params: AddUpdateBrandParams) => {
+  update: async (params: UpdateBrandParams) => {
     const token = getAccessToken();
-    const res = await http.put<GetBrandsResult>(`/api/brands/${id}`, params, {
+    const res = await http.put<GetBrandsResult>(`/api/brands/${params.id}`, params.values, {
       headers: {
         Authorization: "Bearer " + token,
       },

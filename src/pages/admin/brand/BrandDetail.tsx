@@ -87,6 +87,7 @@ const BrandDetail = () => {
                                     <Tooltip label="Update" withArrow>
                                         <ActionIcon
                                             variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
+                                            onClick={() => navigate(`/brand/${params.brandId!}/update`)}
                                         >
                                             <MdEdit style={{ width: 18, height: 18 }} />
                                         </ActionIcon>
