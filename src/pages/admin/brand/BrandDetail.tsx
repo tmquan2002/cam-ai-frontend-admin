@@ -69,11 +69,11 @@ const BrandDetail = () => {
                     <Navbar items={breadcrumbs} goBackLink="/brand" />
                     {isLoading ? <Loader type="bar" /> :
                         <div className={styled["container-detail"]}>
-                            {data?.bannerUri && <Image h={150} mb={20} src={data?.logoUri} />}
+                            {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
                             {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                             <div className={styled["profile-header"]}>
                                 <div className={styled["profile-header-left"]}>
-                                    <Image w={150} h={150} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
+                                    <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
                                     <div>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                         <Text size="sm">Email: {data?.email}</Text>

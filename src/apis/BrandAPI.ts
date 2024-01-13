@@ -2,17 +2,6 @@ import { getAccessToken } from "../context/AuthContext";
 import { BrandStatus } from "../models/Brand";
 import http, { toQueryParams } from "../utils/http";
 
-//TODO: Searchbar Param
-// export type SearchBrandParams = {
-//     direction?: string,
-//     page?: number;
-//     pageSize?: number;
-//     name?: string;
-//     orderBy?: string;
-//     lowerDate?: string;
-//     upperDate?: string;
-// };
-
 export type GetBrandsResult = {
   id: string;
   createdDate: string;
@@ -31,13 +20,14 @@ export type GetBrandsParams = {
   statusId?: number;
   name?: string;
   size?: string | null;
-  pageIndex: number;
+  pageIndex?: number;
 };
 
 export type GetBrandsPagingResult = {
   pageIndex: number;
   pageSize: number;
   totalCount: number;
+  isValuesEmpty: boolean;
   values: GetBrandsResult[];
 };
 export type AddBrandParams = {
