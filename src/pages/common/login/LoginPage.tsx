@@ -10,7 +10,8 @@ const LoginPage = () => {
       <div className={styled["container-main"]}>
         <div className={styled["image-container"]}>
           <div className={styled["title"]}>CAMAI</div>
-          <div className={styled["description"]}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+          <div className={styled["description"]}>Solution for coffee brands to detect customers and employee behaviors
+          </div>
           <img src={AuthImage} alt="AuthImage" className={styled["auth-image"]} />
         </div>
         <div className={styled["container"]}>
