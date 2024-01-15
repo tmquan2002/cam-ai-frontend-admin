@@ -65,6 +65,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
   useEffect(() => {
     http.interceptors.response.use(
       (res) => {
+        console.log({ res });
+
         if (res && res?.data) {
           return res;
         }
@@ -72,17 +74,17 @@ export function SessionProvider(props: React.PropsWithChildren) {
         return res;
       },
       async (err) => {
-        const {
-          config,
-          response: { status },
-        } = err;
+        const { config } = err;
+        console.log({ err });
+
         const isAlreadyFetchingAccessToken = localStorage.getItem(
           CommonConstant.IS_ALREADY_FETCHING_ACCESS
         );
 
         const originalRequest = config;
 
-        if (status == 401) {
+        console.log(err.response.headers.has("auto"));
+        if (err.response.status == 401) {
           if (err.response.headers.auto == "True") {
             if (!isAlreadyFetchingAccessToken) {
               localStorage.setItem(
@@ -96,6 +98,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   refreshToken: refreshToken,
                 })
                 .then((res) => {
+                  console.log(res?.data);
+
                   setAccessToken(res?.data);
                 })
                 .catch(async (err) => {
@@ -114,14 +118,16 @@ export function SessionProvider(props: React.PropsWithChildren) {
                 });
             }
             const retryOriginalRequest = new Promise((resolve) => {
-              console.log("call origin req");
-              originalRequest.headers["Authorization"] = accessToken;
+              originalRequest.headers[
+                "Authorization"
+              ] = `Bearer ${accessToken}`;
               resolve(http(originalRequest));
             });
 
             return retryOriginalRequest;
           } else {
-            window.location.href = "/login";
+            navigate("/login");
+            // window.location.href = "/login";
           }
         }
 

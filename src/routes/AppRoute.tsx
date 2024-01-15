@@ -11,7 +11,11 @@ const InitialLayout = () => {
       element: <CommonRoute />,
       children: [
         {
-          path: "/login",
+          path: "/",
+          element: <LoginPage />,
+        },
+        {
+          path: "*",
           element: <LoginPage />,
         },
       ],
