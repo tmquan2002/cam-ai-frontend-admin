@@ -18,14 +18,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 const BrandAdd = () => {
 
     return (
-        <div className={styled["container-main"]}>
-            <SideBar />
-            <div className={styled["container-detail"]}>
-                <Navbar items={breadcrumbs} goBackLink="/brand" />
-                <div className={styled["table-container"]}>
-                    <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW BRAND</Text>
-                    <AddBrandForm />
-                </div>
+        <div className={styled["container-detail"]}>
+            <Navbar items={breadcrumbs} goBackLink="/brand" />
+            <div className={styled["table-container"]}>
+                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW BRAND</Text>
+                <AddBrandForm />
             </div>
         </div>
     );

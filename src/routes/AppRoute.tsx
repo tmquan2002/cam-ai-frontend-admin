@@ -10,6 +10,7 @@ import BrandUpdate from "../pages/admin/brand/BrandUpdate";
 import AccountMainPage from "../pages/admin/account/AccountMainPage";
 import AccountAdd from "../pages/admin/account/AccountAdd";
 import AccountLayout from "../pages/admin/account/AccountLayout";
+import BrandLayout from "../pages/admin/brand/BrandLayout";
 
 const InitialLayout = () => {
   return useRoutes([
@@ -31,7 +32,7 @@ const InitialLayout = () => {
           index: true,
         },
         {
-          path: "/account/",
+          path: "/account",
           element: <AccountLayout />,
           children: [
             {
@@ -46,23 +47,25 @@ const InitialLayout = () => {
         },
         {
           path: "/brand",
-          element: <BrandMainPage />,
-          index: true,
-        },
-        {
-          path: "/brand/add",
-          element: <BrandAdd />,
-          index: true,
-        },
-        {
-          path: "/brand/:brandId",
-          element: <BrandDetail />,
-          index: true,
-        },
-        {
-          path: "/brand/:brandId/update",
-          element: <BrandUpdate />,
-          index: true,
+          element: <BrandLayout />,
+          children: [
+            {
+              element: <BrandMainPage />,
+              index: true,
+            },
+            {
+              path: "add",
+              element: <BrandAdd />
+            },
+            {
+              path: "/brand/:brandId",
+              element: <BrandDetail />,
+            },
+            {
+              path: "/brand/:brandId/update",
+              element: <BrandUpdate />,
+            },
+          ]
         },
         {
           path: "*",

@@ -13,15 +13,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const BrandMainPage = () => {
 
     return (
-        <div className={styled["container-main"]}>
-            <SideBar />
-            <div className={styled["container-detail"]}>
-                <Navbar items={breadcrumbs} goBackLink="/dashboard"/>
-                <div className={styled["table-container"]}>
-                    <BrandList />
-                </div>
+        <div className={styled["container-detail"]}>
+            <Navbar items={breadcrumbs} goBackLink="/dashboard" />
+            <div className={styled["table-container"]}>
+                <BrandList />
             </div>
         </div>
+
     );
 };
 

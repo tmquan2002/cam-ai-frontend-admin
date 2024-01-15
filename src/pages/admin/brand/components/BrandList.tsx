@@ -1,7 +1,7 @@
-import { Autocomplete, Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, Tooltip } from '@mantine/core';
-import { useCallback, useEffect, useState } from 'react';
+import { Autocomplete, Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllBrands } from '../../../../hooks/useBrands';
+import { useGetAllBrands, useGetAllBrandsSearch } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
 import { MdAdd, MdOutlineSearch } from 'react-icons/md';
@@ -23,31 +23,11 @@ const BrandList = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const navigate = useNavigate();
 
-    const onSizeChange = useCallback(() => {
-        setPageIndex(1);
-    }, [size, pageIndex]);
-
-    const onSearch = useCallback((value: string) => {
-        // setSearchTerm(value);
-        console.log(value)
-    }, [searchTerm]);
-
-    useEffect(() => {
-        refetch();
-        // console.log(size)
-        // console.log(pageIndex)
-        // console.log(brandList)
-    }, [onSizeChange])
-
-    useEffect(() => {
-        onSizeChange()
-    }, [size])
-
     const {
         data: brandList,
         isLoading,
         isFetching,
-        refetch
+        refetch,
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const rows = brandList?.values.map((e, i) => (
@@ -82,10 +62,9 @@ const BrandList = () => {
                     Add
                 </Button>
             </div>
-            <Autocomplete mb={20}
-                placeholder="Search" limit={5} leftSection={<MdOutlineSearch />}
-                data={(isLoading || isFetching) ? [] : [... new Set(brandList?.values.map(a => a.name))]}
-                value={searchTerm} onChange={setSearchTerm} onOptionSubmit={e => onSearch(e)}
+            <TextInput mb={20}
+                placeholder="Search" leftSection={<MdOutlineSearch />}
+                value={searchTerm} onChange={(event) => setSearchTerm(event.currentTarget.value)}
             />
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
@@ -101,7 +80,6 @@ const BrandList = () => {
                     <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
-            {/* //TODO: Hide when total page is higher than 1 */}
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || brandList?.totalCount &&
                     <>
