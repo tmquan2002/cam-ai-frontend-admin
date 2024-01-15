@@ -67,18 +67,33 @@ export type GetAccountsPagingResult = {
 };
 
 export type AddAccountParams = {
-    email: string,
-    password: string,
-    name: string,
-    gender: number,
-    phone: string,
-    birthday: string,
-    wardId: string,
-    addressLine: string,
-    brandId: string,
-    workingShopId: string,
-    roleIds: [number]
+    email: string;
+    password: string;
+    name: string;
+    gender: number;
+    phone: string;
+    birthday: string;
+    wardId: string;
+    addressLine: string;
+    brandId: string;
+    // workingShopId: string;
+    roleIds: [number];
 };
+
+export type UpdateAccountParams = {
+    id: string;
+    values: {
+        name: string;
+        gender: number;
+        email: string;
+        phone: string;
+        birthday: string;
+        wardId: string;
+        addressLine: string;
+        timestamp: string;
+    }
+}
+
 
 export const BrandAPI = {
     getAllFilter: async (params: GetAccountsParams) => {
@@ -105,6 +120,24 @@ export const BrandAPI = {
     add: async (params: AddAccountParams) => {
         const token = getAccessToken();
         const res = await http.post<AddAccountResult>("/api/accounts", params, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+        return res.data;
+    },
+    update: async (params: UpdateAccountParams) => {
+        const token = getAccessToken();
+        const res = await http.put<GetAccountResult>(`/api/accounts/${params.id}`, params.values, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+        return res.data;
+    },
+    delete: async (id: string) => {
+        const token = getAccessToken();
+        const res = await http.delete(`/api/accounts/${id}`, {
             headers: {
                 Authorization: "Bearer " + token,
             },
