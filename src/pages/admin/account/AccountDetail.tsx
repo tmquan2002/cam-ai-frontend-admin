@@ -1,15 +1,15 @@
-import { ActionIcon, Badge, Button, Divider, Group, Image, Loader, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Button, Divider, Group, Loader, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
-import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
+import { useGetAccountById } from "../../../hooks/useAccounts";
+import { useDeleteBrand } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,7 +31,7 @@ const AccountDetail = () => {
     const {
         data,
         isLoading
-    } = useGetBrandById(params.accountId!);
+    } = useGetAccountById(params.accountId!);
 
     const { mutate: deleteBrand } = useDeleteBrand();
 
@@ -67,25 +67,30 @@ const AccountDetail = () => {
                 <Navbar items={breadcrumbs} goBackLink="/account" />
                 {isLoading ? <Loader type="bar" /> :
                     <div className={styled["container-detail"]}>
-                        {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
                                 <div>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Text size="sm">Email: {data?.email}</Text>
-                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate))}</Text>
-                                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                        {data?.brandStatus ? data.brandStatus.name : "No Status"}
-                                    </Badge>
+                                    <Text size="sm">{data?.email}</Text>
+                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                    <Group>
+                                        {data!.roles.map((item, index) => (
+                                            <Badge size='lg' radius={"lg"} color="shading.9" key={index}>
+                                                {item.name}
+                                            </Badge>
+                                        ))}
+                                    </Group>
                                 </div>
                             </div>
                             <Group>
+                                <Badge size='lg' radius={"lg"} color="light-yellow.7">
+                                    {data?.accountStatus ? data.accountStatus.name : "No Status"}
+                                </Badge>
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon
                                         variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                        // onClick={() => navigate(`/brand/${params.accountId!}/update`)}
+                                    // onClick={() => navigate(`/brand/${params.accountId!}/update`)}
                                     >
                                         <MdEdit style={{ width: 18, height: 18 }} />
                                     </ActionIcon>

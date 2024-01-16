@@ -12,12 +12,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 const AccountMainPage = () => {
 
     return (
-        <>
+        <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBackLink="/dashboard" />
             <div className={styled["table-container"]}>
                 <AccountList />
             </div>
-        </>
+        </div>
     );
 };
 

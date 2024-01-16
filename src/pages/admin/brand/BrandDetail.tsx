@@ -75,7 +75,7 @@ const BrandDetail = () => {
                                 <div>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                     <Text size="sm">Email: {data?.email}</Text>
-                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate))}</Text>
+                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
                                         {data?.brandStatus ? data.brandStatus.name : "No Status"}
                                     </Badge>

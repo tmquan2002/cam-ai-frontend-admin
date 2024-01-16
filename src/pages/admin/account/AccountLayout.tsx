@@ -7,9 +7,7 @@ const AccountLayout = () => {
     return (
         <div className={styled["container-main"]}>
             <SideBar />
-            <div className={styled["container-detail"]}>
-                <Outlet />
-            </div>
+            <Outlet />
         </div>
     );
 };

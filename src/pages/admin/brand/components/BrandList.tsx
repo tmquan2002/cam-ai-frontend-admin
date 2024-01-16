@@ -45,7 +45,7 @@ const BrandList = () => {
                     <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
                 </Table.Td>
                 <Table.Td>{e.name}</Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate))}</Table.Td>
+                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
                         {e.brandStatus ? e.brandStatus.name : "None"}
