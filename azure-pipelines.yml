@@ -19,7 +19,7 @@ steps:
     buildContext: './'
     tags: 'camai-web-admin'
 - script: |
-    echo "VITE_SERVER_LINK=$(web-admin-group.VITE_SERVER_LINK)" > .env
+    echo "VITE_SERVER_LINK=$(VITE_SERVER_LINK)" > .env
   displayName: 'Write .env'
   
 - task: CopyFilesOverSSH@0
