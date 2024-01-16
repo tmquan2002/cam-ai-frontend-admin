@@ -4,13 +4,12 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { SideBar } from "../../../components/sidebar/SideBar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
-import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import axios from "axios";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -41,7 +40,7 @@ const BrandDetail = () => {
             onSuccess() {
                 navigate('/brand')
                 notifications.show({
-                    message: "Remove successful!",
+                    message: "Brand disabled!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -49,13 +48,14 @@ const BrandDetail = () => {
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
+                } else {
+                    console.error(error);
                     notifications.show({
                         message: "Something wrong happen when trying to remove the brand",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
-                } else {
-                    console.error(error);
+                    close();
                 }
             },
         });
@@ -114,7 +114,7 @@ const BrandDetail = () => {
                 </Text>
                 <Group>
                     <Button
-                        variant="gradient" size="md" mt={20} onClick={close}
+                        variant="gradient" size="md" mt={20} onClick={onDelete}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
                         DELETE

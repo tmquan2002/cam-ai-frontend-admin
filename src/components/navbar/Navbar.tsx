@@ -1,12 +1,11 @@
-import styled from "./navbar.module.scss";
 import { ActionIcon, Group, Indicator, Tooltip } from "@mantine/core";
-import CustomBreadcrumb, {
-  BreadCrumbParams,
-  BreadcrumbItem,
-} from "../breadcrumbs/CustomBreadcrumb";
-import LightDarkSwitch from "../LightDarkSwirch";
-import { useSession } from "../../context/AuthContext";
 import { MdLogout, MdNotifications } from "react-icons/md";
+import { useSession } from "../../context/AuthContext";
+import LightDarkSwitch from "../LightDarkSwirch";
+import CustomBreadcrumb, {
+  BreadCrumbParams
+} from "../breadcrumbs/CustomBreadcrumb";
+import styled from "./navbar.module.scss";
 
 export const Navbar = ({ items, goBackLink }: BreadCrumbParams) => {
 

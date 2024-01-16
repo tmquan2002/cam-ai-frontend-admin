@@ -51,10 +51,12 @@ export type AddAccountResult = {
 };
 
 export type GetAccountsParams = {
-    guid?: string;
-    from?: string;
-    to?: string;
-    pageSize?: string | null;
+    search?: string;
+    accountStatusId?: string;
+    roleId?: string;
+    brandId?: string;
+    shopId?: string;
+    size?: string | number | null;
     pageIndex?: number;
 };
 
@@ -95,7 +97,7 @@ export type UpdateAccountParams = {
 }
 
 
-export const BrandAPI = {
+export const AccountAPI = {
     getAllFilter: async (params: GetAccountsParams) => {
         const token = getAccessToken();
         const res = await http.get<GetAccountsPagingResult>(

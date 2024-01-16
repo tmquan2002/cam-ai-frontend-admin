@@ -1,16 +1,11 @@
-import { TextInput, Button, Group, Select } from "@mantine/core";
+import { Button, Group, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
-import axios from "axios";
-import { notifications } from "@mantine/notifications";
-import { AddBrandParams } from "../../../../apis/BrandAPI";
-import { useAddBrand } from "../../../../hooks/useBrands";
-import { useNavigate } from "react-router-dom";
 
 export const AddAccountForm = () => {
 
     // const { mutate: addBrand, isLoading } = useAddBrand();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     //TODO: Password should be auto generated, manager will have to change password later
     //TODO: Add selection for brand (Brand Manager) and working shop (Shop Manager)

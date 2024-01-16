@@ -1,11 +1,11 @@
-import { Autocomplete, Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { useState } from 'react';
+import { MdAdd, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllBrands, useGetAllBrandsSearch } from '../../../../hooks/useBrands';
+import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
+import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
-import { MdAdd, MdOutlineSearch } from 'react-icons/md';
-import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>
@@ -29,6 +29,13 @@ const BrandList = () => {
         isFetching,
         refetch,
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
+
+    const onSearch = (e: any) => {
+        // console.log(e)
+        if (e.key === "Enter") {
+            refetch();
+        }
+    }
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
@@ -64,7 +71,8 @@ const BrandList = () => {
             </div>
             <TextInput mb={20}
                 placeholder="Search" leftSection={<MdOutlineSearch />}
-                value={searchTerm} onChange={(event) => setSearchTerm(event.currentTarget.value)}
+                value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                onKeyDown={onSearch}
             />
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
