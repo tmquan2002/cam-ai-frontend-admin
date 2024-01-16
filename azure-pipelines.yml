@@ -10,17 +10,24 @@ variables:
 
 steps:
 - task: Docker@2
-  displayName: 'Docker build and publish'
+  displayName: 'Build image'
   inputs:
     containerRegistry: 'camai-hub'
     repository: 'milease/camai-backend'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    buildContext: './'
+    command: 'build'
     tags: 'camai-web-admin'
-- script: |
-    echo "VITE_SERVER_LINK=$(VITE_SERVER_LINK)" > .env
-  displayName: 'Write .env'
+    arguments: REACT_APP_VITE_SERVER_LINK=$(VITE_SERVER_LINK)
+
+- task: Docker@2
+  displayName: 'Push image'
+  inputs:
+    containerRegistry: 'camai-hub'
+    repository: 'milease/camai-backend'
+    tags: 'camai-web-admin'
+
+# - script: |
+#     echo "VITE_SERVER_LINK=$(VITE_SERVER_LINK)" > .env
+#   displayName: 'Write .env'
   
 - task: CopyFilesOverSSH@0
   displayName: 'Copy files'
