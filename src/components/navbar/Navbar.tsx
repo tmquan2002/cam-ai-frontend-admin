@@ -2,7 +2,7 @@ import styled from "./navbar.module.scss";
 import { ActionIcon, Group, Indicator, Tooltip } from "@mantine/core";
 import CustomBreadcrumb, {
   BreadCrumbParams,
-  BreadcrumbItem,
+  // BreadcrumbItem,
 } from "../breadcrumbs/CustomBreadcrumb";
 import LightDarkSwitch from "../LightDarkSwirch";
 import { useSession } from "../../context/AuthContext";

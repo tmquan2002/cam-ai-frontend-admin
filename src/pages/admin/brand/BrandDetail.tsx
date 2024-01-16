@@ -6,11 +6,12 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import Navbar from "../../../components/navbar/Navbar";
 import { SideBar } from "../../../components/sidebar/SideBar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
-import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
+import { useGetBrandById } from "../../../hooks/useBrands";
+// import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
-import axios from "axios";
-import { notifications } from "@mantine/notifications";
+// import axios from "axios";
+// import { notifications } from "@mantine/notifications";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,32 +35,32 @@ const BrandDetail = () => {
         isLoading
     } = useGetBrandById(params.brandId!);
 
-    const { mutate: deleteBrand } = useDeleteBrand();
+    // const { mutate: deleteBrand } = useDeleteBrand();
 
-    const onDelete = () => {
-        deleteBrand(params.brandId!, {
-            onSuccess() {
-                navigate('/brand')
-                notifications.show({
-                    message: "Remove successful!",
-                    color: "green",
-                    withCloseButton: true,
-                });
-            },
-            onError(error) {
-                if (axios.isAxiosError(error)) {
-                    // console.error(error.response?.data as ApiErrorResponse);
-                    notifications.show({
-                        message: "Something wrong happen when trying to remove the brand",
-                        color: "pale-red.5",
-                        withCloseButton: true,
-                    });
-                } else {
-                    console.error(error);
-                }
-            },
-        });
-    }
+    // const onDelete = () => {
+    //     deleteBrand(params.brandId!, {
+    //         onSuccess() {
+    //             navigate('/brand')
+    //             notifications.show({
+    //                 message: "Remove successful!",
+    //                 color: "green",
+    //                 withCloseButton: true,
+    //             });
+    //         },
+    //         onError(error) {
+    //             if (axios.isAxiosError(error)) {
+    //                 // console.error(error.response?.data as ApiErrorResponse);
+    //                 notifications.show({
+    //                     message: "Something wrong happen when trying to remove the brand",
+    //                     color: "pale-red.5",
+    //                     withCloseButton: true,
+    //                 });
+    //             } else {
+    //                 console.error(error);
+    //             }
+    //         },
+    //     });
+    // }
 
     return (
         <>
