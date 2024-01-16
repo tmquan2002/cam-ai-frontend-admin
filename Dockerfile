@@ -3,6 +3,8 @@ WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
+ARG REACT_APP_VITE_SERVER_LINK
+ENV REACT_APP_VITE_SERVER_LINK=${REACT_APP_VITE_SERVER_LINK}
 RUN npm run build
 
 FROM node:21-alpine3.18
