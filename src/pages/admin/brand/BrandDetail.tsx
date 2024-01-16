@@ -4,7 +4,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { SideBar } from "../../../components/sidebar/SideBar";
+// import { SideBar } from "../../../components/sidebar/SideBar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetBrandById } from "../../../hooks/useBrands";
 // import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
@@ -64,53 +64,50 @@ const BrandDetail = () => {
 
     return (
         <>
-            <div className={styled["container-main"]}>
-                <SideBar />
-                <div className={styled["container-right"]}>
-                    <Navbar items={breadcrumbs} goBackLink="/brand" />
-                    {isLoading ? <Loader type="bar" /> :
-                        <div className={styled["container-detail"]}>
-                            {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
-                            {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
-                            <div className={styled["profile-header"]}>
-                                <div className={styled["profile-header-left"]}>
-                                    <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
-                                    <div>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        <Text size="sm">Email: {data?.email}</Text>
-                                        <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate))}</Text>
-                                        <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                            {data?.brandStatus ? data.brandStatus.name : "No Status"}
-                                        </Badge>
-                                    </div>
+            <div className={styled["container-right"]}>
+                <Navbar items={breadcrumbs} goBackLink="/brand" />
+                {isLoading ? <Loader type="bar" /> :
+                    <div className={styled["container-detail"]}>
+                        {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
+                        {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
+                        <div className={styled["profile-header"]}>
+                            <div className={styled["profile-header-left"]}>
+                                <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
+                                <div>
+                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                    <Text size="sm">Email: {data?.email}</Text>
+                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate))}</Text>
+                                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
+                                        {data?.brandStatus ? data.brandStatus.name : "No Status"}
+                                    </Badge>
                                 </div>
-                                <Group>
-                                    <Tooltip label="Update" withArrow>
-                                        <ActionIcon
-                                            variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                            onClick={() => navigate(`/brand/${params.brandId!}/update`)}
-                                        >
-                                            <MdEdit style={{ width: 18, height: 18 }} />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                    <Tooltip label="Delete" withArrow>
-                                        <ActionIcon
-                                            variant="filled" size="xl" aria-label="Logout" color={"pale-red.9"}
-                                            onClick={open}
-                                        >
-                                            <MdDelete style={{ width: 18, height: 18 }} />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                </Group>
                             </div>
-                            <Divider my="md" />
-                            {/* TODO: Add a list of shops this brand/brand manager account has */}
-                            <div className={styled["profile-detail"]}>
-                                <Text>{data?.phone}</Text>
-                            </div>
+                            <Group>
+                                <Tooltip label="Update" withArrow>
+                                    <ActionIcon
+                                        variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
+                                        onClick={() => navigate(`/brand/${params.brandId!}/update`)}
+                                    >
+                                        <MdEdit style={{ width: 18, height: 18 }} />
+                                    </ActionIcon>
+                                </Tooltip>
+                                <Tooltip label="Delete" withArrow>
+                                    <ActionIcon
+                                        variant="filled" size="xl" aria-label="Logout" color={"pale-red.9"}
+                                        onClick={open}
+                                    >
+                                        <MdDelete style={{ width: 18, height: 18 }} />
+                                    </ActionIcon>
+                                </Tooltip>
+                            </Group>
                         </div>
-                    }
-                </div>
+                        <Divider my="md" />
+                        {/* TODO: Add a list of shops this brand/brand manager account has */}
+                        <div className={styled["profile-detail"]}>
+                            <Text>{data?.phone}</Text>
+                        </div>
+                    </div>
+                }
             </div>
             <Modal opened={modalOpen} onClose={close} title="Delete this brand?" centered>
                 <Text>
