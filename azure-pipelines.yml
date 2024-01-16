@@ -23,6 +23,7 @@ steps:
   inputs:
     containerRegistry: 'camai-hub'
     repository: 'milease/camai-backend'
+    command: 'push'
     tags: 'camai-web-admin'
 
 - script: |
