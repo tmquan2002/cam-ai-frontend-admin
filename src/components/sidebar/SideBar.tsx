@@ -1,11 +1,12 @@
-import { AiFillControl, AiFillDashboard, AiFillProfile, AiFillShop, AiFillSnippets } from "react-icons/ai";
+import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
 import { FaTicketAlt } from "react-icons/fa";
-import styled from './sidebar.module.scss';
+import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { LinksGroup } from './LinksGroup';
+import styled from './sidebar.module.scss';
 
 const data = [
     { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
-    { label: 'Account', icon: AiFillProfile, path: '/account' },
+    { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
