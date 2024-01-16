@@ -2,5 +2,7 @@ version: '3.9'
 services:
   web:
     image: milease/camai-backend:camai-web-admin
+    environment:
+      - VITE_SERVER_LINK=${VITE_SERVER_LINK}
     ports:
       - 3000:4173
