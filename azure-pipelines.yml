@@ -6,6 +6,7 @@ pool:
 
 variables:
 - group: web-admin-group
+- group: docker
 
 steps:
 - task: Docker@2
