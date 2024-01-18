@@ -101,7 +101,7 @@ const BrandDetail = () => {
                             </Group>
                         </div>
                         <Divider my="md" />
-                        {/* TODO: Add a list of shops this brand/brand manager account has */}
+                        {/* TODO: Add mỏe detail for the account */}
                         <div className={styled["profile-detail"]}>
                             <Text>{data?.phone}</Text>
                         </div>
