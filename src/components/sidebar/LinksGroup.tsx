@@ -30,7 +30,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, path }: 
 
   return (
     <>
-      <div className={path === location.pathname ? `${styled.activelink}` : `${styled.mainlink}`}
+      <div className={location.pathname.includes(path!) ? `${styled.activelink}` : `${styled.mainlink}`}
         onClick={() => setOpened(!opened)}>
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>

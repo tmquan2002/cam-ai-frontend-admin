@@ -1,23 +1,16 @@
-import { AiFillDashboard, AiFillProfile, AiFillShop, AiFillSnippets } from "react-icons/ai";
-import styled from './sidebar.module.scss';
+import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
+import { FaTicketAlt } from "react-icons/fa";
+import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { LinksGroup } from './LinksGroup';
+import styled from './sidebar.module.scss';
 
 const data = [
     { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
-    { label: 'Accounts', icon: AiFillProfile, path: '/account' },
-    { label: 'Brands', icon: AiFillSnippets, path: '/brand' },
-    { label: 'Shops', icon: AiFillShop, path: '/shop' },
-    // {
-    //     label: 'Manage Shop',
-    //     icon: AiFillShop,
-    //     initiallyOpened: true,
-    //     links: [
-    //         { label: 'Create Shop', path: '/' },
-    //         { label: 'Read Shop', path: '/' },
-    //         { label: 'Update Shop', path: '/' },
-    //         { label: 'Delete Shop', path: '/' },
-    //     ],
-    // },
+    { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
+    { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
+    { label: 'Shop', icon: AiFillShop, path: '/shop' },
+    { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
+    { label: 'Ticket', icon: FaTicketAlt, path: '/ticket' },
 ];
 
 export function SideBar() {

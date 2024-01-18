@@ -11,6 +11,7 @@ import AccountMainPage from "../pages/admin/account/AccountMainPage";
 import AccountAdd from "../pages/admin/account/AccountAdd";
 import AccountLayout from "../pages/admin/account/AccountLayout";
 import BrandLayout from "../pages/admin/brand/BrandLayout";
+import AccountDetail from "../pages/admin/account/AccountDetail";
 
 const InitialLayout = () => {
   return useRoutes([
@@ -43,6 +44,14 @@ const InitialLayout = () => {
               path: "add",
               element: <AccountAdd />
             },
+            {
+              path: ":accountId",
+              element: <AccountDetail />,
+            },
+            // {
+            //   path: "/brand/:brandId/update",
+            //   element: <BrandUpdate />,
+            // },
           ]
         },
         {
@@ -58,11 +67,11 @@ const InitialLayout = () => {
               element: <BrandAdd />
             },
             {
-              path: "/brand/:brandId",
+              path: ":brandId",
               element: <BrandDetail />,
             },
             {
-              path: "/brand/:brandId/update",
+              path: ":brandId/update",
               element: <BrandUpdate />,
             },
           ]

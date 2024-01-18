@@ -1,14 +1,11 @@
 import { Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
-// import { Autocomplete, Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useState } from 'react';
-// import { useEffect, useState } from 'react';
+import { MdAdd, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-// import { useGetAllBrands, useGetAllBrandsSearch } from '../../../../hooks/useBrands';
+import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
-import { MdAdd, MdOutlineSearch } from 'react-icons/md';
-import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>
@@ -30,8 +27,15 @@ const BrandList = () => {
         data: brandList,
         isLoading,
         isFetching,
-        // refetch,
+        refetch,
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
+
+    const onSearch = (e: any) => {
+        // console.log(e)
+        if (e.key === "Enter") {
+            refetch();
+        }
+    }
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
@@ -41,7 +45,7 @@ const BrandList = () => {
                     <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
                 </Table.Td>
                 <Table.Td>{e.name}</Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate))}</Table.Td>
+                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
                         {e.brandStatus ? e.brandStatus.name : "None"}
@@ -67,7 +71,8 @@ const BrandList = () => {
             </div>
             <TextInput mb={20}
                 placeholder="Search" leftSection={<MdOutlineSearch />}
-                value={searchTerm} onChange={(event) => setSearchTerm(event.currentTarget.value)}
+                value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                onKeyDown={onSearch}
             />
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>

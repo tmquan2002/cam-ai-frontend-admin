@@ -1,27 +1,27 @@
-import { ActionIcon, Badge, Button, Divider, Group, Image, Loader, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Button, Divider, Group, Loader, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
-import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
+import { useGetAccountById } from "../../../hooks/useAccounts";
+import { useDeleteBrand } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
-import styled from "./styles/branddetail.module.scss";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
+import styled from "./styles/accountdetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: "Brand",
-        link: "/brand"
+        title: "Account",
+        link: "/account"
     },
     {
         title: "Detail"
     }
 ]
 
-const BrandDetail = () => {
+const AccountDetail = () => {
 
     const params = useParams();
     const navigate = useNavigate();
@@ -31,16 +31,16 @@ const BrandDetail = () => {
     const {
         data,
         isLoading
-    } = useGetBrandById(params.brandId!);
+    } = useGetAccountById(params.accountId!);
 
     const { mutate: deleteBrand } = useDeleteBrand();
 
     const onDelete = () => {
-        deleteBrand(params.brandId!, {
+        deleteBrand(params.accountId!, {
             onSuccess() {
-                navigate('/brand')
+                navigate('/account')
                 notifications.show({
-                    message: "Brand disabled!",
+                    message: "Account disabled!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -51,7 +51,7 @@ const BrandDetail = () => {
                 } else {
                     console.error(error);
                     notifications.show({
-                        message: "Something wrong happen when trying to remove the brand",
+                        message: "Something wrong happen when trying to remove this account",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
@@ -64,28 +64,33 @@ const BrandDetail = () => {
     return (
         <>
             <div className={styled["container-right"]}>
-                <Navbar items={breadcrumbs} goBackLink="/brand" />
+                <Navbar items={breadcrumbs} goBackLink="/account" />
                 {isLoading ? <Loader type="bar" /> :
                     <div className={styled["container-detail"]}>
-                        {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
                                 <div>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Text size="sm">Email: {data?.email}</Text>
+                                    <Text size="sm">{data?.email}</Text>
                                     <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                        {data?.brandStatus ? data.brandStatus.name : "No Status"}
-                                    </Badge>
+                                    <Group>
+                                        {data!.roles.map((item, index) => (
+                                            <Badge size='lg' radius={"lg"} color="shading.9" key={index}>
+                                                {item.name}
+                                            </Badge>
+                                        ))}
+                                    </Group>
                                 </div>
                             </div>
                             <Group>
+                                <Badge size='lg' radius={"lg"} color="light-yellow.7">
+                                    {data?.accountStatus ? data.accountStatus.name : "No Status"}
+                                </Badge>
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon
                                         variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                        onClick={() => navigate(`/brand/${params.brandId!}/update`)}
+                                    // onClick={() => navigate(`/brand/${params.accountId!}/update`)}
                                     >
                                         <MdEdit style={{ width: 18, height: 18 }} />
                                     </ActionIcon>
@@ -101,14 +106,14 @@ const BrandDetail = () => {
                             </Group>
                         </div>
                         <Divider my="md" />
-                        {/* TODO: Add mỏe detail for the account */}
+                        {/* TODO: Add a list of shops this brand/brand manager account has */}
                         <div className={styled["profile-detail"]}>
                             <Text>{data?.phone}</Text>
                         </div>
                     </div>
                 }
             </div>
-            <Modal opened={modalOpen} onClose={close} title="Delete this brand?" centered>
+            <Modal opened={modalOpen} onClose={close} title="Delete this account?" centered>
                 <Text>
                     Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
                 </Text>
@@ -131,4 +136,4 @@ const BrandDetail = () => {
     );
 };
 
-export default BrandDetail;
+export default AccountDetail;

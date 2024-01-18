@@ -1,7 +1,3 @@
-.container-main {
-    display: flex;
-    flex-direction: row;
-
     .container-right {
         width: calc(100% - 250px);
 
@@ -36,6 +32,7 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+
                 .profile-header-left {
                     display: flex;
                     flex-direction: row;
@@ -44,4 +41,3 @@
             }
         }
     }
-}

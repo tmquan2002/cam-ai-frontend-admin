@@ -1,7 +1,6 @@
 import { Text } from "@mantine/core";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-// import { SideBar } from "../../../components/sidebar/SideBar";
 import { AddBrandForm } from "./components/AddBrandForm";
 import styled from "./styles/brand.module.scss";
 

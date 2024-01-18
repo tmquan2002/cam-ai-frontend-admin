@@ -136,9 +136,9 @@ export function getWeekLabelBar(lowerDate: Date, upperDate: Date): string[] {
 }
 
 //DD-MM-YYYY
-export function removeTime(date: Date) {
-    return date.getFullYear() + " / "
-        + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + " / "
+export function removeTime(date: Date, seperator: string) {
+    return date.getFullYear() + seperator
+        + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + seperator
         + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate())
 }
 
@@ -156,4 +156,9 @@ export function addOneMonthToDate(inputDate: string) {
     }
 
     return date.toISOString();
+}
+
+export function getDateFromSetYear(yearLength: number) {
+    const today = new Date();
+    return new Date(today.getFullYear() - yearLength, today.getMonth(), today.getDate());
 }
