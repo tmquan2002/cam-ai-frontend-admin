@@ -1,17 +1,13 @@
 import { Button, Group, MultiSelect, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
-import { useAddAccount } from "../../../../hooks/useAccounts";
-import { useNavigate } from "react-router-dom";
 import { AddAccountParams } from "../../../../apis/AccountAPI";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const AddAccountForm = () => {
 
     // const { mutate: addAccount, isLoading } = useAddAccount();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     //TODO: Password should be auto generated, manager will have to change password later
     //TODO: Add selection for brand (Brand Manager) and working shop (Shop Manager)
