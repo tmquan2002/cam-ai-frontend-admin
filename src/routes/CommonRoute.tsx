@@ -1,45 +1,36 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getUserRoles, useSession } from "../context/AuthContext";
+import { checkRole } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { RoleEnum } from "../types/enum";
-import { isEmpty } from "../utils/helperFunction";
 
 const CommonRoute = () => {
-  const sessionHook = useSession();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  console.log(1);
 
-  const [{ isAdminRole, isSessionAvailable }, setAuthenticatedValue] =
-    useState<{
-      isAdminRole: boolean;
-      isSessionAvailable: boolean;
-    }>({
-      isAdminRole: false,
-      isSessionAvailable: false,
-    });
   useEffect(() => {
-    const userRole = getUserRoles();
-    let isAdminRoles = false;
-    let isSessionAvailables = false;
-    if (userRole) {
-      isAdminRoles = userRole[0].Id == RoleEnum.Admin;
-      isSessionAvailables = !isEmpty(sessionHook?.session);
-
-      // console.log(location, isAdminRole, isSessionAvailable);
+    const isUserHavePermission: boolean | undefined = checkRole([
+      {
+        Id: RoleEnum.Admin,
+        Name: "",
+      },
+      {
+        Id: RoleEnum.BrandManager,
+        Name: "",
+      },
+      {
+        Id: RoleEnum.Technician,
+        Name: "",
+      },
+    ]);
+    if (isUserHavePermission) {
+      setIsAuthenticated(true);
     }
-    setAuthenticatedValue({
-      isAdminRole: isAdminRoles,
-      isSessionAvailable: isSessionAvailables,
-    });
-  }, [sessionHook?.session]);
+  }, []);
 
-  if (isSessionAvailable && isAdminRole) {
-    return (
-      <Navigate
-        to={"/dashboard"}
-        replace
-      />
-    );
-  } else {
+  if (!isAuthenticated) {
     return <Outlet />;
+  } else {
+    return <Navigate to={"dashboard"} />;
   }
 };
 

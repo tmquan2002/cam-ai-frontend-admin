@@ -1,21 +1,23 @@
-import { AiFillHome } from "react-icons/ai";
+import { AiFillDashboard, AiFillProfile, AiFillShop, AiFillSnippets } from "react-icons/ai";
 import styled from './sidebar.module.scss';
 import { LinksGroup } from './LinksGroup';
 
 const data = [
-    { label: 'Dashboard', icon: AiFillHome, path: '/dashboard' },
-    { label: 'Manage Brand', icon: AiFillHome, path: '/brand' },
-    {
-        label: 'Manage Shop',
-        icon: AiFillHome,
-        initiallyOpened: true,
-        links: [
-            { label: 'Create Shop', path: '/' },
-            { label: 'Read Shop', path: '/' },
-            { label: 'Update Shop', path: '/' },
-            { label: 'Delete Shop', path: '/' },
-        ],
-    },
+    { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
+    { label: 'Accounts', icon: AiFillProfile, path: '/account' },
+    { label: 'Brands', icon: AiFillSnippets, path: '/brand' },
+    { label: 'Shops', icon: AiFillShop, path: '/shop' },
+    // {
+    //     label: 'Manage Shop',
+    //     icon: AiFillShop,
+    //     initiallyOpened: true,
+    //     links: [
+    //         { label: 'Create Shop', path: '/' },
+    //         { label: 'Read Shop', path: '/' },
+    //         { label: 'Update Shop', path: '/' },
+    //         { label: 'Delete Shop', path: '/' },
+    //     ],
+    // },
 ];
 
 export function SideBar() {

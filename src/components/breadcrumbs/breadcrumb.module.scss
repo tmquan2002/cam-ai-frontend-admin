@@ -1,4 +1,10 @@
-.link, .text {
+.link,
+.text {
     text-decoration: none;
     color: var(--mantine-color-shading-7);
+}
+
+.back {
+    cursor: pointer;
+    user-select: none;
 }

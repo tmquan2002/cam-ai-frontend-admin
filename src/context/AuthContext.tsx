@@ -1,16 +1,16 @@
 import { createContext, useContext, useEffect } from "react";
 import { AuthToken } from "../models/Auth";
-import { RoleDetail, getIdFromToken, getRolesFromToken } from "../utils/jwt";
+import * as jwt from "../utils/jwt";
 import { useStorageState } from "../hooks/useStorageState";
 import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { RoleDetail } from "../utils/jwt";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
   signOut: () => void;
-  session?: string | null;
   isLoading: boolean;
 } | null>(null);
 
@@ -29,11 +29,16 @@ export const getAccessToken = (): string | null => {
   return ACCESS_TOKEN;
 };
 
+export const getRefreshToken = (): string | null => {
+  const REFRESH_TOKEN = localStorage.getItem(CommonConstant.USER_REFRESH_TOKEN);
+  return REFRESH_TOKEN;
+};
+
 export function getUserRoles(): RoleDetail[] | null {
   const accessToken: string | null = getAccessToken();
 
   if (accessToken) {
-    const roles: RoleDetail[] = getRolesFromToken(accessToken);
+    const roles: jwt.RoleDetail[] = jwt.getRolesFromToken(accessToken);
     return roles;
   }
 
@@ -43,20 +48,36 @@ export function getUserRoles(): RoleDetail[] | null {
 export function getUserId(): string | null {
   const accessToken: string | null = getAccessToken();
   if (accessToken) {
-    const id: string = getIdFromToken(accessToken);
+    const id: string = jwt.getIdFromToken(accessToken);
     return id;
   }
 
   return null;
 }
 
+export function checkRole(acceptableRoles: RoleDetail[]): boolean {
+  const userRole = getUserRoles();
+  if (!userRole) return false;
+
+  const arr1 = acceptableRoles.filter((e) => {
+    return userRole.some((item) => item.Id === e.Id);
+  });
+
+  // userRole?.forEach((role) => {
+  //   if (role.Id == acceptableRole.Id) {
+  //     check = true;
+  //     return;
+  //   }
+  // });
+
+  return arr1.length > 0;
+}
+
 export function SessionProvider(props: React.PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState(
-    CommonConstant.SESSION
-  );
   const [[isAccessTokenLoading, accessToken], setAccessToken] = useStorageState(
     CommonConstant.USER_ACCESS_TOKEN
   );
+
   const [[isRefreshTokenLoading, refreshToken], setRefreshToken] =
     useStorageState(CommonConstant.USER_REFRESH_TOKEN);
 
@@ -65,8 +86,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
   useEffect(() => {
     http.interceptors.response.use(
       (res) => {
-        console.log({ res });
-
         if (res && res?.data) {
           return res;
         }
@@ -74,68 +93,53 @@ export function SessionProvider(props: React.PropsWithChildren) {
         return res;
       },
       async (err) => {
-        const { config } = err;
-        console.log({ err });
+        try {
+          if (err?.response?.status == 401) {
+            if (err?.response?.headers.auto == "True") {
+              const { config } = err;
 
-        const isAlreadyFetchingAccessToken = localStorage.getItem(
-          CommonConstant.IS_ALREADY_FETCHING_ACCESS
-        );
-
-        const originalRequest = config;
-
-        console.log(err.response.headers.has("auto"));
-        if (err.response.status == 401) {
-          if (err.response.headers.auto == "True") {
-            if (!isAlreadyFetchingAccessToken) {
-              localStorage.setItem(
-                CommonConstant.IS_ALREADY_FETCHING_ACCESS,
-                "true"
+              const isAlreadyFetchingAccessToken = localStorage.getItem(
+                CommonConstant.IS_ALREADY_FETCHING_ACCESS
               );
+              const originalRequest = config;
 
-              await axios
-                .post("/Auth/refresh", {
-                  accessToken: accessToken,
-                  refreshToken: refreshToken,
-                })
-                .then((res) => {
-                  console.log(res?.data);
+              if (!isAlreadyFetchingAccessToken) {
+                localStorage.setItem(
+                  CommonConstant.IS_ALREADY_FETCHING_ACCESS,
+                  "true"
+                );
 
-                  setAccessToken(res?.data);
-                })
-                .catch(async (err) => {
-                  console.log(err);
+                const res = await axios.post(
+                  "http://185.81.167.44:8090/api/Auth/refresh",
+                  {
+                    accessToken: getAccessToken(),
+                    refreshToken: getRefreshToken(),
+                  }
+                );
 
-                  setAccessToken(null);
-                  setRefreshToken(null);
-                  setSession(null);
-                  //   router.replace("/login");
-                  navigate("/login");
-                })
-                .finally(async () => {
-                  localStorage.removeItem(
-                    CommonConstant.IS_ALREADY_FETCHING_ACCESS
-                  );
-                });
+                setAccessToken(res?.data);
+              }
+              const retryOriginalRequest = new Promise((resolve) => {
+                originalRequest.headers[
+                  "Authorization"
+                ] = `Bearer ${getAccessToken()}`;
+                resolve(http(originalRequest));
+              });
+
+              return retryOriginalRequest;
+            } else {
+              throw err;
             }
-            const retryOriginalRequest = new Promise((resolve) => {
-              originalRequest.headers[
-                "Authorization"
-              ] = `Bearer ${accessToken}`;
-              resolve(http(originalRequest));
-            });
-
-            return retryOriginalRequest;
-          } else {
-            navigate("/login");
-            // window.location.href = "/login";
           }
+        } catch (error) {
+          setAccessToken(null);
+          setRefreshToken(null);
+          navigate("/");
+        } finally {
+          localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
         }
 
-        if (err.response) {
-          return err.response.data;
-        } else {
-          return Promise.reject(err);
-        }
+        throw err;
       }
     );
   }, []);
@@ -143,21 +147,18 @@ export function SessionProvider(props: React.PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: ({ accessToken, refreshToken }: AuthToken) => {
+        signIn: async ({ accessToken, refreshToken }: AuthToken) => {
           // Perform sign-in logic here
-          setSession("user_session");
           setAccessToken(accessToken);
           setRefreshToken(refreshToken);
-          navigate("/dashboard");
+          navigate(0);
         },
         signOut: () => {
           setAccessToken(null);
           setRefreshToken(null);
-          setSession(null);
-          navigate("/login");
+          navigate("/");
         },
-        session: session,
-        isLoading: isLoading || isAccessTokenLoading || isRefreshTokenLoading,
+        isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}
     >
       {props.children}

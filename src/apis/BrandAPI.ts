@@ -1,19 +1,6 @@
-import { TOKEN } from "../constants/LocalStorageItems";
 import { getAccessToken } from "../context/AuthContext";
 import { BrandStatus } from "../models/Brand";
-import { getToken } from "../utils/LocalStorageUtil";
 import http, { toQueryParams } from "../utils/http";
-
-//TODO: Searchbar Param
-// export type SearchBrandParams = {
-//     direction?: string,
-//     page?: number;
-//     pageSize?: number;
-//     name?: string;
-//     orderBy?: string;
-//     lowerDate?: string;
-//     upperDate?: string;
-// };
 
 export type GetBrandsResult = {
   id: string;
@@ -32,20 +19,31 @@ export type GetBrandsResult = {
 export type GetBrandsParams = {
   statusId?: number;
   name?: string;
-  size?: number;
-  pageIndex: number;
+  brandId?: string;
+  size?: string | number | null;
+  pageIndex?: number;
 };
 
 export type GetBrandsPagingResult = {
   pageIndex: number;
   pageSize: number;
   totalCount: number;
+  isValuesEmpty: boolean;
   values: GetBrandsResult[];
 };
 export type AddBrandParams = {
   name: string;
   email: string;
   phone: string;
+};
+
+export type UpdateBrandParams = {
+  id: string;
+  values: {
+    name: string;
+    email: string;
+    phone: string;
+  }
 };
 
 export const BrandAPI = {
@@ -63,7 +61,7 @@ export const BrandAPI = {
   },
   getById: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.get<GetBrandsPagingResult>(`/api/brands?${id}`, {
+    const res = await http.get<GetBrandsResult>(`/api/brands/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -71,12 +69,17 @@ export const BrandAPI = {
     return res.data;
   },
   add: async (params: AddBrandParams) => {
-    const res = await http.post<GetBrandsResult>("/api/brands", params);
+    const token = getAccessToken();
+    const res = await http.post<GetBrandsResult>("/api/brands", params, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
     return res.data;
   },
-  update: async (id: string) => {
+  update: async (params: UpdateBrandParams) => {
     const token = getAccessToken();
-    const res = await http.put<GetBrandsResult>(`/api/brands?${id}`, {
+    const res = await http.put<GetBrandsResult>(`/api/brands/${params.id}`, params.values, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -85,7 +88,7 @@ export const BrandAPI = {
   },
   delete: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.delete(`/api/brands?${id}`, {
+    const res = await http.delete(`/api/brands/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -94,7 +97,7 @@ export const BrandAPI = {
   },
   reactivate: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.put(`/api/brands?${id}/reactivate`, {
+    const res = await http.put(`/api/brands/${id}/reactivate`, {
       headers: {
         Authorization: "Bearer " + token,
       },

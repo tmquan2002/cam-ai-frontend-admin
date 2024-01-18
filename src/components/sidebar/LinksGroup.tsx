@@ -1,8 +1,8 @@
+import { Box, Collapse, Group, Text, ThemeIcon, rem } from '@mantine/core';
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, rem, Text } from '@mantine/core';
 import { AiFillCaretRight } from "react-icons/ai";
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled from './sidebar.module.scss';
-import { Link, NavLink } from 'react-router-dom';
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -18,6 +18,8 @@ interface LinksGroupProps {
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links, path }: LinksGroupProps) {
+
+  const location = useLocation()
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link, index) => (
@@ -28,7 +30,8 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, path }: 
 
   return (
     <>
-      <div className={styled.mainlink} onClick={() => setOpened(!opened)}>
+      <div className={path === location.pathname ? `${styled.activelink}` : `${styled.mainlink}`}
+        onClick={() => setOpened(!opened)}>
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon size={30}>
