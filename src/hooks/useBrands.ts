@@ -26,24 +26,6 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetAllBrandsSearch = (params: GetBrandsParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
-    refetch,
-  }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
-    queryKey: ["brandListSearch"],
-    queryFn: async () => {
-      return await BrandAPI.getAllFilter(params);
-    },
-  });
-
-  return { isError, isLoading, isFetching, data, error, refetch };
-};
-
 export const useGetBrandById = (id: string) => {
   const {
     isError,

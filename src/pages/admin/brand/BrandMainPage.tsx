@@ -1,6 +1,5 @@
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { SideBar } from "../../../components/sidebar/SideBar";
 import BrandList from "./components/BrandList";
 import styled from "./styles/brand.module.scss";
 
