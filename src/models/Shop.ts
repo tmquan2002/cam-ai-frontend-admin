@@ -26,7 +26,7 @@ export interface Shop {
     ward: Ward;
     brand: Brand;
     shopStatus: ShopStatus;
-    employees: [string];
-    cameras: [Camera];
-    edgeBoxInstalls: [EdgeBoxInstall];
+    employees: string[];
+    cameras: Camera[];
+    edgeBoxInstalls: EdgeBoxInstall[];
 }

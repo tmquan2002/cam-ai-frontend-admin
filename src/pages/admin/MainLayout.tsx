@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { SideBar } from "../../../components/sidebar/SideBar";
-import styled from "./styles/account.module.scss";
+import { SideBar } from "../../components/sidebar/SideBar";
+import styled from "./adminlayout.module.scss";
 
-const AccountLayout = () => {
+const MainLayout = () => {
 
     return (
         <div className={styled["container-main"]}>
@@ -12,4 +12,4 @@ const AccountLayout = () => {
     );
 };
 
-export default AccountLayout;
+export default MainLayout;

@@ -85,7 +85,7 @@ const AccountDetail = () => {
                             </div>
                             <Group>
                                 <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                    {data?.accountStatus ? data.accountStatus.name : "No Status"}
+                                    {data?.accountStatus ? data.accountStatus.name : "None"}
                                 </Badge>
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon

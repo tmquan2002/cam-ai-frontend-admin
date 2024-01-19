@@ -77,7 +77,7 @@ const BrandDetail = () => {
                                     <Text size="sm">Email: {data?.email}</Text>
                                     <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                        {data?.brandStatus ? data.brandStatus.name : "No Status"}
+                                        {data?.brandStatus ? data.brandStatus.name : "None"}
                                     </Badge>
                                 </div>
                             </div>
