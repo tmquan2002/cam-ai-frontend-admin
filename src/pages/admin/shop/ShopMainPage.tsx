@@ -1,24 +1,25 @@
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import AccountList from "./components/AccountList";
-import styled from "./styles/account.module.scss";
+import ShopList from "./components/ShopList";
+import styled from "./styles/shop.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: "Account",
+        title: "Shop",
     },
 ]
 
-const AccountMainPage = () => {
+const ShopMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBackLink="/dashboard" />
             <div className={styled["table-container"]}>
-                <AccountList />
+                <ShopList />
             </div>
         </div>
+
     );
 };
 
-export default AccountMainPage;
+export default ShopMainPage;

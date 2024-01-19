@@ -1,17 +1,18 @@
-import ProtectedRoute from "./ProtectedRoute";
-import LoginPage from "../pages/common/login/LoginPage";
-import DashboardPage from "../pages/admin/dashboard/DashboardPage";
-import BrandMainPage from "../pages/admin/brand/BrandMainPage";
 import { useRoutes } from "react-router-dom";
-import CommonRoute from "./CommonRoute";
-import BrandDetail from "../pages/admin/brand/BrandDetail";
-import BrandAdd from "../pages/admin/brand/BrandAdd";
-import BrandUpdate from "../pages/admin/brand/BrandUpdate";
-import AccountMainPage from "../pages/admin/account/AccountMainPage";
+import MainLayout from "../pages/admin/MainLayout";
 import AccountAdd from "../pages/admin/account/AccountAdd";
-import AccountLayout from "../pages/admin/account/AccountLayout";
-import BrandLayout from "../pages/admin/brand/BrandLayout";
 import AccountDetail from "../pages/admin/account/AccountDetail";
+import AccountMainPage from "../pages/admin/account/AccountMainPage";
+import BrandAdd from "../pages/admin/brand/BrandAdd";
+import BrandDetail from "../pages/admin/brand/BrandDetail";
+import BrandMainPage from "../pages/admin/brand/BrandMainPage";
+import BrandUpdate from "../pages/admin/brand/BrandUpdate";
+import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import LoginPage from "../pages/common/login/LoginPage";
+import CommonRoute from "./CommonRoute";
+import ProtectedRoute from "./ProtectedRoute";
+import ShopMainPage from "../pages/admin/shop/ShopMainPage";
+import ShopDetail from "../pages/admin/shop/ShopDetail";
 
 const AppRoute = () => {
   return useRoutes([
@@ -30,12 +31,17 @@ const AppRoute = () => {
       children: [
         {
           path: "/dashboard",
-          element: <DashboardPage />,
-          index: true,
+          element: <MainLayout />,
+          children: [
+            {
+              element: <DashboardPage />,
+              index: true,
+            },
+          ]
         },
         {
           path: "/account",
-          element: <AccountLayout />,
+          element: <MainLayout />,
           children: [
             {
               element: <AccountMainPage />,
@@ -57,7 +63,7 @@ const AppRoute = () => {
         },
         {
           path: "/brand",
-          element: <BrandLayout />,
+          element: <MainLayout />,
           children: [
             {
               element: <BrandMainPage />,
@@ -76,6 +82,20 @@ const AppRoute = () => {
               element: <BrandUpdate />,
             },
           ],
+        },
+        {
+          path: "/shop",
+          element: <MainLayout />,
+          children: [
+            {
+              element: <ShopMainPage />,
+              index: true,
+            },
+            {
+              path: ":shopId",
+              element: <ShopDetail />,
+            }
+          ]
         },
         {
           path: "*",

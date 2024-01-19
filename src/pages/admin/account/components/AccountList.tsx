@@ -42,7 +42,7 @@ const AccountList = () => {
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.gender}</Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate))}</Table.Td>
+                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>{e.roles[0].name}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">

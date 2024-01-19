@@ -17,13 +17,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const AccountAdd = () => {
 
     return (
-        <>
+        <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBackLink="/brand" />
             <div className={styled["table-container"]}>
-                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW ACCOUNT</Text>
+                <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>NEW ACCOUNT</Text>
                 <AddAccountForm />
             </div>
-        </>
+        </div>
     );
 };
 

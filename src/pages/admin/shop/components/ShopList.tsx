@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
-import styled from "../styles/brand.module.scss";
+import styled from "../styles/shop.module.scss";
+import { useGetAllShops } from '../../../../hooks/useShops';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>
@@ -17,18 +18,18 @@ const loadingData = [...Array(5)].map((_, i) => (
     </Table.Tr>
 ))
 
-const BrandList = () => {
+const ShopList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const navigate = useNavigate();
 
     const {
-        data: brandList,
+        data: shopList,
         isLoading,
         isFetching,
         refetch,
-    } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
+    } = useGetAllShops({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const onSearch = (e: any) => {
         // console.log(e)
@@ -37,18 +38,16 @@ const BrandList = () => {
         }
     }
 
-    const rows = brandList?.values.map((e, i) => (
+    const rows = shopList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
-            <Table.Tr onClick={() => navigate(`/brand/${e.id}`, { replace: true })}>
+            <Table.Tr onClick={() => navigate(`/shop/${e.id}`, { replace: true })}>
                 <Table.Td>{(i + 1)}</Table.Td>
-                <Table.Td>
-                    <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
-                </Table.Td>
                 <Table.Td>{e.name}</Table.Td>
+                <Table.Td>{e.brand.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                        {e.brandStatus ? e.brandStatus.name : "None"}
+                        {e.shopStatus.name ? e.shopStatus.name : "None"}
                     </Badge>
                 </Table.Td>
             </Table.Tr>
@@ -60,14 +59,7 @@ const BrandList = () => {
             <div className={styled["table-header"]}>
                 <Text size='lg' fw="bold" fz='25px' mb={20}
                     c={"light-blue.4"}
-                >BRAND LIST</Text>
-                <Button
-                    onClick={() => navigate("/brand/add")}
-                    variant="gradient" size="md" leftSection={<MdAdd />} mb={20}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                >
-                    Add
-                </Button>
+                >SHOP LIST</Text>
             </div>
             <TextInput mb={20}
                 placeholder="Search" leftSection={<MdOutlineSearch />}
@@ -79,8 +71,8 @@ const BrandList = () => {
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th>#</Table.Th>
-                            <Table.Th>Logo</Table.Th>
                             <Table.Th>Name</Table.Th>
+                            <Table.Th>Brand</Table.Th>
                             <Table.Th>Created Date</Table.Th>
                             <Table.Th>Status</Table.Th>
                         </Table.Tr>
@@ -89,9 +81,9 @@ const BrandList = () => {
                 </Table>
             </Table.ScrollContainer>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || brandList?.totalCount &&
+                {isLoading || isFetching || shopList?.totalCount &&
                     <>
-                        <Pagination total={Math.ceil(brandList.totalCount / Number(size))} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={Math.ceil(shopList.totalCount / Number(size))} value={pageIndex} onChange={setPageIndex} mt="sm" />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
@@ -106,4 +98,4 @@ const BrandList = () => {
     );
 }
 
-export default BrandList;
+export default ShopList;

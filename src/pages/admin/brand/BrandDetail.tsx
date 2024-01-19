@@ -75,9 +75,9 @@ const BrandDetail = () => {
                                 <div>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                     <Text size="sm">Email: {data?.email}</Text>
-                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate))}</Text>
+                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                        {data?.brandStatus ? data.brandStatus.name : "No Status"}
+                                        {data?.brandStatus ? data.brandStatus.name : "None"}
                                     </Badge>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ const BrandDetail = () => {
                             </Group>
                         </div>
                         <Divider my="md" />
-                        {/* TODO: Add a list of shops this brand/brand manager account has */}
+                        {/* TODO: Add mỏe detail for the account */}
                         <div className={styled["profile-detail"]}>
                             <Text>{data?.phone}</Text>
                         </div>
