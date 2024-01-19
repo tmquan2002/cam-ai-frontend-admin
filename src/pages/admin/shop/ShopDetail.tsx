@@ -3,10 +3,9 @@ import { useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
-import { useGetBrandById } from "../../../hooks/useBrands";
+import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
-import { useGetShopById } from "../../../hooks/useShops";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",

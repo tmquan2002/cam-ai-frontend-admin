@@ -1,12 +1,10 @@
-import { Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { Badge, Group, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useState } from 'react';
-import { MdAdd, MdOutlineSearch } from 'react-icons/md';
+import { MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
-import { useGetAllBrands } from '../../../../hooks/useBrands';
+import { useGetAllShops } from '../../../../hooks/useShops';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/shop.module.scss";
-import { useGetAllShops } from '../../../../hooks/useShops';
 
 const loadingData = [...Array(5)].map((_, i) => (
     <Table.Tr key={i}>

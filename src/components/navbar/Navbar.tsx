@@ -1,7 +1,7 @@
 import { ActionIcon, Group, Indicator, Tooltip } from "@mantine/core";
 import { MdLogout, MdNotifications } from "react-icons/md";
 import { useSession } from "../../context/AuthContext";
-import LightDarkSwitch from "../LightDarkSwirch";
+import LightDarkSwitch from "../LightDarkSwitch";
 import CustomBreadcrumb, {
   BreadCrumbParams
 } from "../breadcrumbs/CustomBreadcrumb";
