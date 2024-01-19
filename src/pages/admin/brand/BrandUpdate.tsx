@@ -22,7 +22,7 @@ const BrandUpdate = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} goBackLink="/brand" />
+            <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
                 <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>UPDATE BRAND</Text>
                 <UpdateBrandForm id={params.brandId!} />

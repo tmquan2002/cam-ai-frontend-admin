@@ -39,7 +39,7 @@ const BrandList = () => {
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
-            <Table.Tr onClick={() => navigate(`/brand/${e.id}`, { replace: true })}>
+            <Table.Tr onClick={() => navigate(`/brand/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>
                     <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />

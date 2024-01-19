@@ -38,7 +38,7 @@ const AccountList = () => {
 
     const rows = accountList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
-            <Table.Tr onClick={() => navigate(`/account/${e.id}`, { replace: true })}>
+            <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.gender}</Table.Td>

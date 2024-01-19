@@ -24,7 +24,7 @@ const ShopDetail = () => {
 
     return (
         <div className={styled["container-right"]}>
-            <Navbar items={breadcrumbs} goBackLink="/shop" />
+            <Navbar items={breadcrumbs} goBack />
             {isLoading ? <Loader type="bar" /> :
                 <div className={styled["container-detail"]}>
                     {data?.brand.bannerUri && <Image h={150} mb={20} src={data?.brand.bannerUri} />}

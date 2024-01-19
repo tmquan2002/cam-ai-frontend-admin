@@ -13,7 +13,7 @@ const AccountMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} goBackLink="/dashboard" />
+            <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
                 <AccountList />
             </div>

@@ -7,14 +7,14 @@ import CustomBreadcrumb, {
 } from "../breadcrumbs/CustomBreadcrumb";
 import styled from "./navbar.module.scss";
 
-export const Navbar = ({ items, goBackLink }: BreadCrumbParams) => {
+export const Navbar = ({ items, goBack }: BreadCrumbParams) => {
 
   const sessionHook = useSession();
 
   return (
     <div className={styled["container-main"]}>
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
-      <CustomBreadcrumb items={items} goBackLink={goBackLink} />
+      <CustomBreadcrumb items={items} goBack={goBack} />
       <Group>
         <LightDarkSwitch />
         <Tooltip label="Notification" withArrow>

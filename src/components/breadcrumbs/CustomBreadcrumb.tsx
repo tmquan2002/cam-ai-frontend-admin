@@ -9,15 +9,15 @@ export interface BreadcrumbItem {
 
 export interface BreadCrumbParams {
     items: BreadcrumbItem[];
-    goBackLink?: string;
+    goBack?: boolean;
 }
 
-const CustomBreadcrumb = ({ items, goBackLink }: BreadCrumbParams) => {
+const CustomBreadcrumb = ({ items, goBack }: BreadCrumbParams) => {
     const navigate = useNavigate();
 
     return (
         <Group>
-            {goBackLink && <Text className={styled.back} onClick={() => navigate(goBackLink)}>&#60;</Text>}
+            {goBack && <Text className={styled.back} onClick={() => navigate(-1)} size='lg'>&#60;</Text>}
             <Breadcrumbs>
                 {items.map((item, index) => (
                     !item.link ?

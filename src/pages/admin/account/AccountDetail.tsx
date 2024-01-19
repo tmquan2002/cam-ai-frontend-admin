@@ -64,7 +64,7 @@ const AccountDetail = () => {
     return (
         <>
             <div className={styled["container-right"]}>
-                <Navbar items={breadcrumbs} goBackLink="/account" />
+                <Navbar items={breadcrumbs} goBack />
                 {isLoading ? <Loader type="bar" /> :
                     <div className={styled["container-detail"]}>
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}

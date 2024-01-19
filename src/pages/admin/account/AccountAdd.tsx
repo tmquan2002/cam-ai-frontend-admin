@@ -18,7 +18,7 @@ const AccountAdd = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} goBackLink="/brand" />
+            <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
                 <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>NEW ACCOUNT</Text>
                 <AddAccountForm />

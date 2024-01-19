@@ -66,7 +66,7 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                     color: "green",
                     withCloseButton: true,
                 });
-                navigate(`/brand/${id}`)
+                navigate(-1)
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {

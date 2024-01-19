@@ -48,7 +48,7 @@ export const AddBrandForm = () => {
                     color: "green",
                     withCloseButton: true,
                 });
-                navigate(`/brand/${data.id}`)
+                navigate(`/brand/${data.id}`, { replace: true })
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
