@@ -1,13 +1,30 @@
-import { Button, Group, MultiSelect, Select, TextInput } from "@mantine/core";
+import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AddAccountParams } from "../../../../apis/AccountAPI";
+import { useAddAccount } from "../../../../hooks/useAccounts";
+import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
+import { useGetAllBrands, useGetAllBrandsSelect } from "../../../../hooks/useBrands";
+import { Gender, RoleEnum } from "../../../../types/enum";
 
 export const AddAccountForm = () => {
+    const [province, setProvince] = useState<string>("");
+    const [district, setDistrict] = useState<string>("");
+    const [ward, setWard] = useState<string>("");
+    const [brand, setBrand] = useState<string | null>(null);
 
-    // const { mutate: addAccount, isLoading } = useAddAccount();
-    // const navigate = useNavigate();
+    const { mutate: addAccount, isLoading } = useAddAccount();
+    const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrandsSelect({});
+    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(province!);
+    const { data: wards, isFetching: isFetchingWards } = useGetWards(district!);
+
+    const navigate = useNavigate();
 
     //TODO: Password should be auto generated, manager will have to change password later
     //TODO: Add selection for brand (Brand Manager) and working shop (Shop Manager)
@@ -22,7 +39,7 @@ export const AddAccountForm = () => {
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
-            roleIds: [],
+            roleIds: "",
         },
 
         validate: {
@@ -34,7 +51,8 @@ export const AddAccountForm = () => {
                 value.trim().length === 0 ? "Email is required"
                     : /^\S+@\S+$/.test(value) ? null : "Invalid email",
             phone: (value: string) =>
-                /(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)
+                value.trim().length !== 0 &&
+                    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                     ? null
                     : "Invalid phone number",
             password: (value: string) =>
@@ -42,7 +60,7 @@ export const AddAccountForm = () => {
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
             roleIds: (value) =>
-                value.length === 0 ? "Please choose a role" : null,
+                value === '' ? "Please choose a role" : null,
         },
     });
 
@@ -50,55 +68,51 @@ export const AddAccountForm = () => {
         // console.log(values)
 
         const addAccountParams: AddAccountParams = {
-            name: form.values.firstName + form.values.lastName,
+            name: form.values.firstName.concat(" ", form.values.lastName),
             email: form.values.email,
             phone: form.values.phone,
             addressLine: form.values.addressLine,
             birthday: removeTime(new Date(form.values.birthday), "-"),
             gender: Number(form.values.gender),
             password: form.values.password,
-            roleIds: form.values.roleIds.map(str => Number(str)),
-            brandId: null,
-            wardId: null
+            roleIds: [Number(form.values.roleIds)],
+            brandId: brand,
+            wardId: ward,
         };
         console.log(addAccountParams)
 
-        // addAccount(addAccountParams, {
-        //     onSuccess(data) {
-        //         console.log(data)
-        //         notifications.show({
-        //             message: "Added!",
-        //             color: "green",
-        //             withCloseButton: true,
-        //         });
-        //         navigate(`/account/${data.id}`)
-        //     },
-        //     onError(error) {
-        //         if (axios.isAxiosError(error)) {
-        //             // console.error(error.response?.data as ApiErrorResponse);
-        //             notifications.show({
-        //                 message: "Something wrong happen trying to add a new brand",
-        //                 color: "pale-red.5",
-        //                 withCloseButton: true,
-        //             });
-        //         } else {
-        //             console.error(error);
-        //         }
-        //     },
-        // });
+        addAccount(addAccountParams, {
+            onSuccess(data) {
+                console.log(data)
+                notifications.show({
+                    message: "Added!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+                navigate(`/account/${data.id}`)
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        message: "Something wrong happen trying to add a new account",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                }
+            },
+        });
     };
 
     return (
-        <form
-            onSubmit={form.onSubmit(() => onSubmitForm())}
-            // onSubmit={form.onSubmit((values) => console.log(values))}
-            style={{ textAlign: "left" }}
-        >
+        <form style={{ textAlign: "left" }}        >
             <Group grow>
                 <TextInput
                     withAsterisk label="First Name"
                     placeholder="First Name"
-                    {...form.getInputProps("firstname")} />
+                    {...form.getInputProps("firstName")} />
                 <TextInput
                     withAsterisk label="Last Name"
                     placeholder="Last Name"
@@ -124,29 +138,67 @@ export const AddAccountForm = () => {
                 <Select label="Gender" placeholder="Select" withAsterisk
                     data={[
                         // { value: '', label: 'Select' },
-                        { value: '0', label: 'Male' },
-                        { value: '1', label: 'Female' },
+                        { value: Gender.Male.toString(), label: 'Male' },
+                        { value: Gender.Female.toString(), label: 'Female' },
                     ]}
                     {...form.getInputProps('gender')} />
+            </Group>
+            <Group grow>
+                <Select label="Province" placeholder="Select"
+                    data={provinces ? provinces : []}
+                    rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
+                    onChange={(value) => {
+                        setProvince(value!)
+                        // console.log(value)
+                        setDistrict("")
+                        setWard("")
+                    }}
+                    searchable limit={5} nothingFoundMessage="Not Found"
+                />
+                <Select label="District" placeholder="Select"
+                    disabled={province == ""}
+                    data={districts ? districts : []}
+                    rightSection={province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                    onChange={(value) => {
+                        setDistrict(value!)
+                        // console.log(value)
+                        setWard("")
+                    }}
+                    searchable limit={5} nothingFoundMessage="Not Found"
+                />
+                <Select label="Ward" placeholder="Select"
+                    disabled={district == "" || province == ""}
+                    data={wards ? wards : []}
+                    rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                    onChange={(value) => setWard(value!)}
+                    searchable limit={5} nothingFoundMessage="Not Found"
+                />
             </Group>
             <TextInput
                 label="Address" placeholder="123/45 ABC..."
                 {...form.getInputProps("addressLine")} />
-            <MultiSelect label="Role" placeholder="Select" withAsterisk
-                data={[
-                    { value: '2', label: 'Technician' },
-                    { value: '3', label: 'Brand Manager' },
-                    { value: '4', label: 'Shop Manager' },
-                    { value: '5', label: 'Employee' },
-                ]}
-                {...form.getInputProps('roleIds')} />
+            <Group grow>
+                <Select label="Role" placeholder="Select" withAsterisk
+                    data={[
+                        { value: RoleEnum.Technician.toString(), label: 'Technician' },
+                        { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
+                    ]}
+                    {...form.getInputProps('roleIds')} />
+                <Select label="Brand (For Brand Manager)" placeholder="Select"
+                    disabled={form.values.roleIds != "3"}
+                    data={brandList ? brandList : []}
+                    rightSection={isLoadingBrand ? <Loader size="1rem" /> : null}
+                    onChange={(value) => setBrand(value!)}
+                    searchable limit={5} nothingFoundMessage="Not Found"
+                />
+            </Group>
             <Group
                 justify="flex-start"
                 mt="md"
             >
                 <Button
-                    // loading={isLoading}
-                    type="submit" variant="gradient" size="md" mt={20}
+                    loading={isLoading} onClick={onSubmitForm}
+                    variant="gradient" size="md" mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
                     Add

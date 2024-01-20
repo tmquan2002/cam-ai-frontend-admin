@@ -1,21 +1,10 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
 import {
-  GetBrandsPagingResult,
-  GetBrandsParams,
-  BrandAPI,
-  GetBrandsResult,
-  AddBrandParams,
-  UpdateBrandParams,
+  GetBrandsPagingResult, GetBrandsParams, BrandAPI, GetBrandsResult, AddBrandParams, UpdateBrandParams,
 } from "../apis/BrandAPI";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
     queryKey: ["brandList", params.size, params.pageIndex],
     queryFn: async () => {
@@ -26,13 +15,24 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+export const useGetAllBrandsSelect = (params: GetBrandsParams) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<SelectType[], Error> = useQuery({
+    queryKey: ["brandListSelect", params.name],
+    queryFn: async () => {
+      const res = await BrandAPI.getAllFilter(params);
+      return res.values.map((items) => ({
+        value: items.id,
+        label: items.name
+      }))
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
+};
+
 export const useGetBrandById = (id: string) => {
-  const {
-    isError,
-    isLoading,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<GetBrandsResult, Error> = useQuery({
     queryKey: ["brandDetail", id],
     queryFn: async () => {

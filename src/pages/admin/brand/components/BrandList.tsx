@@ -23,11 +23,7 @@ const BrandList = () => {
         </Table.Tr>
     ))
 
-    const {
-        data: brandList,
-        isLoading,
-        isFetching,
-        refetch,
+    const { data: brandList, isLoading, isFetching, refetch,
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const onSearch = (e: any) => {

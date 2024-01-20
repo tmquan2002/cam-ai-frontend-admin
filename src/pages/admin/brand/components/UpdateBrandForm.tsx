@@ -10,10 +10,7 @@ import { useNavigate } from "react-router-dom";
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     const { mutate: updateBrand, isLoading } = useUpdateBrand();
-    const {
-        data,
-        isLoading: initialDataLoading
-    } = useGetBrandById(id);
+    const { data, isLoading: initialDataLoading } = useGetBrandById(id);
     const navigate = useNavigate();
 
     const form = useForm({

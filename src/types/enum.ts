@@ -6,6 +6,11 @@ export enum RoleEnum {
   Employee = 5,
 }
 
+export enum Gender {
+  Male = 0,
+  Female = 1,
+}
+
 export enum AccountStatus {
   New = 1,
   Active = 2,

@@ -21,8 +21,8 @@ export const LoginForm = () => {
         value.trim().length === 0
           ? "Email is required"
           : /^\S+@\S+$/.test(value)
-          ? null
-          : "Invalid email",
+            ? null
+            : "Invalid email",
       password: (value) =>
         value.trim().length === 0 ? "Password is required" : null,
     },
@@ -40,11 +40,7 @@ export const LoginForm = () => {
       onSuccess(data) {
         console.log({ data });
 
-        sessionHook?.signIn({
-          ...data,
-          accessToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWY3MTgwLWU1NWQtNDY3NS05NDdlLTIyNWVlMDZiZDc0YSIsInJvbGVzIjoiW3tcIklkXCI6MSxcIk5hbWVcIjpcIkFkbWluXCJ9LHtcIklkXCI6MixcIk5hbWVcIjpcIlRlY2huaWNpYW5cIn0se1wiSWRcIjozLFwiTmFtZVwiOlwiQnJhbmQgbWFuYWdlclwifSx7XCJJZFwiOjQsXCJOYW1lXCI6XCJTaG9wIG1hbmFnZXJcIn0se1wiSWRcIjo1LFwiTmFtZVwiOlwiRW1wbG95ZWVcIn1dIiwic3RhdHVzIjoie1wiSWRcIjoyLFwiTmFtZVwiOlwiQWN0aXZlXCJ9IiwiZXhwIjoxNzAwNDA1MjEyLCJpc3MiOiJKV1RfSVNTVUVSIiwiYXVkIjoiSldUX0FVRElFTkNFIn0.Vql6iMUsE91lB5udsPeLSS0ATGLhJ5mM5jx0PJSlc7Y",
-        });
+        sessionHook?.signIn(data);
       },
       onError(error) {
         if (axios.isAxiosError(error)) {

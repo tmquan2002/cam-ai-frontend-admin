@@ -10,6 +10,7 @@ import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
+import { BrandStatus } from "../../../types/enum";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -120,7 +121,7 @@ const BrandDetail = () => {
                                         <MdEdit style={{ width: 18, height: 18 }} />
                                     </ActionIcon>
                                 </Tooltip>
-                                {data?.brandStatus.id === 1 ?
+                                {data?.brandStatus.id === BrandStatus.Active ?
                                     <Tooltip label="Delete" withArrow>
                                         <ActionIcon
                                             size="xl" aria-label="Logout" color={"pale-red.7"}
@@ -150,8 +151,8 @@ const BrandDetail = () => {
             </div>
             {/* Delete Modal */}
             <Modal opened={modalOpen} onClose={close}
-                title={data?.brandStatus.id === 1 ? "Delete this brand?" : "Reactivate this brand?"} centered>
-                {data?.brandStatus.id === 1 ?
+                title={data?.brandStatus.id === BrandStatus.Active ? "Delete this brand?" : "Reactivate this brand?"} centered>
+                {data?.brandStatus.id === BrandStatus.Active ?
                     <Text>
                         Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
                     </Text>
@@ -167,7 +168,7 @@ const BrandDetail = () => {
                     >
                         CANCEL
                     </Button>
-                    {data?.brandStatus.id === 1 ?
+                    {data?.brandStatus.id === BrandStatus.Active ?
                         <Button
                             variant="gradient" size="md" mt={20} onClick={onDelete}
                             gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
