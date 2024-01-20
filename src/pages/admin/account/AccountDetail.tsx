@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Button, Divider, Group, Loader, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -65,7 +65,11 @@ const AccountDetail = () => {
         <>
             <div className={styled["container-right"]}>
                 <Navbar items={breadcrumbs} goBack />
-                {isLoading ? <Loader type="bar" /> :
+                {isLoading ?
+                    <Box className={styled["loader"]}>
+                        <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                    </Box>
+                    :
                     <div className={styled["container-detail"]}>
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
@@ -89,7 +93,7 @@ const AccountDetail = () => {
                                 </Badge>
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon
-                                        variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
+                                        size="xl" aria-label="Logout" color={"light-yellow.9"}
                                     // onClick={() => navigate(`/brand/${params.accountId!}/update`)}
                                     >
                                         <MdEdit style={{ width: 18, height: 18 }} />
@@ -97,7 +101,7 @@ const AccountDetail = () => {
                                 </Tooltip>
                                 <Tooltip label="Delete" withArrow>
                                     <ActionIcon
-                                        variant="filled" size="xl" aria-label="Logout" color={"pale-red.9"}
+                                        size="xl" aria-label="Logout" color={"pale-red.7"}
                                         onClick={open}
                                     >
                                         <MdDelete style={{ width: 18, height: 18 }} />

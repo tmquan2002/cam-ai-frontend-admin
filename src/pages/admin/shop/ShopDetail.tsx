@@ -1,4 +1,4 @@
-import { Badge, Divider, Image, Loader, Text } from "@mantine/core";
+import { Badge, Box, Divider, Image, LoadingOverlay, Text } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
@@ -25,7 +25,10 @@ const ShopDetail = () => {
     return (
         <div className={styled["container-right"]}>
             <Navbar items={breadcrumbs} goBack />
-            {isLoading ? <Loader type="bar" /> :
+            {isLoading ?
+                <Box className={styled["loader"]}>
+                    <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                </Box> :
                 <div className={styled["container-detail"]}>
                     {data?.brand.bannerUri && <Image h={150} mb={20} src={data?.brand.bannerUri} />}
                     {/* <Image h={150} mb={20} src={data?.logoUri} /> */}

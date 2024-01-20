@@ -75,3 +75,14 @@ export const useDeleteBrand = () => {
 
   return { mutate, isLoading, error, data };
 };
+
+export const useReactivateBrand = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "reactivateBrand",
+    mutationFn: async (id: string) => {
+      return await BrandAPI.reactivate(id);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};

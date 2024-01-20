@@ -1,15 +1,15 @@
-import { ActionIcon, Badge, Button, Divider, Group, Image, Loader, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
+import { MdAutorenew, MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
-import { useDeleteBrand, useGetBrandById } from "../../../hooks/useBrands";
+import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,6 +34,7 @@ const BrandDetail = () => {
     } = useGetBrandById(params.brandId!);
 
     const { mutate: deleteBrand } = useDeleteBrand();
+    const { mutate: reactivateBrand } = useReactivateBrand();
 
     const onDelete = () => {
         deleteBrand(params.brandId!, {
@@ -61,14 +62,43 @@ const BrandDetail = () => {
         });
     }
 
+    const onReactivate = () => {
+        reactivateBrand(params.brandId!, {
+            onSuccess() {
+                navigate('/brand')
+                notifications.show({
+                    message: "Brand Reactivated!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen when trying to reactivate the brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                    close();
+                }
+            },
+        });
+    }
+
     return (
         <>
             <div className={styled["container-right"]}>
                 <Navbar items={breadcrumbs} goBack />
-                {isLoading ? <Loader type="bar" /> :
+                {isLoading ?
+                    <Box className={styled["loader"]}>
+                        <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                    </Box>
+                    :
                     <div className={styled["container-detail"]}>
                         {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
-                        {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
                                 <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
@@ -84,47 +114,73 @@ const BrandDetail = () => {
                             <Group>
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon
-                                        variant="filled" size="xl" aria-label="Logout" color={"light-yellow.9"}
+                                        size="xl" aria-label="Logout" color={"light-yellow.9"}
                                         onClick={() => navigate(`/brand/${params.brandId!}/update`)}
                                     >
                                         <MdEdit style={{ width: 18, height: 18 }} />
                                     </ActionIcon>
                                 </Tooltip>
-                                <Tooltip label="Delete" withArrow>
-                                    <ActionIcon
-                                        variant="filled" size="xl" aria-label="Logout" color={"pale-red.9"}
-                                        onClick={open}
-                                    >
-                                        <MdDelete style={{ width: 18, height: 18 }} />
-                                    </ActionIcon>
-                                </Tooltip>
+                                {data?.brandStatus.id === 1 ?
+                                    <Tooltip label="Delete" withArrow>
+                                        <ActionIcon
+                                            size="xl" aria-label="Logout" color={"pale-red.7"}
+                                            onClick={open}
+                                        >
+                                            <MdDelete style={{ width: 18, height: 18 }} />
+                                        </ActionIcon>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip label="Reactivate" withArrow>
+                                        <ActionIcon
+                                            size="xl" aria-label="Logout" color={"green.7"}
+                                            onClick={open}
+                                        >
+                                            <MdAutorenew style={{ width: 18, height: 18 }} />
+                                        </ActionIcon>
+                                    </Tooltip>
+                                }
                             </Group>
                         </div>
                         <Divider my="md" />
-                        {/* TODO: Add mỏe detail for the account */}
                         <div className={styled["profile-detail"]}>
                             <Text>{data?.phone}</Text>
                         </div>
                     </div>
                 }
             </div>
-            <Modal opened={modalOpen} onClose={close} title="Delete this brand?" centered>
-                <Text>
-                    Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
-                </Text>
-                <Group>
-                    <Button
-                        variant="gradient" size="md" mt={20} onClick={onDelete}
-                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                    >
-                        DELETE
-                    </Button>
+            {/* Delete Modal */}
+            <Modal opened={modalOpen} onClose={close}
+                title={data?.brandStatus.id === 1 ? "Delete this brand?" : "Reactivate this brand?"} centered>
+                {data?.brandStatus.id === 1 ?
+                    <Text>
+                        Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
+                    </Text>
+                    :
+                    <Text>
+                        Do you want to reactivate this brand? This action will switch a brand status to <b>ACTIVE</b>
+                    </Text>
+                }
+                <Group align="end">
                     <Button
                         variant="outline" size="md" mt={20} onClick={close}
                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                     >
                         CANCEL
                     </Button>
+                    {data?.brandStatus.id === 1 ?
+                        <Button
+                            variant="gradient" size="md" mt={20} onClick={onDelete}
+                            gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                        >
+                            DELETE
+                        </Button> :
+                        <Button
+                            variant="gradient" size="md" mt={20} onClick={onReactivate}
+                            gradient={{ from: "green.5", to: "green.7", deg: 90 }}
+                        >
+                            REACTIVATE
+                        </Button>
+                    }
                 </Group>
             </Modal>
         </>

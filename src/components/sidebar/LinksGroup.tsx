@@ -1,7 +1,5 @@
-import { Box, Collapse, Group, Text, ThemeIcon, rem } from '@mantine/core';
-import { useState } from 'react';
-import { AiFillCaretRight } from "react-icons/ai";
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Box, Group, Text, ThemeIcon, rem } from '@mantine/core';
+import { Link, useLocation } from 'react-router-dom';
 import styled from './sidebar.module.scss';
 
 interface LinksGroupProps {

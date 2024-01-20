@@ -97,7 +97,7 @@ export const BrandAPI = {
   },
   reactivate: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.put(`/api/brands/${id}/reactivate`, {
+    const res = await http.put<GetBrandsResult>(`/api/brands/${id}/reactivate`, {}, {
       headers: {
         Authorization: "Bearer " + token,
       },
