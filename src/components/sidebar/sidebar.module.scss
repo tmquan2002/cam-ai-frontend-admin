@@ -30,6 +30,7 @@
     width: 100%;
     cursor: pointer;
     user-select: none;
+    text-decoration: none;
 
     .label {
         @include light {
@@ -41,7 +42,6 @@
         }
 
         padding-left: 15px;
-        text-decoration: none;
     }
 }
 
