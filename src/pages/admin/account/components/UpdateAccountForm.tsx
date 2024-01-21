@@ -14,18 +14,9 @@ import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 export const UpdateAccountForm = ({ id }: { id: string }) => {
     const { data, isLoading: initialDataLoading } = useGetAccountById(id);
 
-    const [province, setProvince] = useState<string>(data?.ward?.district?.provinceId || "");
-    const [district, setDistrict] = useState<string>(data?.ward?.districtId || "");
-    const [ward, setWard] = useState<string>(data?.wardId || "");
-
-    const { mutate: updateAccount, isLoading } = useUpdateAccount();
-    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
-    // const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(province!);
-    // const { data: wards, isFetching: isFetchingWards, isLoading: isLoadingWards } = useGetWards(district!);
-
-    console.log(data)
-    const navigate = useNavigate();
-
+    // const [province, setProvince] = useState<string>(data?.ward?.district?.provinceId || "");
+    // const [district, setDistrict] = useState<string>(data?.ward?.districtId || "");
+    // const [ward, setWard] = useState<string>(data?.wardId || "");
     const form = useForm({
         initialValues: {
             email: "",
@@ -34,6 +25,8 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
+            province: "",
+            district: "",
             ward: "",
         },
 
@@ -44,17 +37,27 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 value.trim().length === 0 ? "Email is required"
                     : /^\S+@\S+$/.test(value) ? null : "Invalid email",
             phone: (value: string) =>
-                value.trim().length !== 0 &&
+                value.trim().length === 0 ? "Phone is required" :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
-                    ? null
-                    : "Invalid phone number",
+                        ? null
+                        : "Invalid phone number",
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
         },
     });
 
+    const { mutate: updateAccount, isLoading } = useUpdateAccount();
+    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province!);
+    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district!);
+
+    const navigate = useNavigate();
+
+
+
     useEffect(() => {
         if (data && isLoadingProvinces) {
+            console.log(data)
             form.setValues({
                 email: data?.email,
                 name: data?.name,
@@ -62,10 +65,13 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 addressLine: data?.addressLine,
                 gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
                 birthday: new Date(data?.birthday),
-                ward: data?.wardId
+                province: data?.ward?.district.province.id,
+                district: data?.ward?.district.id,
+                ward: data?.ward?.id
             });
+            console.log(form.values)
         }
-    }, [data]);
+    }, [data, provinces]);
 
     const onSubmitForm = async () => {
         // console.log(values)
@@ -79,7 +85,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 addressLine: form.values.addressLine,
                 birthday: removeTime(new Date(form.values.birthday), "-"),
                 gender: Number(form.values.gender),
-                wardId: ward,
+                wardId: form.values.ward,
             }
         };
         console.log(updateAccountParams)
@@ -128,7 +134,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             maxDate={getDateFromSetYear(18)}
                             {...form.getInputProps('birthday')} />
                         <TextInput
-                            label="Phone" placeholder="Phone Number"
+                            label="Phone" placeholder="Phone Number" withAsterisk
                             {...form.getInputProps("phone")} />
                         <Select label="Gender" placeholder="Select" withAsterisk
                             data={[
@@ -142,33 +148,23 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                         <Select label="Province" placeholder="Select"
                             data={provinces ? provinces : []}
                             rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
-                            onChange={(value) => {
-                                setProvince(value!)
-                                // console.log(value)
-                                setDistrict("")
-                                setWard("")
-                            }}
+                            {...form.getInputProps('province')}
                             searchable limit={5} nothingFoundMessage="Not Found"
-                            defaultValue={isLoadingProvinces ? "" : province}
                         />
-                        {/* <Select label="District" placeholder="Select"
-                            disabled={province == ""}
+                        <Select label="District" placeholder="Select"
+                            disabled={form.values.province ? false : true}
                             data={districts ? districts : []}
-                            rightSection={province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
-                            onChange={(value) => {
-                                setDistrict(value!)
-                                // console.log(value)
-                                setWard("")
-                            }}
+                            rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
+                            {...form.getInputProps('district')}
                             searchable limit={5} nothingFoundMessage="Not Found"
-                        /> */}
-                        {/* <Select label="Ward" placeholder="Select"
-                            // disabled={district == "" || province == ""}
+                        />
+                        <Select label="Ward" placeholder="Select"
+                            disabled={form.values.province && form.values.district ? false : true}
                             data={wards ? wards : []}
-                            rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                            rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
+                            {...form.getInputProps('ward')}
                             searchable limit={5} nothingFoundMessage="Not Found"
-                            {...form.getInputProps("ward")}
-                        /> */}
+                        />
                     </Group>
                     <TextInput
                         label="Address" placeholder="123/45 ABC..."
