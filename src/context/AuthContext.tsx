@@ -6,6 +6,7 @@ import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
 import * as jwt from "../utils/jwt";
 import { RoleDetail } from "../utils/jwt";
+import { notifications } from "@mantine/notifications";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -133,6 +134,11 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
+          notifications.show({
+            message: "Session Timeout. Please login again",
+            color: "pale-red.5",
+            withCloseButton: true,
+          });
         } finally {
           localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
         }
@@ -155,6 +161,11 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
+          notifications.show({
+            message: "Session Timeout. Please login again",
+            color: "pale-red.5",
+            withCloseButton: true,
+          });
         },
         isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}
