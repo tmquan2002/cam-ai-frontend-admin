@@ -94,7 +94,7 @@ const AccountDetail = () => {
                                 <Tooltip label="Update" withArrow>
                                     <ActionIcon
                                         size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                    // onClick={() => navigate(`/brand/${params.accountId!}/update`)}
+                                        onClick={() => navigate(`/account/${params.accountId!}/update`)}
                                     >
                                         <MdEdit style={{ width: 18, height: 18 }} />
                                     </ActionIcon>

@@ -46,7 +46,7 @@ const ShopDetail = () => {
                         </div>
                     </div>
                     <Divider my="md" />
-                    {/* TODO: Add more detail for the account */}
+                    {/* TODO: Add more detail for the shop */}
                     <div className={styled["profile-detail"]}>
                         <Text>{data?.phone}</Text>
                     </div>

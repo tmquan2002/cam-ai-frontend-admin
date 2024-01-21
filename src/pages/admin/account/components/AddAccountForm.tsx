@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
+import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
-import { useGetAllBrands, useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { Gender, RoleEnum } from "../../../../types/enum";
+import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const AddAccountForm = () => {
     const [province, setProvince] = useState<string>("");
@@ -27,8 +27,6 @@ export const AddAccountForm = () => {
     const navigate = useNavigate();
 
     //TODO: Password should be auto generated, manager will have to change password later
-    //TODO: Add selection for brand (Brand Manager) and working shop (Shop Manager)
-    //TODO: Add ward selection
     const form = useForm({
         initialValues: {
             email: "",
@@ -107,7 +105,7 @@ export const AddAccountForm = () => {
     };
 
     return (
-        <form style={{ textAlign: "left" }}        >
+        <form style={{ textAlign: "left" }}>
             <Group grow>
                 <TextInput
                     withAsterisk label="First Name"

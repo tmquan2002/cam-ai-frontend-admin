@@ -20,14 +20,9 @@ export const useGetAllAccounts = (params: GetAccountsParams) => {
 };
 
 export const useGetAccountById = (id: string) => {
-  const {
-    isError,
-    isLoading,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<GetAccountResult, Error> = useQuery({
-    queryKey: ["brandDetail", id],
+    queryKey: ["account", id],
     queryFn: async () => {
       return await AccountAPI.getById(id);
     },

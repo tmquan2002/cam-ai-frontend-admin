@@ -13,6 +13,7 @@ import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
+import AccountUpdate from "../pages/admin/account/AccountUpdate";
 
 const AppRoute = () => {
   return useRoutes([
@@ -55,10 +56,10 @@ const AppRoute = () => {
               path: ":accountId",
               element: <AccountDetail />,
             },
-            // {
-            //   path: "/brand/:brandId/update",
-            //   element: <BrandUpdate />,
-            // },
+            {
+              path: ":accountId/update",
+              element: <AccountUpdate />,
+            },
           ],
         },
         {

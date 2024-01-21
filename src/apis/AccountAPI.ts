@@ -6,48 +6,48 @@ import { Shop } from "../models/Shop";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetAccountResult = {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
-    email: string;
-    password: string;
-    name: string;
-    gender: number;
-    phone: string;
-    birthday: string;
-    wardId: string;
-    addressLine: string;
-    workingShopId: string;
-    accountStatusId: number,
-    ward: Ward;
-    workingShop: Shop;
-    accountStatus: AccountStatus;
-    brand: Brand;
-    managingShop: Shop;
-    roles: AccountRole[];
+  timestamp: string;
+  id: string;
+  createdDate: string;
+  modifiedDate: string;
+  email: string;
+  password: string;
+  name: string;
+  gender: number | string;
+  phone: string;
+  birthday: string;
+  wardId: string;
+  addressLine: string;
+  workingShopId: string;
+  accountStatusId: number,
+  ward: Ward;
+  workingShop: Shop;
+  accountStatus: AccountStatus;
+  brand: Brand;
+  managingShop: Shop;
+  roles: AccountRole[];
 };
 
 export type AddAccountResult = {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
-    email: string;
-    name: string;
-    gender: number;
-    phone: string;
-    birthday: string;
-    wardId: string;
-    addressLine: string;
-    workingShopId: string;
-    accountStatusId: number,
-    ward: Ward;
-    workingShop: Shop;
-    accountStatus: AccountStatus;
-    brand: Brand;
-    managingShop: Shop;
-    roles: AccountRole[];
+  timestamp: string;
+  id: string;
+  createdDate: string;
+  modifiedDate: string;
+  email: string;
+  name: string;
+  gender: number;
+  phone: string;
+  birthday: string;
+  wardId: string;
+  addressLine: string;
+  workingShopId: string;
+  accountStatusId: number,
+  ward: Ward;
+  workingShop: Shop;
+  accountStatus: AccountStatus;
+  brand: Brand;
+  managingShop: Shop;
+  roles: AccountRole[];
 };
 
 export type GetAccountsParams = {
@@ -69,17 +69,17 @@ export type GetAccountsPagingResult = {
 };
 
 export type AddAccountParams = {
-    email: string;
-    password: string;
-    name: string;
-    gender: number;
-    phone: string;
-    birthday: string;
-    wardId: string | null;
-    addressLine: string;
-    brandId: string | null;
-    // workingShopId: string;
-    roleIds: number[];
+  email: string;
+  password: string;
+  name: string;
+  gender: number;
+  phone: string;
+  birthday: string;
+  wardId: string | null;
+  addressLine: string;
+  brandId: string | null;
+  // workingShopId: string;
+  roleIds: number[];
 };
 
 export type UpdateAccountParams = {
@@ -92,7 +92,6 @@ export type UpdateAccountParams = {
     birthday: string;
     wardId: string;
     addressLine: string;
-    timestamp: string;
   };
 };
 
