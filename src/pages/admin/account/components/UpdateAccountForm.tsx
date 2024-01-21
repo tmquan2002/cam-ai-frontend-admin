@@ -120,10 +120,10 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
     return (
         <>
             {initialDataLoading && isLoadingProvinces ? <Loader /> :
-                <form style={{ textAlign: "left" }}>
+                <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
                     <TextInput
-                        withAsterisk label="Last Name"
-                        placeholder="Last Name"
+                        withAsterisk label="Full Name"
+                        placeholder="Nguyen Van A"
                         {...form.getInputProps("name")} />
                     <TextInput
                         withAsterisk label="Email"
@@ -176,7 +176,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                         mt="md"
                     >
                         <Button
-                            loading={isLoading} onClick={onSubmitForm}
+                            loading={isLoading} type="submit"
                             variant="gradient" size="md" mt={20}
                             gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                         >

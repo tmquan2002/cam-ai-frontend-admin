@@ -31,8 +31,7 @@ export const AddAccountForm = () => {
         initialValues: {
             email: "",
             password: "",
-            firstName: "",
-            lastName: "",
+            name: "",
             gender: '',
             phone: "",
             birthday: new Date(2000, 0),
@@ -41,18 +40,16 @@ export const AddAccountForm = () => {
         },
 
         validate: {
-            firstName: (value: string) =>
-                value.trim().length === 0 ? "First Name is required" : null,
-            lastName: (value: string) =>
-                value.trim().length === 0 ? "Last Name is required" : null,
+            name: (value: string) =>
+                value.trim().length === 0 ? "Name is required" : null,
             email: (value: string) =>
                 value.trim().length === 0 ? "Email is required"
                     : /^\S+@\S+$/.test(value) ? null : "Invalid email",
             phone: (value: string) =>
-                value.trim().length !== 0 &&
+                value.trim().length === 0 ? "Phone is required" :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
-                    ? null
-                    : "Invalid phone number",
+                        ? null
+                        : "Invalid phone number",
             password: (value: string) =>
                 value.trim().length === 0 ? "Password is required" : null,
             gender: (value) =>
@@ -66,7 +63,7 @@ export const AddAccountForm = () => {
         // console.log(values)
 
         const addAccountParams: AddAccountParams = {
-            name: form.values.firstName.concat(" ", form.values.lastName),
+            name: form.values.name,
             email: form.values.email,
             phone: form.values.phone,
             addressLine: form.values.addressLine,
@@ -110,17 +107,11 @@ export const AddAccountForm = () => {
     };
 
     return (
-        <form style={{ textAlign: "left" }}>
-            <Group grow>
-                <TextInput
-                    withAsterisk label="First Name"
-                    placeholder="First Name"
-                    {...form.getInputProps("firstName")} />
-                <TextInput
-                    withAsterisk label="Last Name"
-                    placeholder="Last Name"
-                    {...form.getInputProps("lastName")} />
-            </Group>
+        <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
+            <TextInput
+                withAsterisk label="Full Name"
+                placeholder="Nguyen Van A"
+                {...form.getInputProps("name")} />
             <TextInput
                 withAsterisk label="Email"
                 placeholder="your@email.com"
@@ -200,7 +191,8 @@ export const AddAccountForm = () => {
                 mt="md"
             >
                 <Button
-                    loading={isLoading} onClick={onSubmitForm}
+                    loading={isLoading}
+                    type="submit"
                     variant="gradient" size="md" mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >

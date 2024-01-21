@@ -23,17 +23,13 @@ const AccountList = () => {
         </Table.Tr>
     ))
 
-    const {
-        data: accountList,
-        isLoading,
-        isFetching,
-        refetch,
+    const { data: accountList, isLoading, isFetching,
     } = useGetAllAccounts({ pageIndex: (pageIndex - 1), size: Number(size), search: searchTerm });
 
     const onSearch = (e: any) => {
         // console.log(e)
         if (e.key === "Enter") {
-            refetch();
+            setPageIndex(1);
         }
     }
 
@@ -95,7 +91,11 @@ const AccountList = () => {
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
-                                onChange={setSize} placeholder="0" value={size}
+                                onChange={(value) => {
+                                    setSize(value)
+                                    setPageIndex(1)
+                                }}
+                                placeholder="0" value={size}
                                 data={['2', '3', '5', '8']} defaultValue={"5"}
                             />
                         </Group>

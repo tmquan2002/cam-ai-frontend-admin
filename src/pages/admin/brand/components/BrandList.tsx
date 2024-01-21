@@ -23,13 +23,13 @@ const BrandList = () => {
         </Table.Tr>
     ))
 
-    const { data: brandList, isLoading, isFetching, refetch,
+    const { data: brandList, isLoading, isFetching
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const onSearch = (e: any) => {
         // console.log(e)
         if (e.key === "Enter") {
-            refetch();
+            setPageIndex(1);
         }
     }
 
@@ -91,7 +91,11 @@ const BrandList = () => {
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
-                                onChange={setSize} placeholder="0" value={size}
+                                onChange={(value) => {
+                                    setSize(value)
+                                    setPageIndex(1)
+                                }}
+                                placeholder="0" value={size}
                                 data={['2', '3', '5', '8']} defaultValue={"5"}
                             />
                         </Group>
