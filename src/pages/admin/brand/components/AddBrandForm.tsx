@@ -54,12 +54,17 @@ export const AddBrandForm = () => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: "Something wrong happen trying to add a new brand",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
                 } else {
-                    console.error(error);
+                    // console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen trying to add a new brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
             },
         });

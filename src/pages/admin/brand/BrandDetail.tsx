@@ -24,6 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const BrandDetail = () => {
 
+    //TODO: Add Details of Shops, Accounts (Employees and Brand/Shop Manager) and Edge Box
     const params = useParams();
     const navigate = useNavigate();
     // console.log(params);
@@ -50,15 +51,20 @@ const BrandDetail = () => {
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
-                } else {
-                    console.error(error);
                     notifications.show({
-                        message: "Something wrong happen when trying to remove the brand",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
-                    close();
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen when trying to remove this brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
+                close();
             },
         });
     }
@@ -76,15 +82,20 @@ const BrandDetail = () => {
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
-                } else {
-                    console.error(error);
                     notifications.show({
-                        message: "Something wrong happen when trying to reactivate the brand",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
-                    close();
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen when trying to reactivate this brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
+                close();
             },
         });
     }

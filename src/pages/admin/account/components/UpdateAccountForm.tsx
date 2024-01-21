@@ -14,9 +14,6 @@ import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 export const UpdateAccountForm = ({ id }: { id: string }) => {
     const { data, isLoading: initialDataLoading } = useGetAccountById(id);
 
-    // const [province, setProvince] = useState<string>(data?.ward?.district?.provinceId || "");
-    // const [district, setDistrict] = useState<string>(data?.ward?.districtId || "");
-    // const [ward, setWard] = useState<string>(data?.wardId || "");
     const form = useForm({
         initialValues: {
             email: "",
@@ -48,8 +45,8 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
 
     const { mutate: updateAccount, isLoading } = useUpdateAccount();
     const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
-    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province!);
-    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district!);
+    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province || "");
+    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district || "");
 
     const navigate = useNavigate();
 
@@ -104,12 +101,17 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: "Something wrong happen trying to update this account",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
                 } else {
-                    console.error(error);
+                    // console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen trying to update this account",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
             },
         });

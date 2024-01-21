@@ -6,8 +6,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import { useGetAccountById } from "../../../hooks/useAccounts";
-import { useDeleteBrand } from "../../../hooks/useBrands";
+import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
 
@@ -33,10 +32,10 @@ const AccountDetail = () => {
         isLoading
     } = useGetAccountById(params.accountId!);
 
-    const { mutate: deleteBrand } = useDeleteBrand();
+    const { mutate: deleteAccount } = useDeleteAccount();
 
     const onDelete = () => {
-        deleteBrand(params.accountId!, {
+        deleteAccount(params.accountId!, {
             onSuccess() {
                 navigate('/account')
                 notifications.show({
@@ -48,6 +47,11 @@ const AccountDetail = () => {
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 } else {
                     console.error(error);
                     notifications.show({
@@ -55,8 +59,8 @@ const AccountDetail = () => {
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
-                    close();
                 }
+                close();
             },
         });
     }

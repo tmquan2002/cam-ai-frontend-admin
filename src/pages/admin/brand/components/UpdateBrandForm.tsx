@@ -69,12 +69,17 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: "Something wrong happen trying to update this brand",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
                 } else {
-                    console.error(error);
+                    // console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen trying to update this brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
             },
         });
