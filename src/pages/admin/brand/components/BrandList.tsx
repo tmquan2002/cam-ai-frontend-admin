@@ -1,6 +1,6 @@
 import { Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
-import { useState } from 'react';
-import { MdAdd, MdOutlineSearch } from 'react-icons/md';
+import { useEffect, useState } from 'react';
+import { MdAdd, MdClear, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
@@ -11,6 +11,7 @@ const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
+    const [clear, setClear] = useState(false)
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -23,15 +24,28 @@ const BrandList = () => {
         </Table.Tr>
     ))
 
-    const { data: brandList, isLoading, isFetching
+    const { data: brandList, isLoading, isFetching, refetch
     } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const onSearch = (e: any) => {
-        // console.log(e)
-        if (e.key === "Enter") {
-            setPageIndex(1);
+        // console.log(e.key)
+        if (e.key == "Enter") {
+            if (pageIndex == 1) {
+                refetch()
+            } else {
+                setPageIndex(1);
+            }
         }
     }
+
+    useEffect(() => {
+        if (searchTerm !== "" || !clear) {
+            return;
+        } else {
+            setClear(false)
+            refetch();
+        }
+    }, [searchTerm, clear])
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id}>
@@ -67,6 +81,11 @@ const BrandList = () => {
             </div>
             <TextInput mb={20}
                 placeholder="Search" leftSection={<MdOutlineSearch />}
+                rightSection={<MdClear onClick={() => {
+                    setSearchTerm("")
+                    setClear(true)
+                    setPageIndex(1)
+                }} />}
                 value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                 onKeyDown={onSearch}
             />

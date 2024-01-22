@@ -1,10 +1,11 @@
 import { TextInput, Button, Group } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { useLogin } from "../../../../hooks/useAuth";
 import { Login } from "../../../../models/Auth";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { useSession } from "../../../../context/AuthContext";
+import { useForm } from "@mantine/form";
+import { MdEmail, MdLockOutline } from "react-icons/md";
 
 export const LoginForm = () => {
   const sessionHook = useSession();
@@ -70,6 +71,7 @@ export const LoginForm = () => {
       <TextInput
         withAsterisk
         label="Email"
+        leftSection={<MdEmail />}
         placeholder="your@email.com"
         size="md"
         {...form.getInputProps("email")}
@@ -79,6 +81,8 @@ export const LoginForm = () => {
         withAsterisk
         label="Password"
         type="password"
+        placeholder="Password"
+        leftSection={<MdLockOutline />}
         size="md"
         {...form.getInputProps("password")}
       />
