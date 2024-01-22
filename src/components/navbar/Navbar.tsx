@@ -1,32 +1,24 @@
-import { ActionIcon, Group, Indicator, Tooltip } from "@mantine/core";
-import { MdLogout, MdNotifications } from "react-icons/md";
+import { ActionIcon, Group, Tooltip } from "@mantine/core";
+import { MdLogout } from "react-icons/md";
 import { useSession } from "../../context/AuthContext";
-import LightDarkSwitch from "../LightDarkSwirch";
+import LightDarkSwitch from "../actionbutton/LightDarkSwitch";
+import { NotificationButton } from "../actionbutton/NotificationButton";
 import CustomBreadcrumb, {
   BreadCrumbParams
 } from "../breadcrumbs/CustomBreadcrumb";
 import styled from "./navbar.module.scss";
 
-export const Navbar = ({ items, goBackLink }: BreadCrumbParams) => {
+export const Navbar = ({ items, goBack }: BreadCrumbParams) => {
 
   const sessionHook = useSession();
 
   return (
     <div className={styled["container-main"]}>
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
-      <CustomBreadcrumb items={items} goBackLink={goBackLink} />
+      <CustomBreadcrumb items={items} goBack={goBack} />
       <Group>
         <LightDarkSwitch />
-        <Tooltip label="Notification" withArrow>
-          <Indicator size={12} color="pale-red.6">
-            <ActionIcon
-              // onClick={sessionHook?.signOut}
-              variant="default" size="xl" aria-label="Logout"
-            >
-              <MdNotifications style={{ width: 18, height: 18 }} />
-            </ActionIcon>
-          </Indicator>
-        </Tooltip>
+        <NotificationButton />
         <Tooltip label="Logout" withArrow>
           <ActionIcon
             onClick={sessionHook?.signOut}

@@ -10,10 +10,7 @@ import { useNavigate } from "react-router-dom";
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     const { mutate: updateBrand, isLoading } = useUpdateBrand();
-    const {
-        data,
-        isLoading: initialDataLoading
-    } = useGetBrandById(id);
+    const { data, isLoading: initialDataLoading } = useGetBrandById(id);
     const navigate = useNavigate();
 
     const form = useForm({
@@ -66,18 +63,23 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                     color: "green",
                     withCloseButton: true,
                 });
-                navigate(`/brand/${id}`)
+                navigate(-1)
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: "Something wrong happen trying to update this brand",
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
                 } else {
-                    console.error(error);
+                    // console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen trying to update this brand",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
                 }
             },
         });

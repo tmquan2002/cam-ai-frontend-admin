@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { SideBar } from "../../../components/sidebar/SideBar";
-import styled from "./styles/brand.module.scss";
+import { SideBar } from "../../components/sidebar/SideBar";
+import styled from "./adminlayout.module.scss";
 
-const BrandLayout = () => {
+const MainLayout = () => {
 
     return (
         <div className={styled["container-main"]}>
@@ -12,4 +12,4 @@ const BrandLayout = () => {
     );
 };
 
-export default BrandLayout;
+export default MainLayout;

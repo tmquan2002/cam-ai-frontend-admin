@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect } from "react";
-import { AuthToken } from "../models/Auth";
-import * as jwt from "../utils/jwt";
+import { useNavigate } from "react-router-dom";
 import { useStorageState } from "../hooks/useStorageState";
+import { AuthToken } from "../models/Auth";
 import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import * as jwt from "../utils/jwt";
 import { RoleDetail } from "../utils/jwt";
+import { notifications } from "@mantine/notifications";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -74,11 +74,11 @@ export function checkRole(acceptableRoles: RoleDetail[]): boolean {
 }
 
 export function SessionProvider(props: React.PropsWithChildren) {
-  const [[isAccessTokenLoading, accessToken], setAccessToken] = useStorageState(
+  const [[isAccessTokenLoading], setAccessToken] = useStorageState(
     CommonConstant.USER_ACCESS_TOKEN
   );
 
-  const [[isRefreshTokenLoading, refreshToken], setRefreshToken] =
+  const [[isRefreshTokenLoading], setRefreshToken] =
     useStorageState(CommonConstant.USER_REFRESH_TOKEN);
 
   const navigate = useNavigate();
@@ -109,8 +109,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   "true"
                 );
 
-                const res = await axios.post(
-                  "http://185.81.167.44:8090/api/Auth/refresh",
+                const res = await http.post("/api/auth/refresh",
                   {
                     accessToken: getAccessToken(),
                     refreshToken: getRefreshToken(),
@@ -135,6 +134,11 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
+          notifications.show({
+            message: "Session Timeout. Please login again",
+            color: "pale-red.5",
+            withCloseButton: true,
+          });
         } finally {
           localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
         }
@@ -157,6 +161,11 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
+          notifications.show({
+            message: "Session Timeout. Please login again",
+            color: "pale-red.5",
+            withCloseButton: true,
+          });
         },
         isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}

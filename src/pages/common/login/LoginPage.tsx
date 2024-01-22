@@ -1,7 +1,7 @@
 import styled from "./styles/login.module.scss";
 import AuthImage from "../../../assets/images/login_signup_main.png"
 import { LoginForm } from "./components/LoginForm";
-import LightDarkSwitch from "../../../components/LightDarkSwirch";
+import LightDarkSwitch from "../../../components/actionbutton/LightDarkSwitch";
 
 const LoginPage = () => {
 

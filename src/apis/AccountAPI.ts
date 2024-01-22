@@ -13,19 +13,19 @@ export type GetAccountResult = {
   email: string;
   password: string;
   name: string;
-  gender: number;
+  gender: number | string;
   phone: string;
   birthday: string;
   wardId: string;
   addressLine: string;
   workingShopId: string;
-  accountStatusId: number;
+  accountStatusId: number,
   ward: Ward;
   workingShop: Shop;
   accountStatus: AccountStatus;
   brand: Brand;
   managingShop: Shop;
-  roles: [AccountRole];
+  roles: AccountRole[];
 };
 
 export type AddAccountResult = {
@@ -41,13 +41,13 @@ export type AddAccountResult = {
   wardId: string;
   addressLine: string;
   workingShopId: string;
-  accountStatusId: number;
+  accountStatusId: number,
   ward: Ward;
   workingShop: Shop;
   accountStatus: AccountStatus;
   brand: Brand;
   managingShop: Shop;
-  roles: [AccountRole];
+  roles: AccountRole[];
 };
 
 export type GetAccountsParams = {
@@ -75,11 +75,11 @@ export type AddAccountParams = {
   gender: number;
   phone: string;
   birthday: string;
-  wardId: string;
+  wardId: string | null;
   addressLine: string;
-  brandId: string;
+  brandId: string | null;
   // workingShopId: string;
-  roleIds: [number];
+  roleIds: number[];
 };
 
 export type UpdateAccountParams = {
@@ -92,7 +92,6 @@ export type UpdateAccountParams = {
     birthday: string;
     wardId: string;
     addressLine: string;
-    timestamp: string;
   };
 };
 
