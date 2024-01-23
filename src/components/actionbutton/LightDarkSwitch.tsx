@@ -10,7 +10,7 @@ const LightDarkSwitch = () => {
         <Tooltip label={computedColorScheme === "dark" ? "Light Mode" : "Dark Mode"} withArrow>
             <ActionIcon
                 onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-                variant="default" size="xl" aria-label="Toggle color scheme"
+                variant="default" size="md" aria-label="Toggle color scheme"
             >
                 {computedColorScheme === "dark" ? (
                     <MdLightMode style={{ width: 18, height: 18 }} />

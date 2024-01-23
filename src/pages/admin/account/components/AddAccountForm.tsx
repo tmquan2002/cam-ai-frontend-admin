@@ -147,7 +147,7 @@ export const AddAccountForm = () => {
                         setDistrict("")
                         setWard("")
                     }}
-                    searchable limit={5} nothingFoundMessage="Not Found"
+                    searchable nothingFoundMessage="Not Found"
                 />
                 <Select label="District" placeholder="Select"
                     disabled={province == ""}
@@ -158,14 +158,14 @@ export const AddAccountForm = () => {
                         // console.log(value)
                         setWard("")
                     }}
-                    searchable limit={5} nothingFoundMessage="Not Found"
+                    searchable nothingFoundMessage="Not Found"
                 />
                 <Select label="Ward" placeholder="Select"
                     disabled={district == "" || province == ""}
                     data={wards ? wards : []}
                     rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
                     onChange={(value) => setWard(value!)}
-                    searchable limit={5} nothingFoundMessage="Not Found"
+                    searchable nothingFoundMessage="Not Found"
                 />
             </Group>
             <TextInput

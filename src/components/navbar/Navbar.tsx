@@ -16,13 +16,13 @@ export const Navbar = ({ items, goBack }: BreadCrumbParams) => {
     <div className={styled["container-main"]}>
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
       <CustomBreadcrumb items={items} goBack={goBack} />
-      <Group>
+      <Group gap={5}>
         <LightDarkSwitch />
         <NotificationButton />
         <Tooltip label="Logout" withArrow>
           <ActionIcon
             onClick={sessionHook?.signOut}
-            variant="default" size="xl" aria-label="Logout"
+            variant="default" size="md" aria-label="Logout"
           >
             <MdLogout style={{ width: 18, height: 18 }} />
           </ActionIcon>

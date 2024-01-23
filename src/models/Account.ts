@@ -10,5 +10,5 @@ export interface AccountRole {
     id: number;
     name: string;
     description: string;
-    accounts: [string];
+    accounts: string[];
 }

@@ -32,10 +32,10 @@ export const NotificationButton = () => {
 
             <Tooltip label="Notification" withArrow>
                 <Popover.Target>
-                    <Indicator size={12} color="pale-red.6">
+                    <Indicator size={5} color="pale-red.6">
                         <ActionIcon
                             onClick={() => setOpenedNotification(!openedNotification)}
-                            variant="default" size="xl" aria-label="Logout"
+                            variant="default" size="md" aria-label="Logout"
                         >
                             <MdNotifications style={{ width: 18, height: 18 }} />
                         </ActionIcon>

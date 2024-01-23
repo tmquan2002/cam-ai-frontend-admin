@@ -1,29 +1,18 @@
 export interface Ward {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
+    id: number;
     name: string;
     districtId: string;
     district: District;
 }
 
 export interface District {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
+    id: number;
     name: string;
     provinceId: string;
     province: Province;
-    wards: [string];
 }
 
 export interface Province {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
+    id: number;
     name: string;
-    districts: [string];
 }

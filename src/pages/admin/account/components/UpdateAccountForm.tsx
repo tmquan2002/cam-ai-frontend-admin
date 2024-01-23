@@ -62,9 +62,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 addressLine: data?.addressLine,
                 gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
                 birthday: new Date(data?.birthday),
-                province: data?.ward?.district.province.id,
-                district: data?.ward?.district.id,
-                ward: data?.ward?.id
+                province: data?.ward?.district.province.id.toString(),
+                district: data?.ward?.district.id.toString(),
+                ward: data?.ward?.id.toString()
             });
             console.log(form.values)
         }
@@ -151,6 +151,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             data={provinces ? provinces : []}
                             rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('province')}
+                            // onChange={() => { form.setValues({ district: "", ward: "" }) }}
                             searchable limit={5} nothingFoundMessage="Not Found"
                         />
                         <Select label="District" placeholder="Select"
@@ -158,6 +159,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             data={districts ? districts : []}
                             rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('district')}
+                            // onChange={(value) => { form.setValues({ district: value || "", ward: "" }) }}
                             searchable limit={5} nothingFoundMessage="Not Found"
                         />
                         <Select label="Ward" placeholder="Select"
@@ -175,15 +177,27 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                         justify="flex-start"
                         mt="md"
                     >
-                        <Button
-                            loading={isLoading} type="submit"
-                            variant="gradient" size="md" mt={20}
+                        <Button loading={isLoading} type="submit" variant="gradient" size="md" mt={20}
                             gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                         >
                             Update
                         </Button>
+                        {/* <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
+                            onClick={() => form.initialize({
+                                email: data?.email ? data.email : "",
+                                name: data?.name ? data.name : "",
+                                phone: data?.phone ? data.phone : "",
+                                addressLine: data?.addressLine ? data.addressLine : "",
+                                gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
+                                birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
+                                province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
+                                district: data?.ward?.district.id ? data?.ward?.district.id.toString() : "",
+                                ward: data?.ward?.id ? data?.ward?.id.toString() : ""
+                            })}>
+                            Reset
+                        </Button> */}
                     </Group>
-                </form>
+                </form >
             }
         </>
     );

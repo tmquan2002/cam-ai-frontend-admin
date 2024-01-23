@@ -9,7 +9,7 @@ export const useGetProvinces = () => {
         queryFn: async () => {
             const res = await LocationAPI.getProvinces();
             return res.map((items) => ({
-                value: items.id,
+                value: items.id.toString(),
                 label: items.name
             }))
         },
@@ -25,7 +25,7 @@ export const useGetDistricts = (provinceId: string) => {
         queryFn: async () => {
             const res = await LocationAPI.getDistrictsByProvinceId(provinceId);
             return res.map((items) => ({
-                value: items.id,
+                value: items.id.toString(),
                 label: items.name
             }))
         },
@@ -42,7 +42,7 @@ export const useGetWards = (districtId: string) => {
         queryFn: async () => {
             const res = await LocationAPI.getWardsByDistrictId(districtId);
             return res.map((items) => ({
-                value: items.id,
+                value: items.id.toString(),
                 label: items.name
             }))
         },

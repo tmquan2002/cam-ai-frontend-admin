@@ -1,12 +1,14 @@
-import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone, MdSearch, MdSettings } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
+import { RoleEnum } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
 
@@ -27,12 +29,10 @@ const AccountDetail = () => {
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
 
-    const {
-        data,
-        isLoading
-    } = useGetAccountById(params.accountId!);
-
+    const { data, isLoading } = useGetAccountById(params.accountId!);
     const { mutate: deleteAccount } = useDeleteAccount();
+
+    console.log(data?.roles)
 
     const onDelete = () => {
         deleteAccount(params.accountId!, {
@@ -77,47 +77,71 @@ const AccountDetail = () => {
                     <div className={styled["container-detail"]}>
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
-                            <div className={styled["profile-header-left"]}>
-                                <div>
+                            <div>
+                                <Group>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Text size="sm">{data?.email}</Text>
-                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                    <Group>
-                                        {data!.roles.map((item, index) => (
-                                            <Badge size='lg' radius={"lg"} color="shading.9" key={index}>
-                                                {item.name}
-                                            </Badge>
-                                        ))}
-                                    </Group>
-                                </div>
+                                    <Badge size='lg' radius={"lg"} color="shading.9">
+                                        {data?.accountStatus ? data.accountStatus.name : "None"}
+                                    </Badge>
+                                </Group>
+
+                                <Group>
+                                    <MdEmail />
+                                    <Text size="md">{data?.email}</Text>
+                                </Group>
+
+                                <Group>
+                                    <MdPhone />
+                                    <Text size="md">{data?.phone}</Text>
+                                </Group>
+
+                                <Group>
+                                    <MdCalendarToday />
+                                    <Text size="md">{data?.birthday}</Text>
+                                </Group>
+
+                                <Group>
+                                    <MdAccountCircle />
+                                    {data!.roles.map((item, index) => (
+                                        <Text size="md" key={index}>{item.name}</Text>
+                                    ))}
+                                </Group>
+
+                                <Group mb={20}>
+                                    <MdAccessTime />
+                                    <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                </Group>
                             </div>
-                            <Group>
-                                <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                    {data?.accountStatus ? data.accountStatus.name : "None"}
-                                </Badge>
-                                <Tooltip label="Update" withArrow>
-                                    <ActionIcon
-                                        size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                        onClick={() => navigate(`/account/${params.accountId!}/update`)}
-                                    >
-                                        <MdEdit style={{ width: 18, height: 18 }} />
-                                    </ActionIcon>
-                                </Tooltip>
-                                <Tooltip label="Delete" withArrow>
-                                    <ActionIcon
-                                        size="xl" aria-label="Logout" color={"pale-red.7"}
-                                        onClick={open}
-                                    >
-                                        <MdDelete style={{ width: 18, height: 18 }} />
-                                    </ActionIcon>
-                                </Tooltip>
-                            </Group>
+                            <div>
+                                <Menu shadow="md" width={200}>
+                                    <Menu.Target>
+                                        <Tooltip label="Settings" withArrow>
+                                            <ActionIcon variant="transparent" color="grey" size={"md"}>
+                                                <MdSettings style={{ width: 18, height: 18 }} />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    </Menu.Target>
+
+                                    <Menu.Dropdown>
+                                        <Menu.Item leftSection={<MdEdit />}
+                                            onClick={() => navigate(`/account/${params.accountId!}/update`)}>
+                                            Update
+                                        </Menu.Item>
+                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                            onClick={open} >
+                                            Delete
+                                        </Menu.Item>
+                                    </Menu.Dropdown>
+                                </Menu>
+                            </div>
                         </div>
                         <Divider my="md" />
-                        {/* TODO: Add a list of shops this brand/brand manager account has */}
-                        <div className={styled["profile-detail"]}>
-                            <Text>{data?.phone}</Text>
-                        </div>
+                        {/* TODO: Add detail of a shop this shop manager account working on */}
+                        {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
+                            <div className={styled["shop-detail"]}>
+                                <ShopListById id={data?.brand.id} idType="brand" />
+                            </div>
+                        }
                     </div>
                 }
             </div>
