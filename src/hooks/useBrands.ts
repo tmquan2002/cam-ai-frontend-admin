@@ -26,6 +26,7 @@ export const useGetAllBrandsSelect = (params: GetBrandsParams) => {
         label: items.name
       }))
     },
+    enabled: params.brandId ? true : false
   });
 
   return { isError, isLoading, isFetching, data, error, refetch };

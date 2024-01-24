@@ -2,7 +2,7 @@ import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, M
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone, MdSearch, MdSettings } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone, MdSettings } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
@@ -113,7 +113,7 @@ const AccountDetail = () => {
                                 </Group>
                             </div>
                             <div>
-                                <Menu shadow="md" width={200}>
+                                <Menu shadow="md" width={200} offset={{crossAxis: -80}}>
                                     <Menu.Target>
                                         <Tooltip label="Settings" withArrow>
                                             <ActionIcon variant="transparent" color="grey" size={"md"}>

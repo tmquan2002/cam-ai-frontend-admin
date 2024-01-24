@@ -1,17 +1,22 @@
-import { Badge, Button, Group, Image, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Badge, Button, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { MdAdd, MdClear, MdOutlineSearch } from 'react-icons/md';
+import { MdAdd, MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
+import { BrandStatus } from '../../../../types/enum';
 
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const [filterStatus, setFilterStatus] = useState<string | null>("")
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -20,12 +25,12 @@ const BrandList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
-            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
 
     const { data: brandList, isLoading, isFetching, refetch
-    } = useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
+    } = filterStatus ? useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm, statusId: Number(filterStatus) }) :
+            useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
 
     const onSearch = (e: any) => {
         // console.log(e.key)
@@ -51,10 +56,11 @@ const BrandList = () => {
         <Tooltip label="View Detail" withArrow key={e.id}>
             <Table.Tr onClick={() => navigate(`/brand/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
+
                 <Table.Td>
-                    <Image w={70} h={70} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />
-                </Table.Td>
-                <Table.Td>{e.name}</Table.Td>
+                    <Group>
+                        <Avatar w={50} h={50} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />{e.name}
+                    </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
@@ -79,22 +85,43 @@ const BrandList = () => {
                     Add
                 </Button>
             </div>
-            <TextInput mb={20}
-                placeholder="Search" leftSection={<MdOutlineSearch />}
-                rightSection={<MdClear onClick={() => {
-                    setSearchTerm("")
-                    setClear(true)
-                    setPageIndex(1)
-                }} />}
-                value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                onKeyDown={onSearch}
-            />
+            <Group mb={20} justify='space-around'>
+                <TextInput w={'80%'}
+                    placeholder="Search" leftSection={<MdOutlineSearch />}
+                    rightSection={<MdClear onClick={() => {
+                        setSearchTerm("")
+                        setClear(true)
+                        setPageIndex(1)
+                    }} />}
+                    value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                    onKeyDown={onSearch}
+                />
+                <Tooltip label="Filter" withArrow>
+                    <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                        <MdFilterAlt />
+                    </ActionIcon>
+                </Tooltip>
+                <Modal opened={opened} onClose={close} title="Filter List" centered>
+                    <Select data={[
+                        { value: BrandStatus.Active.toString(), label: "Active" },
+                        { value: BrandStatus.Inactive.toString(), label: "Inactive" }
+                    ]}
+                        label="Status" placeholder="Pick value" clearable value={filterStatus} onChange={setFilterStatus}
+                    />
+                    <Button
+                        mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
+                        variant="gradient" size="md" mb={20}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        Done
+                    </Button>
+                </Modal>
+            </Group>
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th>#</Table.Th>
-                            <Table.Th>Logo</Table.Th>
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Created Date</Table.Th>
                             <Table.Th>Status</Table.Th>

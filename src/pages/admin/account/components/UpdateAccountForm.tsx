@@ -45,8 +45,8 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
 
     const { mutate: updateAccount, isLoading } = useUpdateAccount();
     const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
-    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province || "");
-    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district || "");
+    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district);
 
     const navigate = useNavigate();
 

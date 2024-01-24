@@ -1,8 +1,11 @@
-import { Badge, Button, Group, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Badge, Button, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { MdAdd, MdClear, MdOutlineSearch } from 'react-icons/md';
+import { MdAdd, MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
+import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
+import { AccountStatus, RoleEnum } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
@@ -12,6 +15,12 @@ const AccountList = () => {
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const [filterRole, setFilterRole] = useState<string | null>("")
+    const [filterStatus, setFilterStatus] = useState<string | null>("")
+    const [filterSearchBrand, setFilterSearchBrand] = useState<string | null>("")
+
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -26,7 +35,14 @@ const AccountList = () => {
     ))
 
     const { data: accountList, isLoading, isFetching, refetch
-    } = useGetAllAccounts({ pageIndex: (pageIndex - 1), size: Number(size), search: searchTerm });
+    } = useGetAllAccounts({
+        pageIndex: (pageIndex - 1), size: Number(size),
+        search: searchTerm, accountStatusId: filterStatus ? filterStatus : "",
+        roleId: filterRole ? filterRole : ""
+    });
+
+    const { data: brandList, isLoading: isLoadingBrand, isFetching: isFetchingBrand, refetch: refetchBrand
+    } = useGetAllBrandsSelect({});
 
     const onSearch = (e: any) => {
         // console.log(e.key)
@@ -55,12 +71,12 @@ const AccountList = () => {
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{e.roles[0].name}</Table.Td>
+                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <Badge size='lg' radius={"lg"} color="light-yellow.7">
                         {e.accountStatus ? e.accountStatus.name : "None"}
                     </Badge>
                 </Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
             </Table.Tr>
         </Tooltip>
     ));
@@ -79,16 +95,54 @@ const AccountList = () => {
                     Add
                 </Button>
             </div>
-            <TextInput mb={20}
-                placeholder="Search" leftSection={<MdOutlineSearch />}
-                rightSection={<MdClear onClick={() => {
-                    setSearchTerm("")
-                    setClear(true)
-                    setPageIndex(1)
-                }} />}
-                value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                onKeyDown={onSearch}
-            />
+            <Group mb={20} justify='space-around'>
+                <TextInput w={'80%'}
+                    placeholder="Search" leftSection={<MdOutlineSearch />}
+                    rightSection={<MdClear onClick={() => {
+                        setSearchTerm("")
+                        setClear(true)
+                        setPageIndex(1)
+                    }} />}
+                    value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                    onKeyDown={onSearch}
+                />
+                <Tooltip label="Filter" withArrow>
+                    <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                        <MdFilterAlt />
+                    </ActionIcon>
+                </Tooltip>
+                <Modal opened={opened} onClose={close} title="Filter List" centered>
+                    <Select data={[
+                        { value: RoleEnum.Technician.toString(), label: "Technician" },
+                        { value: RoleEnum.BrandManager.toString(), label: "Brand Manager" },
+                        { value: RoleEnum.ShopManager.toString(), label: "Shop Manager" },
+                        { value: RoleEnum.Employee.toString(), label: "Employee" }
+                    ]}
+                        label="Role" placeholder="Pick value" clearable value={filterRole} onChange={setFilterRole}
+                    />
+                    <Select data={[
+                        { value: AccountStatus.New.toString(), label: "New" },
+                        { value: AccountStatus.Active.toString(), label: "Active" },
+                        { value: AccountStatus.Inactive.toString(), label: "Inactive" }
+                    ]}
+                        label="Account Status" placeholder="Pick value" clearable
+                        value={filterStatus} onChange={setFilterStatus}
+                    />
+                    <Select label="Brand" data={isLoadingBrand || isFetchingBrand ? [] : brandList} limit={5}
+                        value={filterSearchBrand} placeholder="Pick value" clearable searchable
+                        onChange={(value) => {
+                            setFilterSearchBrand(value)
+
+                        }} />
+                    <Button
+                        mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
+                        variant="gradient" size="md" mb={20}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        Done
+                    </Button>
+                </Modal>
+            </Group>
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
                     <Table.Thead>

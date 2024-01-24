@@ -134,11 +134,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
-          notifications.show({
-            message: "Session Timeout. Please login again",
-            color: "pale-red.5",
-            withCloseButton: true,
-          });
         } finally {
           localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
         }
@@ -161,11 +156,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setAccessToken(null);
           setRefreshToken(null);
           navigate("/");
-          notifications.show({
-            message: "Session Timeout. Please login again",
-            color: "pale-red.5",
-            withCloseButton: true,
-          });
         },
         isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}

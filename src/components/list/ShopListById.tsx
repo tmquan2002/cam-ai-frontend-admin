@@ -1,9 +1,9 @@
-import { Badge, Box, Button, Card, Flex, Group, Image, LoadingOverlay, SimpleGrid, Text } from "@mantine/core"
-import { useGetAllShops } from "../../hooks/useShops"
-import styled from "./list.module.scss"
-import { Shop } from "../../models/Shop";
-import { useNavigate } from "react-router-dom";
+import { Badge, Box, Button, Card, Group, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useGetAllShops } from "../../hooks/useShops";
+import { Shop } from "../../models/Shop";
+import styled from "./list.module.scss";
 
 interface ShopListParam {
     idType: "brand" | "shopmanager";

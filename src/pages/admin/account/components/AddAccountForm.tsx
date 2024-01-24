@@ -18,14 +18,6 @@ export const AddAccountForm = () => {
     const [ward, setWard] = useState<string>("");
     const [brand, setBrand] = useState<string | null>(null);
 
-    const { mutate: addAccount, isLoading } = useAddAccount();
-    const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrandsSelect({});
-    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
-    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(province!);
-    const { data: wards, isFetching: isFetchingWards } = useGetWards(district!);
-
-    const navigate = useNavigate();
-
     //TODO: Password should be auto generated, manager will have to change password later
     const form = useForm({
         initialValues: {
@@ -37,6 +29,9 @@ export const AddAccountForm = () => {
             birthday: new Date(2000, 0),
             addressLine: "",
             roleIds: "",
+            province: "",
+            district: "",
+            ward: "",
         },
 
         validate: {
@@ -58,6 +53,16 @@ export const AddAccountForm = () => {
                 value === '' ? "Please choose a role" : null,
         },
     });
+
+    const { mutate: addAccount, isLoading } = useAddAccount();
+
+    const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrandsSelect({});
+
+    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district);
+
+    const navigate = useNavigate();
 
     const onSubmitForm = async () => {
         // console.log(values)
@@ -140,33 +145,28 @@ export const AddAccountForm = () => {
             <Group grow>
                 <Select label="Province" placeholder="Select"
                     data={provinces ? provinces : []}
-                    rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
-                    onChange={(value) => {
-                        setProvince(value!)
-                        // console.log(value)
-                        setDistrict("")
-                        setWard("")
-                    }}
+                    // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
+                    {...form.getInputProps('province')}
                     searchable nothingFoundMessage="Not Found"
                 />
-                <Select label="District" placeholder="Select"
-                    disabled={province == ""}
-                    data={districts ? districts : []}
-                    rightSection={province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
-                    onChange={(value) => {
-                        setDistrict(value!)
-                        // console.log(value)
-                        setWard("")
-                    }}
-                    searchable nothingFoundMessage="Not Found"
-                />
-                <Select label="Ward" placeholder="Select"
-                    disabled={district == "" || province == ""}
-                    data={wards ? wards : []}
-                    rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
-                    onChange={(value) => setWard(value!)}
-                    searchable nothingFoundMessage="Not Found"
-                />
+                {isFetchingDistricts ? <></> :
+                    <Select label="District" placeholder="Select"
+                        disabled={form.values.province == ""}
+                        data={districts ? districts : []}
+                        // rightSection={province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                        {...form.getInputProps('district')}
+                        searchable nothingFoundMessage="Not Found"
+                    />
+                }
+                {isFetchingWards ? <></> :
+                    <Select label="Ward" placeholder="Select"
+                        // disabled={district == "" || province == ""}
+                        data={wards ? wards : []}
+                        // rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                        {...form.getInputProps('ward')}
+                        searchable nothingFoundMessage="Not Found"
+                    />
+                }
             </Group>
             <TextInput
                 label="Address" placeholder="123/45 ABC..."

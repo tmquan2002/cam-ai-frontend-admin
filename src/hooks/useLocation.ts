@@ -29,7 +29,6 @@ export const useGetDistricts = (provinceId: string) => {
                 label: items.name
             }))
         },
-        enabled: provinceId !== ""
     });
 
     return { isError, isLoading, isFetching, data, error, refetch };
@@ -46,7 +45,6 @@ export const useGetWards = (districtId: string) => {
                 label: items.name
             }))
         },
-        enabled: districtId !== ""
     });
 
     return { isError, isLoading, isFetching, data, error, refetch };
