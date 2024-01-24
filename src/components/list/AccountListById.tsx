@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Card, Group, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
-import { MdEmail, MdHome, MdPhone } from "react-icons/md";
+import { MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { GetAccountResult } from "../../apis/AccountAPI";
 import { useGetAllAccounts } from "../../hooks/useAccounts";

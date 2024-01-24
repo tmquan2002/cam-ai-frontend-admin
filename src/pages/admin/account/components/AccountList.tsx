@@ -10,7 +10,7 @@ import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
 const AccountList = () => {
-    //TODO: Filter based on brand
+    //TODO: Filter based on brand with delay search
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
@@ -38,7 +38,8 @@ const AccountList = () => {
     } = useGetAllAccounts({
         pageIndex: (pageIndex - 1), size: Number(size),
         search: searchTerm, accountStatusId: filterStatus ? filterStatus : "",
-        roleId: filterRole ? filterRole : ""
+        roleId: filterRole ? filterRole : "",
+        brandId: filterSearchBrand ? filterSearchBrand : "",
     });
 
     const { data: brandList, isLoading: isLoadingBrand, isFetching: isFetchingBrand, refetch: refetchBrand
@@ -130,10 +131,7 @@ const AccountList = () => {
                     />
                     <Select label="Brand" data={isLoadingBrand || isFetchingBrand ? [] : brandList} limit={5}
                         value={filterSearchBrand} placeholder="Pick value" clearable searchable
-                        onChange={(value) => {
-                            setFilterSearchBrand(value)
-
-                        }} />
+                        onChange={setFilterSearchBrand} />
                     <Button
                         mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
                         variant="gradient" size="md" mb={20}

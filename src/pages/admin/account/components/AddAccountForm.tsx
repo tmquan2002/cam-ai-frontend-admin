@@ -13,9 +13,6 @@ import { Gender, RoleEnum } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const AddAccountForm = () => {
-    const [province, setProvince] = useState<string>("");
-    const [district, setDistrict] = useState<string>("");
-    const [ward, setWard] = useState<string>("");
     const [brand, setBrand] = useState<string | null>(null);
 
     //TODO: Password should be auto generated, manager will have to change password later
@@ -77,7 +74,7 @@ export const AddAccountForm = () => {
             password: form.values.password,
             roleIds: [Number(form.values.roleIds)],
             brandId: brand,
-            wardId: ward,
+            wardId: form.values.ward,
         };
         console.log(addAccountParams)
 

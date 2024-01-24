@@ -2,18 +2,18 @@ import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingO
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { AiFillControl, AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone, MdSettings } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import { AccountListById } from "../../../components/list/AccountListById";
+import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
+import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
-import { BrandStatus } from "../../../types/enum";
-import { AiFillControl, AiFillShop } from "react-icons/ai";
-import { ShopListById } from "../../../components/list/ShopListById";
-import { AccountListById } from "../../../components/list/AccountListById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
