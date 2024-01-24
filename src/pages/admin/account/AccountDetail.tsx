@@ -139,6 +139,7 @@ const AccountDetail = () => {
                         {/* TODO: Add detail of a shop this shop manager account working on */}
                         {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
                             <div className={styled["shop-detail"]}>
+                                <Text size="lg" fw={"bold"}>Shops</Text>
                                 <ShopListById id={data?.brand.id} idType="brand" />
                             </div>
                         }

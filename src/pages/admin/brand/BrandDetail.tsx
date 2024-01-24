@@ -1,8 +1,8 @@
-import { ActionIcon, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdAutorenew, MdDelete, MdEdit } from "react-icons/md";
+import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone, MdSettings } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
@@ -11,6 +11,9 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
 import { BrandStatus } from "../../../types/enum";
+import { AiFillControl, AiFillShop } from "react-icons/ai";
+import { ShopListById } from "../../../components/list/ShopListById";
+import { AccountListById } from "../../../components/list/AccountListById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,10 +33,7 @@ const BrandDetail = () => {
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
 
-    const {
-        data,
-        isLoading
-    } = useGetBrandById(params.brandId!);
+    const { data, isLoading } = useGetBrandById(params.brandId!);
 
     const { mutate: deleteBrand } = useDeleteBrand();
     const { mutate: reactivateBrand } = useReactivateBrand();
@@ -110,52 +110,89 @@ const BrandDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        {data?.bannerUri && <Image h={150} mb={20} src={data?.bannerUri} />}
+                        {data?.bannerUri && <Image h={200} mb={20} src={data?.bannerUri} />}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Image w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
+                                <Avatar w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
                                 <div>
-                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Text size="sm">Email: {data?.email}</Text>
-                                    <Text size="xs" mb={20}>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                                        {data?.brandStatus ? data.brandStatus.name : "None"}
-                                    </Badge>
+                                    <Group>
+                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                        <Badge size='lg' radius={"lg"} color="shading.9">
+                                            {data?.brandStatus ? data.brandStatus.name : "None"}
+                                        </Badge>
+                                    </Group>
+                                    <Group>
+                                        <MdEmail />
+                                        <Text size="md">{data?.email}</Text>
+                                    </Group>
+                                    <Group>
+                                        <MdPhone />
+                                        <Text size="md">{data?.phone}</Text>
+                                    </Group>
+                                    <Group mb={20}>
+                                        <MdAccessTime />
+                                        <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                    </Group>
                                 </div>
                             </div>
-                            <Group>
-                                <Tooltip label="Update" withArrow>
-                                    <ActionIcon
-                                        size="xl" aria-label="Logout" color={"light-yellow.9"}
-                                        onClick={() => navigate(`/brand/${params.brandId!}/update`)}
-                                    >
-                                        <MdEdit style={{ width: 18, height: 18 }} />
-                                    </ActionIcon>
-                                </Tooltip>
-                                {data?.brandStatus.id === BrandStatus.Active ?
-                                    <Tooltip label="Delete" withArrow>
-                                        <ActionIcon
-                                            size="xl" aria-label="Logout" color={"pale-red.7"}
-                                            onClick={open}
-                                        >
-                                            <MdDelete style={{ width: 18, height: 18 }} />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                    :
-                                    <Tooltip label="Reactivate" withArrow>
-                                        <ActionIcon
-                                            size="xl" aria-label="Logout" color={"green.7"}
-                                            onClick={open}
-                                        >
-                                            <MdAutorenew style={{ width: 18, height: 18 }} />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                }
-                            </Group>
+                            <div>
+                                <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                    <Menu.Target>
+                                        <Tooltip label="Settings" withArrow>
+                                            <ActionIcon variant="transparent" color="grey" size={"md"}>
+                                                <MdSettings style={{ width: 18, height: 18 }} />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    </Menu.Target>
+
+                                    <Menu.Dropdown>
+                                        <Menu.Item leftSection={<MdEdit />}
+                                            onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
+                                            Update
+                                        </Menu.Item>
+                                        {data?.brandStatus.id === BrandStatus.Active ?
+                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                                onClick={open} >
+                                                Delete
+                                            </Menu.Item>
+                                            :
+                                            <Menu.Item leftSection={<MdAutorenew />}
+                                                onClick={open} >
+                                                Reactivate
+                                            </Menu.Item>
+                                        }
+                                    </Menu.Dropdown>
+                                </Menu>
+                            </div>
                         </div>
                         <Divider my="md" />
                         <div className={styled["profile-detail"]}>
-                            <Text>{data?.phone}</Text>
+                            <Tabs defaultValue="shops">
+                                <Tabs.List>
+                                    <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
+                                        Shops
+                                    </Tabs.Tab>
+                                    <Tabs.Tab value="accounts" leftSection={<MdOutlineSupervisorAccount />}>
+                                        Accounts
+                                    </Tabs.Tab>
+                                    <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
+                                        Edge Boxes
+                                    </Tabs.Tab>
+                                </Tabs.List>
+
+                                <Tabs.Panel value="shops">
+                                    <ShopListById id={params.brandId!} idType="brand" />
+                                </Tabs.Panel>
+
+                                <Tabs.Panel value="accounts">
+                                    <AccountListById id={params.brandId!} />
+                                </Tabs.Panel>
+
+                                {/* TODO: Edge Box list */}
+                                <Tabs.Panel value="edge boxes">
+                                    Edge Box tab content coming soon
+                                </Tabs.Panel>
+                            </Tabs>
                         </div>
                     </div>
                 }

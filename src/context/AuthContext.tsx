@@ -6,7 +6,6 @@ import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
 import * as jwt from "../utils/jwt";
 import { RoleDetail } from "../utils/jwt";
-import { notifications } from "@mantine/notifications";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;

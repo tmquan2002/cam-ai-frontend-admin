@@ -1,16 +1,15 @@
 import { Badge, Box, Button, Card, Group, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
-import { MdHome, MdPhone } from "react-icons/md";
+import { MdEmail, MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { useGetAllShops } from "../../hooks/useShops";
-import { Shop } from "../../models/Shop";
+import { GetAccountResult } from "../../apis/AccountAPI";
+import { useGetAllAccounts } from "../../hooks/useAccounts";
 import styled from "./list.module.scss";
 
-interface ShopListParam {
-    idType: "brand" | "shopmanager";
+interface AccountListParam {
     id: string;
 }
 
-const ShopCard = ({ item }: { item: Shop }) => {
+const AccountCard = ({ item }: { item: GetAccountResult }) => {
     console.log(item)
     const navigate = useNavigate();
 
@@ -20,9 +19,9 @@ const ShopCard = ({ item }: { item: Shop }) => {
 
             <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500} size="lg">{item.name}</Text>
-                {item.shopStatus &&
+                {item.accountStatus &&
                     <Badge size='lg' radius={"lg"} color="shading.9">
-                        {item.shopStatus.name}
+                        {item.accountStatus.name}
                     </Badge>
                 }
             </Group>
@@ -33,20 +32,20 @@ const ShopCard = ({ item }: { item: Shop }) => {
             </Group>
 
             <Group>
-                <MdPhone />
-                <Text size="sm" c="dimmed">{item.phone}</Text>
+                <MdEmail />
+                <Text size="sm" c="dimmed">{item.email}</Text>
             </Group>
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
-                onClick={() => navigate(`/shop/${item.id}`)}>
+                onClick={() => navigate(`/account/${item.id}`)}>
                 View Detail
             </Button>
         </Card>
     )
 }
-export const ShopListById = ({ idType, id }: ShopListParam) => {
+export const AccountListById = ({ id }: AccountListParam) => {
 
-    const { isLoading, data } = idType == "brand" ? useGetAllShops({ brandId: id }) : useGetAllShops({ shopManagerId: id })
+    const { isLoading, data } = useGetAllAccounts({ brandId: id })
 
     return (
         <div className={styled["list-container"]}>
@@ -55,10 +54,10 @@ export const ShopListById = ({ idType, id }: ShopListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Found</Text> :
+                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Account Found</Text> :
                         <SimpleGrid cols={3} mt={20}>
                             {data?.values.map((item, index) => (
-                                <ShopCard item={item} key={index} />
+                                <AccountCard item={item} key={index} />
                             ))}
                         </SimpleGrid>
                     }
