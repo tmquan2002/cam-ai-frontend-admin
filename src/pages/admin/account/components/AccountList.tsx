@@ -1,7 +1,7 @@
-import { ActionIcon, Badge, Button, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Badge, Button, Grid, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { MdAdd, MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
@@ -42,7 +42,7 @@ const AccountList = () => {
         brandId: filterSearchBrand ? filterSearchBrand : "",
     });
 
-    const { data: brandList, isLoading: isLoadingBrand, isFetching: isFetchingBrand, refetch: refetchBrand
+    const { data: brandList, isLoading: isLoadingBrand, isFetching: isFetchingBrand,
     } = useGetAllBrandsSelect({});
 
     const onSearch = (e: any) => {
@@ -84,63 +84,74 @@ const AccountList = () => {
 
     return (
         <>
-            <div className={styled["table-header"]}>
-                <Text size='lg' fw="bold" fz='25px' mb={20}
-                    c={"light-blue.4"}
-                >ACCOUNT LIST</Text>
-                <Button
-                    onClick={() => navigate("/account/add")}
-                    variant="gradient" size="md" leftSection={<MdAdd />} mb={20}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                >
-                    Add
-                </Button>
-            </div>
-            <Group mb={20} justify='space-around'>
-                <TextInput w={'80%'}
-                    placeholder="Search" leftSection={<MdOutlineSearch />}
-                    rightSection={<MdClear onClick={() => {
-                        setSearchTerm("")
-                        setClear(true)
-                        setPageIndex(1)
-                    }} />}
-                    value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                    onKeyDown={onSearch}
-                />
-                <Tooltip label="Filter" withArrow>
-                    <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
-                        <MdFilterAlt />
-                    </ActionIcon>
-                </Tooltip>
-                <Modal opened={opened} onClose={close} title="Filter List" centered>
-                    <Select data={[
-                        { value: RoleEnum.Technician.toString(), label: "Technician" },
-                        { value: RoleEnum.BrandManager.toString(), label: "Brand Manager" },
-                        { value: RoleEnum.ShopManager.toString(), label: "Shop Manager" },
-                        { value: RoleEnum.Employee.toString(), label: "Employee" }
-                    ]}
-                        label="Role" placeholder="Pick value" clearable value={filterRole} onChange={setFilterRole}
+            {/* Top */}
+            <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }} order={{ base: 1, md: 1, lg: 1 }}>
+                    <Text size='lg' fw="bold" fz='25px'
+                        c={"light-blue.4"}
+                    >BRAND LIST</Text>
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 6, md: 6, lg: 6 }} order={{ base: 2, md: 3, lg: 2 }}>
+                    <TextInput w={'100%'}
+                        placeholder="Search" leftSection={<MdOutlineSearch />}
+                        rightSection={<MdClear onClick={() => {
+                            setSearchTerm("")
+                            setClear(true)
+                            setPageIndex(1)
+                        }} />}
+                        value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                        onKeyDown={onSearch}
                     />
-                    <Select data={[
-                        { value: AccountStatus.New.toString(), label: "New" },
-                        { value: AccountStatus.Active.toString(), label: "Active" },
-                        { value: AccountStatus.Inactive.toString(), label: "Inactive" }
-                    ]}
-                        label="Account Status" placeholder="Pick value" clearable
-                        value={filterStatus} onChange={setFilterStatus}
-                    />
-                    <Select label="Brand" data={isLoadingBrand || isFetchingBrand ? [] : brandList} limit={5}
-                        value={filterSearchBrand} placeholder="Pick value" clearable searchable
-                        onChange={setFilterSearchBrand} />
-                    <Button
-                        mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
-                        variant="gradient" size="md" mb={20}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Done
-                    </Button>
-                </Modal>
-            </Group>
+                </Grid.Col>
+
+                <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
+                    <Group>
+                        <Tooltip label="Filter" withArrow>
+                            <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                                <MdFilterAlt />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Button
+                            onClick={() => navigate("/account/add")} variant="gradient"
+                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                        >
+                            New
+                        </Button>
+                    </Group>
+                    <Modal opened={opened} onClose={close} title="Filter List" centered>
+                        <Select data={[
+                            { value: RoleEnum.Technician.toString(), label: "Technician" },
+                            { value: RoleEnum.BrandManager.toString(), label: "Brand Manager" },
+                            { value: RoleEnum.ShopManager.toString(), label: "Shop Manager" },
+                            { value: RoleEnum.Employee.toString(), label: "Employee" }
+                        ]}
+                            label="Role" placeholder="Pick value" clearable value={filterRole} onChange={setFilterRole}
+                        />
+                        <Select data={[
+                            { value: AccountStatus.New.toString(), label: "New" },
+                            { value: AccountStatus.Active.toString(), label: "Active" },
+                            { value: AccountStatus.Inactive.toString(), label: "Inactive" }
+                        ]}
+                            label="Account Status" placeholder="Pick value" clearable
+                            value={filterStatus} onChange={setFilterStatus}
+                        />
+                        <Select label="Brand" data={isLoadingBrand || isFetchingBrand ? [] : brandList} limit={5}
+                            value={filterSearchBrand} placeholder="Pick value" clearable searchable
+                            onChange={setFilterSearchBrand} />
+                        <Button
+                            mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
+                            variant="gradient" size="md" mb={20}
+                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                        >
+                            Done
+                        </Button>
+                    </Modal>
+                </Grid.Col>
+
+            </Grid>
+
+            {/* Table */}
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
                     <Table.Thead>

@@ -1,8 +1,8 @@
-import { ActionIcon, Avatar, Box, Divider, Group, Image, Indicator, Popover, Text, Tooltip } from "@mantine/core"
+import { ActionIcon, Avatar, Box, Divider, Group, Indicator, Popover, Text, Tooltip } from "@mantine/core";
 import { useState } from "react";
-import { MdNotifications, MdQueryBuilder } from "react-icons/md"
-import { timeSince } from "../../utils/dateFormat";
+import { MdNotifications, MdQueryBuilder } from "react-icons/md";
 import { NO_IMAGE_LOGO } from "../../constants/ImagePlaceholders";
+import { timeSince } from "../../utils/dateFormat";
 
 const NotificationCard = ({ message, date }: { message: string, date: Date }) => {
     return (

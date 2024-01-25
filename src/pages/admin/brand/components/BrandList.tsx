@@ -1,13 +1,13 @@
-import { ActionIcon, Avatar, Badge, Button, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Badge, Button, Grid, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { MdAdd, MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
+import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
-import { BrandStatus } from '../../../../types/enum';
 
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -73,50 +73,61 @@ const BrandList = () => {
 
     return (
         <>
-            <div className={styled["table-header"]}>
-                <Text size='lg' fw="bold" fz='25px' mb={20}
-                    c={"light-blue.4"}
-                >BRAND LIST</Text>
-                <Button
-                    onClick={() => navigate("/brand/add")}
-                    variant="gradient" size="md" leftSection={<MdAdd />} mb={20}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                >
-                    Add
-                </Button>
-            </div>
-            <Group mb={20} justify='space-around'>
-                <TextInput w={'80%'}
-                    placeholder="Search" leftSection={<MdOutlineSearch />}
-                    rightSection={<MdClear onClick={() => {
-                        setSearchTerm("")
-                        setClear(true)
-                        setPageIndex(1)
-                    }} />}
-                    value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                    onKeyDown={onSearch}
-                />
-                <Tooltip label="Filter" withArrow>
-                    <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
-                        <MdFilterAlt />
-                    </ActionIcon>
-                </Tooltip>
-                <Modal opened={opened} onClose={close} title="Filter List" centered>
-                    <Select data={[
-                        { value: BrandStatus.Active.toString(), label: "Active" },
-                        { value: BrandStatus.Inactive.toString(), label: "Inactive" }
-                    ]}
-                        label="Status" placeholder="Pick value" clearable value={filterStatus} onChange={setFilterStatus}
+            {/* Top */}
+            <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
+
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }} order={{ base: 1, md: 1, lg: 1 }}>
+                    <Text size='lg' fw="bold" fz='25px'
+                        c={"light-blue.4"}
+                    >BRAND LIST</Text>
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 6, md: 6, lg: 6 }} order={{ base: 2, md: 3, lg: 2 }}>
+                    <TextInput w={'100%'}
+                        placeholder="Search" leftSection={<MdOutlineSearch />}
+                        rightSection={<MdClear onClick={() => {
+                            setSearchTerm("")
+                            setClear(true)
+                            setPageIndex(1)
+                        }} />}
+                        value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                        onKeyDown={onSearch}
                     />
-                    <Button
-                        mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
-                        variant="gradient" size="md" mb={20}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Done
-                    </Button>
-                </Modal>
-            </Group>
+                </Grid.Col>
+
+                <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
+                    <Group>
+                        <Tooltip label="Filter" withArrow>
+                            <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                                <MdFilterAlt />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Button
+                            onClick={() => navigate("/brand/add")} variant="gradient"
+                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                        >
+                            New
+                        </Button>
+                    </Group>
+                    <Modal opened={opened} onClose={close} title="Filter List" centered>
+                        <Select data={[
+                            { value: BrandStatus.Active.toString(), label: "Active" },
+                            { value: BrandStatus.Inactive.toString(), label: "Inactive" }
+                        ]}
+                            label="Status" placeholder="Pick value" clearable value={filterStatus} onChange={setFilterStatus}
+                        />
+                        <Button
+                            onClick={() => { refetch(); close(); setPageIndex(1) }}
+                            variant="gradient" mt={20}
+                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                        >
+                            Done
+                        </Button>
+                    </Modal>
+                </Grid.Col>
+            </Grid>
+
+            {/* Table */}
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
                     <Table.Thead>

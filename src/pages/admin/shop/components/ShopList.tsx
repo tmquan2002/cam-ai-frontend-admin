@@ -68,17 +68,17 @@ const ShopList = () => {
                 <Text size='lg' fw="bold" fz='25px' mb={20}
                     c={"light-blue.4"}
                 >SHOP LIST</Text>
+                <TextInput mb={20} w={300}
+                    placeholder="Search" leftSection={<MdOutlineSearch />}
+                    rightSection={<MdClear onClick={() => {
+                        setSearchTerm("")
+                        setClear(true)
+                        setPageIndex(1)
+                    }} />}
+                    value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                    onKeyDown={onSearch}
+                />
             </div>
-            <TextInput mb={20}
-                placeholder="Search" leftSection={<MdOutlineSearch />}
-                rightSection={<MdClear onClick={() => {
-                    setSearchTerm("")
-                    setClear(true)
-                    setPageIndex(1)
-                }} />}
-                value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                onKeyDown={onSearch}
-            />
             <Table.ScrollContainer minWidth={500}>
                 <Table verticalSpacing={"sm"} striped highlightOnHover>
                     <Table.Thead>

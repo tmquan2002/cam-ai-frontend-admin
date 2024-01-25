@@ -1,4 +1,6 @@
-import { Avatar, Badge, Box, Divider, Group, Image, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Avatar, Badge, Box, Divider, Group, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { AiFillControl, AiFillSnippets } from "react-icons/ai";
+import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdPhone } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
@@ -6,8 +8,6 @@ import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
-import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdPhone } from "react-icons/md";
-import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",

@@ -55,7 +55,7 @@ export const AddAccountForm = () => {
 
     const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrandsSelect({});
 
-    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: provinces } = useGetProvinces();
     const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
     const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district);
 
