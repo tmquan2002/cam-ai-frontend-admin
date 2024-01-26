@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import '@mantine/dates/styles.css';
+import '@mantine/charts/styles.css';
 import "./index.css";
 import "./assets/fonts/DesignerVN-Poppins-Regular.ttf";
 

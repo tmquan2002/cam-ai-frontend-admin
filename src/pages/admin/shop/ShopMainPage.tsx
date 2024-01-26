@@ -13,7 +13,7 @@ const ShopMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} goBack />
+            <Navbar items={breadcrumbs} />
             <div className={styled["table-container"]}>
                 <ShopList />
             </div>

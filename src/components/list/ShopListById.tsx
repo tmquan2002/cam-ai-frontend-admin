@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, Group, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Badge, Box, Button, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
@@ -18,24 +18,30 @@ const ShopCard = ({ item }: { item: Shop }) => {
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <Group justify="space-between" mt="md" mb="xs">
+            <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.shopStatus &&
-                    <Badge size='lg' radius={"lg"} color="shading.9">
+                    <Badge size='lg' radius={"lg"} color="shading.9" mt={15} mb={15}>
                         {item.shopStatus.name}
                     </Badge>
                 }
-            </Group>
+            </div>
 
-            <Group>
-                <MdHome />
-                <Text size="sm" c="dimmed">{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</Text>
-            </Group>
 
-            <Group>
+            <div className={styled["icon-text"]}>
+                <MdHome style={{ width: '20px', height: '20px' }} />
+                {item.addressLine && item.ward ?
+                    <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                    : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
+                        : item.ward ? <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                            : "None"
+                }
+            </div>
+
+            <div className={styled["icon-text"]}>
                 <MdPhone />
-                <Text size="sm" c="dimmed">{item.phone}</Text>
-            </Group>
+                <span className={styled["information"]}>{item.phone}</span>
+            </div>
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/shop/${item.id}`)}>

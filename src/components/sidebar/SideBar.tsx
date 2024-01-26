@@ -3,6 +3,7 @@ import { FaTicketAlt } from "react-icons/fa";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { LinksGroup } from './LinksGroup';
 import styled from './sidebar.module.scss';
+import { Divider, Text } from "@mantine/core";
 
 const data = [
     { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
@@ -18,6 +19,8 @@ export function SideBar() {
 
     return (
         <nav className={styled.sidebar}>
+            <Text m={10} fw={'bold'} size="lg">CAMAI</Text>
+            <Divider />
             <div className={styled.linksInner}>{links}</div>
         </nav>
     );

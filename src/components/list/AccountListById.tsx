@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, Group, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Badge, Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
 import { MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { GetAccountResult } from "../../apis/AccountAPI";
@@ -17,24 +17,29 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <Group justify="space-between" mt="md" mb="xs">
+            <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.accountStatus &&
-                    <Badge size='lg' radius={"lg"} color="shading.9">
+                    <Badge size='lg' radius={"lg"} color="shading.9" mt={15} mb={15}>
                         {item.accountStatus.name}
                     </Badge>
                 }
-            </Group>
+            </div>
 
-            <Group>
-                <MdHome />
-                <Text size="sm" c="dimmed">{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</Text>
-            </Group>
+            <div className={styled["icon-text"]}>
+                <MdHome style={{ width: '20px', height: '20px' }} />
+                {item.addressLine && item.ward ?
+                    <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                    : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
+                        : item.ward ? <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                            : "None"
+                }
+            </div>
 
-            <Group>
+            <div className={styled["icon-text"]}>
                 <MdEmail />
-                <Text size="sm" c="dimmed">{item.email}</Text>
-            </Group>
+                <span className={styled["information"]}>{item.email}</span>
+            </div>
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/account/${item.id}`)}>
@@ -48,18 +53,20 @@ export const AccountListById = ({ id }: AccountListParam) => {
     const { isLoading, data } = useGetAllAccounts({ brandId: id })
 
     return (
-        <div className={styled["list-container"]}>
+        <div>
             {isLoading ?
-                <Box className={styled["loader"]}>
+                <Box>
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
-                <div className={styled["card-detail"]}>
+                <div>
                     {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Account Found</Text> :
-                        <SimpleGrid cols={3} mt={20}>
+                        <Grid mt={20}>
                             {data?.values.map((item, index) => (
-                                <AccountCard item={item} key={index} />
+                                <Grid.Col key={index} span={{ base: 12, md: 6 }}>
+                                    <AccountCard item={item} />
+                                </Grid.Col>
                             ))}
-                        </SimpleGrid>
+                        </Grid>
                     }
                 </div>
             }
