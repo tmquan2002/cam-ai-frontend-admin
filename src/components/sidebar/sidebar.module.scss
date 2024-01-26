@@ -1,4 +1,4 @@
-.sidebar {
+@mixin sidebar-styles ($width) {
     @include light {
         background-color: white;
     }
@@ -10,7 +10,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
-    width: 250px;
+    width: $width;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 3px 4px #00000024,
@@ -19,13 +19,8 @@
     z-index: 10;
 }
 
-.linksInner {
-    padding: 1rem 0;
-}
-
-.mainlink,
-.activelink {
-    padding: 10px 1.5rem;
+@mixin link-styles($padding) {
+    padding: $padding;
     display: block;
     width: 100%;
     cursor: pointer;
@@ -45,8 +40,31 @@
     }
 }
 
+.sidebar {
+    @include sidebar-styles(250px);
+}
 
+.sidebar-minimize {
+    @include sidebar-styles(50px);
+}
+
+.linksInner {
+    padding: 1rem 0;
+}
+
+.mainlink,
 .activelink {
+    @include link-styles(10px 1.5rem);
+}
+
+.mainlink-minimize,
+.activelink-minimize {
+    @include link-styles(10px 0.6rem);
+}
+
+
+.activelink,
+.activelink-minimize {
     background-color: var(--mantine-color-light-blue-2);
 
     .label {
@@ -60,7 +78,8 @@
     }
 }
 
-.mainlink:hover {
+.mainlink:hover,
+.mainlink-minimize:hover {
     background-color: var(--mantine-color-light-blue-2);
 
     .label {

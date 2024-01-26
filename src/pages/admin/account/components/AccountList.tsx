@@ -89,7 +89,7 @@ const AccountList = () => {
                 <Grid.Col span={{ base: 12, md: 6, lg: 3 }} order={{ base: 1, md: 1, lg: 1 }}>
                     <Text size='lg' fw="bold" fz='25px'
                         c={"light-blue.4"}
-                    >BRAND LIST</Text>
+                    >ACCOUNT LIST</Text>
                 </Grid.Col>
 
                 <Grid.Col span={{ base: 6, md: 6, lg: 6 }} order={{ base: 2, md: 3, lg: 2 }}>

@@ -1,0 +1,1 @@
+export const WINDOW_BREAK_POINT = 900
