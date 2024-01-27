@@ -1,9 +1,9 @@
-import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
+import { Button, Group, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
@@ -14,6 +14,7 @@ import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const AddAccountForm = () => {
     const [brand, setBrand] = useState<string | null>(null);
+    const [brandId, setBrandId] = useState<string | null>(null);
 
     //TODO: Password should be auto generated, manager will have to change password later
     const form = useForm({
@@ -52,8 +53,7 @@ export const AddAccountForm = () => {
     });
 
     const { mutate: addAccount, isLoading } = useAddAccount();
-
-    const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrandsSelect({});
+    const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: brand });
 
     const { data: provinces } = useGetProvinces();
     const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
@@ -107,6 +107,11 @@ export const AddAccountForm = () => {
             },
         });
     };
+
+    useEffect(() => {
+        const timer = setTimeout(() => refetchBrand(), 500);
+        return () => { clearTimeout(timer); };
+    }, [brand]);
 
     return (
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
@@ -175,12 +180,11 @@ export const AddAccountForm = () => {
                         { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
                     ]}
                     {...form.getInputProps('roleIds')} />
-                <Select label="Brand (For Brand Manager)" placeholder="Select"
+                <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
                     disabled={form.values.roleIds != "3"}
-                    data={brandList ? brandList : []}
-                    rightSection={isLoadingBrand ? <Loader size="1rem" /> : null}
-                    onChange={(value) => setBrand(value!)}
-                    searchable limit={5} nothingFoundMessage="Not Found"
+                    nothingFoundMessage={brandList && "Not Found"}
+                    value={brandId} placeholder="Pick value" clearable searchable
+                    onSearchChange={setBrand} onChange={setBrandId}
                 />
             </Group>
             <Group

@@ -20,6 +20,7 @@ const AccountList = () => {
     const [filterRole, setFilterRole] = useState<string | null>("")
     const [filterStatus, setFilterStatus] = useState<string | null>("")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string | null>("")
+    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
 
     const navigate = useNavigate();
 
@@ -39,11 +40,11 @@ const AccountList = () => {
         pageIndex: (pageIndex - 1), size: Number(size),
         search: searchTerm, accountStatusId: filterStatus ? filterStatus : "",
         roleId: filterRole ? filterRole : "",
-        brandId: filterSearchBrand ? filterSearchBrand : "",
+        brandId: filterSearchBrandId ? filterSearchBrandId : "",
     });
 
-    const { data: brandList, isLoading: isLoadingBrand, isFetching: isFetchingBrand,
-    } = useGetAllBrandsSelect({});
+    const { data: brandList, refetch: refetchBrand
+    } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });
 
     const onSearch = (e: any) => {
         // console.log(e.key)
@@ -65,8 +66,13 @@ const AccountList = () => {
         }
     }, [searchTerm, clear])
 
+    useEffect(() => {
+        const timer = setTimeout(() => refetchBrand(), 500);
+        return () => { clearTimeout(timer); };
+    }, [filterSearchBrand]);
+
     const rows = accountList?.values.map((e, i) => (
-        <Tooltip label="View Detail" withArrow key={e.id}>
+        <Tooltip.Floating label="View Detail" key={e.id}>
             <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
@@ -79,7 +85,7 @@ const AccountList = () => {
                     </Badge>
                 </Table.Td>
             </Table.Tr>
-        </Tooltip>
+        </Tooltip.Floating>
     ));
 
     return (
@@ -136,9 +142,12 @@ const AccountList = () => {
                             label="Account Status" placeholder="Pick value" clearable
                             value={filterStatus} onChange={setFilterStatus}
                         />
-                        <Select label="Brand" data={isLoadingBrand || isFetchingBrand ? [] : brandList} limit={5}
-                            value={filterSearchBrand} placeholder="Pick value" clearable searchable
-                            onChange={setFilterSearchBrand} />
+                        <Select label="Brand" data={brandList || []} limit={5}
+                            nothingFoundMessage={brandList && "Not Found"}
+                            value={filterSearchBrandId} placeholder="Pick value" clearable searchable
+                            onSearchChange={setFilterSearchBrand}
+                            onChange={setFilterSearchBrandId}
+                        />
                         <Button
                             mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
                             variant="gradient" size="md" mb={20}
