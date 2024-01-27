@@ -37,7 +37,7 @@ export function SideBar() {
     const links = data.map((item) => <LinksGroup {...item} key={item.label} minimize={windowWidth <= breakpoint} />);
 
     return (
-        <nav className={windowWidth <= breakpoint ? styled["sidebar-minimize"] : styled["sidebar"]}>
+        <nav className={styled["sidebar"]}>
             {windowWidth <= breakpoint ?
                 <Text m={10} fw={'bold'} size="lg">C</Text> :
                 <Text m={10} fw={'bold'} size="lg">CAMAI</Text>
