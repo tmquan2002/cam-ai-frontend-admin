@@ -13,14 +13,14 @@ const ProtectedRoute = () => {
         Id: RoleEnum.Admin,
         Name: "",
       },
-      {
-        Id: RoleEnum.BrandManager,
-        Name: "",
-      },
-      {
-        Id: RoleEnum.Technician,
-        Name: "",
-      },
+      // {
+      //   Id: RoleEnum.BrandManager,
+      //   Name: "",
+      // },
+      // {
+      //   Id: RoleEnum.Technician,
+      //   Name: "",
+      // },
     ]);
     if (!isUserHavePermission) {
       setIsAuthenticated(false);

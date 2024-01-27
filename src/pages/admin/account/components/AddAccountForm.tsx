@@ -1,4 +1,4 @@
-import { Button, Group, Select, TextInput } from "@mantine/core";
+import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -14,6 +14,8 @@ import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const AddAccountForm = () => {
     const [brand, setBrand] = useState<string | null>(null);
+    const [districtSearch, setDistrictSearch] = useState<string>("");
+    const [wardSearch, setWardSearch] = useState<string>("");
     const [brandId, setBrandId] = useState<string | null>(null);
 
     //TODO: Password should be auto generated, manager will have to change password later
@@ -55,9 +57,9 @@ export const AddAccountForm = () => {
     const { mutate: addAccount, isLoading } = useAddAccount();
     const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: brand });
 
-    const { data: provinces } = useGetProvinces();
-    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
-    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district);
+    const { data: provincesList } = useGetProvinces();
+    const { data: districtsList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wardsList, isFetching: isFetchingWards } = useGetWards(form.values.district);
 
     const navigate = useNavigate();
 
@@ -146,29 +148,36 @@ export const AddAccountForm = () => {
             </Group>
             <Group grow>
                 <Select label="Province" placeholder="Select"
-                    data={provinces ? provinces : []}
+                    data={provincesList || []}
                     // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('province')}
+                    onChange={(value) => {
+                        form.setFieldValue('province', value || "")
+                        setDistrictSearch("");
+                        setWardSearch("");
+                    }}
                     searchable nothingFoundMessage="Not Found"
                 />
-                {isFetchingDistricts ? <></> :
-                    <Select label="District" placeholder="Select"
-                        disabled={form.values.province == ""}
-                        data={districts ? districts : []}
-                        // rightSection={province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
-                        {...form.getInputProps('district')}
-                        searchable nothingFoundMessage="Not Found"
-                    />
-                }
-                {isFetchingWards ? <></> :
-                    <Select label="Ward" placeholder="Select"
-                        // disabled={district == "" || province == ""}
-                        data={wards ? wards : []}
-                        // rightSection={province != "" && district != "" && isFetchingWards ? <Loader size="1rem" /> : null}
-                        {...form.getInputProps('ward')}
-                        searchable nothingFoundMessage="Not Found"
-                    />
-                }
+                <Select label="District" placeholder="Select"
+                    disabled={form.values.province == ""}
+                    data={districtsList || []}
+                    rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                    {...form.getInputProps('district')}
+                    onChange={(value) => {
+                        form.setFieldValue('district', value || "")
+                        setWardSearch("");
+                    }}
+                    searchValue={districtSearch} onSearchChange={setDistrictSearch}
+                    searchable nothingFoundMessage="Not Found"
+                />
+                <Select label="Ward" placeholder="Select"
+                    disabled={form.values.province == "" || districtSearch == ""}
+                    data={wardsList || []}
+                    rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                    {...form.getInputProps('ward')}
+                    searchValue={wardSearch} onSearchChange={setWardSearch}
+                    searchable nothingFoundMessage="Not Found"
+                />
             </Group>
             <TextInput
                 label="Address" placeholder="123/45 ABC..."

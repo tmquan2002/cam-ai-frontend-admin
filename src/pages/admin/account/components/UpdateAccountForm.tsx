@@ -3,7 +3,7 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateAccountParams } from "../../../../apis/AccountAPI";
 import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccounts";
@@ -12,13 +12,17 @@ import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 
 export const UpdateAccountForm = ({ id }: { id: string }) => {
+    const [provinceSearch, setProvinceSearch] = useState<string>("");
+    const [districtSearch, setDistrictSearch] = useState<string>("");
+    const [wardSearch, setWardSearch] = useState<string>("");
+
     const { data, isLoading: initialDataLoading } = useGetAccountById(id);
 
     const form = useForm({
         initialValues: {
             email: "",
             name: "",
-            gender: '',
+            gender: "",
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
@@ -41,34 +45,37 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
         },
+        enhanceGetInputProps: (payload) => {
+            if (!payload.form.initialized) {
+                return { disabled: true };
+            }
+            return {};
+        },
     });
 
     const { mutate: updateAccount, isLoading } = useUpdateAccount();
-    const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinces();
-    const { data: districts, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
-    const { data: wards, isFetching: isFetchingWards } = useGetWards(form.values.district);
+    const { data: provinceList, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: districtList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wardList, isFetching: isFetchingWards } = useGetWards(form.values.district);
 
     const navigate = useNavigate();
 
-
-
     useEffect(() => {
-        if (data && isLoadingProvinces) {
-            console.log(data)
-            form.setValues({
-                email: data?.email,
-                name: data?.name,
-                phone: data?.phone,
-                addressLine: data?.addressLine,
+        if (data) {
+            // Even if data changes, form will be initialized only once
+            form.initialize({
+                email: data?.email ? data.email : "",
+                name: data?.name ? data.name : "",
+                phone: data?.phone ? data.phone : "",
+                addressLine: data?.addressLine ? data.addressLine : "",
                 gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
-                birthday: new Date(data?.birthday),
-                province: data?.ward?.district.province.id.toString(),
-                district: data?.ward?.district.id.toString(),
-                ward: data?.ward?.id.toString()
-            });
-            console.log(form.values)
+                birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
+                province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
+                district: data?.ward?.district?.id.toString() || "",
+                ward: data?.ward?.id.toString() || ""
+            })
         }
-    }, [data, provinces]);
+    }, [data]);
 
     const onSubmitForm = async () => {
         // console.log(values)
@@ -148,26 +155,36 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                     </Group>
                     <Group grow>
                         <Select label="Province" placeholder="Select"
-                            data={provinces ? provinces : []}
-                            rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
+                            data={provinceList || []}
+                            // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('province')}
-                            // onChange={() => { form.setValues({ district: "", ward: "" }) }}
-                            searchable limit={5} nothingFoundMessage="Not Found"
+                            onChange={(value) => {
+                                form.setFieldValue('province', value || "")
+                                setDistrictSearch("");
+                                setWardSearch("");
+                            }}
+                            searchValue={provinceSearch} onSearchChange={setProvinceSearch}
+                            searchable nothingFoundMessage="Not Found"
                         />
                         <Select label="District" placeholder="Select"
-                            disabled={form.values.province ? false : true}
-                            data={districts ? districts : []}
-                            rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
+                            disabled={form.values.province == ""}
+                            data={districtList || []}
+                            rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('district')}
-                            // onChange={(value) => { form.setValues({ district: value || "", ward: "" }) }}
-                            searchable limit={5} nothingFoundMessage="Not Found"
+                            onChange={(value) => {
+                                form.setFieldValue('district', value || "")
+                                setWardSearch("");
+                            }}
+                            searchValue={districtSearch} onSearchChange={setDistrictSearch}
+                            searchable nothingFoundMessage="Not Found"
                         />
                         <Select label="Ward" placeholder="Select"
-                            disabled={form.values.province && form.values.district ? false : true}
-                            data={wards ? wards : []}
-                            rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
+                            disabled={form.values.province == "" || districtSearch == ""}
+                            data={wardList || []}
+                            rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('ward')}
-                            searchable limit={5} nothingFoundMessage="Not Found"
+                            searchValue={wardSearch} onSearchChange={setWardSearch}
+                            searchable nothingFoundMessage="Not Found"
                         />
                     </Group>
                     <TextInput
@@ -182,20 +199,25 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                         >
                             Update
                         </Button>
-                        {/* <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
-                            onClick={() => form.initialize({
-                                email: data?.email ? data.email : "",
-                                name: data?.name ? data.name : "",
-                                phone: data?.phone ? data.phone : "",
-                                addressLine: data?.addressLine ? data.addressLine : "",
-                                gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
-                                birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
-                                province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
-                                district: data?.ward?.district.id ? data?.ward?.district.id.toString() : "",
-                                ward: data?.ward?.id ? data?.ward?.id.toString() : ""
-                            })}>
+                        <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
+                            onClick={() => {
+                                form.setValues({
+                                    email: data?.email ? data.email : "",
+                                    name: data?.name ? data.name : "",
+                                    phone: data?.phone ? data.phone : "",
+                                    addressLine: data?.addressLine ? data.addressLine : "",
+                                    gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
+                                    birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
+                                    province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
+                                    district: data?.ward?.district?.id.toString() || "",
+                                    ward: data?.ward?.id.toString() || ""
+                                })
+                                setProvinceSearch(data?.ward?.district?.province?.name || "")
+                                setDistrictSearch(data?.ward?.district.name || "")
+                                setWardSearch(data?.ward?.name || "")
+                            }}>
                             Reset
-                        </Button> */}
+                        </Button>
                     </Group>
                 </form >
             }
