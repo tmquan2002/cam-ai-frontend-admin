@@ -1,0 +1,44 @@
+.popover-noti {
+  @include light {
+    background-color: white;
+  }
+
+  @include dark {
+    background-color: #1f1f1f;
+  }
+}
+
+.header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.tabnumber {
+  border-radius: 0.4rem;
+  border: 1px solid #a8afb6;
+}
+
+.tabnumber-active {
+  border-radius: 0.4rem;
+  color: #fff;
+  background-color: var(--mantine-color-pale-red-5);
+  border: none;
+}
+
+.detail-card:hover {
+
+  @include light {
+    background-color: #f8f9fa;
+  }
+
+  @include dark {
+    background-color: #252525;
+  }
+
+  cursor: pointer;
+}
+
+.anchor:hover {
+  color: #339af0 !important;
+  cursor: pointer;
+  font-weight: 500;
+}

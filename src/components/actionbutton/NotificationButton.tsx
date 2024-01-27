@@ -1,34 +1,59 @@
-import { ActionIcon, Avatar, Box, Divider, Group, Indicator, Popover, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Center, Divider, Flex, Indicator, Popover, ScrollArea, Tabs, Text, Tooltip, rem } from "@mantine/core";
 import { useState } from "react";
-import { MdNotifications, MdQueryBuilder } from "react-icons/md";
+import { MdNotifications } from "react-icons/md";
 import { NO_IMAGE_LOGO } from "../../constants/ImagePlaceholders";
 import { timeSince } from "../../utils/dateFormat";
+import styled from "./Notification.module.scss";
 
-const NotificationCard = ({ message, date }: { message: string, date: Date }) => {
+const TabsHeader = ({ active, number, text, }: { text: string; number: number; active: boolean; }) => {
     return (
-        <Box pb={10}>
-            <Group pb={10}>
-                <Avatar src={NO_IMAGE_LOGO} />
+        <Flex justify={"center"} align={"center"}>
+            <Text fw={500} tt={"capitalize"} c={active ? "blue" : "dimmed"} size="md" mr={rem(8)}>
+                {text}
+            </Text>
+            <Center className={active ? styled["tabnumber-active"] : styled["tabnumber"]}
+                px={rem(7)} py={rem(2)}
+            >
+                <Text size="xs">{number}</Text>
+            </Center>
+        </Flex>
+    );
+};
+
+const NotificationCard = ({ type, role, name, date }: { type: string, role: string, name: string, date: Date }) => {
+    return (
+        <>
+            <Flex p={20} className={styled["detail-card"]}>
+                <Avatar mr={16} color="indigo"
+                    style={{ cursor: "pointer", boxShadow: "0 0 3px 0 rgba(34, 34, 34, 1)", transition: "box-shadow 100ms", }}
+                    src={NO_IMAGE_LOGO}
+                />
                 <Box>
-                    <Text size="sm">{message}</Text>
-                    <Group gap={"xs"}>
-                        <MdQueryBuilder />
-                        <Text size="xs" >{timeSince(date)}</Text>
-                    </Group>
+                    {role == "technician" ?
+                        <Text>New edge box {type} by <span><b>{name}</b></span></Text>
+                        :
+                        <Text>New {type} from <span><b>{name}</b></span></Text>
+                    }
+                    <Flex align={"center"}>
+                        <Text c="dimmed" fw={500} size="sm">
+                            {timeSince(date)}
+                        </Text>
+                    </Flex>
                 </Box>
-            </Group>
+            </Flex>
             <Divider />
-        </Box>
+        </>
     )
 }
 export const NotificationButton = () => {
     const [openedNotification, setOpenedNotification] = useState(false);
+    const [activeTab, setActiveTab] = useState<string | null>("all");
 
     return (
         <Popover opened={openedNotification}
             onChange={setOpenedNotification} zIndex={10}
             position="bottom" shadow="md"
-            offset={{ mainAxis: 10, crossAxis: -100 }}>
+            offset={{ mainAxis: 10, crossAxis: -230 }}>
 
             <Tooltip label="Notification" withArrow>
                 <Popover.Target>
@@ -43,12 +68,64 @@ export const NotificationButton = () => {
                 </Popover.Target>
             </Tooltip>
 
-            <Popover.Dropdown>
-                <NotificationCard message="New request from brandmanager1" date={new Date("2024/01/23")} />
-                <NotificationCard message="New request from test manager" date={new Date("2024/01/19")} />
-                <NotificationCard message="New request from New new manager" date={new Date("2024/01/22")} />
-                <NotificationCard message="New request from New new manager" date={new Date("2023/12/23")} />
-                <NotificationCard message="New request from New new manager" date={new Date("2023/01/10")} />
+            <Popover.Dropdown className={styled["popover-noti"]}>
+                <ScrollArea w={rem(500)} h={550}>
+                    <Flex justify={"space-between"} align={"center"} mx={rem(16)} my={rem(20)}>
+                        <Text fw={500} size="xl">
+                            Notification
+                        </Text>
+                        <Center>
+                            <Text c="#adb5bd" size="md">
+                                Mark all as read
+                            </Text>
+                        </Center>
+                    </Flex>
+                    <Divider />
+                    <Tabs value={activeTab} onChange={setActiveTab}
+                        styles={{ tabLabel: { padding: rem(4), }, }}>
+                        <Tabs.List>
+                            <Tabs.Tab value="all">
+                                <TabsHeader active={activeTab == "all"} number={10} text="All" />
+                            </Tabs.Tab>
+                            <Tabs.Tab value="manager">
+                                <TabsHeader active={activeTab == "manager"} number={5} text="Manager" />
+                            </Tabs.Tab>
+                            <Tabs.Tab value="technician">
+                                <TabsHeader active={activeTab == "technician"} number={5} text="Technician" />
+                            </Tabs.Tab>
+                        </Tabs.List>
+
+                        <Tabs.Panel value="all">
+                            <NotificationCard type="request" role="manager" name="brandmanager1" date={new Date("2024/01/23")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/23")} />
+                            <NotificationCard type="request" role="manager" name="test manager" date={new Date("2024/01/19")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/19")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2024/01/22")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/22")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2023/12/23")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2023/12/23")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2023/01/10")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2023/01/10")} />
+                        </Tabs.Panel>
+
+                        <Tabs.Panel value="manager">
+                            <NotificationCard type="request" role="manager" name="brandmanager1" date={new Date("2024/01/23")} />
+                            <NotificationCard type="request" role="manager" name="test manager" date={new Date("2024/01/19")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2024/01/22")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2023/12/23")} />
+                            <NotificationCard type="request" role="manager" name="New manager" date={new Date("2023/01/10")} />
+                        </Tabs.Panel>
+
+                        <Tabs.Panel value="technician">
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/23")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/19")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2024/01/22")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2023/12/23")} />
+                            <NotificationCard type="installed" role="technician" name="technician1" date={new Date("2023/01/10")} />
+                        </Tabs.Panel>
+                    </Tabs>
+                </ScrollArea>
+
             </Popover.Dropdown>
         </Popover>
     )
