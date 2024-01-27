@@ -162,7 +162,7 @@ const AccountList = () => {
 
             {/* Table */}
             <Table.ScrollContainer minWidth={500}>
-                <Table verticalSpacing={"sm"} striped highlightOnHover>
+                <Table verticalSpacing={"sm"} striped highlightOnHover captionSide="bottom">
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th>#</Table.Th>
@@ -174,12 +174,13 @@ const AccountList = () => {
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                    {accountList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
                 </Table>
             </Table.ScrollContainer>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || accountList?.totalCount &&
+                {isLoading || isFetching || accountList?.totalCount ?
                     <>
-                        <Pagination total={Math.ceil(accountList.totalCount / Number(size))} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={accountList?.totalCount ? Math.ceil(accountList?.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
@@ -192,6 +193,8 @@ const AccountList = () => {
                             />
                         </Group>
                     </>
+                    :
+                    <></>
                 }
             </div>
         </>

@@ -139,12 +139,13 @@ const BrandList = () => {
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                    {brandList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
                 </Table>
             </Table.ScrollContainer>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || brandList?.totalCount &&
+                {isLoading || isFetching || brandList?.totalCount ?
                     <>
-                        <Pagination total={Math.ceil(brandList.totalCount / Number(size))} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={brandList?.totalCount ? Math.ceil(brandList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
@@ -156,7 +157,8 @@ const BrandList = () => {
                                 data={['2', '3', '5', '8']} defaultValue={"5"}
                             />
                         </Group>
-                    </>
+                    </> :
+                    <></>
                 }
             </div>
         </>
