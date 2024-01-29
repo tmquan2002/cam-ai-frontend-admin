@@ -55,7 +55,7 @@ export const AddAccountForm = () => {
     });
 
     const { mutate: addAccount, isLoading } = useAddAccount();
-    const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: brand });
+    const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: brand, hasManager: false });
 
     const { data: provincesList } = useGetProvinces();
     const { data: districtsList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
@@ -75,7 +75,7 @@ export const AddAccountForm = () => {
             gender: Number(form.values.gender),
             password: form.values.password,
             roleIds: [Number(form.values.roleIds)],
-            brandId: brand,
+            brandId: brandId,
             wardId: form.values.ward,
         };
         console.log(addAccountParams)

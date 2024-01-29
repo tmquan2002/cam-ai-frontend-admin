@@ -22,6 +22,7 @@ export type GetBrandsParams = {
   brandId?: string;
   size?: string | number | null;
   pageIndex?: number;
+  hasManager?: boolean;
 };
 
 export type GetBrandsPagingResult = {
