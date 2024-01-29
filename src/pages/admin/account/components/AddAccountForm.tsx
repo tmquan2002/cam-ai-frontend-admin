@@ -18,7 +18,7 @@ export const AddAccountForm = () => {
     const [wardSearch, setWardSearch] = useState<string>("");
     const [brandId, setBrandId] = useState<string | null>(null);
 
-    //TODO: Password should be auto generated, manager will have to change password later
+    //TODO: Password should be auto generated
     const form = useForm({
         initialValues: {
             email: "",

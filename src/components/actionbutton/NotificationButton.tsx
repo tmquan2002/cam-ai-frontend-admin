@@ -52,7 +52,7 @@ export const NotificationButton = () => {
     return (
         <Popover opened={openedNotification}
             onChange={setOpenedNotification} zIndex={10}
-            position="bottom" shadow="md"
+            position="bottom" shadow="md" withArrow
             offset={{ mainAxis: 10, crossAxis: -230 }}>
 
             <Tooltip label="Notification" withArrow>

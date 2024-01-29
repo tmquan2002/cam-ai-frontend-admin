@@ -10,7 +10,6 @@ import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
 const AccountList = () => {
-    //TODO: Filter based on brand with delay search
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")

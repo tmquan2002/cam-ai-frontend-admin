@@ -17,7 +17,7 @@ export const Navbar = ({ items, goBack }: BreadCrumbParams) => {
       {/* <img src={Logo} alt="Logo" className={styled["logo"]} /> */}
       <CustomBreadcrumb items={items} goBack={goBack} />
       <Group gap={5}>
-        <LightDarkSwitch />
+        <LightDarkSwitch size="md"/>
         <NotificationButton />
         <Tooltip label="Logout" withArrow>
           <ActionIcon

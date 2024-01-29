@@ -17,7 +17,7 @@ const LoginPage = () => {
         <div className={styled["container"]}>
           <div className={styled["title"]}>
             <div>LOGIN</div>
-            <LightDarkSwitch />
+            <LightDarkSwitch size="lg"/>
           </div>
           <LoginForm />
         </div>
