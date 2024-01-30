@@ -153,6 +153,7 @@ const BrandList = () => {
                                     setSize(value)
                                     setPageIndex(1)
                                 }}
+                                allowDeselect={false}
                                 placeholder="0" value={size}
                                 data={['2', '3', '5', '8']} defaultValue={"5"}
                             />

@@ -1,9 +1,10 @@
 import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone, MdSettings } from "react-icons/md";
+import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
@@ -14,7 +15,6 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
-import { IconDots } from "@tabler/icons-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
