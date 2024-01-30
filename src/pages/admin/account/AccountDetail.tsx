@@ -1,14 +1,15 @@
-import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
-import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone, MdSettings } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { RoleEnum } from "../../../types/enum";
+import { AccountStatus, RoleEnum, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
 
@@ -31,6 +32,8 @@ const AccountDetail = () => {
 
     const { data, isLoading } = useGetAccountById(params.accountId!);
     const { mutate: deleteAccount } = useDeleteAccount();
+
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     console.log(data?.roles)
 
@@ -80,7 +83,11 @@ const AccountDetail = () => {
                             <div>
                                 <Group>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Badge size='lg' radius={"lg"} color="shading.9">
+                                    <Badge size='lg' radius={"lg"} autoContrast p={17}
+                                        color={data?.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
+                                            data?.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
+                                                data?.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
+                                    >
                                         {data?.accountStatus ? data.accountStatus.name : "None"}
                                     </Badge>
                                 </Group>
@@ -113,11 +120,13 @@ const AccountDetail = () => {
                                 </Group>
                             </div>
                             <div>
-                                <Menu shadow="md" width={200} offset={{crossAxis: -80}}>
+                                <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                     <Menu.Target>
-                                        <Tooltip label="Settings" withArrow>
-                                            <ActionIcon variant="transparent" color="grey" size={"md"}>
-                                                <MdSettings style={{ width: 18, height: 18 }} />
+                                        <Tooltip label="Actions" withArrow>
+                                            <ActionIcon variant="transparent"
+                                                color={computedColorScheme === "dark" ? "white" : "black"}
+                                                size={"md"}>
+                                                <IconDots style={{ width: 25, height: 25 }} />
                                             </ActionIcon>
                                         </Tooltip>
                                     </Menu.Target>

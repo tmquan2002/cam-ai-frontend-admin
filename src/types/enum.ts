@@ -21,3 +21,15 @@ export enum BrandStatus {
   Active = 1,
   Inactive = 2,
 }
+
+export enum ShopStatus {
+  Active = 1,
+  Inactive = 2,
+}
+
+export enum StatusColor {
+  ACTIVE = "#23a55a",
+  INACTIVE = "#f23f43",
+  NEW = "#f0b232",
+  NONE = "#80848e"
+}

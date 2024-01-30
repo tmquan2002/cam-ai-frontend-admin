@@ -5,7 +5,7 @@ import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
-import { AccountStatus, RoleEnum } from '../../../../types/enum';
+import { AccountStatus, RoleEnum, StatusColor } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
@@ -79,7 +79,12 @@ const AccountList = () => {
                 <Table.Td>{e.roles[0].name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
+                    <Badge size='lg' radius={"lg"}
+                        autoContrast fullWidth p={17}
+                        color={e?.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
+                            e?.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
+                                e?.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
+                    >
                         {e.accountStatus ? e.accountStatus.name : "None"}
                     </Badge>
                 </Table.Td>
@@ -101,9 +106,11 @@ const AccountList = () => {
                     <TextInput w={'100%'}
                         placeholder="Search" leftSection={<MdOutlineSearch />}
                         rightSection={<MdClear onClick={() => {
-                            setSearchTerm("")
-                            setClear(true)
-                            setPageIndex(1)
+                            if (searchTerm !== "") {
+                                setSearchTerm("")
+                                setClear(true)
+                                setPageIndex(1)
+                            }
                         }} />}
                         value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                         onKeyDown={onSearch}
@@ -169,7 +176,7 @@ const AccountList = () => {
                             <Table.Th>Brand</Table.Th>
                             <Table.Th>Roles</Table.Th>
                             <Table.Th>Created Date</Table.Th>
-                            <Table.Th>Status</Table.Th>
+                            <Table.Th ta={"center"}>Status</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetAllShops } from '../../../../hooks/useShops';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/shop.module.scss";
+import { ShopStatus, StatusColor } from '../../../../types/enum';
 
 const ShopList = () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -52,11 +53,14 @@ const ShopList = () => {
             <Table.Tr onClick={() => navigate(`/shop/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
-                <Table.Td>{e.brand.name}</Table.Td>
+                <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"} color="light-yellow.7">
-                        {e.shopStatus.name ? e.shopStatus.name : "None"}
+                    <Badge size='lg' radius={"lg"} fullWidth autoContrast p={17}
+                        color={e.shopStatus?.id == ShopStatus.Active ? StatusColor.ACTIVE :
+                            e.shopStatus?.id == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                    >
+                        {e.shopStatus?.name ? e.shopStatus?.name : "None"}
                     </Badge>
                 </Table.Td>
             </Table.Tr>
@@ -72,9 +76,12 @@ const ShopList = () => {
                 <TextInput mb={20} w={300}
                     placeholder="Search" leftSection={<MdOutlineSearch />}
                     rightSection={<MdClear onClick={() => {
-                        setSearchTerm("")
-                        setClear(true)
-                        setPageIndex(1)
+                        if (searchTerm !== "") {
+                            console.log(searchTerm)
+                            setSearchTerm("")
+                            setClear(true)
+                            setPageIndex(1)
+                        }
                     }} />}
                     value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                     onKeyDown={onSearch}
@@ -88,7 +95,7 @@ const ShopList = () => {
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Brand</Table.Th>
                             <Table.Th>Created Date</Table.Th>
-                            <Table.Th>Status</Table.Th>
+                            <Table.Th ta={"center"}>Status</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>

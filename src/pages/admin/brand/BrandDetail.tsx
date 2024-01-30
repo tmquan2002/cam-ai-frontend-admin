@@ -12,7 +12,7 @@ import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
-import { BrandStatus } from "../../../types/enum";
+import { BrandStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
 
@@ -120,7 +120,10 @@ const BrandDetail = () => {
                                 <div>
                                     <Group>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        <Badge size='lg' radius={"lg"} color="shading.9">
+                                        <Badge size='lg' radius={"lg"} autoContrast p={17}
+                                            color={data?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
+                                                data?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                                        >
                                             {data?.brandStatus ? data.brandStatus.name : "None"}
                                         </Badge>
                                     </Group>
@@ -155,7 +158,7 @@ const BrandDetail = () => {
                                             onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
                                             Update
                                         </Menu.Item>
-                                        {data?.brandStatus.id === BrandStatus.Active ?
+                                        {data?.brandStatus?.id === BrandStatus.Active ?
                                             <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
                                                 onClick={open} >
                                                 Delete
@@ -204,8 +207,8 @@ const BrandDetail = () => {
             </div>
             {/* Delete Modal */}
             <Modal opened={modalOpen} onClose={close}
-                title={data?.brandStatus.id === BrandStatus.Active ? "Delete this brand?" : "Reactivate this brand?"} centered>
-                {data?.brandStatus.id === BrandStatus.Active ?
+                title={data?.brandStatus?.id === BrandStatus.Active ? "Delete this brand?" : "Reactivate this brand?"} centered>
+                {data?.brandStatus?.id === BrandStatus.Active ?
                     <Text>
                         Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
                     </Text>
@@ -221,7 +224,7 @@ const BrandDetail = () => {
                     >
                         CANCEL
                     </Button>
-                    {data?.brandStatus.id === BrandStatus.Active ?
+                    {data?.brandStatus?.id === BrandStatus.Active ?
                         <Button
                             variant="gradient" size="md" mt={20} onClick={onDelete}
                             gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}

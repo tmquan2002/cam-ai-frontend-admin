@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GetAccountResult } from "../../apis/AccountAPI";
 import { useGetAllAccounts } from "../../hooks/useAccounts";
 import styled from "./list.module.scss";
+import { AccountStatus, StatusColor } from "../../types/enum";
 
 interface AccountListParam {
     id: string;
@@ -20,8 +21,12 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.accountStatus &&
-                    <Badge size='lg' radius={"lg"} color="shading.9" mt={15} mb={15}>
-                        {item.accountStatus.name}
+                    <Badge size='lg' radius={"lg"} p={30} autoContrast
+                        color={item.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
+                            item.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
+                                item.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
+                        mt={15} mb={15}>
+                        {item.accountStatus?.name}
                     </Badge>
                 }
             </div>
