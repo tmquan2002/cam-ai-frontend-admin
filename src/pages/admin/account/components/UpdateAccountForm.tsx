@@ -10,6 +10,7 @@ import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccoun
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
+import { isEmpty } from "lodash";
 
 export const UpdateAccountForm = ({ id }: { id: string }) => {
     const [provinceSearch, setProvinceSearch] = useState<string>("");
@@ -89,7 +90,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 addressLine: form.values.addressLine,
                 birthday: removeTime(new Date(form.values.birthday), "-"),
                 gender: Number(form.values.gender),
-                wardId: form.values.ward,
+                wardId: isEmpty(form.values.ward) ? null : form.values.ward,
             }
         };
         console.log(updateAccountParams)

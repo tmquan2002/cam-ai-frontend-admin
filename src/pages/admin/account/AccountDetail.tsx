@@ -1,17 +1,18 @@
-import { ActionIcon, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { AccountStatus, RoleEnum, StatusColor } from "../../../types/enum";
+import { AccountStatus, BrandStatus, RoleEnum, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
+import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -81,7 +82,7 @@ const AccountDetail = () => {
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div>
-                                <Group>
+                                <Group mb={15}>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                     <Badge size='lg' radius={"lg"} autoContrast p={17}
                                         color={data?.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
@@ -146,6 +147,41 @@ const AccountDetail = () => {
                         </div>
                         <Divider my="md" />
                         {/* TODO: Add detail of a shop this shop manager account working on */}
+                        {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
+                            <div className={styled["brand-detail"]}>
+                                <Text size="lg" fw={"bold"}>Brand Information</Text>
+                                <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
+                                    <Group className={styled["brand-profile"]} mt={20}>
+                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri ? data?.brand?.logoUri : NO_IMAGE_LOGO} />
+                                        <div>
+                                            <Group>
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
+                                                <Badge size='lg' radius={"lg"} autoContrast p={17}
+                                                    color={data?.brand?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
+                                                        data?.brand?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                                                >
+                                                    {data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"}
+                                                </Badge>
+                                            </Group>
+                                            <Group>
+                                                <MdEmail />
+                                                <Text size="md">{data?.brand?.email}</Text>
+                                            </Group>
+                                            <Group>
+                                                <MdPhone />
+                                                <Text size="md">{data?.brand?.phone}</Text>
+                                            </Group>
+                                            <Group mb={20}>
+                                                <MdAccessTime />
+                                                <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                            </Group>
+                                        </div>
+                                    </Group>
+                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: "#2d4b81" }}>View More</Link>
+                                </div>
+                            </div>
+                        }
+                        <Divider my="md" />
                         {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
                             <div className={styled["shop-detail"]}>
                                 <Text size="lg" fw={"bold"}>Shops</Text>

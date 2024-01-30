@@ -11,6 +11,7 @@ import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender, RoleEnum } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
+import { isEmpty } from "lodash";
 
 export const AddAccountForm = () => {
     const [brand, setBrand] = useState<string | null>(null);
@@ -76,7 +77,7 @@ export const AddAccountForm = () => {
             password: form.values.password,
             roleIds: [Number(form.values.roleIds)],
             brandId: brandId,
-            wardId: form.values.ward,
+            wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
         console.log(addAccountParams)
 

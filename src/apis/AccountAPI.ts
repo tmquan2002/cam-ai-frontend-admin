@@ -90,7 +90,7 @@ export type UpdateAccountParams = {
     email: string;
     phone: string;
     birthday: string;
-    wardId: string;
+    wardId: string | null;
     addressLine: string;
   };
 };

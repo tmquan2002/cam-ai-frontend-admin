@@ -36,7 +36,7 @@ const ShopDetail = () => {
                     <div className={styled["profile-header"]}>
                         <div className={styled["profile-header-left"]}>
                             <div>
-                                <Group>
+                                <Group mb={15}>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                     <Badge size='lg' radius={"lg"} autoContrast p={17}
                                         color={data?.shopStatus?.id == ShopStatus.Active ? StatusColor.ACTIVE :

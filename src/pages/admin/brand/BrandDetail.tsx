@@ -118,7 +118,7 @@ const BrandDetail = () => {
                             <div className={styled["profile-header-left"]}>
                                 <Avatar w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
                                 <div>
-                                    <Group>
+                                    <Group mb={15}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                         <Badge size='lg' radius={"lg"} autoContrast p={17}
                                             color={data?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
