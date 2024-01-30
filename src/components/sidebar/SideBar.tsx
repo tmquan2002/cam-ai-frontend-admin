@@ -39,8 +39,8 @@ export function SideBar() {
     return (
         <nav className={styled["sidebar"]}>
             {windowWidth <= breakpoint ?
-                <Text m={10} fw={'bold'} size="lg">C</Text> :
-                <Text m={10} fw={'bold'} size="lg">CAMAI</Text>
+                <Text m={20} fw={'bold'} size={'25px'}>C</Text> :
+                <Text m={20} fw={'bold'} size={'25px'}>CAMAI</Text>
             }
             <Divider />
             <div className={styled.linksInner}>{links}</div>

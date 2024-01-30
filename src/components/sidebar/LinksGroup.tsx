@@ -6,10 +6,11 @@ interface LinksGroupProps {
   icon: React.FC<any>;
   label: string;
   path: string;
-  minimize?: boolean
+  minimize?: boolean;
+  disabled?: boolean
 }
 
-export function LinksGroup({ icon: Icon, label, path, minimize }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, label, path, minimize, disabled }: LinksGroupProps) {
 
   const location = useLocation()
   return (

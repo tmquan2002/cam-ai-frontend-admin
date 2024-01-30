@@ -53,7 +53,7 @@ const BrandList = () => {
     }, [searchTerm, clear])
 
     const rows = brandList?.values.map((e, i) => (
-        <Tooltip label="View Detail" withArrow key={e.id}>
+        <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/brand/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
 

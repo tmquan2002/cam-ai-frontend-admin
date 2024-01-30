@@ -47,7 +47,8 @@ const ShopList = () => {
     }, [searchTerm, clear])
 
     const rows = shopList?.values.map((e, i) => (
-        <Tooltip label="View Detail" withArrow key={e.id}>
+        <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}
+            events={{ hover: true, focus: true, touch: false }}>
             <Table.Tr onClick={() => navigate(`/shop/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>

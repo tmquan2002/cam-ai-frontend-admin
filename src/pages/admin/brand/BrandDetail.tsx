@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
+import { IconDots } from "@tabler/icons-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,6 +38,8 @@ const BrandDetail = () => {
 
     const { mutate: deleteBrand } = useDeleteBrand();
     const { mutate: reactivateBrand } = useReactivateBrand();
+
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     const onDelete = () => {
         deleteBrand(params.brandId!, {
@@ -138,9 +141,11 @@ const BrandDetail = () => {
                             <div>
                                 <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                     <Menu.Target>
-                                        <Tooltip label="Settings" withArrow>
-                                            <ActionIcon variant="transparent" color="grey" size={"md"}>
-                                                <MdSettings style={{ width: 18, height: 18 }} />
+                                        <Tooltip label="Actions" withArrow>
+                                            <ActionIcon variant="transparent"
+                                                color={computedColorScheme === "dark" ? "white" : "black"}
+                                                size={"md"}>
+                                                <IconDots style={{ width: 25, height: 25 }} />
                                             </ActionIcon>
                                         </Tooltip>
                                     </Menu.Target>

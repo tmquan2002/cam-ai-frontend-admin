@@ -1,4 +1,5 @@
-import { Breadcrumbs, Group, Text } from '@mantine/core';
+import { ActionIcon, Breadcrumbs, Group, Text, useComputedColorScheme } from '@mantine/core';
+import { MdArrowBackIosNew } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from './breadcrumb.module.scss';
 
@@ -14,14 +15,23 @@ export interface BreadCrumbParams {
 
 const CustomBreadcrumb = ({ items, goBack }: BreadCrumbParams) => {
     const navigate = useNavigate();
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     return (
         <Group>
-            {goBack && <Text className={styled.back} onClick={() => navigate(-1)} size='lg'>&#60;</Text>}
+            {goBack &&
+                <ActionIcon
+                    onClick={() => navigate(-1)}
+                    variant="transparent" aria-label="Logout"
+                    color='black' size="lg" radius={"xl"}
+                >
+                    <MdArrowBackIosNew style={{ width: 18, height: 18 }} />
+                </ActionIcon>
+            }
             <Breadcrumbs>
                 {items.map((item, index) => (
                     !item.link ?
-                        <Text key={index} className={styled.text}>
+                        <Text key={index} className={styled.text} fw={"bold"} c={computedColorScheme === "dark" ? "white" : "black"}>
                             {item.title}
                         </Text>
                         :

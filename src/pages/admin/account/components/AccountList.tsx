@@ -71,7 +71,7 @@ const AccountList = () => {
     }, [filterSearchBrand]);
 
     const rows = accountList?.values.map((e, i) => (
-        <Tooltip.Floating label="View Detail" key={e.id}>
+        <Tooltip label="View Detail" key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
@@ -84,7 +84,7 @@ const AccountList = () => {
                     </Badge>
                 </Table.Td>
             </Table.Tr>
-        </Tooltip.Floating>
+        </Tooltip>
     ));
 
     return (

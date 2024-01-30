@@ -1,7 +1,18 @@
-.link,
 .text {
     text-decoration: none;
-    color: var(--mantine-color-shading-7);
+    color: black;
+    font-weight: bold;
+}
+
+.link {
+    
+    @include light {
+        color: var(--mantine-color-light-blue-9);
+    }
+
+    @include dark {
+        color: var(--mantine-color-light-blue-1);
+    }
 }
 
 .back {
