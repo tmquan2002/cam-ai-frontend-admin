@@ -21,7 +21,7 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.accountStatus &&
-                    <Badge size='lg' radius={"lg"} p={30} autoContrast
+                    <Badge size='lg' radius={"lg"} p={17} autoContrast
                         color={item.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
                             item.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
                                 item.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
