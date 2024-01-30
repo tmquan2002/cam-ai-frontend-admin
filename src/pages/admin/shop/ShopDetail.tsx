@@ -81,7 +81,7 @@ const ShopDetail = () => {
                                         <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri ? data?.brand?.logoUri : NO_IMAGE_LOGO} />
                                         <div>
                                             <Group>
-                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
                                                 <Badge size='lg' radius={"lg"} color="shading.9">
                                                     {data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"}
                                                 </Badge>
