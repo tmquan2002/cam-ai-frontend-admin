@@ -51,7 +51,8 @@
 }
 
 .mainlink,
-.activelink {
+.activelink,
+.disablelink {
     padding: 10px 1.5rem;
     display: block;
     width: 100%;
@@ -78,7 +79,6 @@
     transition: padding 300ms;
 }
 
-
 .activelink {
     background-color: var(--mantine-color-light-blue-2);
 
@@ -89,6 +89,19 @@
 
         @include dark {
             color: black;
+        }
+    }
+}
+
+.disablelink {
+
+    .label {
+        @include light {
+            color: rgb(173, 173, 173);
+        }
+
+        @include dark {
+            color: rgb(173, 173, 173);
         }
     }
 }

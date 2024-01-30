@@ -15,7 +15,8 @@ export function LinksGroup({ icon: Icon, label, path, minimize, disabled }: Link
   const location = useLocation()
   return (
     <Tooltip label={label} position='right' disabled={!minimize}>
-      <Link to={path} className={location.pathname.includes(path!) ? `${styled["activelink"]}` : `${styled["mainlink"]}`}>
+      <Link to={path} className={disabled ? `${styled["disablelink"]}` : location.pathname.includes(path!) ? `${styled["activelink"]}` : `${styled["mainlink"]}`}
+        style={{ pointerEvents: disabled ? 'none' : undefined }}>
         <Group justify="space-between">
           <Box style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon size={30}>

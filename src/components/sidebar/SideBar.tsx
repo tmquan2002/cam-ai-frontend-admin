@@ -12,8 +12,8 @@ const data = [
     { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
-    { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
-    { label: 'Ticket', icon: FaTicketAlt, path: '/ticket' },
+    { label: 'Edgebox', icon: AiFillControl, path: '/edgebox', disabled: true },
+    { label: 'Ticket', icon: FaTicketAlt, path: '/ticket', disabled: true },
 ];
 
 export function SideBar() {
