@@ -68,7 +68,7 @@ export const LoginForm = () => {
       onSubmit={form.onSubmit((values) => onSubmitForm(values))}
       style={{ marginTop: "20px", textAlign: "left" }}
     >
-      <TextInput
+      <TextInput mt={10}
         withAsterisk
         label="Email"
         leftSection={<MdEmail />}
@@ -77,7 +77,7 @@ export const LoginForm = () => {
         {...form.getInputProps("email")}
       />
 
-      <TextInput
+      <TextInput mt={10}
         withAsterisk
         label="Password"
         type="password"
@@ -89,7 +89,7 @@ export const LoginForm = () => {
 
       <Group
         justify="flex-start"
-        mt="md"
+        mt={10}
       >
         <Button
           loading={isLoading}

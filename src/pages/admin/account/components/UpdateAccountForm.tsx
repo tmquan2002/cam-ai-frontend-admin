@@ -131,15 +131,15 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
         <>
             {initialDataLoading && isLoadingProvinces ? <Loader /> :
                 <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
-                    <TextInput
+                    <TextInput mt={10}
                         withAsterisk label="Full Name"
                         placeholder="Nguyen Van A"
                         {...form.getInputProps("name")} />
-                    <TextInput
+                    <TextInput mt={10}
                         withAsterisk label="Email"
                         placeholder="your@email.com"
                         {...form.getInputProps("email")} />
-                    <Group grow>
+                    <Group grow mt={10}>
                         <DateInput
                             withAsterisk label="Birthday"
                             placeholder="January 1, 2000"
@@ -156,7 +156,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             ]}
                             {...form.getInputProps('gender')} />
                     </Group>
-                    <Group grow>
+                    <Group grow mt={10}>
                         <Select label="Province" placeholder="Select"
                             data={provinceList || []}
                             // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
@@ -190,12 +190,12 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             searchable nothingFoundMessage="Not Found"
                         />
                     </Group>
-                    <TextInput
+                    <TextInput mt={10}
                         label="Address" placeholder="123/45 ABC..."
                         {...form.getInputProps("addressLine")} />
                     <Group
                         justify="flex-start"
-                        mt="md"
+                        mt={10}
                     >
                         <Button loading={isLoading} type="submit" variant="gradient" size="md" mt={20}
                             gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}

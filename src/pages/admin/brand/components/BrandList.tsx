@@ -1,5 +1,6 @@
-import { ActionIcon, Avatar, Badge, Button, Grid, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const BrandList = () => {
     const [clear, setClear] = useState(false)
     const [opened, { open, close }] = useDisclosure(false);
 
-    const [filterStatus, setFilterStatus] = useState<string | null>("")
+    const [filterStatus, setFilterStatus] = useState<string>("")
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -51,6 +52,10 @@ const BrandList = () => {
             refetch();
         }
     }, [searchTerm, clear])
+
+    useEffect(() => {
+        refetch(); setPageIndex(1);
+    }, [filterStatus])
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
@@ -114,23 +119,33 @@ const BrandList = () => {
                             New
                         </Button>
                     </Group>
-                    <Modal opened={opened} onClose={close} title="Filter List" centered>
-                        <Select data={[
-                            { value: BrandStatus.Active.toString(), label: "Active" },
-                            { value: BrandStatus.Inactive.toString(), label: "Inactive" }
-                        ]}
-                            label="Status" placeholder="Pick value" clearable value={filterStatus} onChange={setFilterStatus}
-                        />
-                        <Button
-                            onClick={() => { refetch(); close(); setPageIndex(1) }}
-                            variant="gradient" mt={20}
-                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                        >
-                            Done
-                        </Button>
-                    </Modal>
                 </Grid.Col>
             </Grid>
+
+            {/* Filter */}
+            <Collapse in={opened}>
+                <Divider />
+                <Grid mt={10} justify='space-between'>
+                    <Grid.Col span={6}><Text fw={"bold"}>Filter Brand</Text></Grid.Col>
+                    <Grid.Col span="content"><Button variant='transparent'
+                        onClick={() => {
+                            if (!isEmpty(filterStatus)) {
+                                setFilterStatus("")
+                            }
+                        }}>
+                        Clear All Filters
+                    </Button>
+                    </Grid.Col>
+                </Grid>
+                <RadioGroup name="status" label="Status" value={filterStatus} mb={20}
+                    onChange={setFilterStatus}>
+                    <Group mt="xs">
+                        <Radio value={BrandStatus.Active.toString()} label={"Active"} />
+                        <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
+                    </Group>
+                </RadioGroup>
+                <Divider />
+            </Collapse>
 
             {/* Table */}
             <Table.ScrollContainer minWidth={500}>

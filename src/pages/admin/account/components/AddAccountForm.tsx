@@ -140,15 +140,15 @@ export const AddAccountForm = () => {
 
     return (
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
-            <TextInput
+            <TextInput mt={10}
                 withAsterisk label="Full Name"
                 placeholder="Nguyen Van A"
                 {...form.getInputProps("name")} />
-            <TextInput
+            <TextInput mt={10}
                 withAsterisk label="Email"
                 placeholder="your@email.com"
                 {...form.getInputProps("email")} />
-            <Group grow>
+            <Group grow mt={10}>
                 <TextInput
                     withAsterisk label="Password"
                     placeholder="Password" type="password"
@@ -158,7 +158,7 @@ export const AddAccountForm = () => {
                     placeholder="Confirm Password" type="password"
                     {...form.getInputProps("confirmPassword")} />
             </Group>
-            <Group grow>
+            <Group grow mt={10}>
                 <DateInput
                     withAsterisk label="Birthday"
                     placeholder="January 1, 2000"
@@ -175,7 +175,7 @@ export const AddAccountForm = () => {
                     ]}
                     {...form.getInputProps('gender')} />
             </Group>
-            <Group grow>
+            <Group grow mt={10}>
                 <Select label="Province" placeholder="Select"
                     data={provincesList || []}
                     // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
@@ -208,10 +208,10 @@ export const AddAccountForm = () => {
                     searchable nothingFoundMessage="Not Found"
                 />
             </Group>
-            <TextInput
+            <TextInput mt={10}
                 label="Address" placeholder="123/45 ABC..." withAsterisk
                 {...form.getInputProps("addressLine")} />
-            <Group grow>
+            <Group grow mt={10}>
                 <Select label="Role" placeholder="Select" withAsterisk
                     data={[
                         { value: RoleEnum.Technician.toString(), label: 'Technician' },
@@ -227,7 +227,7 @@ export const AddAccountForm = () => {
             </Group>
             <Group
                 justify="flex-start"
-                mt="md"
+                mt={10}
             >
                 <Button
                     loading={isLoading}

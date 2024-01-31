@@ -76,14 +76,14 @@ export const AddBrandForm = () => {
             onSubmit={form.onSubmit((values) => onSubmitForm(values))}
             style={{ textAlign: "left" }}
         >
-            <TextInput
+            <TextInput mt={10}
                 withAsterisk
                 label="Name"
                 placeholder="Brand Name"
                 size="md"
                 {...form.getInputProps("name")}
             />
-            <TextInput
+            <TextInput mt={10}
                 withAsterisk
                 label="Email"
                 placeholder="your@email.com"
@@ -91,7 +91,7 @@ export const AddBrandForm = () => {
                 {...form.getInputProps("email")}
             />
 
-            <TextInput
+            <TextInput mt={10}
                 label="Phone" withAsterisk
                 placeholder="Phone Number"
                 size="md"
@@ -100,7 +100,7 @@ export const AddBrandForm = () => {
 
             <Group
                 justify="flex-start"
-                mt="md"
+                mt={10}
             >
                 <Button
                     loading={isLoading}

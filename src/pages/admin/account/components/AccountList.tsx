@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Button, Grid, Group, Loader, Modal, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
@@ -14,10 +14,10 @@ const AccountList = () => {
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
-    const [opened, { open, close }] = useDisclosure(false);
+    const [opened, { toggle }] = useDisclosure(false);
 
-    const [filterRole, setFilterRole] = useState<string | null>("")
-    const [filterStatus, setFilterStatus] = useState<string | null>("")
+    const [filterRole, setFilterRole] = useState<string>("")
+    const [filterStatus, setFilterStatus] = useState<string>("")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string | null>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
 
@@ -120,7 +120,7 @@ const AccountList = () => {
                 <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
                     <Group>
                         <Tooltip label="Filter" withArrow>
-                            <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                            <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
                                 <MdFilterAlt />
                             </ActionIcon>
                         </Tooltip>
@@ -131,40 +131,58 @@ const AccountList = () => {
                             New
                         </Button>
                     </Group>
-                    <Modal opened={opened} onClose={close} title="Filter List" centered>
-                        <Select data={[
-                            { value: RoleEnum.Technician.toString(), label: "Technician" },
-                            { value: RoleEnum.BrandManager.toString(), label: "Brand Manager" },
-                            { value: RoleEnum.ShopManager.toString(), label: "Shop Manager" },
-                            { value: RoleEnum.Employee.toString(), label: "Employee" }
-                        ]}
-                            label="Role" placeholder="Pick value" clearable value={filterRole} onChange={setFilterRole}
-                        />
-                        <Select data={[
-                            { value: AccountStatus.New.toString(), label: "New" },
-                            { value: AccountStatus.Active.toString(), label: "Active" },
-                            { value: AccountStatus.Inactive.toString(), label: "Inactive" }
-                        ]}
-                            label="Account Status" placeholder="Pick value" clearable
-                            value={filterStatus} onChange={setFilterStatus}
-                        />
-                        <Select label="Brand" data={brandList || []} limit={5}
-                            nothingFoundMessage={brandList && "Not Found"}
-                            value={filterSearchBrandId} placeholder="Pick value" clearable searchable
-                            onSearchChange={setFilterSearchBrand}
-                            onChange={setFilterSearchBrandId}
-                        />
-                        <Button
-                            mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
-                            variant="gradient" size="md" mb={20}
-                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                        >
-                            Done
-                        </Button>
-                    </Modal>
                 </Grid.Col>
 
             </Grid>
+
+            {/* Filter */}
+            <Collapse in={opened}>
+                <Divider />
+                <Grid mt={10} justify='space-between'>
+                    <Grid.Col span={6}><Text fw={"bold"}>Filter Account</Text></Grid.Col>
+                    <Grid.Col span="content"><Button variant='transparent'
+                        onClick={() => {
+                            setFilterRole("")
+                            setFilterStatus("")
+                            setFilterSearchBrand("")
+                            setFilterSearchBrandId("")
+                        }}>
+                        Clear All Filters
+                    </Button>
+                    </Grid.Col>
+                </Grid>
+                <Group grow>
+                    <RadioGroup name="role" label="Role" value={filterRole} onChange={setFilterRole} mt={10}>
+                        <Group mt="xs">
+                            <Radio value={RoleEnum.Technician.toString()} label={"Technician"} />
+                            <Radio value={RoleEnum.BrandManager.toString()} label={"Brand Manager"} />
+                            <Radio value={RoleEnum.ShopManager.toString()} label={"Shop Manager"} />
+                            <Radio value={RoleEnum.Employee.toString()} label={"Employee"} />
+                        </Group>
+                    </RadioGroup>
+                    <RadioGroup name="status" label="Status" value={filterStatus} onChange={setFilterStatus}>
+                        <Group mt="xs">
+                            <Radio value={AccountStatus.New.toString()} label={"New"} />
+                            <Radio value={AccountStatus.Active.toString()} label={"Active"} />
+                            <Radio value={AccountStatus.Inactive.toString()} label={"Inactive"} />
+                        </Group>
+                    </RadioGroup>
+                    <Select label="Brand" data={brandList || []} limit={5}
+                        nothingFoundMessage={brandList && "Not Found"}
+                        value={filterSearchBrandId} placeholder="Pick value" clearable searchable
+                        onSearchChange={setFilterSearchBrand}
+                        onChange={setFilterSearchBrandId}
+                    />
+                </Group>
+                <Button
+                    mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
+                    variant="gradient" size="md" mb={20}
+                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                >
+                    Done
+                </Button>
+                <Divider />
+            </Collapse>
 
             {/* Table */}
             <Table.ScrollContainer minWidth={500}>
