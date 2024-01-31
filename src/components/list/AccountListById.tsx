@@ -42,7 +42,7 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
             </div>
 
             <div className={styled["icon-text"]}>
-                <MdEmail />
+                <MdEmail style={{ width: '20px', height: '20px' }}/>
                 <span className={styled["information"]}>{item.email}</span>
             </div>
 

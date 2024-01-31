@@ -46,19 +46,19 @@ const ShopDetail = () => {
                                     </Badge>
                                 </Group>
                                 <Group>
-                                    <MdAccountCircle />
+                                    <MdAccountCircle style={{ width: 18, height: 18 }} />
                                     Shop Manager: <Text size="md">{data?.shopManager ? data?.shopManager : "None"}</Text>
                                 </Group>
                                 <Group>
-                                    <MdPhone />
+                                    <MdPhone style={{ width: 18, height: 18 }} />
                                     <Text size="md">{data?.phone}</Text>
                                 </Group>
                                 <Group>
-                                    <MdHome />
+                                    <MdHome style={{ width: 18, height: 18 }} />
                                     <Text size="md">{data?.addressLine}, {data?.ward?.name}, {data?.ward?.district?.name}, {data?.ward?.district?.province?.name}</Text>
                                 </Group>
                                 <Group mb={20}>
-                                    <MdAccessTime />
+                                    <MdAccessTime style={{ width: 18, height: 18 }} />
                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                 </Group>
                             </div>

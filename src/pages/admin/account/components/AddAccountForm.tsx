@@ -53,8 +53,6 @@ export const AddAccountForm = () => {
                 value.trim().length === 0 ? "Confirm Password is required" : null,
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
-            addressLine: (value: string) =>
-                isEmpty(value) ? "Address is required" : null,
             roleIds: (value) =>
                 value === '' ? "Please choose a role" : null,
         },
@@ -140,6 +138,20 @@ export const AddAccountForm = () => {
 
     return (
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
+            <Group grow mt={10}>
+                <Select label="Role" placeholder="Select" withAsterisk
+                    data={[
+                        { value: RoleEnum.Technician.toString(), label: 'Technician' },
+                        { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
+                    ]}
+                    {...form.getInputProps('roleIds')} />
+                <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
+                    disabled={form.values.roleIds != "3"} withAsterisk={form.values.roleIds == "3"}
+                    nothingFoundMessage={brandList && "Not Found"}
+                    value={brandId} placeholder="Pick value" clearable searchable
+                    onSearchChange={setBrand} onChange={setBrandId}
+                />
+            </Group>
             <TextInput mt={10}
                 withAsterisk label="Full Name"
                 placeholder="Nguyen Van A"
@@ -209,22 +221,8 @@ export const AddAccountForm = () => {
                 />
             </Group>
             <TextInput mt={10}
-                label="Address" placeholder="123/45 ABC..." withAsterisk
+                label="Address" placeholder="123/45 ABC..."
                 {...form.getInputProps("addressLine")} />
-            <Group grow mt={10}>
-                <Select label="Role" placeholder="Select" withAsterisk
-                    data={[
-                        { value: RoleEnum.Technician.toString(), label: 'Technician' },
-                        { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
-                    ]}
-                    {...form.getInputProps('roleIds')} />
-                <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.roleIds != "3"} withAsterisk={form.values.roleIds == "3"}
-                    nothingFoundMessage={brandList && "Not Found"}
-                    value={brandId} placeholder="Pick value" clearable searchable
-                    onSearchChange={setBrand} onChange={setBrandId}
-                />
-            </Group>
             <Group
                 justify="flex-start"
                 mt={10}

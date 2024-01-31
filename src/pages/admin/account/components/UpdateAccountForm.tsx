@@ -45,8 +45,6 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                         : "A Phone number should have a length of 10-12 characters",
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
-            addressLine: (value: string) =>
-                value.trim().length === 0 ? "Name is required" : null,
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {

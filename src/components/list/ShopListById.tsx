@@ -43,7 +43,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
             </div>
 
             <div className={styled["icon-text"]}>
-                <MdPhone />
+                <MdPhone style={{ width: '20px', height: '20px' }}/>
                 <span className={styled["information"]}>{item.phone}</span>
             </div>
 
