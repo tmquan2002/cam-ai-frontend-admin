@@ -120,30 +120,32 @@ const AccountDetail = () => {
                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                 </Group>
                             </div>
-                            <div>
-                                <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                    <Menu.Target>
-                                        <Tooltip label="Actions" withArrow>
-                                            <ActionIcon variant="transparent"
-                                                color={computedColorScheme === "dark" ? "white" : "black"}
-                                                size={"md"}>
-                                                <IconDots style={{ width: 25, height: 25 }} />
-                                            </ActionIcon>
-                                        </Tooltip>
-                                    </Menu.Target>
+                            {(data?.roles[0].id != RoleEnum.ShopManager && data?.roles[0].id != RoleEnum.Admin && data?.roles[0].id != RoleEnum.Employee) &&
+                                <div>
+                                    <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                        <Menu.Target>
+                                            <Tooltip label="Actions" withArrow>
+                                                <ActionIcon variant="transparent"
+                                                    color={computedColorScheme === "dark" ? "white" : "black"}
+                                                    size={"md"}>
+                                                    <IconDots style={{ width: 25, height: 25 }} />
+                                                </ActionIcon>
+                                            </Tooltip>
+                                        </Menu.Target>
 
-                                    <Menu.Dropdown>
-                                        <Menu.Item leftSection={<MdEdit />}
-                                            onClick={() => navigate(`/account/${params.accountId!}/update`)}>
-                                            Update
-                                        </Menu.Item>
-                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
-                                            onClick={open} >
-                                            Delete
-                                        </Menu.Item>
-                                    </Menu.Dropdown>
-                                </Menu>
-                            </div>
+                                        <Menu.Dropdown>
+                                            <Menu.Item leftSection={<MdEdit />}
+                                                onClick={() => navigate(`/account/${params.accountId!}/update`)}>
+                                                Update
+                                            </Menu.Item>
+                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                                onClick={open} >
+                                                Delete
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
+                                </div>
+                            }
                         </div>
                         <Divider my="md" />
                         {/* TODO: Add detail of a shop this shop manager account working on */}
