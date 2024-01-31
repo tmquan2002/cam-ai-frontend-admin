@@ -15,7 +15,7 @@ const BrandList = () => {
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
-    const [opened, { open, close }] = useDisclosure(false);
+    const [opened, { toggle }] = useDisclosure(false);
 
     const [filterStatus, setFilterStatus] = useState<string>("")
     const navigate = useNavigate();
@@ -108,7 +108,7 @@ const BrandList = () => {
                 <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
                     <Group>
                         <Tooltip label="Filter" withArrow>
-                            <ActionIcon color="grey" size={"lg"} w={20} onClick={open}>
+                            <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
                                 <MdFilterAlt />
                             </ActionIcon>
                         </Tooltip>

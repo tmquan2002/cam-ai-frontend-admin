@@ -18,7 +18,7 @@ const AccountList = () => {
 
     const [filterRole, setFilterRole] = useState<string>("")
     const [filterStatus, setFilterStatus] = useState<string>("")
-    const [filterSearchBrand, setFilterSearchBrand] = useState<string | null>("")
+    const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
 
     const navigate = useNavigate();
@@ -144,8 +144,8 @@ const AccountList = () => {
                         onClick={() => {
                             setFilterRole("")
                             setFilterStatus("")
-                            setFilterSearchBrand("")
                             setFilterSearchBrandId("")
+                            setFilterSearchBrand("")
                         }}>
                         Clear All Filters
                     </Button>
@@ -170,6 +170,7 @@ const AccountList = () => {
                     <Select label="Brand" data={brandList || []} limit={5}
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
+                        searchValue={filterSearchBrand}
                         onSearchChange={setFilterSearchBrand}
                         onChange={setFilterSearchBrandId}
                     />
