@@ -24,6 +24,7 @@ export const AddAccountForm = () => {
         initialValues: {
             email: "",
             password: "",
+            confirmPassword: "",
             name: "",
             gender: '',
             phone: "",
@@ -40,16 +41,20 @@ export const AddAccountForm = () => {
                 value.trim().length === 0 ? "Name is required" : null,
             email: (value: string) =>
                 value.trim().length === 0 ? "Email is required"
-                    : /^\S+@\S+$/.test(value) ? null : "Invalid email",
+                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
                 value.trim().length === 0 ? "Phone is required" :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
-                        : "Invalid phone number",
+                        : "A Phone number should have a length of 10-12 characters",
             password: (value: string) =>
                 value.trim().length === 0 ? "Password is required" : null,
+            confirmPassword: (value: string) =>
+                value.trim().length === 0 ? "Confirm Password is required" : null,
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
+            addressLine: (value: string) =>
+                isEmpty(value) ? "Address is required" : null,
             roleIds: (value) =>
                 value === '' ? "Please choose a role" : null,
         },
@@ -67,6 +72,14 @@ export const AddAccountForm = () => {
     const onSubmitForm = async () => {
         // console.log(values)
 
+        if (form.values.password !== form.values.confirmPassword) {
+            notifications.show({
+                message: "Password and Confirm Password does not match",
+                color: "pale-red.5",
+                withCloseButton: true,
+            });
+            return;
+        }
         const addAccountParams: AddAccountParams = {
             name: form.values.name,
             email: form.values.email,
@@ -80,6 +93,15 @@ export const AddAccountForm = () => {
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
         console.log(addAccountParams)
+
+        if (addAccountParams.roleIds[0] == RoleEnum.BrandManager && isEmpty(brandId)) {
+            notifications.show({
+                message: "A Brand is required for Brand Manager",
+                color: "pale-red.5",
+                withCloseButton: true,
+            });
+            return;
+        }
 
         addAccount(addAccountParams, {
             onSuccess(data) {
@@ -126,10 +148,16 @@ export const AddAccountForm = () => {
                 withAsterisk label="Email"
                 placeholder="your@email.com"
                 {...form.getInputProps("email")} />
-            <TextInput
-                withAsterisk label="Password"
-                placeholder="Password" type="password"
-                {...form.getInputProps("password")} />
+            <Group grow>
+                <TextInput
+                    withAsterisk label="Password"
+                    placeholder="Password" type="password"
+                    {...form.getInputProps("password")} />
+                <TextInput
+                    withAsterisk label="Confirm Password"
+                    placeholder="Confirm Password" type="password"
+                    {...form.getInputProps("confirmPassword")} />
+            </Group>
             <Group grow>
                 <DateInput
                     withAsterisk label="Birthday"
@@ -137,7 +165,7 @@ export const AddAccountForm = () => {
                     maxDate={getDateFromSetYear(18)}
                     {...form.getInputProps('birthday')} />
                 <TextInput
-                    label="Phone" placeholder="Phone Number"
+                    label="Phone" placeholder="Phone Number" withAsterisk
                     {...form.getInputProps("phone")} />
                 <Select label="Gender" placeholder="Select" withAsterisk
                     data={[
@@ -181,7 +209,7 @@ export const AddAccountForm = () => {
                 />
             </Group>
             <TextInput
-                label="Address" placeholder="123/45 ABC..."
+                label="Address" placeholder="123/45 ABC..." withAsterisk
                 {...form.getInputProps("addressLine")} />
             <Group grow>
                 <Select label="Role" placeholder="Select" withAsterisk
@@ -191,7 +219,7 @@ export const AddAccountForm = () => {
                     ]}
                     {...form.getInputProps('roleIds')} />
                 <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.roleIds != "3"}
+                    disabled={form.values.roleIds != "3"} withAsterisk={form.values.roleIds == "3"}
                     nothingFoundMessage={brandList && "Not Found"}
                     value={brandId} placeholder="Pick value" clearable searchable
                     onSearchChange={setBrand} onChange={setBrandId}

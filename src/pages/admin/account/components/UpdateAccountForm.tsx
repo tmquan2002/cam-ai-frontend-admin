@@ -37,14 +37,16 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 value.trim().length === 0 ? "Name is required" : null,
             email: (value: string) =>
                 value.trim().length === 0 ? "Email is required"
-                    : /^\S+@\S+$/.test(value) ? null : "Invalid email",
+                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
                 value.trim().length === 0 ? "Phone is required" :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
-                        : "Invalid phone number",
+                        : "A Phone number should have a length of 10-12 characters",
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
+            addressLine: (value: string) =>
+                value.trim().length === 0 ? "Name is required" : null,
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {

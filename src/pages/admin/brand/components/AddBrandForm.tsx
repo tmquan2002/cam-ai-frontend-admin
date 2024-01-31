@@ -21,13 +21,14 @@ export const AddBrandForm = () => {
         validate: {
             name: (value) =>
                 value.trim().length === 0 ? "Name is required" : null,
-            email: (value) =>
+            email: (value: string) =>
                 value.trim().length === 0 ? "Email is required"
-                    : /^\S+@\S+$/.test(value) ? null : "Invalid email",
-            phone: (value) =>
-                /(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)
-                    ? null
-                    : "Invalid phone number",
+                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
+            phone: (value: string) =>
+                value.trim().length === 0 ? "Phone is required" :
+                    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
+                        ? null
+                        : "A Phone number should have a length of 10-12 characters",
         },
     });
 
@@ -91,7 +92,7 @@ export const AddBrandForm = () => {
             />
 
             <TextInput
-                label="Phone"
+                label="Phone" withAsterisk
                 placeholder="Phone Number"
                 size="md"
                 {...form.getInputProps("phone")}
