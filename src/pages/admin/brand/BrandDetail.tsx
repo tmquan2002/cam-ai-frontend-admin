@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
@@ -6,13 +6,14 @@ import axios from "axios";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
+import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
-import { BrandStatus, StatusColor } from "../../../types/enum";
+import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
 
@@ -120,12 +121,8 @@ const BrandDetail = () => {
                                 <div>
                                     <Group mb={15}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        <Badge size='lg' radius={"lg"} autoContrast p={17}
-                                            color={data?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
-                                                data?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                                        >
-                                            {data?.brandStatus ? data.brandStatus.name : "None"}
-                                        </Badge>
+                                        <StatusBadge statusName={data?.brandStatus ? data.brandStatus.name : "None"} type="brand"
+                                            statusId={data?.brandStatus?.id ? data?.brandStatus?.id : 0} />
                                     </Group>
                                     <Group>
                                         <MdEmail />

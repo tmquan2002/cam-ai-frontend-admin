@@ -1,10 +1,10 @@
-import { Badge, Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
+import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
 import { MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { GetAccountResult } from "../../apis/AccountAPI";
 import { useGetAllAccounts } from "../../hooks/useAccounts";
+import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
-import { AccountStatus, StatusColor } from "../../types/enum";
 
 interface AccountListParam {
     id: string;
@@ -21,13 +21,7 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.accountStatus &&
-                    <Badge size='lg' radius={"lg"} p={17} autoContrast
-                        color={item.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
-                            item.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
-                                item.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
-                        mt={15} mb={15}>
-                        {item.accountStatus?.name}
-                    </Badge>
+                    <StatusBadge statusName={item.accountStatus?.name} type="account" statusId={item?.accountStatus?.id} mb={15} mt={15} />
                 }
             </div>
 
@@ -42,7 +36,7 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
             </div>
 
             <div className={styled["icon-text"]}>
-                <MdEmail style={{ width: '20px', height: '20px' }}/>
+                <MdEmail style={{ width: '20px', height: '20px' }} />
                 <span className={styled["information"]}>{item.email}</span>
             </div>
 

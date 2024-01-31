@@ -1,10 +1,10 @@
-import { Badge, Box, Button, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Box, Button, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
 import { Shop } from "../../models/Shop";
+import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
-import { ShopStatus, StatusColor } from "../../types/enum";
 
 interface ShopListParam {
     idType: "brand" | "shopmanager";
@@ -22,12 +22,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.shopStatus &&
-                    <Badge size='lg' radius={"lg"} autoContrast p={17}
-                        color={item.shopStatus?.id == ShopStatus.Active ? StatusColor.ACTIVE :
-                            item.shopStatus?.id == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                        mt={15} mb={15}>
-                        {item.shopStatus?.name}
-                    </Badge>
+                    <StatusBadge statusName={item.shopStatus?.name} type="shop" statusId={item?.shopStatus?.id} mb={15} mt={15} />
                 }
             </div>
 
@@ -43,7 +38,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
             </div>
 
             <div className={styled["icon-text"]}>
-                <MdPhone style={{ width: '20px', height: '20px' }}/>
+                <MdPhone style={{ width: '20px', height: '20px' }} />
                 <span className={styled["information"]}>{item.phone}</span>
             </div>
 

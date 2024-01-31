@@ -1,14 +1,14 @@
-import { Avatar, Badge, Box, Divider, Group, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Avatar, Box, Divider, Group, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdPhone } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
+import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
-import { BrandStatus, ShopStatus, StatusColor } from "../../../types/enum";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -38,12 +38,8 @@ const ShopDetail = () => {
                             <div>
                                 <Group mb={15}>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Badge size='lg' radius={"lg"} autoContrast p={17}
-                                        color={data?.shopStatus?.id == ShopStatus.Active ? StatusColor.ACTIVE :
-                                            data?.shopStatus?.id == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                                    >
-                                        {data?.shopStatus ? data.shopStatus.name : "None"}
-                                    </Badge>
+                                    <StatusBadge statusName={data?.shopStatus ? data.shopStatus.name : "None"} type="shop"
+                                        statusId={data?.shopStatus?.id ? data?.shopStatus?.id : 0} />
                                 </Group>
                                 <Group>
                                     <MdAccountCircle style={{ width: 18, height: 18 }} />
@@ -86,12 +82,8 @@ const ShopDetail = () => {
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                <Badge size='lg' radius={"lg"} autoContrast p={17}
-                                                    color={data?.brand?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
-                                                        data?.brand?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                                                >
-                                                    {data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"}
-                                                </Badge>
+                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"} type="brand"
+                                                    statusId={data?.brand?.brandStatus?.id ? data?.brand?.brandStatus?.id : 0} />
                                             </Group>
                                             <Group>
                                                 <MdEmail />

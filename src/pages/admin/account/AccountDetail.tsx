@@ -1,18 +1,19 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
+import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { AccountStatus, BrandStatus, RoleEnum, StatusColor } from "../../../types/enum";
+import { RoleEnum } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -84,13 +85,8 @@ const AccountDetail = () => {
                             <div>
                                 <Group mb={15}>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <Badge size='lg' radius={"lg"} autoContrast p={17}
-                                        color={data?.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
-                                            data?.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
-                                                data?.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
-                                    >
-                                        {data?.accountStatus ? data.accountStatus.name : "None"}
-                                    </Badge>
+                                    <StatusBadge statusName={data?.accountStatus ? data.accountStatus.name : "None"} type="account"
+                                        statusId={data?.accountStatus?.id || 0} mb={15} mt={15} />
                                 </Group>
 
                                 <Group>
@@ -158,12 +154,8 @@ const AccountDetail = () => {
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                <Badge size='lg' radius={"lg"} autoContrast p={17}
-                                                    color={data?.brand?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
-                                                        data?.brand?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                                                >
-                                                    {data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"}
-                                                </Badge>
+                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"} type="brand"
+                                                    statusId={data?.brand?.brandStatus?.id ? data?.brand?.brandStatus?.id : 0} />
                                             </Group>
                                             <Group>
                                                 <MdEmail />

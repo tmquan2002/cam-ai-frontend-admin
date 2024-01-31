@@ -1,11 +1,12 @@
-import { ActionIcon, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
-import { AccountStatus, RoleEnum, StatusColor } from '../../../../types/enum';
+import { AccountStatus, RoleEnum } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
@@ -79,14 +80,8 @@ const AccountList = () => {
                 <Table.Td>{e.roles[0].name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"}
-                        autoContrast fullWidth p={17}
-                        color={e?.accountStatus?.id == AccountStatus.Active ? StatusColor.ACTIVE :
-                            e?.accountStatus?.id == AccountStatus.Inactive ? StatusColor.INACTIVE :
-                                e?.accountStatus?.id == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
-                    >
-                        {e.accountStatus ? e.accountStatus.name : "None"}
-                    </Badge>
+                    <StatusBadge statusName={e.accountStatus ? e.accountStatus.name : "None"} type="account"
+                        statusId={e?.accountStatus?.id ? e?.accountStatus?.id : 0} fullWidth/>
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

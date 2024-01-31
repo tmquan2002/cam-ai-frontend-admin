@@ -1,12 +1,13 @@
-import { ActionIcon, Avatar, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '../../../../components/badge/StatusBadge';
 import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
-import { BrandStatus, StatusColor } from '../../../../types/enum';
+import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
 
@@ -68,12 +69,8 @@ const BrandList = () => {
                     </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"} fullWidth autoContrast p={17}
-                        color={e?.brandStatus?.id == BrandStatus.Active ? StatusColor.ACTIVE :
-                            e?.brandStatus?.id == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                    >
-                        {e.brandStatus ? e.brandStatus.name : "None"}
-                    </Badge>
+                    <StatusBadge statusName={e.brandStatus ? e.brandStatus.name : "None"} type="brand"
+                        statusId={e?.brandStatus?.id ? e?.brandStatus?.id : 0} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

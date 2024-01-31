@@ -1,11 +1,11 @@
-import { Badge, Group, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { Group, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { MdClear, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllShops } from '../../../../hooks/useShops';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/shop.module.scss";
-import { ShopStatus, StatusColor } from '../../../../types/enum';
 
 const ShopList = () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -56,12 +56,8 @@ const ShopList = () => {
                 <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <Badge size='lg' radius={"lg"} fullWidth autoContrast p={17}
-                        color={e.shopStatus?.id == ShopStatus.Active ? StatusColor.ACTIVE :
-                            e.shopStatus?.id == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
-                    >
-                        {e.shopStatus?.name ? e.shopStatus?.name : "None"}
-                    </Badge>
+                    <StatusBadge statusName={e.shopStatus?.name ? e.shopStatus?.name : "None"} type="shop"
+                        statusId={e.shopStatus?.id ? e.shopStatus?.id : 0} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
