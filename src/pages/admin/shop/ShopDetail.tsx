@@ -9,6 +9,7 @@ import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
+import { EmployeeListById } from "../../../components/list/EmployeeListById";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -105,7 +106,7 @@ const ShopDetail = () => {
 
                             {/* TODO: Employee list */}
                             <Tabs.Panel value="employees">
-                                Employee tab content coming soon
+                                <EmployeeListById id={params.shopId!} />
                             </Tabs.Panel>
 
                             {/* TODO: Edge Box list */}
