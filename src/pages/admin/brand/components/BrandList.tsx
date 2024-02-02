@@ -1,6 +1,5 @@
-import { ActionIcon, Avatar, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Avatar, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +17,9 @@ const BrandList = () => {
     const [opened, { toggle }] = useDisclosure(false);
 
     const [filterStatus, setFilterStatus] = useState<string>("")
+
+    const [initialData, setInitialData] = useState(true)
+
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -54,8 +56,28 @@ const BrandList = () => {
     }, [searchTerm, clear])
 
     useEffect(() => {
-        refetch(); setPageIndex(1);
-    }, [filterStatus])
+        const timer = setTimeout(() => { refetch(); setPageIndex(1) }, 500);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [filterStatus]);
+
+    const onClearFilter = () => {
+        setFilterStatus("")
+    }
+
+    const onClearSearch = () => {
+        if (initialData) {
+            setSearchTerm("")
+            return
+        } else {
+            onClearFilter();
+            setSearchTerm("")
+            setPageIndex(1)
+            setInitialData(true)
+            setClear(true)
+        }
+    }
 
     const rows = brandList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
@@ -81,25 +103,17 @@ const BrandList = () => {
 
     return (
         <>
+            <Text size='lg' fw="bold" fz='25px'
+                c={"light-blue.4"}
+            >BRAND LIST</Text>
+
             {/* Top */}
             <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
 
-                <Grid.Col span={{ base: 12, md: 6, lg: 3 }} order={{ base: 1, md: 1, lg: 1 }}>
-                    <Text size='lg' fw="bold" fz='25px'
-                        c={"light-blue.4"}
-                    >BRAND LIST</Text>
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 6, md: 6, lg: 6 }} order={{ base: 2, md: 3, lg: 2 }}>
+                <Grid.Col span={{ base: 12, md: 6 }}>
                     <TextInput w={'100%'}
                         placeholder="Search" leftSection={<MdOutlineSearch />}
-                        rightSection={<MdClear onClick={() => {
-                            if (searchTerm !== "") {
-                                setSearchTerm("")
-                                setClear(true)
-                                setPageIndex(1)
-                            }
-                        }} />}
+                        rightSection={<MdClear onClick={onClearSearch} />}
                         value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                         onKeyDown={onSearch}
                     />
@@ -128,40 +142,41 @@ const BrandList = () => {
                 <Grid mt={10} justify='space-between'>
                     <Grid.Col span={6}><Text fw={"bold"}>Filter Brand</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
-                        onClick={() => {
-                            if (!isEmpty(filterStatus)) {
-                                setFilterStatus("")
-                            }
-                        }}>
+                        onClick={onClearFilter}>
                         Clear All Filters
                     </Button>
                     </Grid.Col>
                 </Grid>
-                <RadioGroup name="status" label="Status" value={filterStatus} mb={20}
-                    onChange={setFilterStatus}>
-                    <Group mt="xs">
-                        <Radio value={BrandStatus.Active.toString()} label={"Active"} />
-                        <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
-                    </Group>
-                </RadioGroup>
+                <Group mb="md">
+                    <Text size='sm'>Status: </Text>
+                    <RadioGroup name="status" value={filterStatus}
+                        onChange={setFilterStatus}>
+                        <Group>
+                            <Radio value={BrandStatus.Active.toString()} label={"Active"} />
+                            <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
+                        </Group>
+                    </RadioGroup>
+                </Group>
                 <Divider />
             </Collapse>
 
             {/* Table */}
-            <Table.ScrollContainer minWidth={500}>
-                <Table verticalSpacing={"sm"} striped highlightOnHover>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>#</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Created Date</Table.Th>
-                            <Table.Th ta={"center"}>Status</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
-                    {brandList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
-                </Table>
-            </Table.ScrollContainer>
+            <ScrollArea.Autosize mah={400}>
+                <Table.ScrollContainer minWidth={500}>
+                    <Table verticalSpacing={"sm"} striped highlightOnHover>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>#</Table.Th>
+                                <Table.Th>Name</Table.Th>
+                                <Table.Th>Created Date</Table.Th>
+                                <Table.Th ta={"center"}>Status</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                        {brandList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
+                    </Table>
+                </Table.ScrollContainer>
+            </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || brandList?.totalCount ?
                     <>

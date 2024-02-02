@@ -1,5 +1,6 @@
-import { ActionIcon, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Badge, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,8 @@ const AccountList = () => {
     const [filterStatus, setFilterStatus] = useState<string>("")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
+
+    const [initialData, setInitialData] = useState(true)
 
     const navigate = useNavigate();
 
@@ -45,17 +48,6 @@ const AccountList = () => {
     const { data: brandList, refetch: refetchBrand
     } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });
 
-    const onSearch = (e: any) => {
-        // console.log(e.key)
-        if (e.key == "Enter") {
-            if (pageIndex == 1) {
-                refetch()
-            } else {
-                setPageIndex(1);
-            }
-        }
-    }
-
     useEffect(() => {
         if (searchTerm !== "" || !clear) {
             return;
@@ -69,6 +61,44 @@ const AccountList = () => {
         const timer = setTimeout(() => refetchBrand(), 500);
         return () => { clearTimeout(timer); };
     }, [filterSearchBrand]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => { refetch(); setPageIndex(1) }, 500);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [filterSearchBrandId, filterRole, filterStatus]);
+
+    const onSearch = (e: any) => {
+        if (e.key == "Enter" && !isEmpty(searchTerm)) {
+            if (pageIndex == 1) {
+                refetch()
+            } else {
+                setPageIndex(1);
+            }
+            setInitialData(false)
+        }
+    }
+
+    const onClearFilter = () => {
+        setFilterRole("")
+        setFilterStatus("")
+        setFilterSearchBrandId("")
+        setFilterSearchBrand("")
+    }
+
+    const onClearSearch = () => {
+        if (initialData) {
+            setSearchTerm("")
+            return
+        } else {
+            onClearFilter();
+            setSearchTerm("")
+            setPageIndex(1)
+            setInitialData(true)
+            setClear(true)
+        }
+    }
 
     const rows = accountList?.values.map((e, i) => (
         <Tooltip label="View Detail" key={e.id} openDelay={1000}>
@@ -95,29 +125,20 @@ const AccountList = () => {
     return (
         <>
             {/* Top */}
+            <Text size='lg' fw="bold" fz='25px'
+                c={"light-blue.4"}
+            >ACCOUNT LIST</Text>
             <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
-                <Grid.Col span={{ base: 12, md: 6, lg: 3 }} order={{ base: 1, md: 1, lg: 1 }}>
-                    <Text size='lg' fw="bold" fz='25px'
-                        c={"light-blue.4"}
-                    >ACCOUNT LIST</Text>
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 6, md: 6, lg: 6 }} order={{ base: 2, md: 3, lg: 2 }}>
+                <Grid.Col span={{ base: 12, md: 6 }}>
                     <TextInput w={'100%'}
                         placeholder="Search" leftSection={<MdOutlineSearch />}
-                        rightSection={<MdClear onClick={() => {
-                            if (searchTerm !== "") {
-                                setSearchTerm("")
-                                setClear(true)
-                                setPageIndex(1)
-                            }
-                        }} />}
+                        rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
                         value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                         onKeyDown={onSearch}
                     />
                 </Grid.Col>
 
-                <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
+                <Grid.Col span="content" order={{ base: 12, md: 6 }}>
                     <Group>
                         <Tooltip label="Filter" withArrow>
                             <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -141,33 +162,35 @@ const AccountList = () => {
                 <Grid mt={10} justify='space-between'>
                     <Grid.Col span={6}><Text fw={"bold"}>Filter Account</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
-                        onClick={() => {
-                            setFilterRole("")
-                            setFilterStatus("")
-                            setFilterSearchBrandId("")
-                            setFilterSearchBrand("")
-                        }}>
+                        onClick={onClearFilter}>
                         Clear All Filters
                     </Button>
                     </Grid.Col>
                 </Grid>
-                <Group grow>
-                    <RadioGroup name="role" label="Role" value={filterRole} onChange={setFilterRole} mt={10}>
-                        <Group mt="xs">
+                <Group mt="md">
+                    <Text size='sm'>Role: </Text>
+                    <RadioGroup name="role" size='sm' value={filterRole} onChange={setFilterRole}>
+                        <Group>
                             <Radio value={RoleEnum.Technician.toString()} label={"Technician"} />
                             <Radio value={RoleEnum.BrandManager.toString()} label={"Brand Manager"} />
                             <Radio value={RoleEnum.ShopManager.toString()} label={"Shop Manager"} />
                             <Radio value={RoleEnum.Employee.toString()} label={"Employee"} />
                         </Group>
                     </RadioGroup>
-                    <RadioGroup name="status" label="Status" value={filterStatus} onChange={setFilterStatus}>
-                        <Group mt="xs">
+                </Group>
+                <Group mt="md">
+                    <Text size='sm'>Status: </Text>
+                    <RadioGroup name="status" size='sm' value={filterStatus} onChange={setFilterStatus}>
+                        <Group>
                             <Radio value={AccountStatus.New.toString()} label={"New"} />
                             <Radio value={AccountStatus.Active.toString()} label={"Active"} />
                             <Radio value={AccountStatus.Inactive.toString()} label={"Inactive"} />
                         </Group>
                     </RadioGroup>
-                    <Select label="Brand" data={brandList || []} limit={5}
+                </Group>
+                <Group mt="md" mb="md">
+                    <Text size='sm'>Brand: </Text>
+                    <Select data={brandList || []} limit={5} size='sm'
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                         searchValue={filterSearchBrand}
@@ -175,33 +198,28 @@ const AccountList = () => {
                         onChange={setFilterSearchBrandId}
                     />
                 </Group>
-                <Button
-                    mt={20} onClick={() => { refetch(); close(); setPageIndex(1) }}
-                    variant="gradient" size="md" mb={20}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                >
-                    Done
-                </Button>
                 <Divider />
             </Collapse>
 
             {/* Table */}
-            <Table.ScrollContainer minWidth={500}>
-                <Table verticalSpacing={"sm"} striped highlightOnHover captionSide="bottom">
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>#</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Brand</Table.Th>
-                            <Table.Th>Roles</Table.Th>
-                            <Table.Th>Created Date</Table.Th>
-                            <Table.Th ta={"center"}>Status</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
-                    {accountList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
-                </Table>
-            </Table.ScrollContainer>
+            <ScrollArea.Autosize mah={400}>
+                <Table.ScrollContainer minWidth={500} >
+                    <Table verticalSpacing={"sm"} striped highlightOnHover captionSide="bottom">
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>#</Table.Th>
+                                <Table.Th>Name</Table.Th>
+                                <Table.Th>Brand</Table.Th>
+                                <Table.Th>Roles</Table.Th>
+                                <Table.Th>Created Date</Table.Th>
+                                <Table.Th ta={"center"}>Status</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                        {accountList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
+                    </Table>
+                </Table.ScrollContainer>
+            </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || accountList?.totalCount ?
                     <>
@@ -215,7 +233,7 @@ const AccountList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['2', '3', '5', '8']} defaultValue={"5"}
+                                data={['5', '10', '15', '20']} defaultValue={"5"}
                             />
                         </Group>
                     </>
