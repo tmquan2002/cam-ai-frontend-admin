@@ -13,11 +13,11 @@ import { Gender, RoleEnum } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
 import { isEmpty } from "lodash";
 
-export const AddAccountForm = () => {
-    const [brand, setBrand] = useState<string | null>(null);
+export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBrandId?: string, initialBrandName?: string }) => {
+    const [brand, setBrand] = useState<string>(initialBrandName || "");
     const [districtSearch, setDistrictSearch] = useState<string>("");
     const [wardSearch, setWardSearch] = useState<string>("");
-    const [brandId, setBrandId] = useState<string | null>(null);
+    const [brandId, setBrandId] = useState<string | null>(initialBrandId || null);
 
     //TODO: Password should be auto generated
     const form = useForm({
@@ -30,7 +30,7 @@ export const AddAccountForm = () => {
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
-            roleIds: "",
+            roleIds: initialBrandId ? RoleEnum.BrandManager.toString() : "",
             province: "",
             district: "",
             ward: "",
@@ -140,15 +140,17 @@ export const AddAccountForm = () => {
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
             <Group grow mt={10}>
                 <Select label="Role" placeholder="Select" withAsterisk
+                    disabled={!isEmpty(initialBrandId)}
                     data={[
                         { value: RoleEnum.Technician.toString(), label: 'Technician' },
                         { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
                     ]}
                     {...form.getInputProps('roleIds')} />
                 <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.roleIds != "3"} withAsterisk={form.values.roleIds == "3"}
+                    disabled={form.values.roleIds != RoleEnum.BrandManager.toString() || !isEmpty(initialBrandId)} withAsterisk={form.values.roleIds == "3"}
                     nothingFoundMessage={brandList && "Not Found"}
-                    value={brandId} placeholder="Pick value" clearable searchable
+                    value={brandId} searchValue={brand}
+                    placeholder="Pick value" clearable searchable
                     onSearchChange={setBrand} onChange={setBrandId}
                 />
             </Group>

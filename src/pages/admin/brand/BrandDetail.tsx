@@ -1,17 +1,18 @@
-import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
+import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
@@ -36,6 +37,7 @@ const BrandDetail = () => {
     const [modalOpen, { open, close }] = useDisclosure(false);
 
     const { data, isLoading } = useGetBrandById(params.brandId!);
+    const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId || "");
 
     const { mutate: deleteBrand } = useDeleteBrand();
     const { mutate: reactivateBrand } = useReactivateBrand();
@@ -124,6 +126,23 @@ const BrandDetail = () => {
                                         <StatusBadge statusName={data?.brandStatus ? data.brandStatus.name : "None"} type="brand"
                                             statusId={data?.brandStatus?.id ? data?.brandStatus?.id : 0} />
                                     </Group>
+
+                                    {isLoadingManager ? <Loader size="sm" /> :
+                                        dataManager?.id ?
+                                            <Group>
+                                                <MdAccountCircle />
+                                                Brand Manager: <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
+                                                    <Text size="md">{dataManager.name}</Text>
+                                                </Link>
+                                            </Group>
+                                            :
+                                            <Button
+                                                onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
+                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
+                                            >
+                                                Add Manager
+                                            </Button>
+                                    }
                                     <Group>
                                         <MdEmail />
                                         <Text size="md">{data?.email}</Text>

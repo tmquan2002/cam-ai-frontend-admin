@@ -1,5 +1,5 @@
 import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
-import { MdEmail, MdHome } from "react-icons/md";
+import { MdAccountCircle, MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { GetAccountResult } from "../../apis/AccountAPI";
 import { useGetAllAccounts } from "../../hooks/useAccounts";
@@ -23,6 +23,11 @@ const AccountCard = ({ item }: { item: GetAccountResult }) => {
                 {item.accountStatus &&
                     <StatusBadge statusName={item.accountStatus?.name} type="account" statusId={item?.accountStatus?.id} mb={15} mt={15} />
                 }
+            </div>
+
+            <div className={styled["icon-text"]}>
+                <MdAccountCircle style={{ width: '20px', height: '20px' }}/>
+                <span className={styled["information"]}><b>{item.roles[0].name}</b></span>
             </div>
 
             <div className={styled["icon-text"]}>
