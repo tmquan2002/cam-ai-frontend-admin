@@ -1,4 +1,4 @@
-import { Group, Loader, Pagination, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { Group, Loader, Pagination, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { MdClear, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,8 @@ const ShopList = () => {
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
+    const [initialData, setInitialData] = useState(true)
+
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
@@ -35,6 +37,18 @@ const ShopList = () => {
             } else {
                 setPageIndex(1);
             }
+        }
+    }
+
+    const onClearSearch = () => {
+        if (initialData) {
+            setSearchTerm("")
+            return
+        } else {
+            setSearchTerm("")
+            setPageIndex(1)
+            setInitialData(true)
+            setClear(true)
         }
     }
 
@@ -71,33 +85,28 @@ const ShopList = () => {
                 >SHOP LIST</Text>
                 <TextInput mb={20} w={300}
                     placeholder="Search" leftSection={<MdOutlineSearch />}
-                    rightSection={<MdClear onClick={() => {
-                        if (searchTerm !== "") {
-                            console.log(searchTerm)
-                            setSearchTerm("")
-                            setClear(true)
-                            setPageIndex(1)
-                        }
-                    }} />}
+                    rightSection={<MdClear onClick={onClearSearch} />}
                     value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
                     onKeyDown={onSearch}
                 />
             </div>
-            <Table.ScrollContainer minWidth={500}>
-                <Table verticalSpacing={"sm"} striped highlightOnHover>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>#</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Brand</Table.Th>
-                            <Table.Th>Created Date</Table.Th>
-                            <Table.Th ta={"center"}>Status</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
-                    {shopList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
-                </Table>
-            </Table.ScrollContainer>
+            <ScrollArea.Autosize mah={400}>
+                <Table.ScrollContainer minWidth={500}>
+                    <Table verticalSpacing={"sm"} striped highlightOnHover>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>#</Table.Th>
+                                <Table.Th>Name</Table.Th>
+                                <Table.Th>Brand</Table.Th>
+                                <Table.Th>Created Date</Table.Th>
+                                <Table.Th ta={"center"}>Status</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                        {shopList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
+                    </Table>
+                </Table.ScrollContainer>
+            </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || shopList?.totalCount ?
                     <>
@@ -111,7 +120,7 @@ const ShopList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['2', '3', '5', '8']} defaultValue={"5"}
+                                data={['5', '10', '15', '20']} defaultValue={"5"}
                             />
                         </Group>
                     </> : <></>
