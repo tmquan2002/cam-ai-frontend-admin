@@ -3,13 +3,12 @@ import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
-import { MdAccessTime, MdAccountCircle, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { RoleEnum } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
@@ -83,8 +82,13 @@ const AccountDetail = () => {
                         {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div>
-                                <Group mb={15}>
-                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                <Group mb={15} gap={30}>
+                                    <div>
+                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                        {data!.roles.map((item, index) => (
+                                            <Text size="md" key={index}>{item.name}</Text>
+                                        ))}
+                                    </div>
                                     <StatusBadge statusName={data?.accountStatus ? data.accountStatus.name : "None"} type="account"
                                         statusId={data?.accountStatus?.id || 0} mb={15} mt={15} />
                                 </Group>
@@ -104,19 +108,12 @@ const AccountDetail = () => {
                                     <Text size="md">{data?.birthday}</Text>
                                 </Group>
 
-                                <Group>
-                                    <MdAccountCircle />
-                                    {data!.roles.map((item, index) => (
-                                        <Text size="md" key={index}>{item.name}</Text>
-                                    ))}
-                                </Group>
-
                                 <Group mb={20}>
                                     <MdAccessTime />
                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                 </Group>
                             </div>
-                            {(data?.roles[0].id != RoleEnum.ShopManager && data?.roles[0].id != RoleEnum.Admin && data?.roles[0].id != RoleEnum.Employee) &&
+                            {data?.roles[0].id == RoleEnum.BrandManager &&
                                 <div>
                                     <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                         <Menu.Target>
@@ -147,10 +144,10 @@ const AccountDetail = () => {
                         {/* TODO: Add detail of a shop this shop manager account working on */}
                         {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
                             <div className={styled["brand-detail"]}>
-                                <Text size="lg" fw={"bold"}>Brand Information</Text>
+                                <Text size="lg" fw={"bold"}>Brand</Text>
                                 <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
                                     <Group className={styled["brand-profile"]} mt={20}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri ? data?.brand?.logoUri : NO_IMAGE_LOGO} />
+                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri} />
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>

@@ -1,14 +1,14 @@
-export interface Login {
+export type Login = {
     username: string;
     password: string;
 };
 
-export interface AuthToken {
+export type AuthToken = {
     accessToken: string;
     refreshToken: string;
 }
 
-export interface Password {
+export type Password = {
     oldPassword: string;
     newPassword: string;
     newPasswordRetype: string;

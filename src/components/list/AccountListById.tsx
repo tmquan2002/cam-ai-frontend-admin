@@ -1,8 +1,8 @@
 import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
 import { MdAccountCircle, MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { GetAccountResult } from "../../apis/AccountAPI";
 import { useGetAllAccounts } from "../../hooks/useAccounts";
+import { Account } from "../../models/Account";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 
@@ -10,7 +10,7 @@ interface AccountListParam {
     id: string;
 }
 
-const AccountCard = ({ item }: { item: GetAccountResult }) => {
+const AccountCard = ({ item }: { item: Account }) => {
     console.log(item)
     const navigate = useNavigate();
 

@@ -11,7 +11,6 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { AccountListById } from "../../../components/list/AccountListById";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { BrandStatus } from "../../../types/enum";
@@ -119,7 +118,7 @@ const BrandDetail = () => {
                         {data?.bannerUri && <Image h={200} mb={20} src={data?.bannerUri} />}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Avatar w={150} h={150} mr={20} src={data?.logoUri ? data?.logoUri : NO_IMAGE_LOGO} />
+                                <Avatar w={150} h={150} mr={20} src={data?.logoUri} />
                                 <div>
                                     <Group mb={15}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>

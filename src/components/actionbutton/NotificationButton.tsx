@@ -1,7 +1,6 @@
 import { ActionIcon, Avatar, Box, Center, Divider, Flex, Indicator, Popover, ScrollArea, Tabs, Text, Tooltip, rem } from "@mantine/core";
 import { useState } from "react";
 import { MdNotifications } from "react-icons/md";
-import { NO_IMAGE_LOGO } from "../../constants/ImagePlaceholders";
 import { timeSince } from "../../utils/dateFormat";
 import styled from "./Notification.module.scss";
 
@@ -26,7 +25,7 @@ const NotificationCard = ({ type, role, name, date }: { type: string, role: stri
             <Flex p={20} className={styled["detail-card"]}>
                 <Avatar mr={16} color="indigo"
                     style={{ cursor: "pointer", boxShadow: "0 0 3px 0 rgba(34, 34, 34, 1)", transition: "box-shadow 100ms", }}
-                    src={NO_IMAGE_LOGO}
+                    src={""}
                 />
                 <Box>
                     {role == "technician" ?

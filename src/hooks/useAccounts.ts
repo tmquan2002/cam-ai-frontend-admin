@@ -1,5 +1,6 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
-import { AccountAPI, AddAccountParams, GetAccountResult, GetAccountsPagingResult, GetAccountsParams, UpdateAccountParams } from "../apis/AccountAPI";
+import { AccountAPI, AddAccountParams, GetAccountsPagingResult, GetAccountsParams, UpdateAccountParams } from "../apis/AccountAPI";
+import { Account } from "../models/Account";
 
 export const useGetAllAccounts = (params: GetAccountsParams) => {
   const {
@@ -21,7 +22,7 @@ export const useGetAllAccounts = (params: GetAccountsParams) => {
 
 export const useGetAccountById = (id: string) => {
   const { isError, isLoading, data, error, refetch,
-  }: UseQueryResult<GetAccountResult, Error> = useQuery({
+  }: UseQueryResult<Account, Error> = useQuery({
     queryKey: ["account", id],
     queryFn: async () => {
       return await AccountAPI.getById(id);

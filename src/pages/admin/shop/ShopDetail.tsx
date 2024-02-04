@@ -4,8 +4,8 @@ import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdPhone } from "react-i
 import { Link, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { NO_IMAGE_LOGO } from "../../../constants/ImagePlaceholders";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
@@ -78,7 +78,7 @@ const ShopDetail = () => {
                             <Tabs.Panel value="brand">
                                 <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
                                     <Group className={styled["brand-profile"]} mt={20}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri ? data?.brand?.logoUri : NO_IMAGE_LOGO} />
+                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri} />
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>

@@ -1,7 +1,7 @@
 import { getAccessToken } from "../context/AuthContext";
+import { Account } from "../models/Account";
 import { BrandStatus } from "../models/Brand";
 import http, { toQueryParams } from "../utils/http";
-import { GetAccountResult } from "./AccountAPI";
 
 export type GetBrandsResult = {
   id: string;
@@ -15,7 +15,7 @@ export type GetBrandsResult = {
   bannerUri: string;
   brandManagerId: string;
   brandStatus: BrandStatus;
-  brandManager: GetAccountResult;
+  brandManager: Account;
 };
 
 export type GetBrandsParams = {

@@ -1,32 +1,9 @@
 import { getAccessToken } from "../context/AuthContext";
-import { AccountRole, AccountStatus } from "../models/Account";
+import { Account, AccountRole, AccountStatus } from "../models/Account";
 import { Brand } from "../models/Brand";
 import { Ward } from "../models/Location";
 import { Shop } from "../models/Shop";
 import http, { toQueryParams } from "../utils/http";
-
-export type GetAccountResult = {
-  timestamp: string;
-  id: string;
-  createdDate: string;
-  modifiedDate: string;
-  email: string;
-  password: string;
-  name: string;
-  gender: number | string;
-  phone: string;
-  birthday: string;
-  wardId: string;
-  addressLine: string;
-  workingShopId: string;
-  accountStatusId: number,
-  ward: Ward;
-  workingShop: Shop;
-  accountStatus: AccountStatus;
-  brand: Brand;
-  managingShop: Shop;
-  roles: AccountRole[];
-};
 
 export type AddAccountResult = {
   timestamp: string;
@@ -65,7 +42,7 @@ export type GetAccountsPagingResult = {
   pageSize: number;
   totalCount: number;
   isValuesEmpty: boolean;
-  values: GetAccountResult[];
+  values: Account[];
 };
 
 export type AddAccountParams = {
@@ -110,7 +87,7 @@ export const AccountAPI = {
   },
   getById: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.get<GetAccountResult>(`/api/accounts/${id}`, {
+    const res = await http.get<Account>(`/api/accounts/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -128,7 +105,7 @@ export const AccountAPI = {
   },
   update: async (params: UpdateAccountParams) => {
     const token = getAccessToken();
-    const res = await http.put<GetAccountResult>(
+    const res = await http.put<Account>(
       `/api/accounts/${params.id}`,
       params.values,
       {

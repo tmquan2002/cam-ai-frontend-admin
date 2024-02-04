@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
-import { NO_IMAGE_LOGO } from '../../../../constants/ImagePlaceholders';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
@@ -87,7 +86,7 @@ const BrandList = () => {
 
                 <Table.Td>
                     <Group>
-                        <Avatar w={50} h={50} src={e.logoUri ? e.logoUri : NO_IMAGE_LOGO} />{e.name}
+                        <Avatar w={50} h={50} src={e.logoUri} />{e.name}
                     </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>

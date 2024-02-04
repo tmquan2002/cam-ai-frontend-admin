@@ -1,4 +1,4 @@
-export interface BrandStatus {
+export type BrandStatus = {
     timestamp: string;
     id: number;
     name: string;
@@ -19,5 +19,5 @@ export type Brand = {
     brandStatusId: number;
     brandManager: string;
     brandStatus: BrandStatus;
-    shops: [string];
+    shops: string[];
 };
