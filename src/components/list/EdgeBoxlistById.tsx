@@ -1,9 +1,10 @@
-import { Box, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Box, Button, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 import { MdHome, MdOutlineTaskAlt } from "react-icons/md";
 import { useGetAllEdgeBoxes } from "../../hooks/useEdgeBoxes";
 import { EdgeBox } from "../../models/EdgeBox";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
+import { useNavigate } from "react-router-dom";
 
 interface EdgeBoxListParam {
     type: "brand" | "shop";
@@ -12,6 +13,7 @@ interface EdgeBoxListParam {
 
 // TODO: Redesign when BE is done with structures
 const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
+    const navigate = useNavigate();
     console.log(item)
 
     return (
@@ -34,6 +36,11 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
                 <MdOutlineTaskAlt style={{ width: '20px', height: '20px' }} />
                 <span className={styled["information"]}>{item.version}</span>
             </div>
+
+            <Button color="light-blue.6" fullWidth mt="md" radius="xs"
+                onClick={() => navigate(`/edgebox/${item.id}`)}>
+                View Detail
+            </Button>
         </Card>
     )
 }
@@ -51,7 +58,7 @@ export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No EdgeBox Found</Text> :
+                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
                         <SimpleGrid cols={3} mt={20}>
                             {data?.values.map((item, index) => (
                                 <EdgeBoxCard item={item} key={index} />
