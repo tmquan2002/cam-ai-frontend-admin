@@ -9,7 +9,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
-import { EmployeeListById } from "../../../components/list/EmployeeListById";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -104,14 +104,12 @@ const ShopDetail = () => {
                                 </div>
                             </Tabs.Panel>
 
-                            {/* TODO: Employee list */}
                             <Tabs.Panel value="employees">
                                 <EmployeeListById id={params.shopId!} />
                             </Tabs.Panel>
 
-                            {/* TODO: Edge Box list */}
                             <Tabs.Panel value="edge boxes">
-                                Edge Box tab content coming soon
+                                <EdgeBoxListById id={params.shopId!} type="shop" />
                             </Tabs.Panel>
                         </Tabs>
                     </div>

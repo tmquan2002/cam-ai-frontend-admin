@@ -16,6 +16,7 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -29,7 +30,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const BrandDetail = () => {
 
-    //TODO: Add Details of Shops, Accounts (Employees and Brand/Shop Manager) and Edge Box
     const params = useParams();
     const navigate = useNavigate();
     // console.log(params);
@@ -211,9 +211,8 @@ const BrandDetail = () => {
                                     <AccountListById id={params.brandId!} />
                                 </Tabs.Panel>
 
-                                {/* TODO: Edge Box list */}
                                 <Tabs.Panel value="edge boxes">
-                                    Edge Box tab content coming soon
+                                    <EdgeBoxListById id={params.shopId!} type="brand" />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

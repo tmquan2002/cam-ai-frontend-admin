@@ -19,6 +19,7 @@ export interface EdgeBoxInstallStatus {
     description: string;
 }
 
+// TODO: Redesign when BE is done with structures
 export interface EdgeBox {
     timestamp: string;
     id: string;

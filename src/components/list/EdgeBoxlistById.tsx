@@ -1,0 +1,65 @@
+import { Box, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { MdHome, MdOutlineTaskAlt } from "react-icons/md";
+import { useGetAllEdgeBoxes } from "../../hooks/useEdgeBoxes";
+import { EdgeBox } from "../../models/EdgeBox";
+import StatusBadge from "../badge/StatusBadge";
+import styled from "./list.module.scss";
+
+interface EdgeBoxListParam {
+    type: "brand" | "shop";
+    id: string;
+}
+
+// TODO: Redesign when BE is done with structures
+const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
+    console.log(item)
+
+    return (
+        <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
+            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+
+            <div>
+                <Text fw={500} size="lg">{item.model}</Text>
+                {item.edgeBoxStatus &&
+                    <StatusBadge statusName={item.edgeBoxStatus?.name} type="shop" statusId={item?.edgeBoxStatus?.id} mb={15} mt={15} />
+                }
+            </div>
+
+            <div className={styled["icon-text"]}>
+                <MdHome style={{ width: '20px', height: '20px' }} />
+                <span className={styled["information"]}>{item.edgeBoxLocation.name}</span>
+            </div>
+
+            <div className={styled["icon-text"]}>
+                <MdOutlineTaskAlt style={{ width: '20px', height: '20px' }} />
+                <span className={styled["information"]}>{item.version}</span>
+            </div>
+        </Card>
+    )
+}
+export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
+
+    //TODO: Add brandId or shopId based for searching
+    const { isLoading, data } = useGetAllEdgeBoxes({})
+    console.log(type);
+    console.log(id);
+
+    return (
+        <div className={styled["list-container"]}>
+            {isLoading ?
+                <Box className={styled["loader"]}>
+                    <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                </Box> :
+                <div className={styled["card-detail"]}>
+                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No EdgeBox Found</Text> :
+                        <SimpleGrid cols={3} mt={20}>
+                            {data?.values.map((item, index) => (
+                                <EdgeBoxCard item={item} key={index} />
+                            ))}
+                        </SimpleGrid>
+                    }
+                </div>
+            }
+        </div>
+    )
+}
