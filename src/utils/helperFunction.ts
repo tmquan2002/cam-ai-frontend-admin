@@ -1,3 +1,6 @@
+import { ChartData } from "@mantine/charts";
+import { ShopCount } from "../models/Realtime";
+
 export function isEmpty(value: string | null | undefined) {
   return (
     value == null || (typeof value === "string" && value.trim().length === 0)
@@ -41,4 +44,19 @@ export function generateRandomString(length: number) {
   }
 
   return randomString;
+}
+
+export function convertCountDataToChartData(data: ShopCount[]): ChartData {
+  const chartData = data.map((e) => {
+    const fullTime = new Date(e.time)
+    return (
+      {
+        time: fullTime.getHours() + ":" + fullTime.getMinutes() + ":" + fullTime.getSeconds(),
+        Phone: e.results.find(x => x.actionType === "Phone") ? e.results.find(x => x.actionType === "Phone")?.count : 0,
+        Laptop: e.results.find(x => x.actionType === "Laptop") ? e.results.find(x => x.actionType === "Laptop")?.count : 0,
+        Idle: e.results.find(x => x.actionType === "Idle") ? e.results.find(x => x.actionType === "Idle")?.count : 0
+      }
+    )
+  })
+  return chartData;
 }

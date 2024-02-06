@@ -1,10 +1,17 @@
-import { LineChart } from "@mantine/charts";
-import { ActionIcon, Box, Card, Flex, Grid, Group, Menu, Text, ThemeIcon, rem } from "@mantine/core";
+import { BarChart } from "@mantine/charts";
+import { ActionIcon, Box, Card, Flex, Grid, Group, LoadingOverlay, Menu, Text, ThemeIcon, rem } from "@mantine/core";
 import { IconDots, IconEye, IconFileZip, IconList, IconTrash, } from "@tabler/icons-react";
 import * as _ from "lodash";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import styled from "./styles/dashboard.module.scss";
+import { convertCountDataToChartData } from "../../../utils/helperFunction";
+import { ShopCount } from "../../../models/Realtime";
+import { useGetAllBrands } from "../../../hooks/useBrands";
+import { useGetAllAccounts } from "../../../hooks/useAccounts";
+import { useGetAllShops } from "../../../hooks/useShops";
+import { useGetAllEdgeBoxes } from "../../../hooks/useEdgeBoxes";
+import { Link } from "react-router-dom";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,46 +19,158 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
-const data = [
-    {
-        date: "Mar 22",
-        Apples: 2890,
-        Oranges: 2338,
-        Tomatoes: 2452,
-    },
-    {
-        date: "Mar 23",
-        Apples: 2756,
-        Oranges: 2103,
-        Tomatoes: 2402,
-    },
-    {
-        date: "Mar 24",
-        Apples: 3322,
-        Oranges: 986,
-        Tomatoes: 1821,
-    },
-    {
-        date: "Mar 25",
-        Apples: 3470,
-        Oranges: 2108,
-        Tomatoes: 2809,
-    },
-    {
-        date: "Mar 26",
-        Apples: 3129,
-        Oranges: 1726,
-        Tomatoes: 2290,
-    },
-];
+export interface ChartData {
+    time: string;
+    Phone: number;
+    Laptop: number;
+    Idle: number;
+}
 
-const TitleAndNumberCard = () => {
+const fake_data: ShopCount[] = [
+    {
+        time: '2024-02-05T16:45:54.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 1
+            },
+            {
+                actionType: "Laptop",
+                count: 3
+            },
+            {
+                actionType: "Idle",
+                count: 5
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-05T17:20:30.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 4
+            },
+            {
+                actionType: "Laptop",
+                count: 1
+            },
+            {
+                actionType: "Idle",
+                count: 2
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-05T17:20:30.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 4
+            },
+            {
+                actionType: "Laptop",
+                count: 5
+            },
+            {
+                actionType: "Idle",
+                count: 2
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-05T20:30:12.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 2
+            },
+            {
+                actionType: "Laptop",
+                count: 4
+            },
+            {
+                actionType: "Idle",
+                count: 8
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-06T10:20:30.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 4
+            },
+            {
+                actionType: "Laptop",
+                count: 2
+            },
+            {
+                actionType: "Idle",
+                count: 5
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-07T12:20:30.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 4
+            },
+            {
+                actionType: "Laptop",
+                count: 3
+            },
+            {
+                actionType: "Idle",
+                count: 2
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    },
+    {
+        time: '2024-02-07T15:20:30.6569353+07:00',
+        results: [
+            {
+                actionType: 'Phone',
+                count: 2
+            },
+            {
+                actionType: "Laptop",
+                count: 5
+            },
+            {
+                actionType: "Idle",
+                count: 4
+            }
+        ],
+        total: 7,
+        shopId: "5da51038-8ef2-4cd3-aa31-0513e781c9e4"
+    }
+]
+
+const TitleAndNumberCard = ({ title, data, loading, link }:
+    { title: string, data: any, loading: boolean, link: string }) => {
     return (
-        <Box className={styled["static-card"]}>
-            <p className={styled["static-card-title"]}>Revenue</p>
-            <p className={styled["static-card-number"]}>1000</p>
+        <Box className={styled["static-card"]} pos={"relative"} h={220}>
+            <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
+            <p className={styled["static-card-title"]}>{title}</p>
+            <div className={styled["static-card-number"]}>{data?.totalCount}</div>
             <Flex justify={"space-between"} align={"flex-end"}            >
-                <p className={styled["static-card-link"]}>View detail</p>
+                <Link to={link} className={styled["static-card-link"]}>View detail</Link>
                 <ThemeIcon
                     variant="light"
                     color={_.sample(["blue", "green", "red", "yellow"])}
@@ -71,17 +190,34 @@ const TitleAndNumberCard = () => {
 };
 
 const DashboardPage = () => {
+
+    const { data: brandList, isLoading: isLoadingBrand } = useGetAllBrands({});
+    const { data: accountList, isLoading: isLoadingAccount } = useGetAllAccounts({});
+    const { data: shopList, isLoading: isLoadingShop } = useGetAllShops({});
+    const { data: edgeBoxList, isLoading: isLoadingEdgeBox } = useGetAllEdgeBoxes({});
+
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} />
             <div className={styled["dashboard-detail"]}>
                 <Box m={rem(32)}>
                     <Grid justify="space-between">
-                        {[1, 2, 3, 4].map((item) => (
-                            <Grid.Col span={3} key={item} >
-                                <TitleAndNumberCard />
-                            </Grid.Col>
-                        ))}
+                        <Grid.Col span={3}>
+                            <TitleAndNumberCard data={brandList} loading={isLoadingBrand}
+                                link="/brand" title="Total Brands" />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            <TitleAndNumberCard data={accountList} loading={isLoadingAccount}
+                                link="/account" title="Total Accounts" />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            <TitleAndNumberCard data={shopList} loading={isLoadingShop}
+                                link="/shop" title="Total Shops" />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            <TitleAndNumberCard data={edgeBoxList} loading={isLoadingEdgeBox}
+                                link="/edgebox" title="Total Edge Boxes" />
+                        </Grid.Col>
                     </Grid>
                     <Card my={rem(32)} className={styled["chart"]}>
                         <Card.Section withBorder inheritPadding>
@@ -108,11 +244,12 @@ const DashboardPage = () => {
                                 </Menu>
                             </Group>
                         </Card.Section>
-                        <LineChart h={300} data={data} dataKey="date" tooltipAnimationDuration={200} py={rem(40)}
+                        <BarChart h={300} data={convertCountDataToChartData(fake_data)} type="stacked" dataKey="time"
+                            tooltipAnimationDuration={200} py={rem(40)}
                             series={[
-                                { name: "Apples", color: "indigo.6" },
-                                { name: "Oranges", color: "blue.6" },
-                                { name: "Tomatoes", color: "teal.6" },
+                                { name: "Phone", color: "light-blue.2" },
+                                { name: "Laptop", color: "light-blue.4" },
+                                { name: "Idle", color: "light-blue.7" },
                             ]}
                         />
                     </Card>
