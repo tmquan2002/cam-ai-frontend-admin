@@ -16,6 +16,7 @@ import ShopDetail from "../pages/admin/shop/ShopDetail";
 import AccountUpdate from "../pages/admin/account/AccountUpdate";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
+import ReportMainPage from "../pages/admin/report/ReportMainPage";
 
 const AppRoute = () => {
   return useRoutes([
@@ -111,6 +112,16 @@ const AppRoute = () => {
             {
               path: ":edgeBoxId",
               element: <EdgeBoxDetail />,
+            }
+          ]
+        },
+        {
+          path: "/report",
+          element: <MainLayout />,
+          children: [
+            {
+              element: <ReportMainPage />,
+              index: true,
             }
           ]
         },

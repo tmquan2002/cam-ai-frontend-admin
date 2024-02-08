@@ -1,0 +1,40 @@
+.container-detail {
+    width: calc(100% - 50px);
+    padding-bottom: 20px;
+
+    @include light {
+        background-color: #f6f8fc;
+    }
+
+    @include dark {
+        background-color: #242424;
+    }
+
+    .table-container {
+        @include light {
+            background-color: white;
+        }
+
+        @include dark {
+            background-color: #1f1f1f;
+        }
+
+        padding: 20px;
+        width: 95%;
+        text-align: left;
+        margin: 0 auto;
+        position: relative;
+        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.14),
+        0px 3px 3px rgba(0, 0, 0, 0.12),
+        0px 1px 8px rgba(0, 0, 0, 0.2);
+
+        .table-footer,
+        .table-header {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}

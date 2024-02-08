@@ -1,8 +1,8 @@
-import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Menu, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { MdClear, MdEmail, MdFilterAlt, MdOutlineSearch, MdPeople, MdPhone } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
@@ -15,7 +15,7 @@ const AccountList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
-    const [searchBy, setSearchBy] = useState<string | null>("name")
+    const [searchBy, setSearchBy] = useState<string | null>("Name")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
 
@@ -42,8 +42,8 @@ const AccountList = () => {
     const { data: accountList, isLoading, isFetching, refetch
     } = useGetAllAccounts({
         pageIndex: (pageIndex - 1), size: Number(size),
-        name: searchBy == "name" ? searchTerm : "",
-        email: searchBy == "email" ? searchTerm : "",
+        name: searchBy == "Name" ? searchTerm : "",
+        email: searchBy == "Email" ? searchTerm : "",
         accountStatusId: filterStatus ? filterStatus : "",
         roleId: filterRole ? filterRole : "",
         brandId: filterSearchBrandId ? filterSearchBrandId : "",
@@ -159,8 +159,8 @@ const AccountList = () => {
                             <Text>Search by: </Text>
                             <Select
                                 placeholder="Select"
-                                defaultValue={"name"}
-                                data={['name', 'email']}
+                                value={searchBy}
+                                data={['Name', 'Email']}
                                 onChange={setSearchBy}
                             />
                         </Group>
