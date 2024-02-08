@@ -28,7 +28,8 @@ export type AddAccountResult = {
 };
 
 export type GetAccountsParams = {
-  search?: string;
+  name?: string;
+  email?: string;
   accountStatusId?: string;
   roleId?: string;
   brandId?: string;

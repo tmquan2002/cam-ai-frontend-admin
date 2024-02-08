@@ -1,8 +1,8 @@
-import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Menu, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdEmail, MdFilterAlt, MdOutlineSearch, MdPeople, MdPhone } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
@@ -15,6 +15,7 @@ const AccountList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
+    const [searchBy, setSearchBy] = useState<string | null>("name")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
 
@@ -41,7 +42,9 @@ const AccountList = () => {
     const { data: accountList, isLoading, isFetching, refetch
     } = useGetAllAccounts({
         pageIndex: (pageIndex - 1), size: Number(size),
-        search: searchTerm, accountStatusId: filterStatus ? filterStatus : "",
+        name: searchBy == "name" ? searchTerm : "",
+        email: searchBy == "email" ? searchTerm : "",
+        accountStatusId: filterStatus ? filterStatus : "",
         roleId: filterRole ? filterRole : "",
         brandId: filterSearchBrandId ? filterSearchBrandId : "",
     });
@@ -107,11 +110,12 @@ const AccountList = () => {
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.brand?.name}</Table.Td>
+                <Table.Td>{e.email}</Table.Td>
                 <Table.Td>{e.roles[0].name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <StatusBadge statusName={e.accountStatus ? e.accountStatus.name : "None"} type="account"
-                        statusId={e?.accountStatus?.id ? e?.accountStatus?.id : 0} fullWidth/>
+                        statusId={e?.accountStatus?.id ? e?.accountStatus?.id : 0} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -120,32 +124,46 @@ const AccountList = () => {
     return (
         <>
             {/* Top */}
-            <Text size='lg' fw="bold" fz='25px'
-                c={"light-blue.4"}
-            >ACCOUNT LIST</Text>
-            <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput w={'100%'}
-                        placeholder="Search" leftSection={<MdOutlineSearch />}
-                        rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                        value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                        onKeyDown={onSearch}
-                    />
-                </Grid.Col>
 
-                <Grid.Col span="content" order={{ base: 12, md: 6 }}>
-                    <Group>
-                        <Tooltip label="Filter" withArrow>
-                            <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
-                                <MdFilterAlt />
-                            </ActionIcon>
-                        </Tooltip>
-                        <Button
-                            onClick={() => navigate("/account/add")} variant="gradient"
-                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                        >
-                            New
-                        </Button>
+            <Grid mt={5} mb={20} justify='space-between'>
+
+                <Grid.Col span={12}>
+                    <Group justify="space-between">
+                        <Text size='lg' fw="bold" fz='25px'
+                            c={"light-blue.4"}
+                        >ACCOUNT LIST</Text>
+                        <Group>
+                            <Tooltip label="Filter" withArrow>
+                                <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
+                                    <MdFilterAlt />
+                                </ActionIcon>
+                            </Tooltip>
+                            <Button
+                                onClick={() => navigate("/account/add")} variant="gradient"
+                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                            >
+                                New
+                            </Button>
+                        </Group>
+                    </Group>
+                </Grid.Col>
+                <Grid.Col span={12}>
+                    <Group justify="space-between">
+                        <TextInput w={'60%'}
+                            placeholder="Search" leftSection={<MdOutlineSearch />}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
+                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            onKeyDown={onSearch}
+                        />
+                        <Group>
+                            <Text>Search by: </Text>
+                            <Select
+                                placeholder="Select"
+                                defaultValue={"name"}
+                                data={['name', 'email']}
+                                onChange={setSearchBy}
+                            />
+                        </Group>
                     </Group>
                 </Grid.Col>
 
@@ -205,6 +223,7 @@ const AccountList = () => {
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Name</Table.Th>
                                 <Table.Th>Brand</Table.Th>
+                                <Table.Th>Email</Table.Th>
                                 <Table.Th>Roles</Table.Th>
                                 <Table.Th>Created Date</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
