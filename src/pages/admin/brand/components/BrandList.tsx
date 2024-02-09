@@ -8,6 +8,7 @@ import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
+import { isEmpty } from 'lodash';
 
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -15,7 +16,6 @@ const BrandList = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
-
     const [filterStatus, setFilterStatus] = useState<string>("")
 
     const [initialData, setInitialData] = useState(true)
@@ -37,12 +37,13 @@ const BrandList = () => {
 
     const onSearch = (e: any) => {
         // console.log(e.key)
-        if (e.key == "Enter") {
+        if (e.key == "Enter" && !isEmpty(searchTerm)) {
             if (pageIndex == 1) {
                 refetch()
             } else {
                 setPageIndex(1);
             }
+            setInitialData(false)
         }
     }
 
@@ -99,35 +100,38 @@ const BrandList = () => {
 
     return (
         <>
-            <Text size='lg' fw="bold" fz='25px'
-                c={"light-blue.4"}
-            >BRAND LIST</Text>
-
             {/* Top */}
-            <Grid mt={5} mb={20} gutter={{ base: 5, xs: 'md', md: 'xl', xl: 50 }} justify='space-between'>
+            <Grid mt={5} mb={20} justify='space-between'>
 
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput w={'100%'}
-                        placeholder="Search" leftSection={<MdOutlineSearch />}
-                        rightSection={<MdClear onClick={onClearSearch} />}
-                        value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
-                        onKeyDown={onSearch}
-                    />
+                <Grid.Col span={12}>
+                    <Group justify="space-between">
+                        <Text size='lg' fw="bold" fz='25px'
+                            c={"light-blue.4"}
+                        >BRAND LIST</Text>
+                        <Group>
+                            <Tooltip label="Filter" withArrow>
+                                <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
+                                    <MdFilterAlt />
+                                </ActionIcon>
+                            </Tooltip>
+                            <Button
+                                onClick={() => navigate("/brand/add")} variant="gradient"
+                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                            >
+                                New
+                            </Button>
+                        </Group>
+                    </Group>
                 </Grid.Col>
 
-                <Grid.Col span="content" order={{ base: 3, md: 2, lg: 3 }}>
-                    <Group>
-                        <Tooltip label="Filter" withArrow>
-                            <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
-                                <MdFilterAlt />
-                            </ActionIcon>
-                        </Tooltip>
-                        <Button
-                            onClick={() => navigate("/brand/add")} variant="gradient"
-                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                        >
-                            New
-                        </Button>
+                <Grid.Col span={12}>
+                    <Group justify="space-between">
+                        <TextInput w={'100%'}
+                            placeholder="Search" leftSection={<MdOutlineSearch />}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
+                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            onKeyDown={onSearch}
+                        />
                     </Group>
                 </Grid.Col>
             </Grid>
@@ -158,7 +162,7 @@ const BrandList = () => {
 
             {/* Table */}
             <ScrollArea.Autosize mah={400}>
-                <Table.ScrollContainer minWidth={500}>
+                <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover>
                         <Table.Thead>
                             <Table.Tr>
@@ -186,7 +190,7 @@ const BrandList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['2', '3', '5', '8']} defaultValue={"5"}
+                                data={['5', '10', '15', '20']} defaultValue={"5"}
                             />
                         </Group>
                     </> :

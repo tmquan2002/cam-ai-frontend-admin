@@ -124,7 +124,6 @@ const AccountList = () => {
     return (
         <>
             {/* Top */}
-
             <Grid mt={5} mb={20} justify='space-between'>
 
                 <Grid.Col span={12}>
@@ -216,7 +215,7 @@ const AccountList = () => {
 
             {/* Table */}
             <ScrollArea.Autosize mah={400}>
-                <Table.ScrollContainer minWidth={500} >
+                <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover captionSide="bottom">
                         <Table.Thead>
                             <Table.Tr>

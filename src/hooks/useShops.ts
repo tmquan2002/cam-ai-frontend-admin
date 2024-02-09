@@ -20,6 +20,22 @@ export const useGetAllShops = (params: GetShopsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+export const useGetAllShopsSelect = (params: GetShopsParams) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<SelectType[], Error> = useQuery({
+    queryKey: ["shopListSelect"],
+    queryFn: async () => {
+      const res = await ShopAPI.getAllFilter(params);
+      return res.values.map((items) => ({
+        value: items.id,
+        label: items.name
+      }))
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
+};
+
 export const useGetShopById = (id: string) => {
   const {
     isError,
