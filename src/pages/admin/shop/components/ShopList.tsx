@@ -19,7 +19,7 @@ const ShopList = () => {
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
 
-    const [filterStatus, setFilterStatus] = useState<string>("")
+    const [filterStatus, setFilterStatus] = useState<string>("0")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
 
@@ -42,7 +42,7 @@ const ShopList = () => {
         pageIndex: (pageIndex - 1), size: Number(size),
         name: searchBy == "Name" ? searchTerm : "",
         phone: searchBy == "Phone" ? searchTerm : "",
-        statusId: filterStatus ? filterStatus : "",
+        statusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
         brandId: filterSearchBrandId ? filterSearchBrandId : "",
     });
 
@@ -65,7 +65,12 @@ const ShopList = () => {
     }, [filterSearchBrand]);
 
     useEffect(() => {
-        const timer = setTimeout(() => { refetch(); setPageIndex(1) }, 500);
+        const timer = setTimeout(() => {
+            if (filterStatus !== "0") {
+                refetch();
+                setPageIndex(1)
+            }
+        }, 500);
         return () => {
             clearTimeout(timer);
         };
@@ -150,6 +155,7 @@ const ShopList = () => {
                             <Text>Search by: </Text>
                             <Select
                                 placeholder="Select"
+                                allowDeselect={false}
                                 value={searchBy}
                                 data={['Name', 'Phone']}
                                 onChange={setSearchBy}

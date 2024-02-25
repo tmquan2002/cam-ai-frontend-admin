@@ -17,6 +17,7 @@ import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/branddetail.module.scss";
 import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
+import { EmployeeListById } from "../../../components/list/EmployeeListById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -195,8 +196,11 @@ const BrandDetail = () => {
                                     <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
                                         Shops
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="accounts" leftSection={<MdOutlineSupervisorAccount />}>
-                                        Accounts
+                                    <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount />}>
+                                        Managers
+                                    </Tabs.Tab>
+                                    <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
+                                        Employees
                                     </Tabs.Tab>
                                     <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
                                         Edge Boxes
@@ -207,8 +211,12 @@ const BrandDetail = () => {
                                     <ShopListById id={params.brandId!} idType="brand" />
                                 </Tabs.Panel>
 
-                                <Tabs.Panel value="accounts">
-                                    <AccountListById id={params.brandId!} />
+                                <Tabs.Panel value="managers">
+                                    <AccountListById id={params.brandId!} type="manager" />
+                                </Tabs.Panel>
+
+                                <Tabs.Panel value="employees">
+                                    <EmployeeListById id={params.brandId!} type="brand" />
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="edge boxes">

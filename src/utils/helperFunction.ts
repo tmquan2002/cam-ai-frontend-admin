@@ -51,7 +51,7 @@ export function convertCountDataToChartData(data: ShopCount[]): ChartData {
     const fullTime = new Date(e.time)
     return (
       {
-        time: fullTime.getHours() + ":" + fullTime.getMinutes() + ":" + fullTime.getSeconds(),
+        time: fullTime.getHours() + ":" + fullTime.getMinutes(),
         Phone: e.results.find(x => x.actionType === "Phone") ? e.results.find(x => x.actionType === "Phone")?.count : 0,
         Laptop: e.results.find(x => x.actionType === "Laptop") ? e.results.find(x => x.actionType === "Laptop")?.count : 0,
         Idle: e.results.find(x => x.actionType === "Idle") ? e.results.find(x => x.actionType === "Idle")?.count : 0

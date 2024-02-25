@@ -19,7 +19,7 @@ export type GetBrandsResult = {
 };
 
 export type GetBrandsParams = {
-  statusId?: number;
+  statusId?: number | string;
   name?: string | null;
   brandId?: string;
   size?: string | number | null;

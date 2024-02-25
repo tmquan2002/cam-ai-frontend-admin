@@ -7,6 +7,7 @@ import styled from "./list.module.scss";
 
 interface EmployeeListParam {
     id: string;
+    type: "brand" | "shop";
 }
 
 const EmployeeCard = ({ item }: { item: Employee }) => {
@@ -41,9 +42,9 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
         </Card>
     )
 }
-export const EmployeeListById = ({ id }: EmployeeListParam) => {
+export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
 
-    const { isLoading, data } = useGetAllEmployees({ shopId: id })
+    const { isLoading, data } = type == "shop" ? useGetAllEmployees({ shopId: id }) : useGetAllEmployees({ brandId: id })
 
     return (
         <div className={styled["list-container"]}>

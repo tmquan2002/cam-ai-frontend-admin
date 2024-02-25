@@ -8,6 +8,7 @@ import styled from "./list.module.scss";
 
 interface AccountListParam {
     id: string;
+    type?: "manager" | "employee"
 }
 
 const AccountCard = ({ item }: { item: Account }) => {
@@ -26,7 +27,7 @@ const AccountCard = ({ item }: { item: Account }) => {
             </div>
 
             <div className={styled["icon-text"]}>
-                <MdAccountCircle style={{ width: '20px', height: '20px' }}/>
+                <MdAccountCircle style={{ width: '20px', height: '20px' }} />
                 <span className={styled["information"]}><b>{item.roles[0].name}</b></span>
             </div>
 
@@ -52,7 +53,7 @@ const AccountCard = ({ item }: { item: Account }) => {
         </Card>
     )
 }
-export const AccountListById = ({ id }: AccountListParam) => {
+export const AccountListById = ({ id, type }: AccountListParam) => {
 
     const { isLoading, data } = useGetAllAccounts({ brandId: id })
 
@@ -63,7 +64,9 @@ export const AccountListById = ({ id }: AccountListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Account Found</Text> :
+                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>
+                        No {type == "manager" ? "Manager" : type == "employee" ? "Employee" : "Account"} Found
+                    </Text> :
                         <Grid mt={20}>
                             {data?.values.map((item, index) => (
                                 <Grid.Col key={index} span={{ base: 12, md: 6 }}>

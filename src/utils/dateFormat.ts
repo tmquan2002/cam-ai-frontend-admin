@@ -136,10 +136,16 @@ export function getWeekLabelBar(lowerDate: Date, upperDate: Date): string[] {
 }
 
 //DD-MM-YYYY
-export function removeTime(date: Date, seperator: string) {
-    return date.getFullYear() + seperator
+export function removeTime(date: Date, seperator: string, format?: "dd/MM/yyyy" | "yyyy/MM/dd") {
+    if (format == "yyyy/MM/dd") {
+        return date.getFullYear() + seperator
+            + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + seperator
+            + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate())
+    }
+    
+    return (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + seperator
         + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + seperator
-        + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate())
+        + date.getFullYear()
 }
 
 export function addOneMonthToDate(inputDate: string) {

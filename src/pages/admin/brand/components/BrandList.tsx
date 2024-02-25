@@ -16,7 +16,7 @@ const BrandList = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useState<string>("")
+    const [filterStatus, setFilterStatus] = useState<string>("0")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -31,9 +31,11 @@ const BrandList = () => {
         </Table.Tr>
     ))
 
-    const { data: brandList, isLoading, isFetching, refetch
-    } = filterStatus ? useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm, statusId: Number(filterStatus) }) :
-            useGetAllBrands({ pageIndex: (pageIndex - 1), size, name: searchTerm });
+    const { data: brandList, isFetching, isLoading, refetch
+    } = useGetAllBrands({
+        pageIndex: (pageIndex - 1), size, name: searchTerm,
+        statusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : ""
+    })
 
     const onSearch = (e: any) => {
         // console.log(e.key)
@@ -57,7 +59,12 @@ const BrandList = () => {
     }, [searchTerm, clear])
 
     useEffect(() => {
-        const timer = setTimeout(() => { refetch(); setPageIndex(1) }, 500);
+        const timer = setTimeout(() => {
+            if (filterStatus !== "0") {
+                refetch();
+                setPageIndex(1)
+            }
+        }, 500);
         return () => {
             clearTimeout(timer);
         };
@@ -172,7 +179,7 @@ const BrandList = () => {
                                 <Table.Th ta={"center"}>Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
-                        <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                        <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>
                         {brandList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
                     </Table>
                 </Table.ScrollContainer>

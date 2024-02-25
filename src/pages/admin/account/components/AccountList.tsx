@@ -20,7 +20,7 @@ const AccountList = () => {
     const [opened, { toggle }] = useDisclosure(false);
 
     const [filterRole, setFilterRole] = useState<string>("")
-    const [filterStatus, setFilterStatus] = useState<string>("")
+    const [filterStatus, setFilterStatus] = useState<string>("0")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
 
@@ -44,7 +44,7 @@ const AccountList = () => {
         pageIndex: (pageIndex - 1), size: Number(size),
         name: searchBy == "Name" ? searchTerm : "",
         email: searchBy == "Email" ? searchTerm : "",
-        accountStatusId: filterStatus ? filterStatus : "",
+        accountStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
         roleId: filterRole ? filterRole : "",
         brandId: filterSearchBrandId ? filterSearchBrandId : "",
     });
@@ -67,7 +67,12 @@ const AccountList = () => {
     }, [filterSearchBrand]);
 
     useEffect(() => {
-        const timer = setTimeout(() => { refetch(); setPageIndex(1) }, 500);
+        const timer = setTimeout(() => {
+            if (filterStatus !== "0") {
+                refetch();
+                setPageIndex(1)
+            }
+        }, 500);
         return () => {
             clearTimeout(timer);
         };
@@ -158,6 +163,7 @@ const AccountList = () => {
                             <Text>Search by: </Text>
                             <Select
                                 placeholder="Select"
+                                allowDeselect={false}
                                 value={searchBy}
                                 data={['Name', 'Email']}
                                 onChange={setSearchBy}

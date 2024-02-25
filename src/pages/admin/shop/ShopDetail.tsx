@@ -105,7 +105,7 @@ const ShopDetail = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="employees">
-                                <EmployeeListById id={params.shopId!} />
+                                <EmployeeListById id={params.shopId!} type="shop"/>
                             </Tabs.Panel>
 
                             <Tabs.Panel value="edge boxes">
