@@ -17,6 +17,7 @@ import AccountUpdate from "../pages/admin/account/AccountUpdate";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
 import ReportMainPage from "../pages/admin/report/ReportMainPage";
+import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
 
 const AppRoute = () => {
   return useRoutes([
@@ -110,7 +111,15 @@ const AppRoute = () => {
               index: true,
             },
             {
+              path: "add",
+              element: <EdgeBoxAdd />,
+            },
+            {
               path: ":edgeBoxId",
+              element: <EdgeBoxDetail />,
+            },
+            {
+              path: ":edgeBoxId/update",
               element: <EdgeBoxDetail />,
             }
           ]

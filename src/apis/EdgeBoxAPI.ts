@@ -4,7 +4,7 @@ import http, { toQueryParams } from "../utils/http";
 
 export type GetEdgeBoxParams = {
     model?: string;
-    edgeBoxStatusId?: number;
+    edgeBoxStatusId?: number | string;
     edgeBoxLocationId?: string;
     size?: string | number | null;
     pageIndex?: number;

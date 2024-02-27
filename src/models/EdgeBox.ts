@@ -33,7 +33,7 @@ export interface EdgeBox {
     edgeBoxLocationId: number;
     edgeBoxLocation: EdgeBoxLocation;
     edgeBoxStatus: EdgeBoxStatus;
-    installs: [string];
+    installs: string[];
 }
 
 export interface EdgeBoxInstall {

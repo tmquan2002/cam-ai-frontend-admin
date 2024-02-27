@@ -27,6 +27,23 @@ export enum ShopStatus {
   Inactive = 2,
 }
 
+export enum NotificationStatus {
+  Read = 1,
+  Unread = 2,
+}
+
+//TODO: Change enum status of edgebox based on BE later
+export enum EdgeBoxStatus {
+  Active = 1,
+  Inactive = 2,
+  Idle = 3,
+}
+
+export enum EmployeeStatus {
+  Active = 1,
+  Inactive = 2,
+}
+
 export enum StatusColor {
   ACTIVE = "#23a55a",
   INACTIVE = "#f23f43",

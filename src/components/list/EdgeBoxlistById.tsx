@@ -29,7 +29,7 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
 
             <div className={styled["icon-text"]}>
                 <MdHome style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item.edgeBoxLocation.name}</span>
+                <span className={styled["information"]}>{item.edgeBoxLocation?.name}</span>
             </div>
 
             <div className={styled["icon-text"]}>

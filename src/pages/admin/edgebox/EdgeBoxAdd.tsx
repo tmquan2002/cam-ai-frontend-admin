@@ -1,25 +1,30 @@
+import { Text } from "@mantine/core";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import EdgeBoxList from "./components/EdgeBoxList";
+import { AddEdgeBoxForm } from "./components/AddEdgeBoxForm";
 import styled from "./styles/edgebox.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
+        link: "/edgebox"
     },
+    {
+        title: "Add"
+    }
 ]
 
-const EdgeBoxMainPage = () => {
+const EdgeBoxAdd = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} />
+            <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
-                <EdgeBoxList />
+                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW EDGE BOX</Text>
+                <AddEdgeBoxForm />
             </div>
         </div>
-
     );
 };
 
-export default EdgeBoxMainPage;
+export default EdgeBoxAdd;

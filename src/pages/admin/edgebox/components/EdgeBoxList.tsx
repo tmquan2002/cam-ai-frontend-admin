@@ -1,16 +1,16 @@
-import { ActionIcon, Avatar, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
-import { useGetAllBrands } from '../../../../hooks/useBrands';
-import { BrandStatus } from '../../../../types/enum';
+import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
+import { EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
-import styled from "../styles/brand.module.scss";
-import { isEmpty } from 'lodash';
+import styled from "../styles/edgebox.module.scss";
 
-const BrandList = () => {
+const EdgeBoxList = () => {
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
     const [searchTerm, setSearchTerm] = useState("")
@@ -31,10 +31,10 @@ const BrandList = () => {
         </Table.Tr>
     ))
 
-    const { data: brandList, isFetching, isLoading, refetch
-    } = useGetAllBrands({
-        pageIndex: (pageIndex - 1), size, name: searchTerm,
-        statusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : ""
+    const { data: edgeBoxList, isFetching, isLoading, refetch
+    } = useGetAllEdgeBoxes({
+        pageIndex: (pageIndex - 1), size, model: searchTerm,
+        edgeBoxStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : ""
     })
 
     const onSearch = (e: any) => {
@@ -87,19 +87,16 @@ const BrandList = () => {
         }
     }
 
-    const rows = brandList?.values.map((e, i) => (
+    const rows = edgeBoxList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
-            <Table.Tr onClick={() => navigate(`/brand/${e.id}`)}>
+            <Table.Tr onClick={() => navigate(`/edgebox/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
 
-                <Table.Td>
-                    <Group>
-                        <Avatar w={50} h={50} src={e.logoUri} />{e.name}
-                    </Group></Table.Td>
+                <Table.Td>{e.model}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.brandStatus ? e.brandStatus.name : "None"} type="brand"
-                        statusId={e?.brandStatus?.id ? e?.brandStatus?.id : 0} fullWidth />
+                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus.name : "None"} type="edgebox"
+                        statusId={e?.edgeBoxStatus?.id ? e?.edgeBoxStatus?.id : 0} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -114,7 +111,7 @@ const BrandList = () => {
                     <Group justify="space-between">
                         <Text size='lg' fw="bold" fz='25px'
                             c={"light-blue.4"}
-                        >BRAND LIST</Text>
+                        >EDGE BOXES LIST</Text>
                         <Group>
                             <Tooltip label="Filter" withArrow>
                                 <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -122,7 +119,7 @@ const BrandList = () => {
                                 </ActionIcon>
                             </Tooltip>
                             <Button
-                                onClick={() => navigate("/brand/add")} variant="gradient"
+                                onClick={() => navigate("/edgebox/add")} variant="gradient"
                                 gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                             >
                                 New
@@ -147,7 +144,7 @@ const BrandList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text fw={"bold"}>Filter Brand</Text></Grid.Col>
+                    <Grid.Col span={6}><Text fw={"bold"}>Filter Edge Box</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
@@ -159,8 +156,8 @@ const BrandList = () => {
                     <RadioGroup name="status" value={filterStatus}
                         onChange={setFilterStatus}>
                         <Group>
-                            <Radio value={BrandStatus.Active.toString()} label={"Active"} />
-                            <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
+                            <Radio value={EdgeBoxStatus.Active.toString()} label={"Active"} />
+                            <Radio value={EdgeBoxStatus.Inactive.toString()} label={"Inactive"} />
                         </Group>
                     </RadioGroup>
                 </Group>
@@ -180,14 +177,14 @@ const BrandList = () => {
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>
-                        {brandList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
+                        {edgeBoxList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
                     </Table>
                 </Table.ScrollContainer>
             </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || brandList?.totalCount ?
+                {isLoading || isFetching || edgeBoxList?.totalCount ?
                     <>
-                        <Pagination total={brandList?.totalCount ? Math.ceil(brandList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={edgeBoxList?.totalCount ? Math.ceil(edgeBoxList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
@@ -208,4 +205,4 @@ const BrandList = () => {
     );
 }
 
-export default BrandList;
+export default EdgeBoxList;

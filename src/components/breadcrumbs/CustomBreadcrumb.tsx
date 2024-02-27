@@ -23,7 +23,7 @@ const CustomBreadcrumb = ({ items, goBack }: BreadCrumbParams) => {
                 <ActionIcon
                     onClick={() => navigate(-1)}
                     variant="transparent" aria-label="Logout"
-                    color='black' size="lg" radius={"xl"}
+                    color={computedColorScheme === "dark" ? "white" : "black"} size="lg" radius={"xl"}
                 >
                     <MdArrowBackIosNew style={{ width: 18, height: 18 }} />
                 </ActionIcon>
