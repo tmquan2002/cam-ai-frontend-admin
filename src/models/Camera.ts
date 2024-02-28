@@ -1,4 +1,4 @@
-import { EdgeBoxInstall } from "./EdgeBox";
+import { Shop } from "./Shop";
 
 export interface Camera {
     timestamp: string;
@@ -7,7 +7,6 @@ export interface Camera {
     modifiedDate: string;
     name: string;
     shopId: string;
-    edgeBoxId: string;
-    shop: string;
-    edgeBoxInstall: EdgeBoxInstall;
+    shop: Shop[];
+    zone: string[];
 }

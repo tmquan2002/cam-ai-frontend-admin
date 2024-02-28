@@ -3,9 +3,9 @@ import { EdgeBox } from "../models/EdgeBox";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetEdgeBoxParams = {
-    model?: string;
-    edgeBoxStatusId?: number | string;
-    edgeBoxLocationId?: string;
+    name?: string;
+    edgeBoxStatus?: number | string;
+    edgeBoxLocation?: string;
     size?: string | number | null;
     pageIndex?: number;
 };

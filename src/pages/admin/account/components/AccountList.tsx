@@ -19,10 +19,10 @@ const AccountList = () => {
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
 
-    const [filterRole, setFilterRole] = useState<string>("")
-    const [filterStatus, setFilterStatus] = useState<string>("0")
+    const [filterRole, setFilterRole] = useState<string>("None")
+    const [filterStatus, setFilterStatus] = useState<string>("None")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
-    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
+    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("None")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -45,9 +45,9 @@ const AccountList = () => {
         pageIndex: (pageIndex - 1), size: Number(size),
         name: searchBy == "Name" ? searchTerm : "",
         email: searchBy == "Email" ? searchTerm : "",
-        accountStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
-        roleId: filterRole ? filterRole : "",
-        brandId: filterSearchBrandId ? filterSearchBrandId : "",
+        accountStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
+        role: filterRole !== "None" && filterRole !== "" ? filterRole : "",
+        brandId: filterSearchBrandId !== "None" && !isEmpty(filterSearchBrandId) ? filterSearchBrandId : "",
     });
 
     const { data: brandList, refetch: refetchBrand
@@ -69,7 +69,7 @@ const AccountList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "0") {
+            if (filterStatus !== "None" || filterRole !== "None" || filterSearchBrandId !== "None") {
                 refetch();
                 setPageIndex(1)
             }
@@ -117,11 +117,10 @@ const AccountList = () => {
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{e.email}</Table.Td>
-                <Table.Td>{e.roles[0].name}</Table.Td>
+                <Table.Td>{e.role.replace(/([A-Z])/g, ' $1').trim()}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.accountStatus ? e.accountStatus.name : "None"} type="account"
-                        statusId={e?.accountStatus?.id ? e?.accountStatus?.id : 0} fullWidth />
+                    <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} type="account" fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -190,10 +189,10 @@ const AccountList = () => {
                     <Text size='sm'>Role: </Text>
                     <RadioGroup name="role" size='sm' value={filterRole} onChange={setFilterRole}>
                         <Group>
-                            <Radio value={RoleEnum.Technician.toString()} label={"Technician"} />
-                            <Radio value={RoleEnum.BrandManager.toString()} label={"Brand Manager"} />
-                            <Radio value={RoleEnum.ShopManager.toString()} label={"Shop Manager"} />
-                            <Radio value={RoleEnum.Employee.toString()} label={"Employee"} />
+                            <Radio value={RoleEnum.Technician} label={"Technician"} />
+                            <Radio value={RoleEnum.BrandManager} label={"Brand Manager"} />
+                            <Radio value={RoleEnum.ShopManager} label={"Shop Manager"} />
+                            <Radio value={RoleEnum.Employee} label={"Employee"} />
                         </Group>
                     </RadioGroup>
                 </Group>
@@ -201,9 +200,9 @@ const AccountList = () => {
                     <Text size='sm'>Status: </Text>
                     <RadioGroup name="status" size='sm' value={filterStatus} onChange={setFilterStatus}>
                         <Group>
-                            <Radio value={AccountStatus.New.toString()} label={"New"} />
-                            <Radio value={AccountStatus.Active.toString()} label={"Active"} />
-                            <Radio value={AccountStatus.Inactive.toString()} label={"Inactive"} />
+                            <Radio value={AccountStatus.New} label={"New"} />
+                            <Radio value={AccountStatus.Active} label={"Active"} />
+                            <Radio value={AccountStatus.Inactive} label={"Inactive"} />
                         </Group>
                     </RadioGroup>
                 </Group>
@@ -230,7 +229,7 @@ const AccountList = () => {
                                 <Table.Th>Name</Table.Th>
                                 <Table.Th>Brand</Table.Th>
                                 <Table.Th>Email</Table.Th>
-                                <Table.Th>Roles</Table.Th>
+                                <Table.Th>Role</Table.Th>
                                 <Table.Th>Created Date</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
                             </Table.Tr>

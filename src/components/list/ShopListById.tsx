@@ -22,7 +22,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.shopStatus &&
-                    <StatusBadge statusName={item.shopStatus?.name} type="shop" statusId={item?.shopStatus?.id} mb={15} mt={15} />
+                    <StatusBadge statusName={item?.shopStatus} type="shop" mb={15} mt={15} />
                 }
             </div>
 

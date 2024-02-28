@@ -3,13 +3,6 @@ import { Camera } from "./Camera";
 import { EdgeBoxInstall } from "./EdgeBox";
 import { Ward } from "./Location";
 
-export interface ShopStatus {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
-
 export interface Shop {
     timestamp: string;
     id: string;
@@ -25,7 +18,7 @@ export interface Shop {
     shopManager: string;
     ward: Ward;
     brand: Brand;
-    shopStatus: ShopStatus;
+    shopStatus: string;
     employees: string[];
     cameras: Camera[];
     edgeBoxInstalls: EdgeBoxInstall[];

@@ -28,7 +28,7 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch }: { id: string, close: (
     useEffect(() => {
         if (data) {
             form.setValues({
-                model: data?.model,
+                model: data?.name,
                 edgeBoxModelId: data?.edgeBoxModelId
             });
         }

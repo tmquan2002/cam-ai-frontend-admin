@@ -1,11 +1,5 @@
 import { Account } from "./Account";
 
-export interface NotificationStatus {
-    id: number;
-    name: string;
-    description: string;
-}
-
 export interface Notification {
     id: string;
     createdDate: string;
@@ -14,6 +8,6 @@ export interface Notification {
     title: string;
     content: string;
     sentBy: Account;
-    status: NotificationStatus;
+    status: string;
     sentTo: Account[];
 }

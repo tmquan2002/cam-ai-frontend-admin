@@ -32,7 +32,7 @@ export const getRefreshToken = (): string | null => {
   return REFRESH_TOKEN;
 };
 
-export function getUserRoles(): string | null {
+export function getUserRole(): string | null {
   const accessToken: string | null = getAccessToken();
 
   if (accessToken) {
@@ -54,7 +54,7 @@ export function getUserId(): string | null {
 }
 
 export function checkRole(acceptableRoles: string[]): boolean {
-  const userRole = getUserRoles();
+  const userRole = getUserRole();
   if (!userRole) return false;
 
   const arr1 = acceptableRoles.filter((acceptableRole) => {

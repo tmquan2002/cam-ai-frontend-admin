@@ -1,6 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
 import { Account } from "../models/Account";
-import { BrandStatus } from "../models/Brand";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetBrandsResult = {
@@ -14,12 +13,12 @@ export type GetBrandsResult = {
   logoUri: string;
   bannerUri: string;
   brandManagerId: string;
-  brandStatus: BrandStatus;
+  brandStatus: string;
   brandManager: Account;
 };
 
 export type GetBrandsParams = {
-  statusId?: number | string;
+  brandStatus?: string;
   name?: string | null;
   brandId?: string;
   size?: string | number | null;

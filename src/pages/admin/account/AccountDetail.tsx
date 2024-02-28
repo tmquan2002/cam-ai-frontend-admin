@@ -36,7 +36,7 @@ const AccountDetail = () => {
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    console.log(data?.roles)
+    console.log(data?.role)
 
     const onDelete = () => {
         deleteAccount(params.accountId!, {
@@ -85,12 +85,10 @@ const AccountDetail = () => {
                                 <Group mb={15} gap={30}>
                                     <div>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        {data!.roles.map((item, index) => (
-                                            <Text size="md" key={index}>{item.name}</Text>
-                                        ))}
+                                        {data?.role && <Text size="md">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
                                     </div>
-                                    <StatusBadge statusName={data?.accountStatus ? data.accountStatus.name : "None"} type="account"
-                                        statusId={data?.accountStatus?.id || 0} mb={15} mt={15} />
+                                    <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
+                                        type="account" mb={15} mt={15} />
                                 </Group>
 
                                 <Group>
@@ -113,7 +111,7 @@ const AccountDetail = () => {
                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                 </Group>
                             </div>
-                            {data?.roles[0].id == RoleEnum.BrandManager &&
+                            {data?.role == RoleEnum.BrandManager &&
                                 <div>
                                     <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                         <Menu.Target>
@@ -142,17 +140,17 @@ const AccountDetail = () => {
                         </div>
                         <Divider my="md" />
                         {/* TODO: Add detail of a shop this shop manager account working on */}
-                        {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
+                        {data?.role == RoleEnum.BrandManager && data?.brand?.id &&
                             <div className={styled["brand-detail"]}>
                                 <Text size="lg" fw={"bold"}>Brand</Text>
                                 <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
                                     <Group className={styled["brand-profile"]} mt={20}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri} />
+                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"} type="brand"
-                                                    statusId={data?.brand?.brandStatus?.id ? data?.brand?.brandStatus?.id : 0} />
+                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
+                                                    type="brand" />
                                             </Group>
                                             <Group>
                                                 <MdEmail />
@@ -168,12 +166,12 @@ const AccountDetail = () => {
                                             </Group>
                                         </div>
                                     </Group>
-                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: "#2d4b81" }}>View More</Link>
+                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
                                 </div>
                             </div>
                         }
                         <Divider my="md" />
-                        {data?.roles.find(e => e.id == RoleEnum.BrandManager) && data?.brand?.id &&
+                        {data?.role == RoleEnum.BrandManager && data?.brand?.id &&
                             <div className={styled["shop-detail"]}>
                                 <Text size="lg" fw={"bold"}>Shops</Text>
                                 <ShopListById id={data?.brand.id} idType="brand" />

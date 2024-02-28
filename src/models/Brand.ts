@@ -1,9 +1,6 @@
-export type BrandStatus = {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
+import { Account } from "./Account";
+import { Image } from "./Image";
+import { Shop } from "./Shop";
 
 export type Brand = {
     id: string;
@@ -13,11 +10,13 @@ export type Brand = {
     name: string;
     email: string;
     phone: string;
-    logoUri: string;
-    bannerUri: string;
+    logoId: string;
+    logo: Image;
+    bannerId: string;
+    banner: Image;
     brandManagerId: string;
-    brandStatusId: number;
-    brandManager: string;
-    brandStatus: BrandStatus;
-    shops: string[];
+    brandManager: Account;
+    brandStatus: string;
+    accounts: Account[];
+    shops: Shop[];
 };

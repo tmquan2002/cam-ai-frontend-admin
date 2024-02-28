@@ -20,7 +20,7 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
             <div>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.employeeStatus &&
-                    <StatusBadge statusName={item.employeeStatus?.name} type="shop" statusId={item?.employeeStatus?.id} mb={15} mt={15} />
+                    <StatusBadge statusName={item?.employeeStatus} type="shop" mb={15} mt={15} />
                 }
             </div>
 

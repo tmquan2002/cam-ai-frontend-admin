@@ -1,3 +1,5 @@
+import { Shop } from "./Shop";
+
 export interface EdgeBoxLocation {
     timestamp: string;
     id: number;
@@ -12,13 +14,6 @@ export interface EdgeBoxStatus {
     description: string;
 }
 
-export interface EdgeBoxInstallStatus {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
-
 // TODO: Redesign when BE is done with structures and fully run well
 export interface EdgeBox {
     timestamp: string;
@@ -27,14 +22,13 @@ export interface EdgeBox {
     modifiedDate: string;
     username: string;
     password: string;
-    model: string;
+    name: string;
     version: string;
     edgeBoxModelId: string;
-    edgeBoxStatusId: number;
-    edgeBoxLocationId: number;
-    edgeBoxLocation: EdgeBoxLocation;
-    edgeBoxStatus: EdgeBoxStatus;
-    installs: string[];
+    edgeBoxStatus: string;
+    edgeBoxLocation: string;
+    edgeBoxModel: EdgeBoxModel;
+    installs: EdgeBoxInstall[];
 }
 
 export interface EdgeBoxInstall {
@@ -48,9 +42,23 @@ export interface EdgeBoxInstall {
     port: number;
     validFrom: string;
     validUntil: string;
-    edgeBoxInstallStatusId: number;
     edgeBox: EdgeBox;
-    shop: string;
-    edgeBoxInstallStatus: EdgeBoxInstallStatus;
-    cameras: [string];
+    shop: Shop;
+    edgeBoxInstallStatus: string;
+}
+
+export interface EdgeBoxModel {
+    timestamp: string;
+    id: string;
+    createdDate: string;
+    modifiedDate: string;
+    name: string;
+    description: string;
+    modelCode: string;
+    manufacturer: string;
+    cpu: string;
+    ram: string;
+    storage: string;
+    os: string;
+    edgeBoxes: EdgeBox[];
 }

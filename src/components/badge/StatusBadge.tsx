@@ -3,20 +3,19 @@ import { AccountStatus, BrandStatus, EdgeBoxStatus, ShopStatus, StatusColor } fr
 
 interface BadgeParams {
     type: "account" | "shop" | "brand" | "edgebox";
-    statusId: number;
     statusName: string;
     fullWidth?: boolean;
     mt?: number;
     mb?: number;
 }
 
-const StatusBadge = ({ type, statusId, statusName, fullWidth, mt, mb }: BadgeParams) => {
+const StatusBadge = ({ type, statusName, fullWidth, mt, mb }: BadgeParams) => {
     if (type == "account") {
         return (
             <Badge size='lg' radius={"lg"} p={15} autoContrast fullWidth={fullWidth}
-                color={statusId == AccountStatus.Active ? StatusColor.ACTIVE :
-                    statusId == AccountStatus.Inactive ? StatusColor.INACTIVE :
-                        statusId == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
+                color={statusName == AccountStatus.Active ? StatusColor.ACTIVE :
+                    statusName == AccountStatus.Inactive ? StatusColor.INACTIVE :
+                        statusName == AccountStatus.New ? StatusColor.NEW : StatusColor.NONE}
                 mt={mt || 0} mb={mb || 0}>
                 {statusName || ""}
             </Badge>
@@ -24,8 +23,8 @@ const StatusBadge = ({ type, statusId, statusName, fullWidth, mt, mb }: BadgePar
     } else if (type == "shop") {
         return (
             <Badge size='lg' radius={"lg"} p={15} autoContrast fullWidth={fullWidth}
-                color={statusId == ShopStatus.Active ? StatusColor.ACTIVE :
-                    statusId == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                color={statusName == ShopStatus.Active ? StatusColor.ACTIVE :
+                    statusName == ShopStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
                 mt={mt || 0} mb={mb || 0}>
                 {statusName || ""}
             </Badge>
@@ -33,8 +32,8 @@ const StatusBadge = ({ type, statusId, statusName, fullWidth, mt, mb }: BadgePar
     } else if (type == "edgebox") {
         return (
             <Badge size='lg' radius={"lg"} p={15} autoContrast fullWidth={fullWidth}
-                color={statusId == EdgeBoxStatus.Active ? StatusColor.ACTIVE :
-                    statusId == EdgeBoxStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                color={statusName == EdgeBoxStatus.Active ? StatusColor.ACTIVE :
+                    statusName == EdgeBoxStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
                 mt={mt || 0} mb={mb || 0}>
                 {statusName || ""}
             </Badge>
@@ -42,8 +41,8 @@ const StatusBadge = ({ type, statusId, statusName, fullWidth, mt, mb }: BadgePar
     } else {
         return (
             <Badge size='lg' radius={"lg"} p={15} autoContrast fullWidth={fullWidth}
-                color={statusId == BrandStatus.Active ? StatusColor.ACTIVE :
-                    statusId == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
+                color={statusName == BrandStatus.Active ? StatusColor.ACTIVE :
+                    statusName == BrandStatus.Inactive ? StatusColor.INACTIVE : StatusColor.NONE}
                 mt={mt || 0} mb={mb || 0}>
                 {statusName || ""}
             </Badge>

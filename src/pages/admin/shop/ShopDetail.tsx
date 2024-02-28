@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, Group, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Avatar, Box, Divider, Group, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdPhone } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
@@ -25,6 +25,7 @@ const ShopDetail = () => {
     const params = useParams();
 
     const { data, isLoading } = useGetShopById(params.shopId!);
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     return (
         <div className={styled["container-right"]}>
@@ -39,8 +40,7 @@ const ShopDetail = () => {
                             <div>
                                 <Group mb={15}>
                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                    <StatusBadge statusName={data?.shopStatus ? data.shopStatus.name : "None"} type="shop"
-                                        statusId={data?.shopStatus?.id ? data?.shopStatus?.id : 0} />
+                                    <StatusBadge statusName={data?.shopStatus ? data.shopStatus : "None"} type="shop" />
                                 </Group>
                                 <Group>
                                     <MdAccountCircle style={{ width: 18, height: 18 }} />
@@ -79,12 +79,11 @@ const ShopDetail = () => {
                             <Tabs.Panel value="brand">
                                 <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
                                     <Group className={styled["brand-profile"]} mt={20}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logoUri} />
+                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                         <div>
                                             <Group>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus.name : "None"} type="brand"
-                                                    statusId={data?.brand?.brandStatus?.id ? data?.brand?.brandStatus?.id : 0} />
+                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} type="brand" />
                                             </Group>
                                             <Group>
                                                 <MdEmail />
@@ -100,12 +99,12 @@ const ShopDetail = () => {
                                             </Group>
                                         </div>
                                     </Group>
-                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: "#2d4b81" }}>View More</Link>
+                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
                                 </div>
                             </Tabs.Panel>
 
                             <Tabs.Panel value="employees">
-                                <EmployeeListById id={params.shopId!} type="shop"/>
+                                <EmployeeListById id={params.shopId!} type="shop" />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="edge boxes">
@@ -115,7 +114,7 @@ const ShopDetail = () => {
                     </div>
                 </div>
             }
-        </div>
+        </div >
     );
 };
 

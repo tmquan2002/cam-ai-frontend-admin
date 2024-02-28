@@ -69,7 +69,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 name: data?.name ? data.name : "",
                 phone: data?.phone ? data.phone : "",
                 addressLine: data?.addressLine ? data.addressLine : "",
-                gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
+                gender: data?.gender == "Male" ? "Male" : data?.gender == "Female" ? "Female" : "",
                 birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
                 province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
                 district: data?.ward?.district?.id.toString() || "",
@@ -89,7 +89,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 phone: form.values.phone,
                 addressLine: form.values.addressLine,
                 birthday: removeTime(new Date(form.values.birthday), "-"),
-                gender: Number(form.values.gender),
+                gender: form.values.gender,
                 wardId: isEmpty(form.values.ward) ? null : form.values.ward,
             }
         };
@@ -207,7 +207,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                     name: data?.name ? data.name : "",
                                     phone: data?.phone ? data.phone : "",
                                     addressLine: data?.addressLine ? data.addressLine : "",
-                                    gender: data?.gender?.toString() == "Male" ? "0" : data?.gender?.toString() == "Female" ? "1" : "",
+                                    gender: data?.gender == "Male" ? "Male" : data?.gender == "Female" ? "Female" : "",
                                     birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
                                     province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
                                     district: data?.ward?.district?.id.toString() || "",

@@ -2,21 +2,6 @@ import { Brand } from "./Brand";
 import { Ward } from "./Location";
 import { Shop } from "./Shop";
 
-export type AccountStatus = {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
-
-export type AccountRole = {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-    accounts: string[];
-}
-
 export type Account = {
     timestamp: string;
     id: string;
@@ -24,17 +9,17 @@ export type Account = {
     modifiedDate: string;
     email: string;
     name: string;
-    gender: number;
+    gender: string;
     phone: string;
     birthday: string;
     wardId: string;
     addressLine: string;
     workingShopId: string;
-    accountStatusId: number,
+    accountStatusId: number;
     ward: Ward;
     workingShop: Shop;
-    accountStatus: AccountStatus;
+    accountStatus: string;
     brand: Brand;
     managingShop: Shop;
-    roles: AccountRole[];
+    role: string;
 };

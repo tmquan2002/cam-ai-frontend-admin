@@ -20,15 +20,15 @@ const AccountCard = ({ item }: { item: Account }) => {
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
             <div>
-                <Text fw={500} size="lg">{item.name}</Text>
+                <Text fw={500} size="lg">{item?.name}</Text>
                 {item.accountStatus &&
-                    <StatusBadge statusName={item.accountStatus?.name} type="account" statusId={item?.accountStatus?.id} mb={15} mt={15} />
+                    <StatusBadge statusName={item?.accountStatus} type="account" mb={15} mt={15} />
                 }
             </div>
 
             <div className={styled["icon-text"]}>
                 <MdAccountCircle style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}><b>{item.roles[0].name}</b></span>
+                <span className={styled["information"]}><b>{item.role.replace(/([A-Z])/g, ' $1').trim()}</b></span>
             </div>
 
             <div className={styled["icon-text"]}>

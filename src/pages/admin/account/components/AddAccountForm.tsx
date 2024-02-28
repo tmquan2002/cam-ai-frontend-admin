@@ -29,7 +29,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
-            roleIds: initialBrandId ? RoleEnum.BrandManager.toString() : "",
+            role: initialBrandId ? RoleEnum.BrandManager : "",
             province: "",
             district: "",
             ward: "",
@@ -52,7 +52,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 value.trim().length === 0 ? "Confirm Password is required" : null,
             gender: (value) =>
                 value === '' ? "Please choose a gender" : null,
-            roleIds: (value) =>
+            role: (value) =>
                 value === '' ? "Please choose a role" : null,
         },
     });
@@ -83,15 +83,15 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             phone: form.values.phone,
             addressLine: form.values.addressLine,
             birthday: removeTime(new Date(form.values.birthday), "-"),
-            gender: Number(form.values.gender),
+            gender: form.values.gender,
             password: form.values.password,
-            roleIds: [Number(form.values.roleIds)],
+            role: form.values.role,
             brandId: brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
         console.log(addAccountParams)
 
-        if (addAccountParams.roleIds[0] == RoleEnum.BrandManager && isEmpty(brandId)) {
+        if (addAccountParams.role == RoleEnum.BrandManager && isEmpty(brandId)) {
             notifications.show({
                 message: "A Brand is required for Brand Manager",
                 color: "pale-red.5",
@@ -141,12 +141,12 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Role" placeholder="Select" withAsterisk
                     disabled={!isEmpty(initialBrandId)}
                     data={[
-                        { value: RoleEnum.Technician.toString(), label: 'Technician' },
-                        { value: RoleEnum.BrandManager.toString(), label: 'Brand Manager' },
+                        { value: RoleEnum.Technician, label: 'Technician' },
+                        { value: RoleEnum.BrandManager, label: 'Brand Manager' },
                     ]}
-                    {...form.getInputProps('roleIds')} />
+                    {...form.getInputProps('role')} />
                 <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.roleIds != RoleEnum.BrandManager.toString() || !isEmpty(initialBrandId)} withAsterisk={form.values.roleIds == "3"}
+                    disabled={form.values.role != RoleEnum.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
                     nothingFoundMessage={brandList && "Not Found"}
                     value={brandId} searchValue={brand}
                     placeholder="Pick value" clearable searchable
@@ -183,8 +183,8 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Gender" placeholder="Select" withAsterisk
                     data={[
                         // { value: '', label: 'Select' },
-                        { value: Gender.Male.toString(), label: 'Male' },
-                        { value: Gender.Female.toString(), label: 'Female' },
+                        { value: Gender.Male, label: 'Male' },
+                        { value: Gender.Female, label: 'Female' },
                     ]}
                     {...form.getInputProps('gender')} />
             </Group>

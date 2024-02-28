@@ -6,8 +6,8 @@ export type GetShopsParams = {
   name?: string;
   phone?: string;
   wardId?: string;
-  statusId?: string;
-  brandId?: string;
+  status?: string;
+  brandId?: string | null;
   shopManagerId?: string;
   pageIndex?: number;
   size?: string | number | null;

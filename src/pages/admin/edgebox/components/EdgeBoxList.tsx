@@ -16,8 +16,8 @@ const EdgeBoxList = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useState<string>("0")
-    const [filterLocation, setFilterLocation] = useState<string>("0")
+    const [filterStatus, setFilterStatus] = useState<string>("None")
+    const [filterLocation, setFilterLocation] = useState<string>("None")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -34,9 +34,9 @@ const EdgeBoxList = () => {
 
     const { data: edgeBoxList, isFetching, isLoading, refetch
     } = useGetAllEdgeBoxes({
-        pageIndex: (pageIndex - 1), size, model: searchTerm,
-        edgeBoxStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
-        edgeBoxLocationId: filterLocation !== "0" && filterLocation !== "" ? filterLocation : ""
+        pageIndex: (pageIndex - 1), size, name: searchTerm,
+        edgeBoxStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
+        edgeBoxLocation: filterLocation !== "None" && filterLocation !== "" ? filterLocation : ""
     })
 
     const onSearch = (e: any) => {
@@ -62,7 +62,7 @@ const EdgeBoxList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "0") {
+            if (filterStatus !== "None" || filterLocation !== "None") {
                 refetch();
                 setPageIndex(1)
             }
@@ -95,11 +95,10 @@ const EdgeBoxList = () => {
             <Table.Tr onClick={() => navigate(`/edgebox/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
 
-                <Table.Td>{e.model}</Table.Td>
+                <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus.name : "None"} type="edgebox"
-                        statusId={e?.edgeBoxStatus?.id ? e?.edgeBoxStatus?.id : 0} fullWidth />
+                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} type="edgebox" fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

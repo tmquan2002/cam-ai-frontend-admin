@@ -4,7 +4,7 @@ import http, { toQueryParams } from "../utils/http";
 
 export type GetEmployeeParams = {
   search?: string;
-  employeeStatusId?: number;
+  employeeStatus?: string;
   brandId?: string;
   shopId?: string;
   size?: string | number | null;

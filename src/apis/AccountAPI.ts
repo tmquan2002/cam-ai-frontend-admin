@@ -1,5 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
-import { Account, AccountRole, AccountStatus } from "../models/Account";
+import { Account } from "../models/Account";
 import { Brand } from "../models/Brand";
 import { Ward } from "../models/Location";
 import { Shop } from "../models/Shop";
@@ -12,27 +12,26 @@ export type AddAccountResult = {
   modifiedDate: string;
   email: string;
   name: string;
-  gender: number;
+  gender: string;
   phone: string;
   birthday: string;
   wardId: string;
   addressLine: string;
   workingShopId: string;
-  accountStatusId: number,
   ward: Ward;
   workingShop: Shop;
-  accountStatus: AccountStatus;
+  accountStatus: string;
   brand: Brand;
   managingShop: Shop;
-  roles: AccountRole[];
+  role: string;
 };
 
 export type GetAccountsParams = {
   name?: string;
   email?: string;
-  accountStatusId?: string;
-  roleId?: string;
-  brandId?: string;
+  accountStatus?: string;
+  role?: string;
+  brandId?: string | null;
   shopId?: string;
   size?: string | number | null;
   pageIndex?: number;
@@ -50,21 +49,21 @@ export type AddAccountParams = {
   email: string;
   password: string;
   name: string;
-  gender: number;
+  gender: string;
   phone: string;
   birthday: string;
   wardId: string | null;
   addressLine: string;
   brandId: string | null;
   // workingShopId: string;
-  roleIds: number[];
+  role: string;
 };
 
 export type UpdateAccountParams = {
   id: string;
   values: {
     name: string;
-    gender: number;
+    gender: string;
     email: string;
     phone: string;
     birthday: string;

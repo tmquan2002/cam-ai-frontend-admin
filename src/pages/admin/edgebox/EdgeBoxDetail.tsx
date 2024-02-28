@@ -79,13 +79,12 @@ const EdgeBoxDetail = () => {
                             <div className={styled["profile-header-left"]}>
                                 <div>
                                     <Group mb={15}>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.model}</Text>
-                                        <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus.name : "None"} type="edgebox"
-                                            statusId={data?.edgeBoxStatus?.id ? data?.edgeBoxStatus?.id : 0} />
+                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                        <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} type="edgebox" />
                                     </Group>
                                     <Group mb={10}>
                                         <MdMyLocation />
-                                        <Text size="md">Location: {data?.edgeBoxLocation?.name}</Text>
+                                        <Text size="md">Location: {data?.edgeBoxLocation}</Text>
                                     </Group>
                                     <Group mb={10}>
                                         <MdAccessTime />

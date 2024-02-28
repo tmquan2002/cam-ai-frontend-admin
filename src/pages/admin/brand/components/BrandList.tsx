@@ -16,7 +16,7 @@ const BrandList = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useState<string>("0")
+    const [filterStatus, setFilterStatus] = useState<string>("None")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -34,7 +34,7 @@ const BrandList = () => {
     const { data: brandList, isFetching, isLoading, refetch
     } = useGetAllBrands({
         pageIndex: (pageIndex - 1), size, name: searchTerm,
-        statusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : ""
+        brandStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : ""
     })
 
     const onSearch = (e: any) => {
@@ -60,7 +60,7 @@ const BrandList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "0") {
+            if (filterStatus !== "None") {
                 refetch();
                 setPageIndex(1)
             }
@@ -98,8 +98,7 @@ const BrandList = () => {
                     </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.brandStatus ? e.brandStatus.name : "None"} type="brand"
-                        statusId={e?.brandStatus?.id ? e?.brandStatus?.id : 0} fullWidth />
+                    <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} type="brand" fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

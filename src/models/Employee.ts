@@ -1,12 +1,6 @@
-import { Behavior } from "./Behaviors";
+import { Incident } from "./Incident";
 import { Ward } from "./Location";
 import { Shop } from "./Shop";
-
-export interface EmployeeStatus {
-    id: number;
-    name: string;
-    description: string;
-}
 
 export interface Employee {
     timestamp: string;
@@ -22,9 +16,8 @@ export interface Employee {
     wardId: string;
     shopId: string;
     addressLine: string;
-    employeeStatusId: number;
     ward: Ward;
     shop: Shop;
-    employeeStatus: EmployeeStatus;
-    behavior: Behavior;
+    employeeStatus: string;
+    incidents: Incident;
 };

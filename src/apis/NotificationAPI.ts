@@ -5,7 +5,7 @@ import http, { toQueryParams } from "../utils/http";
 export type GetNotificationParams = {
     accountId: string;
     notificationId: string;
-    status?: number;
+    status?: string;
     size?: string | number | null;
     pageIndex?: number;
 };

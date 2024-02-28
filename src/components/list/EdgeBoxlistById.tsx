@@ -21,15 +21,15 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
             <div>
-                <Text fw={500} size="lg">{item.model}</Text>
+                <Text fw={500} size="lg">{item.name}</Text>
                 {item.edgeBoxStatus &&
-                    <StatusBadge statusName={item.edgeBoxStatus?.name} type="shop" statusId={item?.edgeBoxStatus?.id} mb={15} mt={15} />
+                    <StatusBadge statusName={item.edgeBoxStatus} type="shop" mb={15} mt={15} />
                 }
             </div>
 
             <div className={styled["icon-text"]}>
                 <MdHome style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item.edgeBoxLocation?.name}</span>
+                <span className={styled["information"]}>{item?.edgeBoxLocation}</span>
             </div>
 
             <div className={styled["icon-text"]}>

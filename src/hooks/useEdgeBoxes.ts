@@ -28,7 +28,7 @@ export const useGetAllEdgeBoxesSelect = (params: GetEdgeBoxParams) => {
       const res = await EdgeBoxAPI.getAllFilter(params);
       return res.values.map((items) => ({
         value: items.id,
-        label: items.model
+        label: items.name
       }))
     },
   });

@@ -19,9 +19,9 @@ const ShopList = () => {
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
 
-    const [filterStatus, setFilterStatus] = useState<string>("0")
+    const [filterStatus, setFilterStatus] = useState<string>("None")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
-    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("")
+    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("None")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -43,8 +43,8 @@ const ShopList = () => {
         pageIndex: (pageIndex - 1), size: Number(size),
         name: searchBy == "Name" ? searchTerm : "",
         phone: searchBy == "Phone" ? searchTerm : "",
-        statusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
-        brandId: filterSearchBrandId ? filterSearchBrandId : "",
+        status: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
+        brandId: filterSearchBrandId !== "None" && !isEmpty(filterSearchBrandId) ? filterSearchBrandId : "",
     });
 
     const { data: brandList, refetch: refetchBrand
@@ -67,7 +67,7 @@ const ShopList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "0") {
+            if (filterStatus !== "None" || filterSearchBrandId !== "None") {
                 refetch();
                 setPageIndex(1)
             }
@@ -118,8 +118,7 @@ const ShopList = () => {
                 <Table.Td>{e.phone}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.shopStatus?.name ? e.shopStatus?.name : "None"} type="shop"
-                        statusId={e.shopStatus?.id ? e.shopStatus?.id : 0} fullWidth />
+                    <StatusBadge statusName={e.shopStatus ? e.shopStatus : "None"} type="shop" fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
