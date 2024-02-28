@@ -117,10 +117,6 @@ const AppRoute = () => {
             {
               path: ":edgeBoxId",
               element: <EdgeBoxDetail />,
-            },
-            {
-              path: ":edgeBoxId/update",
-              element: <EdgeBoxDetail />,
             }
           ]
         },

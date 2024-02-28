@@ -14,11 +14,14 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch }: { id: string, close: (
     const form = useForm({
         initialValues: {
             model: "",
+            edgeBoxModelId: ","
         },
 
         validate: {
             model: (value) =>
                 value.trim().length === 0 ? "Model is required" : null,
+            edgeBoxModelId: (value) =>
+                value.trim().length === 0 ? "Edge Box Model ID is required" : null,
         },
     });
 
@@ -26,6 +29,7 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch }: { id: string, close: (
         if (data) {
             form.setValues({
                 model: data?.model,
+                edgeBoxModelId: data?.edgeBoxModelId
             });
         }
     }, [data]);
@@ -36,7 +40,8 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch }: { id: string, close: (
         const updateBrandParams: UpdateEdgeBoxParams = {
             id: id,
             values: {
-                model: form.values.model,
+                name: form.values.model,
+                edgeBoxModelId: form.values.edgeBoxModelId,
             }
         };
 
@@ -84,6 +89,14 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch }: { id: string, close: (
                         placeholder="Model"
                         size="md"
                         {...form.getInputProps("model")}
+                    />
+
+                    <TextInput mt={10}
+                        withAsterisk
+                        label="Edge Box Model ID"
+                        placeholder="Model ID"
+                        size="md"
+                        {...form.getInputProps("edgeBoxModelId")}
                     />
 
                     <Group

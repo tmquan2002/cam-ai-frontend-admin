@@ -13,14 +13,17 @@ export const AddEdgeBoxForm = () => {
 
     const form = useForm({
         initialValues: {
-            model: "",
+            name: "",
             username: "",
             password: "",
+            edgeBoxModelId: "",
         },
 
         validate: {
-            model: (value) =>
-                value.trim().length === 0 ? "Model is required" : null,
+            name: (value) =>
+                value.trim().length === 0 ? "Name is required" : null,
+            edgeBoxModelId: (value) =>
+                value.trim().length === 0 ? "Edge Box Model Id is required" : null,
             username: (value) =>
                 value.trim().length === 0 ? "Username is required" : null,
             password: (value) =>
@@ -32,9 +35,10 @@ export const AddEdgeBoxForm = () => {
         // console.log(values)
 
         const addBrandParams: AddEdgeBoxParams = {
-            model: values.model,
+            name: values.name,
             username: values.username,
             password: values.password,
+            edgeBoxModelId: values.edgeBoxModelId,
         };
 
         addEdgeBox(addBrandParams, {
@@ -74,11 +78,19 @@ export const AddEdgeBoxForm = () => {
         >
             <TextInput mt={10}
                 withAsterisk
-                label="Model"
-                placeholder="Model"
+                label="Name"
+                placeholder="Name"
                 size="md"
-                {...form.getInputProps("model")}
+                {...form.getInputProps("name")}
             />
+            <TextInput mt={10}
+                withAsterisk
+                label="Edge Box Model ID"
+                placeholder="Model ID"
+                size="md"
+                {...form.getInputProps("edgeBoxModelId")}
+            />
+
             <TextInput mt={10}
                 withAsterisk
                 label="Username"

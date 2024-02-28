@@ -21,13 +21,15 @@ export type GetEdgeBoxesPagingResult = {
 export type AddEdgeBoxParams = {
     username: string;
     password: string;
-    model: string;
+    name: string;
+    edgeBoxModelId: string;
 }
 
 export type UpdateEdgeBoxParams = {
     id: string;
     values: {
-        model: string;
+        name: string;
+        edgeBoxModelId: string;
     }
 };
 

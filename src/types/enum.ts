@@ -6,6 +6,14 @@ export enum RoleEnum {
   Employee = 5,
 }
 
+export enum RoleEnumName {
+  Admin = "Admin",
+  Technician = "Technician",
+  BrandManager = "BrandManager",
+  ShopManager = "ShopManager",
+  Employee = "Employee",
+}
+
 export enum Gender {
   Male = 0,
   Female = 1,
@@ -32,11 +40,18 @@ export enum NotificationStatus {
   Unread = 2,
 }
 
-//TODO: Change enum status of edgebox based on BE later
 export enum EdgeBoxStatus {
   Active = 1,
   Inactive = 2,
-  Idle = 3,
+  Broken = 3,
+}
+
+export enum EdgeBoxLocation {
+  Idle = 1,
+  Installing = 2,
+  Occupied = 3,
+  Uninstalling = 4,
+  Disposed = 5,
 }
 
 export enum EmployeeStatus {

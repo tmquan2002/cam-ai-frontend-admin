@@ -19,7 +19,7 @@ export interface EdgeBoxInstallStatus {
     description: string;
 }
 
-// TODO: Redesign when BE is done with structures
+// TODO: Redesign when BE is done with structures and fully run well
 export interface EdgeBox {
     timestamp: string;
     id: string;
@@ -29,6 +29,7 @@ export interface EdgeBox {
     password: string;
     model: string;
     version: string;
+    edgeBoxModelId: string;
     edgeBoxStatusId: number;
     edgeBoxLocationId: number;
     edgeBoxLocation: EdgeBoxLocation;

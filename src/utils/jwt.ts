@@ -1,12 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 
-export type RoleDetail = {
-  Id: number;
-  Name: string;
-};
 export type UserDetail = {
   id: string;
-  roles: string;
+  role: string;
   exp: number;
 };
 
@@ -15,9 +11,9 @@ export const getPayloadFromToken = (token: string): UserDetail => {
   return user_detail;
 };
 
-export const getRolesFromToken = (token: string): RoleDetail[] => {
-  const roles: RoleDetail[] = JSON.parse(getPayloadFromToken(token).roles);
-  return roles;
+export const getRoleFromToken = (token: string): string => {
+  const role: string = getPayloadFromToken(token).role;
+  return role;
 };
 
 export const getIdFromToken = (token: string): string => {

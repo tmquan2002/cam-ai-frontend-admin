@@ -6,7 +6,7 @@ import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
-import { EdgeBoxStatus } from '../../../../types/enum';
+import { EdgeBoxLocation, EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/edgebox.module.scss";
 
@@ -17,6 +17,7 @@ const EdgeBoxList = () => {
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
     const [filterStatus, setFilterStatus] = useState<string>("0")
+    const [filterLocation, setFilterLocation] = useState<string>("0")
 
     const [initialData, setInitialData] = useState(true)
 
@@ -34,7 +35,8 @@ const EdgeBoxList = () => {
     const { data: edgeBoxList, isFetching, isLoading, refetch
     } = useGetAllEdgeBoxes({
         pageIndex: (pageIndex - 1), size, model: searchTerm,
-        edgeBoxStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : ""
+        edgeBoxStatusId: filterStatus !== "0" && filterStatus !== "" ? filterStatus : "",
+        edgeBoxLocationId: filterLocation !== "0" && filterLocation !== "" ? filterLocation : ""
     })
 
     const onSearch = (e: any) => {
@@ -68,10 +70,11 @@ const EdgeBoxList = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [filterStatus]);
+    }, [filterStatus, filterLocation]);
 
     const onClearFilter = () => {
         setFilterStatus("")
+        setFilterLocation("")
     }
 
     const onClearSearch = () => {
@@ -111,7 +114,7 @@ const EdgeBoxList = () => {
                     <Group justify="space-between">
                         <Text size='lg' fw="bold" fz='25px'
                             c={"light-blue.4"}
-                        >EDGE BOXES LIST</Text>
+                        >EDGE BOX LIST</Text>
                         <Group>
                             <Tooltip label="Filter" withArrow>
                                 <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -158,6 +161,20 @@ const EdgeBoxList = () => {
                         <Group>
                             <Radio value={EdgeBoxStatus.Active.toString()} label={"Active"} />
                             <Radio value={EdgeBoxStatus.Inactive.toString()} label={"Inactive"} />
+                            <Radio value={EdgeBoxStatus.Broken.toString()} label={"Broken"} />
+                        </Group>
+                    </RadioGroup>
+                </Group>
+                <Group mb="md">
+                    <Text size='sm'>Location: </Text>
+                    <RadioGroup name="location" value={filterLocation}
+                        onChange={setFilterLocation}>
+                        <Group>
+                            <Radio value={EdgeBoxLocation.Idle.toString()} label={"Idle"} />
+                            <Radio value={EdgeBoxLocation.Installing.toString()} label={"Installing"} />
+                            <Radio value={EdgeBoxLocation.Occupied.toString()} label={"Occupied"} />
+                            <Radio value={EdgeBoxLocation.Uninstalling.toString()} label={"Uninstalling"} />
+                            <Radio value={EdgeBoxLocation.Disposed.toString()} label={"Disposed"} />
                         </Group>
                     </RadioGroup>
                 </Group>

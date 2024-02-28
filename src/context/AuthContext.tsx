@@ -5,7 +5,6 @@ import { AuthToken } from "../models/Auth";
 import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
 import * as jwt from "../utils/jwt";
-import { RoleDetail } from "../utils/jwt";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -33,12 +32,12 @@ export const getRefreshToken = (): string | null => {
   return REFRESH_TOKEN;
 };
 
-export function getUserRoles(): RoleDetail[] | null {
+export function getUserRoles(): string | null {
   const accessToken: string | null = getAccessToken();
 
   if (accessToken) {
-    const roles: jwt.RoleDetail[] = jwt.getRolesFromToken(accessToken);
-    return roles;
+    const role: string = jwt.getRoleFromToken(accessToken);
+    return role;
   }
 
   return null;
@@ -54,12 +53,12 @@ export function getUserId(): string | null {
   return null;
 }
 
-export function checkRole(acceptableRoles: RoleDetail[]): boolean {
+export function checkRole(acceptableRoles: string[]): boolean {
   const userRole = getUserRoles();
   if (!userRole) return false;
 
-  const arr1 = acceptableRoles.filter((e) => {
-    return userRole.some((item) => item.Id === e.Id);
+  const arr1 = acceptableRoles.filter((acceptableRole) => {
+    return userRole == acceptableRole;
   });
 
   // userRole?.forEach((role) => {

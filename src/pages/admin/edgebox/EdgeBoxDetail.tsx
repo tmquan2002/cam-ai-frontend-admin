@@ -1,17 +1,17 @@
 import { ActionIcon, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
-import { MdAccessTime, MdDelete, MdEdit } from "react-icons/md";
+import axios from "axios";
+import { MdAccessTime, MdDelete, MdEdit, MdMyLocation } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
 import { removeTime } from "../../../utils/dateFormat";
-import styled from "./styles/edgeboxdetail.module.scss";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
+import styled from "./styles/edgeboxdetail.module.scss";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -83,7 +83,11 @@ const EdgeBoxDetail = () => {
                                         <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus.name : "None"} type="edgebox"
                                             statusId={data?.edgeBoxStatus?.id ? data?.edgeBoxStatus?.id : 0} />
                                     </Group>
-                                    <Group mb={20}>
+                                    <Group mb={10}>
+                                        <MdMyLocation />
+                                        <Text size="md">Location: {data?.edgeBoxLocation?.name}</Text>
+                                    </Group>
+                                    <Group mb={10}>
                                         <MdAccessTime />
                                         <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                     </Group>

@@ -1,26 +1,19 @@
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { checkRole } from "../context/AuthContext";
-import { useEffect, useState } from "react";
-import { RoleEnum } from "../types/enum";
+import { RoleEnumName } from "../types/enum";
 
 const CommonRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  console.log(1);
+  // console.log(1);
 
   useEffect(() => {
     const isUserHavePermission: boolean | undefined = checkRole([
-      {
-        Id: RoleEnum.Admin,
-        Name: "",
-      },
-      {
-        Id: RoleEnum.BrandManager,
-        Name: "",
-      },
-      {
-        Id: RoleEnum.Technician,
-        Name: "",
-      },
+      RoleEnumName.Admin,
+      RoleEnumName.ShopManager,
+      RoleEnumName.BrandManager,
+      RoleEnumName.Employee,
+      RoleEnumName.Technician
     ]);
     if (isUserHavePermission) {
       setIsAuthenticated(true);
