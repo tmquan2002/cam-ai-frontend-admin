@@ -5,6 +5,7 @@ import { notifications } from "@mantine/notifications";
 import { AddBrandParams } from "../../../../apis/BrandAPI";
 import { useAddBrand } from "../../../../hooks/useBrands";
 import { useNavigate } from "react-router-dom";
+import { ApiErrorResponse } from "../../../../hooks/useAuth";
 
 export const AddBrandForm = () => {
 
@@ -53,9 +54,9 @@ export const AddBrandForm = () => {
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
-                    // console.error(error.response?.data as ApiErrorResponse);
+                    console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: error.response?.data.message,
+                        message: error.response?.data.errors.response,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });

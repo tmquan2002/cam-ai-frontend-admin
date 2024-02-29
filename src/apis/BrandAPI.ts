@@ -72,9 +72,15 @@ export const BrandAPI = {
   },
   add: async (params: AddBrandParams) => {
     const token = getAccessToken();
-    const res = await http.post<GetBrandsResult>("/api/brands", params, {
+    const form = new FormData();
+    form.append("Brand.Name", params.name);
+    form.append("Brand.Email", params.email);
+    form.append("Brand.Phone", params.phone);
+
+    const res = await http.post<GetBrandsResult>(`/api/brands`, form, {
       headers: {
         Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
       },
     });
     return res.data;
