@@ -116,10 +116,10 @@ const BrandDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        {data?.bannerUri && <Image h={200} mb={20} src={data?.bannerUri} />}
+                        {data?.banner && <Image h={200} mb={20} src={data?.banner.hostingUri} />}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Avatar w={150} h={150} mr={20} src={data?.logoUri} />
+                                <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
                                 <div>
                                     <Group mb={15}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
@@ -174,7 +174,7 @@ const BrandDetail = () => {
                                             onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
                                             Update
                                         </Menu.Item>
-                                        {data?.brandStatus === BrandStatus.Active ?
+                                        {data?.brandStatus == BrandStatus.Active ?
                                             <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
                                                 onClick={open} >
                                                 Delete

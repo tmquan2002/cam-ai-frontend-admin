@@ -1,7 +1,11 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
 import {
-  GetBrandsPagingResult, GetBrandsParams, BrandAPI, GetBrandsResult, AddBrandParams, UpdateBrandParams,
+  AddBrandParams,
+  BrandAPI,
+  GetBrandsPagingResult, GetBrandsParams,
+  UpdateBrandParams
 } from "../apis/BrandAPI";
+import { Brand } from "../models/Brand";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
@@ -31,13 +35,18 @@ export const useGetAllBrandsSelect = (params: GetBrandsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetBrandById = (id: string) => {
+export const useGetBrandById = (id: string | undefined) => {
   const { isError, isLoading, data, error, refetch,
-  }: UseQueryResult<GetBrandsResult, Error> = useQuery({
+  }: UseQueryResult<Brand, Error> = useQuery({
     queryKey: ["brandDetail", id],
     queryFn: async () => {
-      return await BrandAPI.getById(id);
+      if (id) {
+        return await BrandAPI.getById(id);
+      } else {
+        return {}
+      }
     },
+    enabled: !!id,
   });
 
   return { isError, isLoading, data, error, refetch };

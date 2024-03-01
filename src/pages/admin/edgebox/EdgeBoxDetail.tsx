@@ -12,6 +12,7 @@ import { useDeleteEdgeBox, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes
 import { removeTime } from "../../../utils/dateFormat";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
+import { EdgeBoxStatus } from "../../../types/enum";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -109,7 +110,8 @@ const EdgeBoxDetail = () => {
                                             onClick={openUpdate}>
                                             Update
                                         </Menu.Item>
-                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.edgeBoxStatus == EdgeBoxStatus.Inactive ? "grey" : "red" }} />}
+                                            disabled={data?.edgeBoxStatus == EdgeBoxStatus.Inactive}
                                             onClick={openDelete} >
                                             Delete
                                         </Menu.Item>

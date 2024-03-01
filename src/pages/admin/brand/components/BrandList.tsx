@@ -1,5 +1,6 @@
 import { ActionIcon, Avatar, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
-import { isEmpty } from 'lodash';
 
 const BrandList = () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -94,7 +94,7 @@ const BrandList = () => {
 
                 <Table.Td>
                     <Group>
-                        <Avatar w={50} h={50} src={e.logoUri} />{e.name}
+                        <Avatar w={50} h={50} src={e.logo?.hostingUri} />{e.name}
                     </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>

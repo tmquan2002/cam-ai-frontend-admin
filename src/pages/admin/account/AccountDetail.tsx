@@ -1,16 +1,19 @@
-import { ActionIcon, Avatar, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
+import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import axios from "axios";
-import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { RoleEnum } from "../../../types/enum";
+import { useGetBrandById } from "../../../hooks/useBrands";
+import { useGetShopById } from "../../../hooks/useShops";
+import { AccountStatus, RoleEnum } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
 
@@ -32,6 +35,8 @@ const AccountDetail = () => {
     const [modalOpen, { open, close }] = useDisclosure(false);
 
     const { data, isLoading } = useGetAccountById(params.accountId!);
+    const { data: dataBrand, isLoading: isLoadingBrand } = useGetBrandById(data?.brand?.id);
+    const { data: dataShop, isLoading: isLoadingShop } = useGetShopById(data?.managingShop?.id);
     const { mutate: deleteAccount } = useDeleteAccount();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -79,7 +84,6 @@ const AccountDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        {/* <Image h={150} mb={20} src={data?.logoUri} /> */}
                         <div className={styled["profile-header"]}>
                             <div>
                                 <Group mb={15} gap={30}>
@@ -90,7 +94,15 @@ const AccountDetail = () => {
                                     <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
                                         type="account" mb={15} mt={15} />
                                 </Group>
-
+                                {data?.gender &&
+                                    <Group>
+                                        {data?.gender == "Female" ?
+                                            <BsGenderFemale /> :
+                                            <BsGenderMale />
+                                        }
+                                        <Text size="md">{data?.gender}</Text>
+                                    </Group>
+                                }
                                 <Group>
                                     <MdEmail />
                                     <Text size="md">{data?.email}</Text>
@@ -101,10 +113,21 @@ const AccountDetail = () => {
                                     <Text size="md">{data?.phone}</Text>
                                 </Group>
 
-                                <Group>
-                                    <MdCalendarToday />
-                                    <Text size="md">{data?.birthday}</Text>
-                                </Group>
+                                {data?.birthday &&
+                                    <Group>
+                                        <MdCalendarToday />
+                                        <Text size="md">{removeTime(new Date(data?.birthday), "/", "dd/MM/yyyy")}</Text>
+                                    </Group>
+                                }
+
+                                {(data?.ward || data?.addressLine) &&
+                                    <Group>
+                                        <MdHome />
+                                        {(data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                        {(data?.ward && !data?.addressLine) && <Text size="md">{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                        {(!data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}</Text>}
+                                    </Group>
+                                }
 
                                 <Group mb={20}>
                                     <MdAccessTime />
@@ -129,7 +152,9 @@ const AccountDetail = () => {
                                                 onClick={() => navigate(`/account/${params.accountId!}/update`)}>
                                                 Update
                                             </Menu.Item>
-                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+
+                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.accountStatus == AccountStatus.Inactive ? "grey" : "red" }} />}
+                                                disabled={data?.accountStatus == AccountStatus.Inactive}
                                                 onClick={open} >
                                                 Delete
                                             </Menu.Item>
@@ -138,46 +163,101 @@ const AccountDetail = () => {
                                 </div>
                             }
                         </div>
-                        <Divider my="md" />
-                        {/* TODO: Add detail of a shop this shop manager account working on */}
-                        {data?.role == RoleEnum.BrandManager && data?.brand?.id &&
-                            <div className={styled["brand-detail"]}>
-                                <Text size="lg" fw={"bold"}>Brand</Text>
-                                <div style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-start' }}>
-                                    <Group className={styled["brand-profile"]} mt={20}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
+                    </div>
+                }
+
+                {data?.role == RoleEnum.BrandManager &&
+                    <>
+                        {!isLoadingBrand ?
+                            <div className={styled["container-detail"]}>
+                                <div>
+                                    <Text size="lg" fw={"bold"}>Brand</Text>
+                                    <div className={styled["shop-brand-detail"]}>
+                                        <Group mt={20}>
+                                            <Avatar w={150} h={150} mr={20} src={dataBrand?.logo?.hostingUri} />
+                                            <div>
+                                                <Group>
+                                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{dataBrand?.name}</Text>
+                                                    <StatusBadge statusName={dataBrand?.brandStatus ? dataBrand?.brandStatus : "None"}
+                                                        type="brand" />
+                                                </Group>
+                                                <Group>
+                                                    <MdEmail />
+                                                    <Text size="md">{dataBrand?.email}</Text>
+                                                </Group>
+                                                <Group>
+                                                    <MdPhone />
+                                                    <Text size="md">{dataBrand?.phone}</Text>
+                                                </Group>
+                                                <Group mb={20}>
+                                                    <MdAccessTime />
+                                                    <Text size="md">Created on: {dataBrand?.createdDate && removeTime(new Date(dataBrand?.createdDate), "/")}</Text>
+                                                </Group>
+                                            </div>
+                                        </Group>
+                                        <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <Box className={styled["loader"]}>
+                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                            </Box>
+                        }
+                    </>
+                }
+                {data?.role == RoleEnum.BrandManager &&
+                    <div className={styled["container-detail"]}>
+                        <div className={styled["shop-detail"]}>
+                            <Text size="lg" fw={"bold"}>Shops</Text>
+                            <ShopListById id={data?.brand.id} idType="brand" />
+                        </div>
+                    </div>
+                }
+                {data?.role == RoleEnum.ShopManager &&
+                    <>
+                        {!isLoadingShop ?
+                            <div className={styled["container-detail"]}>
+                                <div>
+                                    <Text size="lg" fw={"bold"}>Shop</Text>
+                                    <div className={styled["shop-brand-detail"]}>
                                         <div>
                                             <Group>
-                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
-                                                    type="brand" />
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{dataShop?.name}</Text>
+                                                <StatusBadge statusName={dataShop?.shopStatus ? dataShop?.shopStatus : "None"}
+                                                    type="shop" />
                                             </Group>
                                             <Group>
-                                                <MdEmail />
-                                                <Text size="md">{data?.brand?.email}</Text>
+                                                <MdOutlineAccessTime />
+                                                <Text size="md">Open: {dataShop?.openTime} - Close: {dataShop?.closeTime}</Text>
                                             </Group>
                                             <Group>
                                                 <MdPhone />
-                                                <Text size="md">{data?.brand?.phone}</Text>
+                                                <Text size="md">{dataBrand?.phone}</Text>
                                             </Group>
+                                            {(dataShop?.ward || dataShop?.addressLine) &&
+                                                <Group>
+                                                    <MdHome />
+                                                    {(dataShop?.ward && dataShop?.addressLine) && <Text size="md">{dataShop.addressLine}, {dataShop.ward?.name}, {dataShop.ward?.district?.name}, {dataShop.ward?.district?.province?.name}</Text>}
+                                                    {(dataShop?.ward && !dataShop?.addressLine) && <Text size="md">{dataShop.ward?.name}, {dataShop.ward?.district?.name}, {dataShop.ward?.district?.province?.name}</Text>}
+                                                    {(!dataShop?.ward && dataShop?.addressLine) && <Text size="md">{dataShop.addressLine}</Text>}
+                                                </Group>
+                                            }
                                             <Group mb={20}>
                                                 <MdAccessTime />
-                                                <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                                <Text size="md">Created on: {dataBrand?.createdDate && removeTime(new Date(dataBrand?.createdDate), "/")}</Text>
                                             </Group>
                                         </div>
-                                    </Group>
-                                    <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                        <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                    </div>
                                 </div>
                             </div>
+                            :
+                            <Box className={styled["loader"]}>
+                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                            </Box>
                         }
-                        <Divider my="md" />
-                        {data?.role == RoleEnum.BrandManager && data?.brand?.id &&
-                            <div className={styled["shop-detail"]}>
-                                <Text size="lg" fw={"bold"}>Shops</Text>
-                                <ShopListById id={data?.brand.id} idType="brand" />
-                            </div>
-                        }
-                    </div>
+                    </>
                 }
             </div>
             <Modal opened={modalOpen} onClose={close} title="Delete this account?" centered>

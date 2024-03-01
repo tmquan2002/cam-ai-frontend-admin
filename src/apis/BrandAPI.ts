@@ -1,21 +1,6 @@
 import { getAccessToken } from "../context/AuthContext";
-import { Account } from "../models/Account";
+import { Brand } from "../models/Brand";
 import http, { toQueryParams } from "../utils/http";
-
-export type GetBrandsResult = {
-  id: string;
-  createdDate: string;
-  modifiedDate: string;
-  timestamp: string;
-  name: string;
-  email: string;
-  phone: string;
-  logoUri: string;
-  bannerUri: string;
-  brandManagerId: string;
-  brandStatus: string;
-  brandManager: Account;
-};
 
 export type GetBrandsParams = {
   brandStatus?: string;
@@ -31,7 +16,7 @@ export type GetBrandsPagingResult = {
   pageSize: number;
   totalCount: number;
   isValuesEmpty: boolean;
-  values: GetBrandsResult[];
+  values: Brand[];
 };
 export type AddBrandParams = {
   name: string;
@@ -63,7 +48,7 @@ export const BrandAPI = {
   },
   getById: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.get<GetBrandsResult>(`/api/brands/${id}`, {
+    const res = await http.get<Brand>(`/api/brands/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -77,7 +62,7 @@ export const BrandAPI = {
     form.append("Brand.Email", params.email);
     form.append("Brand.Phone", params.phone);
 
-    const res = await http.post<GetBrandsResult>(`/api/brands`, form, {
+    const res = await http.post<Brand>(`/api/brands`, form, {
       headers: {
         Authorization: "Bearer " + token,
         "Content-Type": "multipart/form-data",
@@ -87,7 +72,7 @@ export const BrandAPI = {
   },
   update: async (params: UpdateBrandParams) => {
     const token = getAccessToken();
-    const res = await http.put<GetBrandsResult>(`/api/brands/${params.id}`, params.values, {
+    const res = await http.put<Brand>(`/api/brands/${params.id}`, params.values, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -105,7 +90,7 @@ export const BrandAPI = {
   },
   reactivate: async (id: string) => {
     const token = getAccessToken();
-    const res = await http.put<GetBrandsResult>(`/api/brands/${id}/reactivate`, {}, {
+    const res = await http.put<Brand>(`/api/brands/${id}/reactivate`, {}, {
       headers: {
         Authorization: "Bearer " + token,
       },
