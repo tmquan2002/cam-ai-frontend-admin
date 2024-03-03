@@ -37,7 +37,7 @@ const BrandDetail = () => {
     const [modalOpen, { open, close }] = useDisclosure(false);
 
     const { data, isLoading } = useGetBrandById(params.brandId!);
-    const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId || "");
+    const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId);
 
     const { mutate: deleteBrand } = useDeleteBrand();
     const { mutate: reactivateBrand } = useReactivateBrand();

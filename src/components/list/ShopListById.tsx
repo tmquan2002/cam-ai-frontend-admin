@@ -26,21 +26,24 @@ const ShopCard = ({ item }: { item: Shop }) => {
                 }
             </div>
 
+            {(item.addressLine || item.ward) &&
+                <div className={styled["icon-text"]}>
+                    <MdHome style={{ width: '20px', height: '20px' }} />
+                    {item.addressLine && item.ward ?
+                        <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                        : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
+                            : item.ward ? <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                                : "None"
+                    }
+                </div>
+            }
 
-            <div className={styled["icon-text"]}>
-                <MdHome style={{ width: '20px', height: '20px' }} />
-                {item.addressLine && item.ward ?
-                    <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
-                    : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
-                        : item.ward ? <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
-                            : "None"
-                }
-            </div>
-
-            <div className={styled["icon-text"]}>
-                <MdPhone style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item.phone}</span>
-            </div>
+            {item.phone &&
+                <div className={styled["icon-text"]}>
+                    <MdPhone style={{ width: '20px', height: '20px' }} />
+                    <span className={styled["information"]}>{item.phone}</span>
+                </div>
+            }
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/shop/${item.id}`)}>

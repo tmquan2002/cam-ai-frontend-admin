@@ -20,13 +20,18 @@ export const useGetAllAccounts = (params: GetAccountsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetAccountById = (id: string) => {
+export const useGetAccountById = (id: string | undefined) => {
   const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<Account, Error> = useQuery({
     queryKey: ["account", id],
     queryFn: async () => {
-      return await AccountAPI.getById(id);
+      if (id) {
+        return await AccountAPI.getById(id);
+      } else {
+        return {}
+      }
     },
+    enabled: !!id,
   });
 
   return { isError, isLoading, data, error, refetch };

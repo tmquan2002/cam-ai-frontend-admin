@@ -2,8 +2,8 @@ import { ActionIcon, Avatar, Box, Button, Group, LoadingOverlay, Menu, Modal, Te
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
-import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import axios from "axios";
+import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
@@ -11,8 +11,6 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { useGetBrandById } from "../../../hooks/useBrands";
-import { useGetShopById } from "../../../hooks/useShops";
 import { AccountStatus, RoleEnum } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/accountdetail.module.scss";
@@ -35,8 +33,6 @@ const AccountDetail = () => {
     const [modalOpen, { open, close }] = useDisclosure(false);
 
     const { data, isLoading } = useGetAccountById(params.accountId!);
-    const { data: dataBrand, isLoading: isLoadingBrand } = useGetBrandById(data?.brand?.id);
-    const { data: dataShop, isLoading: isLoadingShop } = useGetShopById(data?.managingShop?.id);
     const { mutate: deleteAccount } = useDeleteAccount();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -168,30 +164,30 @@ const AccountDetail = () => {
 
                 {data?.role == RoleEnum.BrandManager &&
                     <>
-                        {!isLoadingBrand ?
+                        {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size="lg" fw={"bold"}>Brand</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>BRAND</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <Group mt={20}>
-                                            <Avatar w={150} h={150} mr={20} src={dataBrand?.logo?.hostingUri} />
+                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                             <div>
                                                 <Group>
-                                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{dataBrand?.name}</Text>
-                                                    <StatusBadge statusName={dataBrand?.brandStatus ? dataBrand?.brandStatus : "None"}
+                                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
+                                                    <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
                                                         type="brand" />
                                                 </Group>
                                                 <Group>
                                                     <MdEmail />
-                                                    <Text size="md">{dataBrand?.email}</Text>
+                                                    <Text size="md">{data?.brand?.email}</Text>
                                                 </Group>
                                                 <Group>
                                                     <MdPhone />
-                                                    <Text size="md">{dataBrand?.phone}</Text>
+                                                    <Text size="md">{data?.brand?.phone}</Text>
                                                 </Group>
                                                 <Group mb={20}>
                                                     <MdAccessTime />
-                                                    <Text size="md">Created on: {dataBrand?.createdDate && removeTime(new Date(dataBrand?.createdDate), "/")}</Text>
+                                                    <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                                 </Group>
                                             </div>
                                         </Group>
@@ -206,46 +202,46 @@ const AccountDetail = () => {
                         }
                     </>
                 }
-                {data?.role == RoleEnum.BrandManager &&
+                {data?.role == RoleEnum.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>
                         <div className={styled["shop-detail"]}>
-                            <Text size="lg" fw={"bold"}>Shops</Text>
+                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOPS</Text>
                             <ShopListById id={data?.brand.id} idType="brand" />
                         </div>
                     </div>
                 }
-                {data?.role == RoleEnum.ShopManager &&
+                {data?.role == RoleEnum.ShopManager && data?.managingShop &&
                     <>
-                        {!isLoadingShop ?
+                        {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size="lg" fw={"bold"}>Shop</Text>
+                                <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOP</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <div>
-                                            <Group>
-                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{dataShop?.name}</Text>
-                                                <StatusBadge statusName={dataShop?.shopStatus ? dataShop?.shopStatus : "None"}
+                                            <Group mb={20}>
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.managingShop?.name}</Text>
+                                                <StatusBadge statusName={data?.managingShop?.shopStatus ? data?.managingShop?.shopStatus : "None"}
                                                     type="shop" />
                                             </Group>
                                             <Group>
                                                 <MdOutlineAccessTime />
-                                                <Text size="md">Open: {dataShop?.openTime} - Close: {dataShop?.closeTime}</Text>
+                                                <Text size="md">Open: {data?.managingShop?.openTime} - Close: {data?.managingShop?.closeTime}</Text>
                                             </Group>
                                             <Group>
                                                 <MdPhone />
-                                                <Text size="md">{dataBrand?.phone}</Text>
+                                                <Text size="md">{data?.brand?.phone}</Text>
                                             </Group>
-                                            {(dataShop?.ward || dataShop?.addressLine) &&
+                                            {(data?.managingShop?.ward || data?.managingShop?.addressLine) &&
                                                 <Group>
                                                     <MdHome />
-                                                    {(dataShop?.ward && dataShop?.addressLine) && <Text size="md">{dataShop.addressLine}, {dataShop.ward?.name}, {dataShop.ward?.district?.name}, {dataShop.ward?.district?.province?.name}</Text>}
-                                                    {(dataShop?.ward && !dataShop?.addressLine) && <Text size="md">{dataShop.ward?.name}, {dataShop.ward?.district?.name}, {dataShop.ward?.district?.province?.name}</Text>}
-                                                    {(!dataShop?.ward && dataShop?.addressLine) && <Text size="md">{dataShop.addressLine}</Text>}
+                                                    {(data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.addressLine}, {data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
+                                                    {(data?.managingShop?.ward && !data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
+                                                    {(!data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.addressLine}</Text>}
                                                 </Group>
                                             }
                                             <Group mb={20}>
                                                 <MdAccessTime />
-                                                <Text size="md">Created on: {dataBrand?.createdDate && removeTime(new Date(dataBrand?.createdDate), "/")}</Text>
+                                                <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                             </Group>
                                         </div>
                                         <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>

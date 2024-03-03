@@ -7,7 +7,6 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { useGetBrandById } from "../../../hooks/useBrands";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFormat";
 import styled from "./styles/shopdetail.module.scss";
@@ -26,7 +25,6 @@ const ShopDetail = () => {
     const params = useParams();
 
     const { data, isLoading } = useGetShopById(params.shopId!);
-    const { data: dataBrand, isLoading: isLoadingBrand } = useGetBrandById(data?.brand?.id);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     return (
@@ -87,30 +85,30 @@ const ShopDetail = () => {
                             </Tabs.List>
 
                             <Tabs.Panel value="brand">
-                                {isLoadingBrand ?
+                                {isLoading ?
                                     <Box className={styled["loader-tab"]}>
                                         <Loader />
                                     </Box>
                                     :
                                     <div className={styled["tab-detail"]}>
                                         <Group className={styled["brand-profile"]} mt={20}>
-                                            <Avatar w={150} h={150} mr={20} src={dataBrand?.logo?.hostingUri} />
+                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                             <div>
                                                 <Group>
-                                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{dataBrand?.name}</Text>
-                                                    <StatusBadge statusName={dataBrand?.brandStatus ? dataBrand?.brandStatus : "None"} type="brand" />
+                                                    <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
+                                                    <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} type="brand" />
                                                 </Group>
                                                 <Group>
                                                     <MdEmail />
-                                                    <Text size="md">{dataBrand?.email}</Text>
+                                                    <Text size="md">{data?.brand?.email}</Text>
                                                 </Group>
                                                 <Group>
                                                     <MdPhone />
-                                                    <Text size="md">{dataBrand?.phone}</Text>
+                                                    <Text size="md">{data?.brand?.phone}</Text>
                                                 </Group>
                                                 <Group mb={20}>
                                                     <MdAccessTime />
-                                                    <Text size="md">Created on: {dataBrand?.createdDate && removeTime(new Date(dataBrand?.createdDate), "/")}</Text>
+                                                    <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                                 </Group>
                                             </div>
                                         </Group>
