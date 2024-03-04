@@ -12,18 +12,23 @@ import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
 
 const AccountList = () => {
+    //Page and Size
     const [pageIndex, setPageIndex] = useState(1)
     const [size, setSize] = useState<string | null>("5")
+
+    //Search and Clear
     const [searchTerm, setSearchTerm] = useState("")
     const [searchBy, setSearchBy] = useState<string | null>("Name")
     const [clear, setClear] = useState(false)
-    const [opened, { toggle }] = useDisclosure(false);
 
+    //Filters
+    const [opened, { toggle }] = useDisclosure(false);
     const [filterRole, setFilterRole] = useState<string>("None")
     const [filterStatus, setFilterStatus] = useState<string>("None")
     const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
     const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("None")
 
+    //Check data
     const [initialData, setInitialData] = useState(true)
 
     const navigate = useNavigate();

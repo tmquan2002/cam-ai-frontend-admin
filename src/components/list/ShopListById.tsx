@@ -12,7 +12,7 @@ interface ShopListParam {
 }
 
 const ShopCard = ({ item }: { item: Shop }) => {
-    console.log(item)
+    // console.log(item)
     const navigate = useNavigate();
 
     return (

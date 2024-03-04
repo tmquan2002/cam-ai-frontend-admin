@@ -6,19 +6,29 @@ import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
+import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
+import { BrandFilterLocalStorage } from '../../../../types/constant';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
 
 const BrandList = () => {
-    const [pageIndex, setPageIndex] = useState(1)
-    const [size, setSize] = useState<string | null>("5")
-    const [searchTerm, setSearchTerm] = useState("")
-    const [clear, setClear] = useState(false)
-    const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useState<string>("None")
+    
+    //Page and Size
+    const [pageIndex, setPageIndex] = useLocalStorageCustomHook(BrandFilterLocalStorage.PAGE_BRAND, 1)
+    const [size, setSize] = useLocalStorageCustomHook(BrandFilterLocalStorage.SIZE_BRAND, "5")
 
-    const [initialData, setInitialData] = useState(true)
+    //Search and Clear
+    const [searchTerm, setSearchTerm] = useLocalStorageCustomHook(BrandFilterLocalStorage.SEARCH, "")
+    const [clear, setClear] = useState(false)
+
+    //Filters
+    const [opened, { toggle }] = useDisclosure(false);
+    const [filterStatus, setFilterStatus] = useLocalStorageCustomHook(BrandFilterLocalStorage.FILTER_STATUS, "None")
+
+    //Check data
+    const [initialData, setInitialData] = useLocalStorageCustomHook(BrandFilterLocalStorage.INITIAL_DATA, true)
+    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -42,6 +52,7 @@ const BrandList = () => {
         if (e.key == "Enter" && !isEmpty(searchTerm)) {
             if (pageIndex == 1) {
                 refetch()
+                setRendered(a => a + 1)
             } else {
                 setPageIndex(1);
             }
@@ -54,14 +65,16 @@ const BrandList = () => {
             return;
         } else {
             setClear(false)
-            refetch();
+            refetch()
+            setRendered(a => a + 1)
         }
     }, [searchTerm, clear])
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "None") {
-                refetch();
+            if (filterStatus !== "None" && rendered !== 0) {
+                refetch()
+                setRendered(a => a + 1)
                 setPageIndex(1)
             }
         }, 500);

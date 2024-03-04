@@ -5,7 +5,7 @@ import { RoleEnumName } from "../types/enum";
 
 const ProtectedRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   useEffect(() => {
     const isUserHavePermission: boolean | undefined = checkRole([RoleEnumName.Admin,]);

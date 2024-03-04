@@ -44,7 +44,7 @@ export const AddBrandForm = () => {
 
         addBrand(addBrandParams, {
             onSuccess(data) {
-                console.log(data)
+                // console.log(data)
                 notifications.show({
                     message: "Added!",
                     color: "green",

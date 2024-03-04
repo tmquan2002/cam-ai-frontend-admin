@@ -14,7 +14,7 @@ interface EdgeBoxListParam {
 // TODO: Redesign when BE is done with structures
 const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
     const navigate = useNavigate();
-    console.log(item)
+    // console.log(item)
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}

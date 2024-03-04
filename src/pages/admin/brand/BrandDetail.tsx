@@ -116,10 +116,10 @@ const BrandDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        {data?.banner && <Image h={200} mb={20} src={data?.banner.hostingUri} />}
+                        {data?.banner && <Image h={200} mb={20} src={data?.banner.hostingUri + "?scaleFactor=0.3"} />}
                         <div className={styled["profile-header"]}>
                             <div className={styled["profile-header-left"]}>
-                                <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
+                                <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri + "?scaleFactor=0.2"} />
                                 <div>
                                     <Group mb={15}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>

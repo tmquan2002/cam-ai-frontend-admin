@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const AccountUpdate = () => {
 
     const params = useParams();
-    console.log(params);
+    // console.log(params);
 
     return (
         <div className={styled["container-detail"]}>

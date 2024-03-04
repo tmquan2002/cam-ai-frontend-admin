@@ -89,7 +89,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             brandId: brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
-        console.log(addAccountParams)
+        // console.log(addAccountParams)
 
         if (addAccountParams.role == RoleEnum.BrandManager && isEmpty(brandId)) {
             notifications.show({
@@ -102,7 +102,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
 
         addAccount(addAccountParams, {
             onSuccess(data) {
-                console.log(data)
+                // console.log(data)
                 notifications.show({
                     message: "Added!",
                     color: "green",

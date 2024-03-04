@@ -11,7 +11,7 @@ interface EmployeeListParam {
 }
 
 const EmployeeCard = ({ item }: { item: Employee }) => {
-    console.log(item)
+    // console.log(item)
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}

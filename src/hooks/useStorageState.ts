@@ -52,3 +52,55 @@ export function useStorageState(key: string): UseStateHook<string> {
 
   return [state, setValue];
 }
+
+export const useLocalStorageCustomHook = (key: string, defaultValue: any) => {
+  const [value, setValue] = React.useState(() => {
+    let currentValue;
+
+    try {
+      const storageResult = localStorage.getItem(key)
+      if (storageResult) {
+        currentValue = JSON.parse(storageResult)
+      } else {
+        currentValue = defaultValue;
+      }
+    } catch (error) {
+      currentValue = defaultValue;
+    }
+
+    return currentValue;
+  });
+
+  React.useEffect(() => { localStorage.setItem(key, JSON.stringify(value)); }, [value, key]);
+
+  return [value, setValue];
+};
+
+export const useLocalStorageCustomHookObject = (key: string, defaultValue: any) => {
+  const [value, setValue] = React.useState(() => {
+    let currentValue;
+
+    try {
+      const storageResult = localStorage.getItem(key)
+      if (storageResult) {
+        currentValue = JSON.parse(storageResult)
+      } else {
+        currentValue = defaultValue;
+      }
+    } catch (error) {
+      currentValue = defaultValue;
+    }
+
+    return currentValue;
+  });
+
+  const updateValue = (property: string, newValue: any) => {
+    setValue((prevValue: any) => {
+      const updatedValue = { ...prevValue, [property]: newValue };
+      localStorage.setItem(key, JSON.stringify(updatedValue));
+      return updatedValue;
+    });
+  };
+
+  return [value, updateValue];
+};

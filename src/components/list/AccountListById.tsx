@@ -12,7 +12,7 @@ interface AccountListParam {
 }
 
 const AccountCard = ({ item }: { item: Account }) => {
-    console.log(item)
+    // console.log(item)
     const navigate = useNavigate();
 
     return (

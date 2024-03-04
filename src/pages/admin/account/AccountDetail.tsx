@@ -37,7 +37,7 @@ const AccountDetail = () => {
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    console.log(data?.role)
+    // console.log(data?.role)
 
     const onDelete = () => {
         deleteAccount(params.accountId!, {
@@ -170,7 +170,7 @@ const AccountDetail = () => {
                                     <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>BRAND</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <Group mt={20}>
-                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
+                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri + "?scaleFactor=0.05"} />
                                             <div>
                                                 <Group>
                                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>

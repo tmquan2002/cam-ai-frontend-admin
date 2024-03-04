@@ -93,7 +93,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 wardId: isEmpty(form.values.ward) ? null : form.values.ward,
             }
         };
-        console.log(updateAccountParams)
+        // console.log(updateAccountParams)
 
         updateAccount(updateAccountParams, {
             onSuccess(data) {
