@@ -130,7 +130,7 @@ const AccountDetail = () => {
                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                 </Group>
                             </div>
-                            {data?.role == RoleEnum.BrandManager &&
+                            {data?.role == RoleEnum.BrandManager && data?.brand &&
                                 <div>
                                     <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                         <Menu.Target>
@@ -162,7 +162,7 @@ const AccountDetail = () => {
                     </div>
                 }
 
-                {data?.role == RoleEnum.BrandManager &&
+                {data?.role == RoleEnum.BrandManager && data?.brand &&
                     <>
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
@@ -191,7 +191,7 @@ const AccountDetail = () => {
                                                 </Group>
                                             </div>
                                         </Group>
-                                        <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                        <Link to={`/brand/${data?.brand?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
                                     </div>
                                 </div>
                             </div>

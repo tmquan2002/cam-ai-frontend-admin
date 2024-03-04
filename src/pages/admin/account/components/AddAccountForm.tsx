@@ -82,7 +82,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             email: form.values.email,
             phone: form.values.phone,
             addressLine: form.values.addressLine,
-            birthday: removeTime(new Date(form.values.birthday), "-"),
+            birthday: removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd"),
             gender: form.values.gender,
             password: form.values.password,
             role: form.values.role,
