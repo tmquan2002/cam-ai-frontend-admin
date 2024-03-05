@@ -5,18 +5,36 @@ export enum CommonConstant {
   USER_REFRESH_TOKEN = "user_refresh_token",
 }
 
-export enum BrandFilterLocalStorage {
-  PAGE_BRAND = "page_brand",
-  SIZE_BRAND = "size_brand",
-  SEARCH = "search_brand",
-  FILTER_STATUS = "filter_status_brand",
-  INITIAL_DATA = "initial_data_brand",
+export enum BrandFilterProps {
+  FILTER = "brandFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  SEARCH = "searchTerm",
+  FILTER_STATUS = "filterStatus",
+  INITIAL_DATA = "initialData",
 }
 
-export enum AccountFilterLocalStorage {
-  PAGE_BRAND = "page_brand",
-  SIZE_BRAND = "size_brand",
-  SEARCH = "search_brand",
-  FILTER_STATUS = "filter_status_brand",
-  INITIAL_DATA = "initisl_data_brand",
+export enum AccountFilterProps {
+  FILTER = "accountFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  SEARCH = "searchTerm",
+  SEARCH_BY = "searchBy",
+  FILTER_STATUS = "filterStatus",
+  FILTER_ROLE = "filterRole",
+  FILTER_SEARCH_BRAND = "filterSearchBrand",
+  FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
+  INITIAL_DATA = "initialData",
+}
+
+export enum ShopFilterProps {
+  FILTER = "shopFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  SEARCH = "searchTerm",
+  SEARCH_BY = "searchBy",
+  FILTER_STATUS = "filterStatus",
+  FILTER_SEARCH_BRAND = "filterSearchBrand",
+  FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
+  INITIAL_DATA = "initialData",
 }

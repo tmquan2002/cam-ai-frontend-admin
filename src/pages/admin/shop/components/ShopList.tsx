@@ -10,20 +10,27 @@ import { useGetAllShops } from '../../../../hooks/useShops';
 import { ShopStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/shop.module.scss";
+import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
+import { ShopFilterProps } from '../../../../types/constant';
 
 const ShopList = () => {
-    const [pageIndex, setPageIndex] = useState(1)
-    const [size, setSize] = useState<string | null>("5")
-    const [searchTerm, setSearchTerm] = useState("")
-    const [searchBy, setSearchBy] = useState<string | null>("Name")
+    const [storage, setStorage] = useLocalStorageCustomHook(ShopFilterProps.FILTER, {
+        pageIndex: 1,
+        size: "5",
+        searchTerm: "",
+        searchBy: "Name",
+        filterStatus: "None",
+        filterSearchBrand: "",
+        filterSearchBrandId: "None",
+        initialData: true
+    })
+
+    const { pageIndex, size, searchTerm, searchBy, initialData,
+        filterStatus, filterSearchBrand, filterSearchBrandId } = storage;
+
     const [clear, setClear] = useState(false)
-    const [opened, { toggle }] = useDisclosure(false);
-
-    const [filterStatus, setFilterStatus] = useState<string>("None")
-    const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
-    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("None")
-
-    const [initialData, setInitialData] = useState(true)
+    const [opened, { toggle }] = useDisclosure(false)
+    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -57,6 +64,7 @@ const ShopList = () => {
         } else {
             setClear(false)
             refetch();
+            setRendered(x => x + 1)
         }
     }, [searchTerm, clear])
 
@@ -67,9 +75,12 @@ const ShopList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "None" || filterSearchBrandId !== "None") {
-                refetch();
-                setPageIndex(1)
+            if ((filterStatus !== "None" || filterSearchBrandId !== "None") && rendered !== 0) {
+                refetch()
+                setRendered(x => x + 1)
+                setStorage(ShopFilterProps.PAGE_INDEX, 1)
+            } else {
+                setRendered(x => x + 1)
             }
         }, 500);
         return () => {
@@ -82,28 +93,29 @@ const ShopList = () => {
         if (e.key == "Enter" && !isEmpty(searchTerm)) {
             if (pageIndex == 1) {
                 refetch()
+                setRendered(x => x + 1)
             } else {
-                setPageIndex(1);
+                setStorage(ShopFilterProps.PAGE_INDEX, 1)
             }
-            setInitialData(false)
+            setStorage(ShopFilterProps.INITIAL_DATA, false)
         }
     }
 
     const onClearFilter = () => {
-        setFilterStatus("")
-        setFilterSearchBrandId("")
-        setFilterSearchBrand("")
+        setStorage(ShopFilterProps.FILTER_STATUS, "")
+        setStorage(ShopFilterProps.FILTER_SEARCH_BRAND, "")
+        setStorage(ShopFilterProps.FILTER_SEARCH_BRAND_ID, "")
     }
 
     const onClearSearch = () => {
         if (initialData) {
-            setSearchTerm("")
+            setStorage(ShopFilterProps.SEARCH, "")
             return
         } else {
             onClearFilter();
-            setSearchTerm("")
-            setPageIndex(1)
-            setInitialData(true)
+            setStorage(ShopFilterProps.SEARCH, "")
+            setStorage(ShopFilterProps.PAGE_INDEX, 1)
+            setStorage(ShopFilterProps.INITIAL_DATA, true)
             setClear(true)
         }
     }
@@ -148,7 +160,11 @@ const ShopList = () => {
                         <TextInput w={'60%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
                             rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            value={searchTerm}
+                            onChange={(event) => {
+                                event.preventDefault();
+                                setStorage(ShopFilterProps.SEARCH, event.currentTarget.value)
+                            }}
                             onKeyDown={onSearch}
                         />
                         <Group>
@@ -158,7 +174,7 @@ const ShopList = () => {
                                 allowDeselect={false}
                                 value={searchBy}
                                 data={['Name', 'Phone']}
-                                onChange={setSearchBy}
+                                onChange={(value) => setStorage(ShopFilterProps.SEARCH_BY, value)}
                             />
                         </Group>
                     </Group>
@@ -179,7 +195,8 @@ const ShopList = () => {
                 </Grid>
                 <Group mt="md">
                     <Text size='sm'>Status: </Text>
-                    <RadioGroup name="status" size='sm' value={filterStatus} onChange={setFilterStatus}>
+                    <RadioGroup name="status" size='sm' value={filterStatus}
+                        onChange={(value) => setStorage(ShopFilterProps.FILTER_STATUS, value)}>
                         <Group>
                             <Radio value={ShopStatus.Active.toString()} label={"Active"} />
                             <Radio value={ShopStatus.Inactive.toString()} label={"Inactive"} />
@@ -192,8 +209,8 @@ const ShopList = () => {
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                         searchValue={filterSearchBrand}
-                        onSearchChange={setFilterSearchBrand}
-                        onChange={setFilterSearchBrandId}
+                        onSearchChange={(value) => setStorage(ShopFilterProps.FILTER_SEARCH_BRAND, value)}
+                        onChange={(value) => setStorage(ShopFilterProps.FILTER_SEARCH_BRAND_ID, value)}
                     />
                 </Group>
                 <Divider />
@@ -221,13 +238,14 @@ const ShopList = () => {
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || shopList?.totalCount ?
                     <>
-                        <Pagination total={shopList?.totalCount ? Math.ceil(shopList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={shopList?.totalCount ? Math.ceil(shopList.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
+                            onChange={(value) => setStorage(ShopFilterProps.PAGE_INDEX, value)} />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setSize(value)
-                                    setPageIndex(1)
+                                    setStorage(ShopFilterProps.PAGE_INDEX, 1)
+                                    setStorage(ShopFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}

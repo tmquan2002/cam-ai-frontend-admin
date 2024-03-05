@@ -10,26 +10,29 @@ import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { AccountStatus, RoleEnum } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/account.module.scss";
+import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
+import { AccountFilterProps } from '../../../../types/constant';
 
 const AccountList = () => {
-    //Page and Size
-    const [pageIndex, setPageIndex] = useState(1)
-    const [size, setSize] = useState<string | null>("5")
 
-    //Search and Clear
-    const [searchTerm, setSearchTerm] = useState("")
-    const [searchBy, setSearchBy] = useState<string | null>("Name")
+    const [storage, setStorage] = useLocalStorageCustomHook(AccountFilterProps.FILTER, {
+        pageIndex: 1,
+        size: "5",
+        searchTerm: "",
+        searchBy: "Name",
+        filterRole: "None",
+        filterStatus: "None",
+        filterSearchBrand: "",
+        filterSearchBrandId: "None",
+        initialData: true
+    })
+
+    const { pageIndex, size, searchTerm, searchBy, initialData,
+        filterStatus, filterRole, filterSearchBrand, filterSearchBrandId } = storage;
+
     const [clear, setClear] = useState(false)
-
-    //Filters
-    const [opened, { toggle }] = useDisclosure(false);
-    const [filterRole, setFilterRole] = useState<string>("None")
-    const [filterStatus, setFilterStatus] = useState<string>("None")
-    const [filterSearchBrand, setFilterSearchBrand] = useState<string>("")
-    const [filterSearchBrandId, setFilterSearchBrandId] = useState<string | null>("None")
-
-    //Check data
-    const [initialData, setInitialData] = useState(true)
+    const [opened, { toggle }] = useDisclosure(false)
+    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -64,6 +67,7 @@ const AccountList = () => {
         } else {
             setClear(false)
             refetch();
+            setRendered(a => a + 1)
         }
     }, [searchTerm, clear])
 
@@ -74,9 +78,12 @@ const AccountList = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "None" || filterRole !== "None" || filterSearchBrandId !== "None") {
+            if ((filterStatus !== "None" || filterRole !== "None" || filterSearchBrandId !== "None") && rendered !== 0) {
                 refetch();
-                setPageIndex(1)
+                setRendered(a => a + 1)
+                setStorage(AccountFilterProps.PAGE_INDEX, 1)
+            } else {
+                setRendered(x => x + 1)
             }
         }, 500);
         return () => {
@@ -88,29 +95,30 @@ const AccountList = () => {
         if (e.key == "Enter" && !isEmpty(searchTerm)) {
             if (pageIndex == 1) {
                 refetch()
+                setRendered(a => a + 1)
             } else {
-                setPageIndex(1);
+                setStorage(AccountFilterProps.PAGE_INDEX, 1)
             }
-            setInitialData(false)
+            setStorage(AccountFilterProps.INITIAL_DATA, false)
         }
     }
 
     const onClearFilter = () => {
-        setFilterRole("")
-        setFilterStatus("")
-        setFilterSearchBrandId("")
-        setFilterSearchBrand("")
+        setStorage(AccountFilterProps.FILTER_ROLE, "")
+        setStorage(AccountFilterProps.FILTER_STATUS, "")
+        setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, "")
+        setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, "")
     }
 
     const onClearSearch = () => {
         if (initialData) {
-            setSearchTerm("")
+            setStorage(AccountFilterProps.SEARCH, "")
             return
         } else {
             onClearFilter();
-            setSearchTerm("")
-            setPageIndex(1)
-            setInitialData(true)
+            setStorage(AccountFilterProps.SEARCH, "");
+            setStorage(AccountFilterProps.PAGE_INDEX, 1);
+            setStorage(AccountFilterProps.INITIAL_DATA, true);
             setClear(true)
         }
     }
@@ -161,7 +169,7 @@ const AccountList = () => {
                         <TextInput w={'60%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
                             rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            value={searchTerm} onChange={(event) => { event.preventDefault(); setStorage(AccountFilterProps.SEARCH, event.currentTarget.value) }}
                             onKeyDown={onSearch}
                         />
                         <Group>
@@ -171,7 +179,7 @@ const AccountList = () => {
                                 allowDeselect={false}
                                 value={searchBy}
                                 data={['Name', 'Email']}
-                                onChange={setSearchBy}
+                                onChange={(value) => setStorage(AccountFilterProps.SEARCH_BY, value)}
                             />
                         </Group>
                     </Group>
@@ -192,7 +200,8 @@ const AccountList = () => {
                 </Grid>
                 <Group mt="md">
                     <Text size='sm'>Role: </Text>
-                    <RadioGroup name="role" size='sm' value={filterRole} onChange={setFilterRole}>
+                    <RadioGroup name="role" size='sm' value={filterRole}
+                        onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
                         <Group>
                             <Radio value={RoleEnum.Technician} label={"Technician"} />
                             <Radio value={RoleEnum.BrandManager} label={"Brand Manager"} />
@@ -203,7 +212,8 @@ const AccountList = () => {
                 </Group>
                 <Group mt="md">
                     <Text size='sm'>Status: </Text>
-                    <RadioGroup name="status" size='sm' value={filterStatus} onChange={setFilterStatus}>
+                    <RadioGroup name="status" size='sm' value={filterStatus}
+                        onChange={(value) => setStorage(AccountFilterProps.FILTER_STATUS, value)}>
                         <Group>
                             <Radio value={AccountStatus.New} label={"New"} />
                             <Radio value={AccountStatus.Active} label={"Active"} />
@@ -217,8 +227,8 @@ const AccountList = () => {
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                         searchValue={filterSearchBrand}
-                        onSearchChange={setFilterSearchBrand}
-                        onChange={setFilterSearchBrandId}
+                        onSearchChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, value)}
+                        onChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)}
                     />
                 </Group>
                 <Divider />
@@ -247,13 +257,14 @@ const AccountList = () => {
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || accountList?.totalCount ?
                     <>
-                        <Pagination total={accountList?.totalCount ? Math.ceil(accountList?.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={accountList?.totalCount ? Math.ceil(accountList?.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
+                            onChange={(value) => setStorage(AccountFilterProps.PAGE_INDEX, value)} />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setSize(value)
-                                    setPageIndex(1)
+                                    setStorage(AccountFilterProps.PAGE_INDEX, 1)
+                                    setStorage(AccountFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}

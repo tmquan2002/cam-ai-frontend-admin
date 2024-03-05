@@ -7,27 +7,24 @@ import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { BrandFilterLocalStorage } from '../../../../types/constant';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/brand.module.scss";
+import { BrandFilterProps } from '../../../../types/constant';
 
 const BrandList = () => {
-    
-    //Page and Size
-    const [pageIndex, setPageIndex] = useLocalStorageCustomHook(BrandFilterLocalStorage.PAGE_BRAND, 1)
-    const [size, setSize] = useLocalStorageCustomHook(BrandFilterLocalStorage.SIZE_BRAND, "5")
+    const [storage, setStorage] = useLocalStorageCustomHook(BrandFilterProps.FILTER, {
+        pageIndex: 1,
+        size: "5",
+        searchTerm: "",
+        filterStatus: "None",
+        initialData: true
+    })
 
-    //Search and Clear
-    const [searchTerm, setSearchTerm] = useLocalStorageCustomHook(BrandFilterLocalStorage.SEARCH, "")
+    const { pageIndex, size, searchTerm, filterStatus, initialData } = storage;
+
     const [clear, setClear] = useState(false)
-
-    //Filters
     const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useLocalStorageCustomHook(BrandFilterLocalStorage.FILTER_STATUS, "None")
-
-    //Check data
-    const [initialData, setInitialData] = useLocalStorageCustomHook(BrandFilterLocalStorage.INITIAL_DATA, true)
     const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
@@ -54,9 +51,9 @@ const BrandList = () => {
                 refetch()
                 setRendered(a => a + 1)
             } else {
-                setPageIndex(1);
+                setStorage(BrandFilterProps.PAGE_INDEX, 1);
             }
-            setInitialData(false)
+            setStorage(BrandFilterProps.INITIAL_DATA, false);
         }
     }
 
@@ -75,7 +72,9 @@ const BrandList = () => {
             if (filterStatus !== "None" && rendered !== 0) {
                 refetch()
                 setRendered(a => a + 1)
-                setPageIndex(1)
+                setStorage(BrandFilterProps.PAGE_INDEX, 1);
+            } else {
+                setRendered(a => a + 1)
             }
         }, 500);
         return () => {
@@ -84,18 +83,18 @@ const BrandList = () => {
     }, [filterStatus]);
 
     const onClearFilter = () => {
-        setFilterStatus("")
+        setStorage(BrandFilterProps.FILTER_STATUS, "");
     }
 
     const onClearSearch = () => {
         if (initialData) {
-            setSearchTerm("")
+            setStorage(BrandFilterProps.SEARCH, "");
             return
         } else {
             onClearFilter();
-            setSearchTerm("")
-            setPageIndex(1)
-            setInitialData(true)
+            setStorage(BrandFilterProps.SEARCH, "");
+            setStorage(BrandFilterProps.PAGE_INDEX, 1);
+            setStorage(BrandFilterProps.INITIAL_DATA, false);
             setClear(true)
         }
     }
@@ -148,7 +147,7 @@ const BrandList = () => {
                         <TextInput w={'100%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
                             rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            value={searchTerm} onChange={(event) => { event.preventDefault(); setStorage(BrandFilterProps.SEARCH, event.currentTarget.value); }}
                             onKeyDown={onSearch}
                         />
                     </Group>
@@ -169,7 +168,7 @@ const BrandList = () => {
                 <Group mb="md">
                     <Text size='sm'>Status: </Text>
                     <RadioGroup name="status" value={filterStatus}
-                        onChange={setFilterStatus}>
+                        onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
                         <Group>
                             <Radio value={BrandStatus.Active.toString()} label={"Active"} />
                             <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
@@ -199,13 +198,15 @@ const BrandList = () => {
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || brandList?.totalCount ?
                     <>
-                        <Pagination total={brandList?.totalCount ? Math.ceil(brandList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={brandList?.totalCount ? Math.ceil(brandList.totalCount / Number(size)) : 0}
+                            value={pageIndex} mt="sm"
+                            onChange={(value) => setStorage(BrandFilterProps.PAGE_INDEX, value)} />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setSize(value)
-                                    setPageIndex(1)
+                                    setStorage(BrandFilterProps.SIZE, value);
+                                    setStorage(BrandFilterProps.PAGE_INDEX, 1);
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
