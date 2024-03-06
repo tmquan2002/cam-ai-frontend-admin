@@ -3,12 +3,7 @@ import { AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, GetEdgeBoxesPagingResul
 import { EdgeBox } from "../models/EdgeBox";
 
 export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
+  const { isError, isLoading, isFetching, data, error,
     refetch,
   }: UseQueryResult<GetEdgeBoxesPagingResult, Error> = useQuery({
     queryKey: ["edegBoxList", params.size, params.pageIndex],
@@ -37,20 +32,36 @@ export const useGetAllEdgeBoxesSelect = (params: GetEdgeBoxParams) => {
 };
 
 export const useGetEdgeBoxById = (id: string) => {
-  const {
-    isError,
-    isLoading,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<EdgeBox, Error> = useQuery({
     queryKey: ["edegBoxDetail", id],
     queryFn: async () => {
-      return await EdgeBoxAPI.getById(id);
+      if (id) {
+        return await EdgeBoxAPI.getById(id);
+      } else {
+        return {}
+      }
     },
+    enabled: !!id,
   });
 
   return { isError, isLoading, data, error, refetch };
+};
+
+export const useGetEdgeBoxModel = () => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<SelectType[], Error> = useQuery({
+    queryKey: ["edegBoxModel"],
+    queryFn: async () => {
+      const res = await EdgeBoxAPI.getEdgeBoxModel();
+      return res.map((items) => ({
+        value: items.id,
+        label: items.name
+      }))
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
 };
 
 export const useAddEdgeBox = () => {

@@ -41,7 +41,7 @@ const EdgeBoxDetail = () => {
             onSuccess() {
                 navigate('/edgebox')
                 notifications.show({
-                    message: "Edge box disabled!",
+                    message: "Edge box disposed!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -129,7 +129,7 @@ const EdgeBoxDetail = () => {
             <Modal opened={modalDeleteOpen} onClose={closeDelete}
                 title="Delete this edge box?" centered>
                 <Text>
-                    Do you want to remove this edge box? This action will switch a edge box status to <b>INACTIVE</b>
+                    Do you want to remove this edge box?
                 </Text>
                 <Group align="end">
                     <Button

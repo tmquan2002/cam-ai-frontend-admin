@@ -46,10 +46,7 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
 }
 export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
 
-    //TODO: Add brandId or shopId based for searching
-    const { isLoading, data } = useGetAllEdgeBoxes({})
-    console.log(type);
-    console.log(id);
+    const { isLoading, data } = type == "brand" ? useGetAllEdgeBoxes({brandId: id}) : useGetAllEdgeBoxes({shopId: id})
 
     return (
         <div className={styled["list-container"]}>

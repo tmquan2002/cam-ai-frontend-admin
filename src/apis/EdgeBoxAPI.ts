@@ -1,11 +1,13 @@
 import { getAccessToken } from "../context/AuthContext";
-import { EdgeBox } from "../models/EdgeBox";
+import { EdgeBox, EdgeBoxModel } from "../models/EdgeBox";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetEdgeBoxParams = {
     name?: string;
     edgeBoxStatus?: number | string;
     edgeBoxLocation?: string;
+    brandId?: string;
+    shopId?: string;
     size?: string | number | null;
     pageIndex?: number;
 };
@@ -22,14 +24,14 @@ export type AddEdgeBoxParams = {
     username: string;
     password: string;
     name: string;
-    edgeBoxModelId: string;
+    edgeBoxModelId: string | null;
 }
 
 export type UpdateEdgeBoxParams = {
     id: string;
     values: {
         name: string;
-        edgeBoxModelId: string;
+        edgeBoxModelId: string | null;
     }
 };
 
@@ -44,6 +46,10 @@ export const EdgeBoxAPI = {
                 },
             }
         );
+        return res.data;
+    },
+    getEdgeBoxModel: async () => {
+        const res = await http.get<EdgeBoxModel[]>(`/api/edgeboxmodels`);
         return res.data;
     },
     getById: async (id: string) => {

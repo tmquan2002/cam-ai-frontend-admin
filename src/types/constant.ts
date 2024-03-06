@@ -38,3 +38,17 @@ export enum ShopFilterProps {
   FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
   INITIAL_DATA = "initialData",
 }
+
+export enum EdgeBoxFilterProps {
+  FILTER = "edgeBoxFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  SEARCH = "searchTerm",
+  FILTER_STATUS = "filterStatus",
+  FILTER_LOCATION = "filterLocation",
+  FILTER_SEARCH_BRAND = "filterSearchBrand",
+  FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
+  FILTER_SEARCH_SHOP = "filterSearchShop",
+  FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
+  INITIAL_DATA = "initialData",
+}

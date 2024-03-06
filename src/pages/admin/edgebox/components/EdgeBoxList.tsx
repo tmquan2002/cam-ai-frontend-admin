@@ -9,17 +9,31 @@ import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
 import { EdgeBoxLocation, EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFormat';
 import styled from "../styles/edgebox.module.scss";
+import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
+import { EdgeBoxFilterProps } from '../../../../types/constant';
+import { useGetAllShopsSelect } from '../../../../hooks/useShops';
+import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 
 const EdgeBoxList = () => {
-    const [pageIndex, setPageIndex] = useState(1)
-    const [size, setSize] = useState<string | null>("5")
-    const [searchTerm, setSearchTerm] = useState("")
+    const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxFilterProps.FILTER, {
+        pageIndex: 1,
+        size: "5",
+        searchTerm: "",
+        filterStatus: "None",
+        filterLocation: "None",
+        filterSearchBrand: "",
+        filterSearchBrandId: "None",
+        filterSearchShop: "",
+        filterSearchShopId: "None",
+        initialData: true
+    })
+
+    const { pageIndex, size, searchTerm, filterStatus, filterLocation, initialData,
+        filterSearchBrand, filterSearchBrandId, filterSearchShop, filterSearchShopId } = storage;
+
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
-    const [filterStatus, setFilterStatus] = useState<string>("None")
-    const [filterLocation, setFilterLocation] = useState<string>("None")
-
-    const [initialData, setInitialData] = useState(true)
+    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -36,8 +50,16 @@ const EdgeBoxList = () => {
     } = useGetAllEdgeBoxes({
         pageIndex: (pageIndex - 1), size, name: searchTerm,
         edgeBoxStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
-        edgeBoxLocation: filterLocation !== "None" && filterLocation !== "" ? filterLocation : ""
+        edgeBoxLocation: filterLocation !== "None" && filterLocation !== "" ? filterLocation : "",
+        brandId: filterSearchBrandId !== "None" && !isEmpty(filterSearchBrandId) ? filterSearchBrandId : "",
+        shopId: filterSearchShopId !== "None" && !isEmpty(filterSearchShopId) ? filterSearchShopId : "",
     })
+
+    const { data: brandList, refetch: refetchBrand
+    } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });
+
+    const { data: shopList, refetch: refetchShop
+    } = useGetAllShopsSelect({ name: filterSearchShop || "" });
 
     const onSearch = (e: any) => {
         // console.log(e.key)
@@ -45,9 +67,9 @@ const EdgeBoxList = () => {
             if (pageIndex == 1) {
                 refetch()
             } else {
-                setPageIndex(1);
+                setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1)
             }
-            setInitialData(false)
+            setStorage(EdgeBoxFilterProps.INITIAL_DATA, false)
         }
     }
 
@@ -57,35 +79,54 @@ const EdgeBoxList = () => {
         } else {
             setClear(false)
             refetch();
+            setRendered(a => a + 1)
         }
     }, [searchTerm, clear])
 
     useEffect(() => {
+        const timer = setTimeout(() => refetchBrand(), 500);
+        return () => { clearTimeout(timer); };
+    }, [filterSearchBrand]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => refetchShop(), 500);
+        return () => { clearTimeout(timer); };
+    }, [filterSearchShop]);
+
+    useEffect(() => {
         const timer = setTimeout(() => {
-            if (filterStatus !== "None" || filterLocation !== "None") {
+            if ((filterStatus !== "None" || filterLocation !== "None" || filterSearchShopId !== "None" || filterSearchBrandId !== "None")
+                && rendered !== 0) {
                 refetch();
-                setPageIndex(1)
+                setRendered(a => a + 1)
+                setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1)
+            } else {
+                setRendered(x => x + 1)
             }
         }, 500);
         return () => {
             clearTimeout(timer);
         };
-    }, [filterStatus, filterLocation]);
+    }, [filterStatus, filterLocation, filterSearchShopId, filterSearchBrandId]);
 
     const onClearFilter = () => {
-        setFilterStatus("")
-        setFilterLocation("")
+        setStorage(EdgeBoxFilterProps.FILTER_STATUS, "")
+        setStorage(EdgeBoxFilterProps.FILTER_LOCATION, "")
+        setStorage(EdgeBoxFilterProps.FILTER_SEARCH_BRAND, "")
+        setStorage(EdgeBoxFilterProps.FILTER_SEARCH_BRAND_ID, "")
+        setStorage(EdgeBoxFilterProps.FILTER_SEARCH_SHOP, "")
+        setStorage(EdgeBoxFilterProps.FILTER_SEARCH_SHOP_ID, "")
     }
 
     const onClearSearch = () => {
         if (initialData) {
-            setSearchTerm("")
+            setStorage(EdgeBoxFilterProps.SEARCH, "")
             return
         } else {
             onClearFilter();
-            setSearchTerm("")
-            setPageIndex(1)
-            setInitialData(true)
+            setStorage(EdgeBoxFilterProps.SEARCH, "");
+            setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1);
+            setStorage(EdgeBoxFilterProps.INITIAL_DATA, true);
             setClear(true)
         }
     }
@@ -135,7 +176,7 @@ const EdgeBoxList = () => {
                         <TextInput w={'100%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
                             rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setSearchTerm(event.currentTarget.value) }}
+                            value={searchTerm} onChange={(event) => { event.preventDefault(); setStorage(EdgeBoxFilterProps.SEARCH, event.currentTarget.value) }}
                             onKeyDown={onSearch}
                         />
                     </Group>
@@ -156,7 +197,7 @@ const EdgeBoxList = () => {
                 <Group mb="md">
                     <Text size='sm'>Status: </Text>
                     <RadioGroup name="status" value={filterStatus}
-                        onChange={setFilterStatus}>
+                        onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_STATUS, value)}>
                         <Group>
                             <Radio value={EdgeBoxStatus.Active.toString()} label={"Active"} />
                             <Radio value={EdgeBoxStatus.Inactive.toString()} label={"Inactive"} />
@@ -167,7 +208,7 @@ const EdgeBoxList = () => {
                 <Group mb="md">
                     <Text size='sm'>Location: </Text>
                     <RadioGroup name="location" value={filterLocation}
-                        onChange={setFilterLocation}>
+                        onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_LOCATION, value)}>
                         <Group>
                             <Radio value={EdgeBoxLocation.Idle.toString()} label={"Idle"} />
                             <Radio value={EdgeBoxLocation.Installing.toString()} label={"Installing"} />
@@ -176,6 +217,26 @@ const EdgeBoxList = () => {
                             <Radio value={EdgeBoxLocation.Disposed.toString()} label={"Disposed"} />
                         </Group>
                     </RadioGroup>
+                </Group>
+                <Group mt="md" mb="md">
+                    <Text size='sm'>Brand: </Text>
+                    <Select data={brandList || []} limit={5} size='sm'
+                        nothingFoundMessage={brandList && "Not Found"}
+                        value={filterSearchBrandId} placeholder="Pick value" clearable searchable
+                        searchValue={filterSearchBrand}
+                        onSearchChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_SEARCH_BRAND, value)}
+                        onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_SEARCH_BRAND_ID, value)}
+                    />
+                </Group>
+                <Group mt="md" mb="md">
+                    <Text size='sm'>Shop: </Text>
+                    <Select data={shopList || []} limit={5} size='sm'
+                        nothingFoundMessage={shopList && "Not Found"}
+                        value={filterSearchShopId} placeholder="Pick value" clearable searchable
+                        searchValue={filterSearchShop}
+                        onSearchChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_SEARCH_SHOP, value)}
+                        onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_SEARCH_SHOP_ID, value)}
+                    />
                 </Group>
                 <Divider />
             </Collapse>
@@ -200,13 +261,14 @@ const EdgeBoxList = () => {
             <div className={styled["table-footer"]}>
                 {isLoading || isFetching || edgeBoxList?.totalCount ?
                     <>
-                        <Pagination total={edgeBoxList?.totalCount ? Math.ceil(edgeBoxList.totalCount / Number(size)) : 0} value={pageIndex} onChange={setPageIndex} mt="sm" />
+                        <Pagination total={edgeBoxList?.totalCount ? Math.ceil(edgeBoxList.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
+                            onChange={(value) => setStorage(EdgeBoxFilterProps.PAGE_INDEX, value)} />
                         <Group style={{ marginTop: '12px' }}>
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setSize(value)
-                                    setPageIndex(1)
+                                    setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1)
+                                    setStorage(EdgeBoxFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}

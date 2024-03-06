@@ -1,29 +1,30 @@
-import { Button, Group, TextInput } from "@mantine/core";
+import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { isEmpty } from "lodash";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
-import { useAddEdgeBox } from "../../../../hooks/useEdgeBoxes";
+import { useAddEdgeBox, useGetEdgeBoxModel } from "../../../../hooks/useEdgeBoxes";
 
 export const AddEdgeBoxForm = () => {
 
     const { mutate: addEdgeBox, isLoading } = useAddEdgeBox();
+    const [edgeBoxModelId, setEdgeBoxModelId] = useState<string | null>(null);
+    const { data: edgeBoxModelList, isLoading: edgeBoxModelLoading } = useGetEdgeBoxModel();
     const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
             name: "",
             username: "",
-            password: "",
-            edgeBoxModelId: "",
+            password: ""
         },
 
         validate: {
             name: (value) =>
                 value.trim().length === 0 ? "Name is required" : null,
-            edgeBoxModelId: (value) =>
-                value.trim().length === 0 ? "Edge Box Model Id is required" : null,
             username: (value) =>
                 value.trim().length === 0 ? "Username is required" : null,
             password: (value) =>
@@ -31,17 +32,26 @@ export const AddEdgeBoxForm = () => {
         },
     });
 
-    const onSubmitForm = async (values: AddEdgeBoxParams) => {
+    const onSubmitForm = async () => {
         // console.log(values)
 
-        const addBrandParams: AddEdgeBoxParams = {
-            name: values.name,
-            username: values.username,
-            password: values.password,
-            edgeBoxModelId: values.edgeBoxModelId,
+        const addEdgeBoxParams: AddEdgeBoxParams = {
+            name: form.values.name,
+            username: form.values.username,
+            password: form.values.password,
+            edgeBoxModelId: edgeBoxModelId,
         };
 
-        addEdgeBox(addBrandParams, {
+        if (isEmpty(edgeBoxModelId)) {
+            notifications.show({
+                message: "Please select a model",
+                color: "pale-red.5",
+                withCloseButton: true,
+            });
+            return;
+        }
+
+        addEdgeBox(addEdgeBoxParams, {
             onSuccess(data) {
                 console.log(data)
                 notifications.show({
@@ -73,40 +83,43 @@ export const AddEdgeBoxForm = () => {
 
     return (
         <form
-            onSubmit={form.onSubmit((values) => onSubmitForm(values))}
+            onSubmit={form.onSubmit(() => onSubmitForm())}
             style={{ textAlign: "left" }}
         >
-            <TextInput mt={10}
-                withAsterisk
-                label="Name"
-                placeholder="Name"
-                size="md"
-                {...form.getInputProps("name")}
-            />
-            <TextInput mt={10}
-                withAsterisk
-                label="Edge Box Model ID"
-                placeholder="Model ID"
-                size="md"
-                {...form.getInputProps("edgeBoxModelId")}
-            />
+            <Group grow mt={10}>
+                <TextInput mt={10}
+                    withAsterisk
+                    label="Username"
+                    placeholder="your@email.com"
+                    size="md"
+                    {...form.getInputProps("username")}
+                />
+                <TextInput mt={10}
+                    withAsterisk
+                    label="Password"
+                    type="password"
+                    placeholder="Password"
+                    size="md"
+                    {...form.getInputProps("password")}
+                />
+            </Group>
 
-            <TextInput mt={10}
-                withAsterisk
-                label="Username"
-                placeholder="your@email.com"
-                size="md"
-                {...form.getInputProps("username")}
-            />
-
-            <TextInput mt={10}
-                withAsterisk
-                label="Password"
-                type="password"
-                placeholder="Password"
-                size="md"
-                {...form.getInputProps("password")}
-            />
+            <Group grow mt={20}>
+                <TextInput
+                    withAsterisk
+                    label="Edge Box Name"
+                    placeholder="Edge Box Name"
+                    size="md"
+                    {...form.getInputProps("name")}
+                />
+                <Select label="Edge Box Model" data={edgeBoxModelList || []} limit={5}
+                    withAsterisk error={false} size="md" 
+                    nothingFoundMessage={edgeBoxModelList && "Not Found"}
+                    value={edgeBoxModelId} disabled={edgeBoxModelLoading}
+                    rightSection={edgeBoxModelLoading ? <Loader size={16} /> : null}
+                    placeholder="Pick value" onChange={setEdgeBoxModelId}
+                />
+            </Group>
 
             <Group
                 justify="flex-start"
