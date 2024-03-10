@@ -220,7 +220,7 @@ const BrandDetail = () => {
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="edge boxes">
-                                    <EdgeBoxListById id={params.shopId!} type="brand" />
+                                    <EdgeBoxListById id={params.brandId!} type="brand" />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

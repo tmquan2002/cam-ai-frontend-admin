@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
   // console.log(isAuthenticated);
 
   useEffect(() => {
-    const isUserHavePermission: boolean | undefined = checkRole([RoleEnumName.Admin,]);
+    const isUserHavePermission: boolean | undefined = checkRole([RoleEnumName.Admin]);
     if (!isUserHavePermission) {
       setIsAuthenticated(false);
     }
@@ -17,7 +17,7 @@ const ProtectedRoute = () => {
   if (isAuthenticated) {
     return <Outlet />;
   } else {
-    <Navigate
+    return <Navigate
       to={"/"}
       replace
     />;

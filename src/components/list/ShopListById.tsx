@@ -1,4 +1,4 @@
-import { Box, Button, Card, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Box, Button, Card, Grid, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
@@ -64,11 +64,13 @@ export const ShopListById = ({ idType, id }: ShopListParam) => {
                 </Box> :
                 <div className={styled["card-detail"]}>
                     {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Found</Text> :
-                        <SimpleGrid cols={3} mt={20}>
+                        <Grid mt={20}>
                             {data?.values.map((item, index) => (
-                                <ShopCard item={item} key={index} />
+                                <Grid.Col key={index} span={{ base: 12, md: 6 }}>
+                                    <ShopCard item={item} />
+                                </Grid.Col>
                             ))}
-                        </SimpleGrid>
+                        </Grid>
                     }
                 </div>
             }

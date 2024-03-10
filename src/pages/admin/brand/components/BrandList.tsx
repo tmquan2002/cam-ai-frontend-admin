@@ -158,7 +158,7 @@ const BrandList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text fw={"bold"}>Filter Brand</Text></Grid.Col>
+                    <Grid.Col span={6}><Text>Filter Brand</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
@@ -166,7 +166,7 @@ const BrandList = () => {
                     </Grid.Col>
                 </Grid>
                 <Group mb="md">
-                    <Text size='sm'>Status: </Text>
+                    <Text size='sm' fw={"bold"}>Status: </Text>
                     <RadioGroup name="status" value={filterStatus}
                         onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
                         <Group>

@@ -18,6 +18,7 @@ import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
 import ReportMainPage from "../pages/admin/report/ReportMainPage";
 import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
+import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 
 const AppRoute = () => {
   return useRoutes([
@@ -132,10 +133,14 @@ const AppRoute = () => {
         },
         {
           path: "*",
-          element: <DashboardPage />,
+          element: <NothingFoundBackground />,
         },
       ],
     },
+    {
+      path: "*",
+      element: <NothingFoundBackground />
+    }
   ]);
 };
 

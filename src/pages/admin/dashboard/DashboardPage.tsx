@@ -1,17 +1,17 @@
 import { BarChart } from "@mantine/charts";
-import { ActionIcon, Box, Card, Flex, Grid, Group, LoadingOverlay, Menu, Text, ThemeIcon, rem } from "@mantine/core";
+import { ActionIcon, Box, Card, Flex, Grid, Group, LoadingOverlay, Menu, ThemeIcon, rem } from "@mantine/core";
 import { IconDots, IconEye, IconFileZip, IconList, IconTrash, } from "@tabler/icons-react";
 import * as _ from "lodash";
+import { Link } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import styled from "./styles/dashboard.module.scss";
-import { convertCountDataToChartData } from "../../../utils/helperFunction";
-import { ShopCount } from "../../../models/Realtime";
-import { useGetAllBrands } from "../../../hooks/useBrands";
 import { useGetAllAccounts } from "../../../hooks/useAccounts";
-import { useGetAllShops } from "../../../hooks/useShops";
+import { useGetAllBrands } from "../../../hooks/useBrands";
 import { useGetAllEdgeBoxes } from "../../../hooks/useEdgeBoxes";
-import { Link } from "react-router-dom";
+import { useGetAllShops } from "../../../hooks/useShops";
+import { ShopCount } from "../../../models/Realtime";
+import { convertCountDataToChartData } from "../../../utils/helperFunction";
+import styled from "./styles/dashboard.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -169,7 +169,7 @@ const TitleAndNumberCard = ({ title, data, loading, link }:
             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
             <p className={styled["static-card-title"]}>{title}</p>
             <div className={styled["static-card-number"]}>{data?.totalCount}</div>
-            <Flex justify={"space-between"} align={"flex-end"}            >
+            <Flex justify={"space-between"} align={"flex-end"}>
                 <Link to={link} className={styled["static-card-link"]}>View detail</Link>
                 <ThemeIcon
                     variant="light"
@@ -222,7 +222,6 @@ const DashboardPage = () => {
                     <Card my={rem(32)} className={styled["chart"]}>
                         <Card.Section withBorder inheritPadding>
                             <Group justify="space-between" my={rem(20)}>
-                                <Text fw={500}>Static values</Text>
                                 <Menu withinPortal position="bottom-end" shadow="sm">
                                     <Menu.Target>
                                         <ActionIcon variant="subtle" color="gray">

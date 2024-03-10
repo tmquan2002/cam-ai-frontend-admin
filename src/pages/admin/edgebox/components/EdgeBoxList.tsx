@@ -187,7 +187,7 @@ const EdgeBoxList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text fw={"bold"}>Filter Edge Box</Text></Grid.Col>
+                    <Grid.Col span={6}><Text>Filter Edge Box</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
@@ -195,7 +195,7 @@ const EdgeBoxList = () => {
                     </Grid.Col>
                 </Grid>
                 <Group mb="md">
-                    <Text size='sm'>Status: </Text>
+                    <Text size='sm' fw={"bold"}>Status: </Text>
                     <RadioGroup name="status" value={filterStatus}
                         onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_STATUS, value)}>
                         <Group>
@@ -206,7 +206,7 @@ const EdgeBoxList = () => {
                     </RadioGroup>
                 </Group>
                 <Group mb="md">
-                    <Text size='sm'>Location: </Text>
+                    <Text size='sm' fw={"bold"}>Location: </Text>
                     <RadioGroup name="location" value={filterLocation}
                         onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_LOCATION, value)}>
                         <Group>
@@ -219,7 +219,7 @@ const EdgeBoxList = () => {
                     </RadioGroup>
                 </Group>
                 <Group mt="md" mb="md">
-                    <Text size='sm'>Brand: </Text>
+                    <Text size='sm' fw={"bold"}>Brand: </Text>
                     <Select data={brandList || []} limit={5} size='sm'
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
@@ -229,7 +229,7 @@ const EdgeBoxList = () => {
                     />
                 </Group>
                 <Group mt="md" mb="md">
-                    <Text size='sm'>Shop: </Text>
+                    <Text size='sm' fw={"bold"}>Shop: </Text>
                     <Select data={shopList || []} limit={5} size='sm'
                         nothingFoundMessage={shopList && "Not Found"}
                         value={filterSearchShopId} placeholder="Pick value" clearable searchable

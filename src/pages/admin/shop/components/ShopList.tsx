@@ -186,7 +186,7 @@ const ShopList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text fw={"bold"}>Filter Shop</Text></Grid.Col>
+                    <Grid.Col span={6}><Text>Filter Shop</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
@@ -194,7 +194,7 @@ const ShopList = () => {
                     </Grid.Col>
                 </Grid>
                 <Group mt="md">
-                    <Text size='sm'>Status: </Text>
+                    <Text size='sm' fw={"bold"}>Status: </Text>
                     <RadioGroup name="status" size='sm' value={filterStatus}
                         onChange={(value) => setStorage(ShopFilterProps.FILTER_STATUS, value)}>
                         <Group>
@@ -204,7 +204,7 @@ const ShopList = () => {
                     </RadioGroup>
                 </Group>
                 <Group mt="md" mb="md">
-                    <Text size='sm'>Brand: </Text>
+                    <Text size='sm' fw={"bold"}>Brand: </Text>
                     <Select data={brandList || []} limit={5} size='sm'
                         nothingFoundMessage={brandList && "Not Found"}
                         value={filterSearchBrandId} placeholder="Pick value" clearable searchable
