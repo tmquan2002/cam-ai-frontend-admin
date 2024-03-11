@@ -21,7 +21,7 @@ export const LoginForm = () => {
       email: (value) =>
         value.trim().length === 0
           ? "Email is required"
-          : /^\S+@\S+$/.test(value)
+          : /^\S+@(\S+\.)+\S{2,4}$/g.test(value)
             ? null
             : "Invalid email",
       password: (value) =>
