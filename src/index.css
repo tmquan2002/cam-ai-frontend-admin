@@ -1,11 +1,13 @@
 @font-face {
   font-family: "DVN-Poppins";
-  src: local("DVN-Poppins"), url("./assets/fonts/DesignerVN-Poppins-Regular.ttf") format("truetype");
+  src: local("DVN-Poppins"),
+    url("./assets/fonts/DesignerVN-Poppins-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "DVN-Poppins";
-  src: local("DVN-Poppins"), url("./assets/fonts/DesignerVN-Poppins-ExtraBold.ttf") format("truetype");
+  src: local("DVN-Poppins"),
+    url("./assets/fonts/DesignerVN-Poppins-ExtraBold.ttf") format("truetype");
   font-weight: bold;
 }
 

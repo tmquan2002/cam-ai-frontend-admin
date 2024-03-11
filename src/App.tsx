@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
 });
 
 const theme = createTheme({
-  fontFamily: "DVN-Poppins",
+  // fontFamily: "DVN-Poppins",
   primaryColor: "light-blue",
   colors: {
     "light-blue": light_blue,

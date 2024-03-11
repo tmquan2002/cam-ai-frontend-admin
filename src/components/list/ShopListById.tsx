@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
+import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";

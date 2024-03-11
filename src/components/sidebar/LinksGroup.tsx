@@ -22,7 +22,7 @@ export function LinksGroup({ icon: Icon, label, path, minimize, disabled }: Link
             <ThemeIcon size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            {!minimize && <Text className={styled.label}>{label}</Text>}
+            {!minimize && <Text fw={500} className={styled.label}>{label}</Text>}
           </Box>
         </Group>
       </Link>
