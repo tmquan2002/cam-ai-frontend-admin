@@ -54,7 +54,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
 }
 export const ShopListById = ({ idType, id }: ShopListParam) => {
 
-    const { isLoading, data } = idType == "brand" ? useGetAllShops({ brandId: id }) : useGetAllShops({ shopManagerId: id })
+    const { isLoading, data, error } = idType == "brand" ? useGetAllShops({ brandId: id }) : useGetAllShops({ shopManagerId: id })
 
     return (
         <div className={styled["list-container"]}>
@@ -63,7 +63,7 @@ export const ShopListById = ({ idType, id }: ShopListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Found</Text> :
+                    {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Found</Text> :
                         <Grid mt={20}>
                             {data?.values.map((item, index) => (
                                 <Grid.Col key={index} span={{ base: 12, md: 6 }}>

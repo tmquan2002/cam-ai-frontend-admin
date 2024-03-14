@@ -40,12 +40,12 @@ const AccountCard = ({ item }: { item: Account }) => {
                             : "None"
                 }
             </div>
-
-            <div className={styled["icon-text"]}>
-                <MdEmail style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item.email}</span>
-            </div>
-
+            {item.email &&
+                <div className={styled["icon-text"]}>
+                    <MdEmail style={{ width: '20px', height: '20px' }} />
+                    <span className={styled["information"]}>{item.email}</span>
+                </div>
+            }
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/account/${item.id}`)}>
                 View Detail
@@ -55,7 +55,7 @@ const AccountCard = ({ item }: { item: Account }) => {
 }
 export const AccountListById = ({ id, type }: AccountListParam) => {
 
-    const { isLoading, data } = useGetAllAccounts({ brandId: id })
+    const { isLoading, data, error } = useGetAllAccounts({ brandId: id })
 
     return (
         <div>
@@ -64,7 +64,7 @@ export const AccountListById = ({ id, type }: AccountListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>
+                    {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>
                         No {type == "manager" ? "Manager" : type == "employee" ? "Employee" : "Account"} Found
                     </Text> :
                         <Grid mt={20}>

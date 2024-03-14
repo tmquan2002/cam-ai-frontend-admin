@@ -32,7 +32,7 @@ const EdgeBoxDetail = () => {
     const [modalupdateOpen, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
 
 
-    const { isLoading, data, refetch } = useGetEdgeBoxById(params.edgeBoxId!);
+    const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
     const { mutate: deleteEdgeBox } = useDeleteEdgeBox();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -76,53 +76,62 @@ const EdgeBoxDetail = () => {
                         <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                     </Box> :
                     <div className={styled["container-detail"]}>
-                        <div className={styled["profile-header"]}>
-                            <div className={styled["profile-header-left"]}>
-                                <div>
-                                    <Group mb={15}>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} type="edgebox" />
-                                    </Group>
-                                    <Group mb={10}>
-                                        <MdMyLocation />
-                                        <Text size="md">Location: {data?.edgeBoxLocation}</Text>
-                                    </Group>
-                                    <Group mb={10}>
-                                        <MdAccessTime />
-                                        <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                    </Group>
+                        {error ? <Text fs="italic" ta="center">Edge Box not found</Text> :
+                            <>
+                                <div className={styled["profile-header"]}>
+                                    <div className={styled["profile-header-left"]}>
+                                        <div>
+                                            <Group mb={15}>
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                                <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} type="edgebox" />
+                                            </Group>
+                                            {data?.edgeBoxLocation &&
+                                                <Group mb={10}>
+                                                    <MdMyLocation />
+                                                    <Text size="md">Location: {data?.edgeBoxLocation}</Text>
+                                                </Group>
+                                            }
+                                            {data?.createdDate &&
+                                                <Group mb={10}>
+                                                    <MdAccessTime />
+                                                    <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                                </Group>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                            <Menu.Target>
+                                                <Tooltip label="Actions" withArrow>
+                                                    <ActionIcon variant="transparent"
+                                                        color={computedColorScheme === "dark" ? "white" : "black"}
+                                                        size={"md"}>
+                                                        <IconDots style={{ width: 25, height: 25 }} />
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            </Menu.Target>
+
+                                            <Menu.Dropdown>
+                                                <Menu.Item leftSection={<MdEdit />}
+                                                    onClick={openUpdate}>
+                                                    Update
+                                                </Menu.Item>
+                                                <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.edgeBoxStatus == EdgeBoxStatus.Inactive ? "grey" : "red" }} />}
+                                                    disabled={data?.edgeBoxStatus == EdgeBoxStatus.Inactive}
+                                                    onClick={openDelete} >
+                                                    Delete
+                                                </Menu.Item>
+                                            </Menu.Dropdown>
+                                        </Menu>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                    <Menu.Target>
-                                        <Tooltip label="Actions" withArrow>
-                                            <ActionIcon variant="transparent"
-                                                color={computedColorScheme === "dark" ? "white" : "black"}
-                                                size={"md"}>
-                                                <IconDots style={{ width: 25, height: 25 }} />
-                                            </ActionIcon>
-                                        </Tooltip>
-                                    </Menu.Target>
+                                <Divider my="md" />
+                                {/*TODO: Add more detail of shop here */}
+                                <div className={styled["profile-detail"]}>
 
-                                    <Menu.Dropdown>
-                                        <Menu.Item leftSection={<MdEdit />}
-                                            onClick={openUpdate}>
-                                            Update
-                                        </Menu.Item>
-                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.edgeBoxStatus == EdgeBoxStatus.Inactive ? "grey" : "red" }} />}
-                                            disabled={data?.edgeBoxStatus == EdgeBoxStatus.Inactive}
-                                            onClick={openDelete} >
-                                            Delete
-                                        </Menu.Item>
-                                    </Menu.Dropdown>
-                                </Menu>
-                            </div>
-                        </div>
-                        <Divider my="md" />
-                        <div className={styled["profile-detail"]}>
-
-                        </div>
+                                </div>
+                            </>
+                        }
                     </div>
                 }
             </div>

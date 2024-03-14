@@ -26,16 +26,18 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
                 }
             </div>
 
-            <div className={styled["icon-text"]}>
-                <MdHome style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item?.edgeBoxLocation}</span>
-            </div>
-
-            <div className={styled["icon-text"]}>
-                <MdOutlineTaskAlt style={{ width: '20px', height: '20px' }} />
-                <span className={styled["information"]}>{item.version}</span>
-            </div>
-
+            {item?.edgeBoxLocation &&
+                <div className={styled["icon-text"]}>
+                    <MdHome style={{ width: '20px', height: '20px' }} />
+                    <span className={styled["information"]}>{item?.edgeBoxLocation}</span>
+                </div>
+            }
+            {item.version &&
+                <div className={styled["icon-text"]}>
+                    <MdOutlineTaskAlt style={{ width: '20px', height: '20px' }} />
+                    <span className={styled["information"]}>{item.version}</span>
+                </div>
+            }
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/edgebox/${item.id}`)}>
                 View Detail
@@ -45,7 +47,7 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
 }
 export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
 
-    const { isLoading, data } = type == "brand" ? useGetAllEdgeBoxes({brandId: id}) : useGetAllEdgeBoxes({shopId: id})
+    const { isLoading, data, error } = type == "brand" ? useGetAllEdgeBoxes({ brandId: id }) : useGetAllEdgeBoxes({ shopId: id })
 
     return (
         <div className={styled["list-container"]}>
@@ -54,7 +56,7 @@ export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
+                    {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
                         <SimpleGrid cols={3} mt={20}>
                             {data?.values.map((item, index) => (
                                 <EdgeBoxCard item={item} key={index} />

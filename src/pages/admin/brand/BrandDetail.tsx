@@ -36,7 +36,7 @@ const BrandDetail = () => {
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
 
-    const { data, isLoading } = useGetBrandById(params.brandId!);
+    const { data, isLoading, error } = useGetBrandById(params.brandId!);
     const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId);
 
     const { mutate: deleteBrand } = useDeleteBrand();
@@ -116,114 +116,124 @@ const BrandDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        {data?.banner && <Image h={200} mb={20} src={data?.banner.hostingUri + "?scaleFactor=0.3"} />}
-                        <div className={styled["profile-header"]}>
-                            <div className={styled["profile-header-left"]}>
-                                <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri + "?scaleFactor=0.2"} />
-                                <div>
-                                    <Group mb={15}>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"}
-                                            type="brand" />
-                                    </Group>
-
-                                    {isLoadingManager ? <Loader size="sm" /> :
-                                        dataManager?.id ?
-                                            <Group>
-                                                <MdAccountCircle />
-                                                Brand Manager: <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
-                                                    <Text size="md">{dataManager.name}</Text>
-                                                </Link>
+                        {error ? <Text fs="italic" ta="center">Brand not found</Text> :
+                            <>
+                                {data?.banner && <Image h={200} mb={20} src={data?.banner?.hostingUri} />}
+                                <div className={styled["profile-header"]}>
+                                    <div className={styled["profile-header-left"]}>
+                                        <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
+                                        <div>
+                                            <Group mb={15}>
+                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                                <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"}
+                                                    type="brand" />
                                             </Group>
-                                            :
-                                            <Button
-                                                onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
-                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
-                                            >
-                                                Add Manager
-                                            </Button>
-                                    }
-                                    <Group>
-                                        <MdEmail />
-                                        <Text size="md">{data?.email}</Text>
-                                    </Group>
-                                    <Group>
-                                        <MdPhone />
-                                        <Text size="md">{data?.phone}</Text>
-                                    </Group>
-                                    <Group mb={20}>
-                                        <MdAccessTime />
-                                        <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                    </Group>
+
+                                            {isLoadingManager ? <Loader size="sm" /> :
+                                                dataManager?.id ?
+                                                    <Group>
+                                                        <MdAccountCircle />
+                                                        Brand Manager: <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
+                                                            <Text size="md">{dataManager.name}</Text>
+                                                        </Link>
+                                                    </Group>
+                                                    :
+                                                    <Button
+                                                        onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
+                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
+                                                    >
+                                                        Add Manager
+                                                    </Button>
+                                            }
+                                            {data?.email &&
+                                                <Group>
+                                                    <MdEmail />
+                                                    <Text size="md">{data?.email}</Text>
+                                                </Group>
+                                            }
+                                            {data?.phone &&
+                                                <Group>
+                                                    <MdPhone />
+                                                    <Text size="md">{data?.phone}</Text>
+                                                </Group>
+                                            }
+                                            {data?.createdDate &&
+                                                <Group mb={20}>
+                                                    <MdAccessTime />
+                                                    <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                                </Group>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                            <Menu.Target>
+                                                <Tooltip label="Actions" withArrow>
+                                                    <ActionIcon variant="transparent"
+                                                        color={computedColorScheme === "dark" ? "white" : "black"}
+                                                        size={"md"}>
+                                                        <IconDots style={{ width: 25, height: 25 }} />
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            </Menu.Target>
+
+                                            <Menu.Dropdown>
+                                                <Menu.Item leftSection={<MdEdit />}
+                                                    onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
+                                                    Update
+                                                </Menu.Item>
+                                                {data?.brandStatus == BrandStatus.Active ?
+                                                    <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                                        onClick={open} >
+                                                        Delete
+                                                    </Menu.Item>
+                                                    :
+                                                    <Menu.Item leftSection={<MdAutorenew />}
+                                                        onClick={open} >
+                                                        Reactivate
+                                                    </Menu.Item>
+                                                }
+                                            </Menu.Dropdown>
+                                        </Menu>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                    <Menu.Target>
-                                        <Tooltip label="Actions" withArrow>
-                                            <ActionIcon variant="transparent"
-                                                color={computedColorScheme === "dark" ? "white" : "black"}
-                                                size={"md"}>
-                                                <IconDots style={{ width: 25, height: 25 }} />
-                                            </ActionIcon>
-                                        </Tooltip>
-                                    </Menu.Target>
+                                <Divider my="md" />
+                                <div className={styled["profile-detail"]}>
+                                    <Tabs defaultValue="shops">
+                                        <Tabs.List>
+                                            <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
+                                                Shops
+                                            </Tabs.Tab>
+                                            <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount />}>
+                                                Managers
+                                            </Tabs.Tab>
+                                            <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
+                                                Employees
+                                            </Tabs.Tab>
+                                            <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
+                                                Edge Boxes
+                                            </Tabs.Tab>
+                                        </Tabs.List>
 
-                                    <Menu.Dropdown>
-                                        <Menu.Item leftSection={<MdEdit />}
-                                            onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
-                                            Update
-                                        </Menu.Item>
-                                        {data?.brandStatus == BrandStatus.Active ?
-                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
-                                                onClick={open} >
-                                                Delete
-                                            </Menu.Item>
-                                            :
-                                            <Menu.Item leftSection={<MdAutorenew />}
-                                                onClick={open} >
-                                                Reactivate
-                                            </Menu.Item>
-                                        }
-                                    </Menu.Dropdown>
-                                </Menu>
-                            </div>
-                        </div>
-                        <Divider my="md" />
-                        <div className={styled["profile-detail"]}>
-                            <Tabs defaultValue="shops">
-                                <Tabs.List>
-                                    <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
-                                        Shops
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount />}>
-                                        Managers
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
-                                        Employees
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
-                                        Edge Boxes
-                                    </Tabs.Tab>
-                                </Tabs.List>
+                                        <Tabs.Panel value="shops">
+                                            <ShopListById id={params.brandId!} idType="brand" />
+                                        </Tabs.Panel>
 
-                                <Tabs.Panel value="shops">
-                                    <ShopListById id={params.brandId!} idType="brand" />
-                                </Tabs.Panel>
+                                        <Tabs.Panel value="managers">
+                                            <AccountListById id={params.brandId!} type="manager" />
+                                        </Tabs.Panel>
 
-                                <Tabs.Panel value="managers">
-                                    <AccountListById id={params.brandId!} type="manager" />
-                                </Tabs.Panel>
+                                        <Tabs.Panel value="employees">
+                                            <EmployeeListById id={params.brandId!} type="brand" />
+                                        </Tabs.Panel>
 
-                                <Tabs.Panel value="employees">
-                                    <EmployeeListById id={params.brandId!} type="brand" />
-                                </Tabs.Panel>
-
-                                <Tabs.Panel value="edge boxes">
-                                    <EdgeBoxListById id={params.brandId!} type="brand" />
-                                </Tabs.Panel>
-                            </Tabs>
-                        </div>
+                                        <Tabs.Panel value="edge boxes">
+                                            <EdgeBoxListById id={params.brandId!} type="brand" />
+                                        </Tabs.Panel>
+                                    </Tabs>
+                                </div>
+                            </>
+                        }
                     </div>
                 }
             </div>

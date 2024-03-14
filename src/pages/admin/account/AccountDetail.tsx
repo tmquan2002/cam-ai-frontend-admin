@@ -32,7 +32,7 @@ const AccountDetail = () => {
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
 
-    const { data, isLoading } = useGetAccountById(params.accountId!);
+    const { data, isLoading, error } = useGetAccountById(params.accountId!);
     const { mutate: deleteAccount } = useDeleteAccount();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -80,85 +80,89 @@ const AccountDetail = () => {
                     </Box>
                     :
                     <div className={styled["container-detail"]}>
-                        <div className={styled["profile-header"]}>
-                            <div>
-                                <Group mb={15} gap={30}>
-                                    <div>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                        {data?.role && <Text size="md">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
-                                    </div>
-                                    <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
-                                        type="account" mb={15} mt={15} />
-                                </Group>
-                                {data?.gender &&
-                                    <Group>
-                                        {data?.gender == "Female" ?
-                                            <BsGenderFemale /> :
-                                            <BsGenderMale />
-                                        }
-                                        <Text size="md">{data?.gender}</Text>
-                                    </Group>
-                                }
-                                <Group>
-                                    <MdEmail />
-                                    <Text size="md">{data?.email}</Text>
-                                </Group>
-
-                                <Group>
-                                    <MdPhone />
-                                    <Text size="md">{data?.phone}</Text>
-                                </Group>
-
-                                {data?.birthday &&
-                                    <Group>
-                                        <MdCalendarToday />
-                                        <Text size="md">{removeTime(new Date(data?.birthday), "/", "dd/MM/yyyy")}</Text>
-                                    </Group>
-                                }
-
-                                {(data?.ward || data?.addressLine) &&
-                                    <Group>
-                                        <MdHome />
-                                        {(data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                        {(data?.ward && !data?.addressLine) && <Text size="md">{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                        {(!data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}</Text>}
-                                    </Group>
-                                }
-
-                                <Group mb={20}>
-                                    <MdAccessTime />
-                                    <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                </Group>
-                            </div>
-                            {data?.role == RoleEnum.BrandManager && data?.brand &&
+                        {error ? <Text fs="italic" ta="center">Account not found</Text> :
+                            <div className={styled["profile-header"]}>
                                 <div>
-                                    <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                        <Menu.Target>
-                                            <Tooltip label="Actions" withArrow>
-                                                <ActionIcon variant="transparent"
-                                                    color={computedColorScheme === "dark" ? "white" : "black"}
-                                                    size={"md"}>
-                                                    <IconDots style={{ width: 25, height: 25 }} />
-                                                </ActionIcon>
-                                            </Tooltip>
-                                        </Menu.Target>
-
-                                        <Menu.Dropdown>
-                                            <Menu.Item leftSection={<MdEdit />}
-                                                onClick={() => navigate(`/account/${params.accountId!}/update`)}>
-                                                Update
-                                            </Menu.Item>
-
-                                            <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.accountStatus == AccountStatus.Inactive ? "grey" : "red" }} />}
-                                                disabled={data?.accountStatus == AccountStatus.Inactive}
-                                                onClick={open} >
-                                                Delete
-                                            </Menu.Item>
-                                        </Menu.Dropdown>
-                                    </Menu>
+                                    <Group mb={15} gap={30}>
+                                        <div>
+                                            <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                            {data?.role && <Text size="md">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
+                                        </div>
+                                        <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
+                                            type="account" mb={15} mt={15} />
+                                    </Group>
+                                    {data?.gender &&
+                                        <Group>
+                                            {data?.gender == "Female" ?
+                                                <BsGenderFemale /> :
+                                                <BsGenderMale />
+                                            }
+                                            <Text size="md">{data?.gender}</Text>
+                                        </Group>
+                                    }
+                                    {data?.email &&
+                                        <Group>
+                                            <MdEmail />
+                                            <Text size="md">{data?.email}</Text>
+                                        </Group>
+                                    }
+                                    {data?.phone &&
+                                        <Group>
+                                            <MdPhone />
+                                            <Text size="md">{data?.phone}</Text>
+                                        </Group>
+                                    }
+                                    {data?.birthday &&
+                                        <Group>
+                                            <MdCalendarToday />
+                                            <Text size="md">{removeTime(new Date(data?.birthday), "/", "dd/MM/yyyy")}</Text>
+                                        </Group>
+                                    }
+                                    {(data?.ward || data?.addressLine) &&
+                                        <Group>
+                                            <MdHome />
+                                            {(data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                            {(data?.ward && !data?.addressLine) && <Text size="md">{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                            {(!data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}</Text>}
+                                        </Group>
+                                    }
+                                    {data?.createdDate &&
+                                        <Group mb={20}>
+                                            <MdAccessTime />
+                                            <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                        </Group>
+                                    }
                                 </div>
-                            }
-                        </div>
+                                {data?.role == RoleEnum.BrandManager && data?.brand &&
+                                    <div>
+                                        <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                            <Menu.Target>
+                                                <Tooltip label="Actions" withArrow>
+                                                    <ActionIcon variant="transparent"
+                                                        color={computedColorScheme === "dark" ? "white" : "black"}
+                                                        size={"md"}>
+                                                        <IconDots style={{ width: 25, height: 25 }} />
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            </Menu.Target>
+
+                                            <Menu.Dropdown>
+                                                <Menu.Item leftSection={<MdEdit />}
+                                                    onClick={() => navigate(`/account/${params.accountId!}/update`)}>
+                                                    Update
+                                                </Menu.Item>
+
+                                                <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.accountStatus == AccountStatus.Inactive ? "grey" : "red" }} />}
+                                                    disabled={data?.accountStatus == AccountStatus.Inactive}
+                                                    onClick={open} >
+                                                    Delete
+                                                </Menu.Item>
+                                            </Menu.Dropdown>
+                                        </Menu>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
                 }
 
@@ -170,25 +174,31 @@ const AccountDetail = () => {
                                     <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>BRAND</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <Group mt={20}>
-                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri + "?scaleFactor=0.05"} />
+                                            <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                             <div>
                                                 <Group>
                                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
                                                     <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
                                                         type="brand" />
                                                 </Group>
-                                                <Group>
-                                                    <MdEmail />
-                                                    <Text size="md">{data?.brand?.email}</Text>
-                                                </Group>
-                                                <Group>
-                                                    <MdPhone />
-                                                    <Text size="md">{data?.brand?.phone}</Text>
-                                                </Group>
-                                                <Group mb={20}>
-                                                    <MdAccessTime />
-                                                    <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
-                                                </Group>
+                                                {data?.brand?.email &&
+                                                    <Group>
+                                                        <MdEmail />
+                                                        <Text size="md">{data?.brand?.email}</Text>
+                                                    </Group>
+                                                }
+                                                {data?.brand?.phone &&
+                                                    <Group>
+                                                        <MdPhone />
+                                                        <Text size="md">{data?.brand?.phone}</Text>
+                                                    </Group>
+                                                }
+                                                {data?.brand?.createdDate &&
+                                                    <Group mb={20}>
+                                                        <MdAccessTime />
+                                                        <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
+                                                    </Group>
+                                                }
                                             </div>
                                         </Group>
                                         <Link to={`/brand/${data?.brand?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
@@ -202,7 +212,8 @@ const AccountDetail = () => {
                         }
                     </>
                 }
-                {data?.role == RoleEnum.BrandManager && data?.brand &&
+                {
+                    data?.role == RoleEnum.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>
                         <div className={styled["shop-detail"]}>
                             <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOPS</Text>
@@ -210,12 +221,13 @@ const AccountDetail = () => {
                         </div>
                     </div>
                 }
-                {data?.role == RoleEnum.ShopManager && data?.managingShop &&
+                {
+                    data?.role == RoleEnum.ShopManager && data?.managingShop &&
                     <>
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOP</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOP</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <div>
                                             <Group mb={20}>
@@ -225,12 +237,14 @@ const AccountDetail = () => {
                                             </Group>
                                             <Group>
                                                 <MdOutlineAccessTime />
-                                                <Text size="md">Open: {data?.managingShop?.openTime} - Close: {data?.managingShop?.closeTime}</Text>
+                                                <Text size="md">Open: {data?.managingShop?.openTime || "No Data"} - Close: {data?.managingShop?.closeTime || "No Data"}</Text>
                                             </Group>
-                                            <Group>
-                                                <MdPhone />
-                                                <Text size="md">{data?.brand?.phone}</Text>
-                                            </Group>
+                                            {data?.brand?.phone &&
+                                                <Group>
+                                                    <MdPhone />
+                                                    <Text size="md">{data?.brand?.phone}</Text>
+                                                </Group>
+                                            }
                                             {(data?.managingShop?.ward || data?.managingShop?.addressLine) &&
                                                 <Group>
                                                     <MdHome />
@@ -239,10 +253,12 @@ const AccountDetail = () => {
                                                     {(!data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.addressLine}</Text>}
                                                 </Group>
                                             }
-                                            <Group mb={20}>
-                                                <MdAccessTime />
-                                                <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
-                                            </Group>
+                                            {data?.brand?.createdDate &&
+                                                <Group mb={20}>
+                                                    <MdAccessTime />
+                                                    <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
+                                                </Group>
+                                            }
                                         </div>
                                         <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
                                     </div>
@@ -255,7 +271,7 @@ const AccountDetail = () => {
                         }
                     </>
                 }
-            </div>
+            </div >
             <Modal opened={modalOpen} onClose={close} title="Delete this account?" centered>
                 <Text>
                     Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>

@@ -35,7 +35,7 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
                     }
                 </div>
             }
-            
+
             {item.phone &&
                 <div className={styled["icon-text"]}>
                     <MdPhone style={{ width: '20px', height: '20px' }} />
@@ -47,7 +47,7 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
 }
 export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
 
-    const { isLoading, data } = type == "shop" ? useGetAllEmployees({ shopId: id }) : useGetAllEmployees({ brandId: id })
+    const { isLoading, data, error } = type == "shop" ? useGetAllEmployees({ shopId: id }) : useGetAllEmployees({ brandId: id })
 
     return (
         <div className={styled["list-container"]}>
@@ -56,7 +56,7 @@ export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {data?.values.length == 0 ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Employee Found</Text> :
+                    {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Employee Found</Text> :
                         <SimpleGrid cols={3} mt={20}>
                             {data?.values.map((item, index) => (
                                 <EmployeeCard item={item} key={index} />
