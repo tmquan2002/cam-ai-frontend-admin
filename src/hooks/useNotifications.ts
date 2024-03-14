@@ -1,15 +1,10 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
-import { AddNotificationParams, GetNotificationParams, GetNotificationesPagingResult, NotificationAPI, UpdateNotificationParams } from "../apis/NotificationAPI";
+import { AddNotificationParams, GetNotificationParams, NotificationAPI, UpdateNotificationParams } from "../apis/NotificationAPI";
+import { CommonResponse } from "../models/CommonResponse";
 
 export const useGetAllNotifications = (params: GetNotificationParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
-    refetch,
-  }: UseQueryResult<GetNotificationesPagingResult, Error> = useQuery({
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<CommonResponse<Notification>, Error> = useQuery({
     queryKey: ["notificationList", params.size, params.pageIndex],
     queryFn: async () => {
       return await NotificationAPI.getAllFilter(params);

@@ -11,7 +11,6 @@ interface EdgeBoxListParam {
     id: string;
 }
 
-// TODO: Redesign when BE is done with structures
 const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
     const navigate = useNavigate();
     // console.log(item)

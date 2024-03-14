@@ -1,16 +1,12 @@
 import { UseQueryResult, useQuery } from "react-query";
-import { EmployeeAPI, GetEmployeeParams, GetEmployeesPagingResult } from "../apis/EmployeeAPI";
+import { EmployeeAPI, GetEmployeeParams } from "../apis/EmployeeAPI";
+import { CommonResponse } from "../models/CommonResponse";
 import { Employee } from "../models/Employee";
 
 export const useGetAllEmployees = (params: GetEmployeeParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
+  const { isError, isLoading, isFetching, data, error,
     refetch,
-  }: UseQueryResult<GetEmployeesPagingResult, Error> = useQuery({
+  }: UseQueryResult<CommonResponse<Employee>, Error> = useQuery({
     queryKey: ["employeeList", params.size, params.pageIndex],
     queryFn: async () => {
       return await EmployeeAPI.getAllFilter(params);
@@ -21,12 +17,7 @@ export const useGetAllEmployees = (params: GetEmployeeParams) => {
 };
 
 export const useGetEmployeeById = (id: string) => {
-  const {
-    isError,
-    isLoading,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<Employee, Error> = useQuery({
     queryKey: ["employeeDetail", id],
     queryFn: async () => {

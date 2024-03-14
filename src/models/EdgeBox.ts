@@ -1,20 +1,5 @@
 import { Shop } from "./Shop";
 
-export interface EdgeBoxLocation {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
-
-export interface EdgeBoxStatus {
-    timestamp: string;
-    id: number;
-    name: string;
-    description: string;
-}
-
-// TODO: Redesign when BE is done with structures and fully run well
 export interface EdgeBox {
     timestamp: string;
     id: string;

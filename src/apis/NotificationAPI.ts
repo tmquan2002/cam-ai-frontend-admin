@@ -1,4 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
+import { CommonResponse } from "../models/CommonResponse";
 import { Notification } from "../models/Notification";
 import http, { toQueryParams } from "../utils/http";
 
@@ -8,14 +9,6 @@ export type GetNotificationParams = {
     status?: string;
     size?: string | number | null;
     pageIndex?: number;
-};
-
-export type GetNotificationesPagingResult = {
-    pageIndex: number;
-    pageSize: number;
-    totalCount: number;
-    isValuesEmpty: boolean;
-    values: Notification[];
 };
 
 export type AddNotificationParams = {
@@ -33,7 +26,7 @@ export type UpdateNotificationParams = {
 export const NotificationAPI = {
     getAllFilter: async (params: GetNotificationParams) => {
         const token = getAccessToken();
-        const res = await http.get<GetNotificationesPagingResult>(
+        const res = await http.get<CommonResponse<Notification>>(
             `/api/notifications?${toQueryParams(params)}`,
             {
                 headers: {

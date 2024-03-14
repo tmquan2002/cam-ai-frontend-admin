@@ -1,4 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
+import { CommonResponse } from "../models/CommonResponse";
 import { Employee } from "../models/Employee";
 import http, { toQueryParams } from "../utils/http";
 
@@ -11,18 +12,10 @@ export type GetEmployeeParams = {
   pageIndex?: number;
 };
 
-export type GetEmployeesPagingResult = {
-  pageIndex: number;
-  pageSize: number;
-  totalCount: number;
-  isValuesEmpty: boolean;
-  values: Employee[];
-};
-
 export const EmployeeAPI = {
   getAllFilter: async (params: GetEmployeeParams) => {
     const token = getAccessToken();
-    const res = await http.get<GetEmployeesPagingResult>(
+    const res = await http.get<CommonResponse<Employee>>(
       `/api/employees?${toQueryParams(params)}`,
       {
         headers: {

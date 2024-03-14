@@ -1,11 +1,12 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
-import { AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, GetEdgeBoxesPagingResult, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
+import { AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
+import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBox } from "../models/EdgeBox";
 
 export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error,
     refetch,
-  }: UseQueryResult<GetEdgeBoxesPagingResult, Error> = useQuery({
+  }: UseQueryResult<CommonResponse<EdgeBox>, Error> = useQuery({
     queryKey: ["edegBoxList", params.size, params.pageIndex],
     queryFn: async () => {
       return await EdgeBoxAPI.getAllFilter(params);

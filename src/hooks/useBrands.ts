@@ -1,15 +1,13 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
 import {
-  AddBrandParams,
-  BrandAPI,
-  GetBrandsPagingResult, GetBrandsParams,
-  UpdateBrandParams
+  AddBrandParams, BrandAPI, GetBrandsParams, UpdateBrandParams
 } from "../apis/BrandAPI";
 import { Brand } from "../models/Brand";
+import { CommonResponse } from "../models/CommonResponse";
 
 export const useGetAllBrands = (params: GetBrandsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
-  }: UseQueryResult<GetBrandsPagingResult, Error> = useQuery({
+  }: UseQueryResult<CommonResponse<Brand>, Error> = useQuery({
     queryKey: ["brandList", params.size, params.pageIndex],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);

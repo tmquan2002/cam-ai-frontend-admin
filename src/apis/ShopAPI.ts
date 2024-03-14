@@ -1,4 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
+import { CommonResponse } from "../models/CommonResponse";
 import { Shop } from "../models/Shop";
 import http, { toQueryParams } from "../utils/http";
 
@@ -13,18 +14,10 @@ export type GetShopsParams = {
   size?: string | number | null;
 };
 
-export type GetShopsPagingResult = {
-  pageIndex: number;
-  pageSize: number;
-  totalCount: number;
-  isValuesEmpty: boolean;
-  values: Shop[];
-};
-
 export const ShopAPI = {
   getAllFilter: async (params: GetShopsParams) => {
     const token = getAccessToken();
-    const res = await http.get<GetShopsPagingResult>(
+    const res = await http.get<CommonResponse<Shop>>(
       `/api/shops?${toQueryParams(params)}`,
       {
         headers: {

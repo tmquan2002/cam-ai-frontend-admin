@@ -59,6 +59,20 @@ export enum EdgeBoxInstallStatus {
   Expired = "Expired",
 }
 
+export enum RequestType {
+  Install = "Install",
+  Repair = "Repair",
+  Remove = "Remove",
+  Other = "Other"
+}
+
+export enum RequestStatus {
+  Open = "Open",
+  Canceled = "Canceled",
+  Done = "Done",
+  Rejected = "Rejected ",
+}
+
 export enum EmployeeStatus {
   Active = "Active",
   Inactive = "Inactive",
@@ -67,6 +81,27 @@ export enum EmployeeStatus {
 export enum Zone {
   Cashier = "Cashier",
   Customer = "Customer",
+}
+
+export enum IncidnetType {
+  Phone = "Phone",
+  Uniform = "Uniform"
+}
+
+export enum IncidnetStatus {
+  New = "New",
+  Accepted = "Accepted",
+  Rejected = "Rejected"
+}
+
+export enum EvidenceType {
+  Image = "Image",
+}
+
+export enum EvidenceStatus {
+  ToBeFetched = "ToBeFetched",
+  Fetched = "Fetched",
+  NotFound = "NotFound"
 }
 
 export enum StatusColor {

@@ -1,7 +1,6 @@
 import { District, Province, Ward } from "../models/Location";
 import http from "../utils/http";
 
-
 export const LocationAPI = {
     getProvinces: async () => {
         const res = await http.get<Province[]>(`/api/locations/provinces`);

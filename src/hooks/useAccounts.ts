@@ -1,16 +1,11 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
-import { AccountAPI, AddAccountParams, GetAccountsPagingResult, GetAccountsParams, UpdateAccountParams } from "../apis/AccountAPI";
+import { AccountAPI, AddAccountParams, GetAccountsParams, UpdateAccountParams } from "../apis/AccountAPI";
 import { Account } from "../models/Account";
+import { CommonResponse } from "../models/CommonResponse";
 
 export const useGetAllAccounts = (params: GetAccountsParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
-    refetch,
-  }: UseQueryResult<GetAccountsPagingResult, Error> = useQuery({
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<CommonResponse<Account>, Error> = useQuery({
     queryKey: ["accountList", params.size, params.pageIndex],
     queryFn: async () => {
       return await AccountAPI.getAllFilter(params);

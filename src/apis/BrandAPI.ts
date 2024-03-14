@@ -1,5 +1,6 @@
 import { getAccessToken } from "../context/AuthContext";
 import { Brand } from "../models/Brand";
+import { CommonResponse } from "../models/CommonResponse";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetBrandsParams = {
@@ -11,13 +12,6 @@ export type GetBrandsParams = {
   hasManager?: boolean;
 };
 
-export type GetBrandsPagingResult = {
-  pageIndex: number;
-  pageSize: number;
-  totalCount: number;
-  isValuesEmpty: boolean;
-  values: Brand[];
-};
 export type AddBrandParams = {
   name: string;
   email: string;
@@ -36,7 +30,7 @@ export type UpdateBrandParams = {
 export const BrandAPI = {
   getAllFilter: async (params: GetBrandsParams) => {
     const token = getAccessToken();
-    const res = await http.get<GetBrandsPagingResult>(
+    const res = await http.get<CommonResponse<Brand>>(
       `/api/brands?${toQueryParams(params)}`,
       {
         headers: {

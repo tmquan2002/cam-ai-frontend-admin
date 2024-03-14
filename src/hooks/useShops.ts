@@ -1,16 +1,11 @@
 import { UseQueryResult, useQuery } from "react-query";
-import { GetShopsPagingResult, GetShopsParams, ShopAPI } from "../apis/ShopAPI";
+import { GetShopsParams, ShopAPI } from "../apis/ShopAPI";
+import { CommonResponse } from "../models/CommonResponse";
 import { Shop } from "../models/Shop";
 
 export const useGetAllShops = (params: GetShopsParams) => {
-  const {
-    isError,
-    isLoading,
-    isFetching,
-    data,
-    error,
-    refetch,
-  }: UseQueryResult<GetShopsPagingResult, Error> = useQuery({
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<CommonResponse<Shop>, Error> = useQuery({
     queryKey: ["shopList", params.size, params.pageIndex],
     queryFn: async () => {
       return await ShopAPI.getAllFilter(params);
@@ -37,12 +32,7 @@ export const useGetAllShopsSelect = (params: GetShopsParams) => {
 };
 
 export const useGetShopById = (id: string | undefined) => {
-  const {
-    isError,
-    isLoading,
-    data,
-    error,
-    refetch,
+  const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<Shop, Error> = useQuery({
     queryKey: ["shopDetail", id],
     queryFn: async () => {

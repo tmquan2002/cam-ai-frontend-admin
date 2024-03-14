@@ -1,4 +1,5 @@
 import { getAccessToken } from "../context/AuthContext";
+import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBox, EdgeBoxModel } from "../models/EdgeBox";
 import http, { toQueryParams } from "../utils/http";
 
@@ -10,14 +11,6 @@ export type GetEdgeBoxParams = {
     shopId?: string;
     size?: string | number | null;
     pageIndex?: number;
-};
-
-export type GetEdgeBoxesPagingResult = {
-    pageIndex: number;
-    pageSize: number;
-    totalCount: number;
-    isValuesEmpty: boolean;
-    values: EdgeBox[];
 };
 
 export type AddEdgeBoxParams = {
@@ -38,7 +31,7 @@ export type UpdateEdgeBoxParams = {
 export const EdgeBoxAPI = {
     getAllFilter: async (params: GetEdgeBoxParams) => {
         const token = getAccessToken();
-        const res = await http.get<GetEdgeBoxesPagingResult>(
+        const res = await http.get<CommonResponse<EdgeBox>>(
             `/api/edgeboxes?${toQueryParams(params)}`,
             {
                 headers: {
