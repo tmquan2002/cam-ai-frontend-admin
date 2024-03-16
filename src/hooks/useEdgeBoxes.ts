@@ -7,7 +7,7 @@ export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error,
     refetch,
   }: UseQueryResult<CommonResponse<EdgeBox>, Error> = useQuery({
-    queryKey: ["edegBoxList", params.size, params.pageIndex],
+    queryKey: ["edgeBoxList", params.size, params.pageIndex],
     queryFn: async () => {
       return await EdgeBoxAPI.getAllFilter(params);
     },
@@ -19,7 +19,7 @@ export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
 export const useGetAllEdgeBoxesSelect = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<SelectType[], Error> = useQuery({
-    queryKey: ["edegBoxListSelect"],
+    queryKey: ["edgeBoxListSelect"],
     queryFn: async () => {
       const res = await EdgeBoxAPI.getAllFilter(params);
       return res.values.map((items) => ({
@@ -35,7 +35,7 @@ export const useGetAllEdgeBoxesSelect = (params: GetEdgeBoxParams) => {
 export const useGetEdgeBoxById = (id: string) => {
   const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<EdgeBox, Error> = useQuery({
-    queryKey: ["edegBoxDetail", id],
+    queryKey: ["edgeBoxDetail", id],
     queryFn: async () => {
       if (id) {
         return await EdgeBoxAPI.getById(id);
@@ -52,7 +52,7 @@ export const useGetEdgeBoxById = (id: string) => {
 export const useGetEdgeBoxModel = () => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<SelectType[], Error> = useQuery({
-    queryKey: ["edegBoxModel"],
+    queryKey: ["edgeBoxModel"],
     queryFn: async () => {
       const res = await EdgeBoxAPI.getEdgeBoxModel();
       return res.map((items) => ({

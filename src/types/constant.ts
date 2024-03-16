@@ -52,3 +52,20 @@ export enum EdgeBoxFilterProps {
   FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
   INITIAL_DATA = "initialData",
 }
+
+export enum RequestFilterProps {
+  FILTER = "requestFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  FILTER_TYPE = "filterType",
+  FILTER_STATUS = "filterStatus",
+  FILTER_SEARCH_BRAND = "filterSearchBrand",
+  FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
+  FILTER_SEARCH_SHOP = "filterSearchShop",
+  FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
+  FILTER_SEARCH_EDGE_BOX = "filterSearchEdgeBox",
+  FILTER_SEARCH_EDGE_BOX_ID = "filterSearchEdgeBoxId",
+  FILTER_SEARCH_ACCOUNT = "filterSearchAccount",
+  FILTER_SEARCH_ACCOUNT_ID = "filterSearchAccountId",
+  FILTER_HAS_REPLY = "filterHasReply"
+}

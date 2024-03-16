@@ -15,6 +15,22 @@ export const useGetAllAccounts = (params: GetAccountsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+export const useGetAllAccountsSelect = (params: GetAccountsParams) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<SelectType[], Error> = useQuery({
+    queryKey: ["accountListSelect"],
+    queryFn: async () => {
+      const res = await AccountAPI.getAllFilter(params);
+      return res.values.map((items) => ({
+        value: items.id,
+        label: items.name
+      }))
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
+};
+
 export const useGetAccountById = (id: string | undefined) => {
   const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<Account, Error> = useQuery({

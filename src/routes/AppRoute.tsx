@@ -3,22 +3,22 @@ import MainLayout from "../pages/admin/MainLayout";
 import AccountAdd from "../pages/admin/account/AccountAdd";
 import AccountDetail from "../pages/admin/account/AccountDetail";
 import AccountMainPage from "../pages/admin/account/AccountMainPage";
+import AccountUpdate from "../pages/admin/account/AccountUpdate";
 import BrandAdd from "../pages/admin/brand/BrandAdd";
 import BrandDetail from "../pages/admin/brand/BrandDetail";
 import BrandMainPage from "../pages/admin/brand/BrandMainPage";
 import BrandUpdate from "../pages/admin/brand/BrandUpdate";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
+import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
+import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
+import RequestMainPage from "../pages/admin/request/RequestMainPage";
+import ShopDetail from "../pages/admin/shop/ShopDetail";
+import ShopMainPage from "../pages/admin/shop/ShopMainPage";
+import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import ShopMainPage from "../pages/admin/shop/ShopMainPage";
-import ShopDetail from "../pages/admin/shop/ShopDetail";
-import AccountUpdate from "../pages/admin/account/AccountUpdate";
-import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
-import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
-import ReportMainPage from "../pages/admin/report/ReportMainPage";
-import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
-import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 
 const AppRoute = () => {
   return useRoutes([
@@ -122,11 +122,11 @@ const AppRoute = () => {
           ]
         },
         {
-          path: "/report",
+          path: "/request",
           element: <MainLayout />,
           children: [
             {
-              element: <ReportMainPage />,
+              element: <RequestMainPage />,
               index: true,
             }
           ]

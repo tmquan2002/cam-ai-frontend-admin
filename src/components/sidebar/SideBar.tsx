@@ -12,7 +12,7 @@ const data = [
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
-    { label: 'Report', icon: MdContentPaste, path: '/report' },
+    { label: 'Request', icon: MdContentPaste, path: '/request' },
 ];
 
 export function SideBar() {

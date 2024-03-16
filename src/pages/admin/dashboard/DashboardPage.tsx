@@ -64,18 +64,20 @@ const DashboardPage = () => {
                     <Card my={rem(32)} className={styled["chart"]}>
                         <Text size='lg' fw="bold" fz='25px' c={"light-blue.4"} mt={20}>COUNT CHART</Text>
                         <Group ml={40} mt={10} justify="space-between">
-                            <Group>
+                            <Group ta="left">
                                 <Select
                                     value={sortBy} onChange={setSortBy}
                                     label="Sort by"
                                     placeholder="Pick value"
                                     data={['Date', 'Total']}
+                                    allowDeselect={false}
                                 />
                                 <Select
                                     value={value} onChange={setValue}
                                     label="View data"
                                     placeholder="Pick value"
                                     data={['Brand', 'Account', 'Shop', 'EdgeBox']}
+                                    allowDeselect={false}
                                 />
                             </Group>
                             <Text fs="italic" mr={30} size="sm">Data based from 50 latest records</Text>
