@@ -1,5 +1,7 @@
 import { ChartData } from "@mantine/charts";
+import { CommonResponse } from "../models/CommonResponse";
 import { ShopCount } from "../models/Realtime";
+import { removeTime } from "./dateFunction";
 
 export function isEmpty(value: string | null | undefined) {
   return (
@@ -59,4 +61,41 @@ export function convertCountDataToChartData(data: ShopCount[]): ChartData {
     )
   })
   return chartData;
+}
+
+interface DataWithDate {
+  createdDate: string;
+  [key: string]: any;
+}
+
+interface CountDate {
+  Date: string;
+  DateToShow: string;
+  Total: number;
+}
+export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, sortBy?: string | null) {
+  const countByDate: CountDate[] = [];
+  data?.values.forEach(obj => {
+    const date = removeTime(new Date(obj.createdDate), "/")
+    const index = countByDate.findIndex(item => item.DateToShow == date)
+    if (index != -1) {
+      countByDate[index] = { Date: obj.createdDate, DateToShow: date, Total: countByDate[index].Total + 1 }
+    } else {
+      countByDate.push({ Date: obj.createdDate, DateToShow: date, Total: 1 })
+    }
+  });
+
+  if (sortBy == "Date") {
+    return countByDate.sort((a, b) => {
+      const dateA = new Date(a.Date);
+      const dateB = new Date(b.Date);
+      return dateA.getTime() - dateB.getTime();
+    }).slice(-10);
+  }
+  if (sortBy == "Total") {
+    return countByDate.sort((a, b) => {
+      return a.Total - b.Total;
+    }).slice(-10);
+  }
+  return countByDate;
 }

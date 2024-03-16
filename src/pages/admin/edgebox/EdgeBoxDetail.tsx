@@ -9,7 +9,7 @@ import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
-import { removeTime } from "../../../utils/dateFormat";
+import { removeTime } from "../../../utils/dateFunction";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
 import { EdgeBoxStatus } from "../../../types/enum";

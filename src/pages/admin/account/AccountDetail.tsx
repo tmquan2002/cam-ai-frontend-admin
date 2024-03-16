@@ -12,7 +12,7 @@ import { ShopListById } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { AccountStatus, RoleEnum } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateFormat";
+import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/accountdetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [

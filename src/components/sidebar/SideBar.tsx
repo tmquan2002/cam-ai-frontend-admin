@@ -1,11 +1,10 @@
-import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
-import { FaTicketAlt } from "react-icons/fa";
-import { MdContentPaste, MdOutlineSupervisorAccount } from "react-icons/md";
-import { LinksGroup } from './LinksGroup';
-import styled from './sidebar.module.scss';
 import { Divider, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
+import { MdContentPaste, MdOutlineSupervisorAccount } from "react-icons/md";
 import { WINDOW_BREAK_POINT } from "../../constants/WindowBreakPoint";
+import { LinksGroup } from './LinksGroup';
+import styled from './sidebar.module.scss';
 
 const data = [
     { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
@@ -14,7 +13,6 @@ const data = [
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
     { label: 'Report', icon: MdContentPaste, path: '/report' },
-    { label: 'Ticket', icon: FaTicketAlt, path: '/ticket', disabled: true },
 ];
 
 export function SideBar() {

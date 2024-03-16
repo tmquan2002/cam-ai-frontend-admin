@@ -8,7 +8,7 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { BrandStatus } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateFormat';
+import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/brand.module.scss";
 import { BrandFilterProps } from '../../../../types/constant';
 

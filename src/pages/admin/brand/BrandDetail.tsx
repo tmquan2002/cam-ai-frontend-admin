@@ -14,7 +14,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { BrandStatus } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateFormat";
+import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
 import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";

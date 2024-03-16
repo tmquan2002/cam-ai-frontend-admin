@@ -10,7 +10,7 @@ import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender, RoleEnum } from "../../../../types/enum";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateFormat";
+import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
 import { isEmpty } from "lodash";
 
 export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBrandId?: string, initialBrandName?: string }) => {

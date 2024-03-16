@@ -8,7 +8,7 @@ import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
-import { removeTime } from "../../../utils/dateFormat";
+import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
 const breadcrumbs: BreadcrumbItem[] = [
     {

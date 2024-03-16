@@ -8,7 +8,7 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { AccountStatus, RoleEnum } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateFormat';
+import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/account.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { AccountFilterProps } from '../../../../types/constant';
