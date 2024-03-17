@@ -16,6 +16,7 @@ import { RequestStatus, RequestType } from '../../../types/enum';
 import { removeTime } from '../../../utils/dateFunction';
 import styled from "./request.module.scss";
 
+//TODO: Add a button for each requests that approve or reject request
 const RequestList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(RequestFilterProps.FILTER, {
         pageIndex: 1,

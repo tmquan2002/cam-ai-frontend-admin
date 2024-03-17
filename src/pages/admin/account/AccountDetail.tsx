@@ -212,6 +212,7 @@ const AccountDetail = () => {
                         }
                     </>
                 }
+                
                 {
                     data?.role == RoleEnum.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>

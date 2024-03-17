@@ -1,18 +1,20 @@
-import { ActionIcon, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
-import { MdAccessTime, MdDelete, MdEdit, MdMyLocation } from "react-icons/md";
+import { GoVersions } from "react-icons/go";
+import { MdAccessTime, MdDelete, MdEdit, MdInfo, MdMyLocation } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import { ShopListByEdgeBox } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
+import { EdgeBoxStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
-import { EdgeBoxStatus } from "../../../types/enum";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -85,6 +87,12 @@ const EdgeBoxDetail = () => {
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                                 <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} type="edgebox" />
                                             </Group>
+                                            {data?.version &&
+                                                <Group mb={10}>
+                                                    <GoVersions />
+                                                    <Text size="md">Version: {data?.version}</Text>
+                                                </Group>
+                                            }
                                             {data?.edgeBoxLocation &&
                                                 <Group mb={10}>
                                                     <MdMyLocation />
@@ -125,14 +133,66 @@ const EdgeBoxDetail = () => {
                                         </Menu>
                                     </div>
                                 </div>
-                                <Divider my="md" />
-                                {/*TODO: Add more detail of shop here */}
-                                <div className={styled["profile-detail"]}>
-
-                                </div>
                             </>
                         }
                     </div>
+                }
+                {data?.installs && data?.installs.length > 0 &&
+                    <>
+                        {!isLoading ?
+                            <div className={styled["container-detail"]}>
+                                <div>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>INSTALLED SHOPS</Text>
+                                    <ShopListByEdgeBox data={data.installs} />
+                                </div>
+                            </div>
+                            :
+                            <Box className={styled["loader"]}>
+                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                            </Box>
+                        }
+                    </>
+                }
+                {data?.edgeBoxModel &&
+                    <>
+                        {!isLoading ?
+                            <div className={styled["container-detail"]}>
+                                <div>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>MODEL</Text>
+                                    <div className={styled["model-detail"]}>
+                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.edgeBoxModel?.name}</Text>
+                                        {data?.edgeBoxModel?.description &&
+                                            <Text size="md" mb={20}>{data?.edgeBoxModel?.description}</Text>
+                                        }
+                                        <Group mb={5}>
+                                            <MdInfo />
+                                            <Text size="md">Stats: </Text>
+                                        </Group>
+                                        <Group justify="space-between" gap={0}>
+                                            <Text size="md"><b>Model code:</b> {data?.edgeBoxModel?.modelCode || "No Data"}</Text>
+                                            <Text size="md"><b>Manufacturer:</b> {data?.edgeBoxModel?.manufacturer || "No Data"}</Text>
+                                            <Text size="md"><b>Storage:</b> {data?.edgeBoxModel?.storage || "No Data"}</Text>
+                                        </Group>
+                                        <Group justify="space-between" gap={0}>
+                                            <Text size="md"><b>CPU:</b> {data?.edgeBoxModel?.cpu || "No Data"}</Text>
+                                            <Text size="md"><b>RAM:</b> {data?.edgeBoxModel?.ram || "No Data"}</Text>
+                                            <Text size="md"><b>OS:</b> {data?.edgeBoxModel?.os || "No Data"}</Text>
+                                        </Group>
+                                        {data?.edgeBoxModel?.createdDate &&
+                                            <Group mt={20}>
+                                                <MdAccessTime />
+                                                <Text size="md">Created on: {data?.edgeBoxModel?.createdDate && removeTime(new Date(data?.edgeBoxModel?.createdDate), "/")}</Text>
+                                            </Group>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <Box className={styled["loader"]}>
+                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                            </Box>
+                        }
+                    </>
                 }
             </div>
             <Modal opened={modalDeleteOpen} onClose={closeDelete}

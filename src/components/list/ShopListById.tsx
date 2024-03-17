@@ -5,9 +5,10 @@ import { useGetAllShops } from "../../hooks/useShops";
 import { Shop } from "../../models/Shop";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
+import { EdgeBoxInstall } from "../../models/EdgeBox";
 
 interface ShopListParam {
-    idType: "brand" | "shopmanager";
+    idType: "brand" | "shopmanager" | "shop";
     id: string;
 }
 
@@ -74,6 +75,20 @@ export const ShopListById = ({ idType, id }: ShopListParam) => {
                     }
                 </div>
             }
+        </div>
+    )
+}
+
+export const ShopListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
+    return (
+        <div className={styled["card-detail"]}>
+            <Grid mt={20}>
+                {data?.map((item, index) => (
+                    <Grid.Col key={index} span={{ base: 12, md: 6 }}>
+                        <ShopCard item={item.shop} />
+                    </Grid.Col>
+                ))}
+            </Grid>
         </div>
     )
 }
