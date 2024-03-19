@@ -3,6 +3,7 @@ import { GetRequestsParams, RequestAPI } from "../apis/RequestAPI";
 import { CommonResponse } from "../models/CommonResponse";
 import { Request } from "../models/Request";
 
+//SCRAPPED
 export const useGetAllRequests = (params: GetRequestsParams) => {
     const { isError, isLoading, isFetching, data, error, refetch,
     }: UseQueryResult<CommonResponse<Request>, Error> = useQuery({

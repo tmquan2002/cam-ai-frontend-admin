@@ -23,7 +23,7 @@ const TitleAndNumberCard = ({ title, data, loading, link }:
         <Box className={styled["static-card"]} pos={"relative"} h={220}>
             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
             <p className={styled["static-card-title"]}>{title}</p>
-            <div className={styled["static-card-number"]}>{data?.totalCount}</div>
+            <div className={styled["static-card-number"]}>{data?.totalCount || "No Data"}</div>
             <Link to={link} className={styled["static-card-link"]}>View list</Link>
         </Box>
     );

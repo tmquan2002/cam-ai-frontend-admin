@@ -178,12 +178,6 @@ const EdgeBoxDetail = () => {
                                             <Text size="md"><b>RAM:</b> {data?.edgeBoxModel?.ram || "No Data"}</Text>
                                             <Text size="md"><b>OS:</b> {data?.edgeBoxModel?.os || "No Data"}</Text>
                                         </Group>
-                                        {data?.edgeBoxModel?.createdDate &&
-                                            <Group mt={20}>
-                                                <MdAccessTime />
-                                                <Text size="md">Created on: {data?.edgeBoxModel?.createdDate && removeTime(new Date(data?.edgeBoxModel?.createdDate), "/")}</Text>
-                                            </Group>
-                                        }
                                     </div>
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 import { getAccessToken } from "../context/AuthContext";
 import { CommonResponse } from "../models/CommonResponse";
 import http, { toQueryParams } from "../utils/http";
-
+// SCRAPPED
 export type GetRequestsParams = {
     type?: string;
     accountId?: string;
@@ -22,7 +22,7 @@ export type UpdateStatusReplyParams = {
     }
 }
 
-// TODO: Create request UI for admin
+// SCRAPPED
 export const RequestAPI = {
     getAllFilter: async (params: GetRequestsParams) => {
         const token = getAccessToken();

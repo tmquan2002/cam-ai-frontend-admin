@@ -12,7 +12,6 @@ import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
-import RequestMainPage from "../pages/admin/request/RequestMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
 import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
@@ -118,16 +117,6 @@ const AppRoute = () => {
             {
               path: ":edgeBoxId",
               element: <EdgeBoxDetail />,
-            }
-          ]
-        },
-        {
-          path: "/request",
-          element: <MainLayout />,
-          children: [
-            {
-              element: <RequestMainPage />,
-              index: true,
             }
           ]
         },

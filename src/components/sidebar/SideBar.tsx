@@ -1,7 +1,7 @@
 import { Divider, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
-import { MdContentPaste, MdOutlineSupervisorAccount } from "react-icons/md";
+import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { WINDOW_BREAK_POINT } from "../../constants/WindowBreakPoint";
 import { LinksGroup } from './LinksGroup';
 import styled from './sidebar.module.scss';
@@ -12,7 +12,6 @@ const data = [
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
-    { label: 'Request', icon: MdContentPaste, path: '/request' },
 ];
 
 export function SideBar() {
