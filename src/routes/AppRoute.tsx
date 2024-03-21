@@ -13,6 +13,7 @@ import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
+import ShopEdgeBoxAssign from "../pages/admin/shop/ShopEdgeBoxAssign";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
 import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 import LoginPage from "../pages/common/login/LoginPage";
@@ -99,6 +100,10 @@ const AppRoute = () => {
             {
               path: ":shopId",
               element: <ShopDetail />,
+            },
+            {
+              path: ":shopId/assign",
+              element: <ShopEdgeBoxAssign />,
             }
           ]
         },

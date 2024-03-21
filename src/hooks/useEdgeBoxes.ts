@@ -1,7 +1,7 @@
 import { UseQueryResult, useMutation, useQuery } from "react-query";
-import { AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
+import { AddEdgeBoxInstallParams, AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
 import { CommonResponse } from "../models/CommonResponse";
-import { EdgeBox } from "../models/EdgeBox";
+import { EdgeBox, EdgeBoxInstall } from "../models/EdgeBox";
 
 export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error,
@@ -65,6 +65,23 @@ export const useGetEdgeBoxModel = () => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
+  const { isError, isLoading, data, error, refetch,
+  }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
+    queryKey: ["edgeBoxInstallList", edgeBoxId],
+    queryFn: async () => {
+      if (edgeBoxId) {
+        return await EdgeBoxAPI.getEdgeBoxInstallsByEdgeBoxId(edgeBoxId);
+      } else {
+        return {}
+      }
+    },
+    enabled: !!edgeBoxId,
+  });
+
+  return { isError, isLoading, data, error, refetch };
+};
+
 export const useAddEdgeBox = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "addEdgeBox",
@@ -92,6 +109,17 @@ export const useDeleteEdgeBox = () => {
     mutationKey: "deleteEdgeBox",
     mutationFn: async (id: string) => {
       return await EdgeBoxAPI.delete(id);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
+export const useInstallEdgeBox = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "installEdgeBox",
+    mutationFn: async (params: AddEdgeBoxInstallParams) => {
+      return await EdgeBoxAPI.install(params);
     },
   });
 

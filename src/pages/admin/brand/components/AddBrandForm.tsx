@@ -56,7 +56,7 @@ export const AddBrandForm = () => {
                 if (axios.isAxiosError(error)) {
                     console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: error.response?.data.errors.response,
+                        message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
                     });

@@ -1,7 +1,7 @@
-import { Avatar, Box, Divider, Group, Loader, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Divider, Group, Loader, LoadingOverlay, Menu, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
+import { MdAccessTime, MdAccountCircle, MdAssignmentAdd, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
@@ -10,6 +10,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
+import { IconDots } from "@tabler/icons-react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -23,6 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const ShopDetail = () => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const { data, isLoading, error } = useGetShopById(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -73,6 +75,26 @@ const ShopDetail = () => {
                                             </Group>
                                         }
                                     </div>
+                                </div>
+                                <div>
+                                    <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
+                                        <Menu.Target>
+                                            <Tooltip label="Actions" withArrow>
+                                                <ActionIcon variant="transparent"
+                                                    color={computedColorScheme === "dark" ? "white" : "black"}
+                                                    size={"md"}>
+                                                    <IconDots style={{ width: 25, height: 25 }} />
+                                                </ActionIcon>
+                                            </Tooltip>
+                                        </Menu.Target>
+
+                                        <Menu.Dropdown>
+                                            <Menu.Item leftSection={<MdAssignmentAdd />}
+                                                onClick={() => navigate(`/shop/${params.shopId!}/assign`)}>
+                                                Assign Edge Box
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
                                 </div>
                             </div>
                             <Divider my="md" />
@@ -141,7 +163,6 @@ const ShopDetail = () => {
                         </>
                     }
                 </div>
-
             }
         </div >
     );

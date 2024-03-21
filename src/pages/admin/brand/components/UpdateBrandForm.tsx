@@ -1,4 +1,4 @@
-import { TextInput, Button, Group, Loader } from "@mantine/core";
+import { TextInput, Button, Group, Loader, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     const { mutate: updateBrand, isLoading } = useUpdateBrand();
-    const { data, isLoading: initialDataLoading } = useGetBrandById(id);
+    const { data, isLoading: initialDataLoading, error } = useGetBrandById(id);
     const navigate = useNavigate();
 
     const form = useForm({
@@ -88,48 +88,53 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     return (
         <>
-            {initialDataLoading ? <Loader /> : <form
-                onSubmit={form.onSubmit((values) => onSubmitForm(values))}
-                style={{ textAlign: "left" }}
-            >
-                <TextInput mt={10}
-                    withAsterisk
-                    label="Name"
-                    placeholder="Brand Name"
-                    size="md"
-                    {...form.getInputProps("name")}
-                />
-                <TextInput mt={10}
-                    withAsterisk
-                    label="Email"
-                    placeholder="your@email.com"
-                    size="md"
-                    {...form.getInputProps("email")}
-                />
+            {initialDataLoading ? <Loader /> :
+                <>
+                    {error ? <Text w={'100%'} c="dimmed" mt={20} ta="center">Brand not found</Text> :
+                        <form
+                            onSubmit={form.onSubmit((values) => onSubmitForm(values))}
+                            style={{ textAlign: "left" }}
+                        >
+                            <TextInput mt={10}
+                                withAsterisk
+                                label="Name"
+                                placeholder="Brand Name"
+                                size="md"
+                                {...form.getInputProps("name")}
+                            />
+                            <TextInput mt={10}
+                                withAsterisk
+                                label="Email"
+                                placeholder="your@email.com"
+                                size="md"
+                                {...form.getInputProps("email")}
+                            />
 
-                <TextInput mt={10}
-                    label="Phone" withAsterisk
-                    placeholder="Phone Number"
-                    size="md"
-                    {...form.getInputProps("phone")}
-                />
+                            <TextInput mt={10}
+                                label="Phone" withAsterisk
+                                placeholder="Phone Number"
+                                size="md"
+                                {...form.getInputProps("phone")}
+                            />
 
-                <Group
-                    justify="flex-start"
-                    mt={10}
-                >
-                    <Button
-                        loading={isLoading}
-                        type="submit"
-                        variant="gradient"
-                        size="md"
-                        mt={20}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Update
-                    </Button>
-                </Group>
-            </form>
+                            <Group
+                                justify="flex-start"
+                                mt={10}
+                            >
+                                <Button
+                                    loading={isLoading}
+                                    type="submit"
+                                    variant="gradient"
+                                    size="md"
+                                    mt={20}
+                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                >
+                                    Update
+                                </Button>
+                            </Group>
+                        </form>
+                    }
+                </>
             }
         </>
     );

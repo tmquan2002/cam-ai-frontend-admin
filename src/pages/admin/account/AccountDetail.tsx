@@ -37,8 +37,6 @@ const AccountDetail = () => {
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    // console.log(data?.role)
-
     const onDelete = () => {
         deleteAccount(params.accountId!, {
             onSuccess() {

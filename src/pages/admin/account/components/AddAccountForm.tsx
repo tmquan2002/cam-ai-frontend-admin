@@ -203,7 +203,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="District" placeholder="Select"
                     disabled={form.values.province == ""}
                     data={districtsList || []}
-                    rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                    rightSection={form.values.province != "" || isFetchingDistricts ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('district')}
                     onChange={(value) => {
                         form.setFieldValue('district', value || "")
@@ -215,7 +215,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Ward" placeholder="Select"
                     disabled={form.values.province == "" || districtSearch == ""}
                     data={wardsList || []}
-                    rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                    rightSection={form.values.province != "" || districtSearch != "" || isFetchingWards ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('ward')}
                     searchValue={wardSearch} onSearchChange={setWardSearch}
                     searchable nothingFoundMessage="Not Found"

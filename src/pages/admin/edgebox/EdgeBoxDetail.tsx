@@ -10,7 +10,7 @@ import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopListByEdgeBox } from "../../../components/list/ShopListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { useDeleteEdgeBox, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
+import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
@@ -35,6 +35,7 @@ const EdgeBoxDetail = () => {
 
 
     const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
+    const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetEdgeBoxInstallByEdgeBoxId(params.edgeBoxId!);
     const { mutate: deleteEdgeBox } = useDeleteEdgeBox();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -137,22 +138,7 @@ const EdgeBoxDetail = () => {
                         }
                     </div>
                 }
-                {data?.installs && data?.installs.length > 0 &&
-                    <>
-                        {!isLoading ?
-                            <div className={styled["container-detail"]}>
-                                <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>INSTALLED SHOPS</Text>
-                                    <ShopListByEdgeBox data={data.installs} />
-                                </div>
-                            </div>
-                            :
-                            <Box className={styled["loader"]}>
-                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-                            </Box>
-                        }
-                    </>
-                }
+
                 {data?.edgeBoxModel &&
                     <>
                         {!isLoading ?
@@ -188,6 +174,23 @@ const EdgeBoxDetail = () => {
                         }
                     </>
                 }
+
+                {dataInstall && dataInstall?.values?.length > 0 &&
+                    <>
+                        {!isLoadingInstall ?
+                            <div className={styled["container-detail"]}>
+                                <div>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>INSTALLED SHOPS</Text>
+                                    <ShopListByEdgeBox data={dataInstall.values} />
+                                </div>
+                            </div>
+                            :
+                            <Box className={styled["loader"]}>
+                                <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                            </Box>
+                        }
+                    </>
+                }
             </div>
             <Modal opened={modalDeleteOpen} onClose={closeDelete}
                 title="Delete this edge box?" centered>
@@ -211,7 +214,7 @@ const EdgeBoxDetail = () => {
             </Modal>
             <Modal opened={modalupdateOpen} onClose={closeUpdate}
                 title="Update Model" centered>
-                <UpdateEdgeBoxForm id={params.edgeBoxId!} close={closeUpdate} refetch={refetch} />
+                <UpdateEdgeBoxForm id={params.edgeBoxId!} close={closeUpdate} refetch={refetch} refetchInstall={refetchInstall} />
             </Modal>
         </>
     );
