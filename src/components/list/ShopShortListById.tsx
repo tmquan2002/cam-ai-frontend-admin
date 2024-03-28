@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
+import { Box, Button, Card, Grid, Group, LoadingOverlay, Text } from "@mantine/core";
 import { MdHome, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
@@ -7,7 +7,7 @@ import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 
-interface ShopListParam {
+interface ShortShopListParam {
     idType: "brand" | "shopmanager" | "shop";
     id: string;
 }
@@ -20,12 +20,12 @@ const ShopCard = ({ item }: { item: Shop }) => {
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <div>
+            <Group mb={10}>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.shopStatus &&
-                    <StatusBadge statusName={item?.shopStatus} type="shop" mb={15} mt={15} />
+                    <StatusBadge statusName={item?.shopStatus} type="shop" padding={10} size="sm" />
                 }
-            </div>
+            </Group>
 
             {(item.addressLine || item.ward) &&
                 <div className={styled["icon-text"]}>
@@ -48,12 +48,12 @@ const ShopCard = ({ item }: { item: Shop }) => {
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/shop/${item.id}`)}>
-                View Detail
+                View Shop
             </Button>
         </Card>
     )
 }
-export const ShopListById = ({ idType, id }: ShopListParam) => {
+export const ShopShortListById = ({ idType, id }: ShortShopListParam) => {
 
     const { isLoading, data, error } = idType == "brand" ? useGetAllShops({ brandId: id }) : useGetAllShops({ shopManagerId: id })
 

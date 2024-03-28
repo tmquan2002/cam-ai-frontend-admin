@@ -8,7 +8,7 @@ import { MdAccessTime, MdDelete, MdEdit, MdInfo, MdMyLocation } from "react-icon
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import { ShopListByEdgeBox } from "../../../components/list/ShopListById";
+import { ShopListByEdgeBox } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxStatus } from "../../../types/enum";
@@ -86,7 +86,7 @@ const EdgeBoxDetail = () => {
                                         <div>
                                             <Group mb={15}>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                                <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} type="edgebox" />
+                                                <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} />
                                             </Group>
                                             {data?.version &&
                                                 <Group mb={10}>
@@ -121,10 +121,16 @@ const EdgeBoxDetail = () => {
                                             </Menu.Target>
 
                                             <Menu.Dropdown>
+                                                {/* <Menu.Label>Actions</Menu.Label> */}
                                                 <Menu.Item leftSection={<MdEdit />}
                                                     onClick={openUpdate}>
-                                                    Update
+                                                    Edit Info
                                                 </Menu.Item>
+                                                <Menu.Item leftSection={<MdEdit />}
+                                                    onClick={openUpdate}>
+                                                    Update Location
+                                                </Menu.Item>
+                                                {/* <Menu.Label>Danger zone</Menu.Label> */}
                                                 <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.edgeBoxStatus == EdgeBoxStatus.Inactive ? "grey" : "red" }} />}
                                                     disabled={data?.edgeBoxStatus == EdgeBoxStatus.Inactive}
                                                     onClick={openDelete} >

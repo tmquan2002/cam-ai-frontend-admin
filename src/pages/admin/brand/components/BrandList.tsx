@@ -110,7 +110,7 @@ const BrandList = () => {
                     </Group></Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} type="brand" fullWidth />
+                    <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

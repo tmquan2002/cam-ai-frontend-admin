@@ -9,7 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
-import { ShopListById } from "../../../components/list/ShopListById";
+import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
@@ -126,7 +126,7 @@ const BrandDetail = () => {
                                             <Group mb={15}>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
                                                 <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"}
-                                                    type="brand" />
+                                                />
                                             </Group>
 
                                             {isLoadingManager ? <Loader size="sm" /> :
@@ -216,7 +216,7 @@ const BrandDetail = () => {
                                         </Tabs.List>
 
                                         <Tabs.Panel value="shops">
-                                            <ShopListById id={params.brandId!} idType="brand" />
+                                            <ShopShortListById id={params.brandId!} idType="brand" />
                                         </Tabs.Panel>
 
                                         <Tabs.Panel value="managers">

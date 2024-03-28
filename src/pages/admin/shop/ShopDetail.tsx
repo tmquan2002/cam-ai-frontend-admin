@@ -1,6 +1,6 @@
-import { ActionIcon, Avatar, Box, Divider, Group, Loader, LoadingOverlay, Menu, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdAssignmentAdd, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -10,7 +10,6 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
-import { IconDots } from "@tabler/icons-react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -44,7 +43,7 @@ const ShopDetail = () => {
                                     <div>
                                         <Group mb={15}>
                                             <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
-                                            <StatusBadge statusName={data?.shopStatus ? data.shopStatus : "None"} type="shop" />
+                                            <StatusBadge statusName={data?.shopStatus ? data.shopStatus : "None"} />
                                         </Group>
                                         <Group>
                                             <MdAccountCircle style={{ width: 18, height: 18 }} />
@@ -77,24 +76,12 @@ const ShopDetail = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                        <Menu.Target>
-                                            <Tooltip label="Actions" withArrow>
-                                                <ActionIcon variant="transparent"
-                                                    color={computedColorScheme === "dark" ? "white" : "black"}
-                                                    size={"md"}>
-                                                    <IconDots style={{ width: 25, height: 25 }} />
-                                                </ActionIcon>
-                                            </Tooltip>
-                                        </Menu.Target>
-
-                                        <Menu.Dropdown>
-                                            <Menu.Item leftSection={<MdAssignmentAdd />}
-                                                onClick={() => navigate(`/shop/${params.shopId!}/assign`)}>
-                                                Assign Edge Box
-                                            </Menu.Item>
-                                        </Menu.Dropdown>
-                                    </Menu>
+                                    <Button
+                                        onClick={() => navigate(`/shop/${params.shopId!}/assign`)} variant="gradient"
+                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
+                                    >
+                                        Assign Edge Box
+                                    </Button>
                                 </div>
                             </div>
                             <Divider my="md" />
@@ -124,7 +111,7 @@ const ShopDetail = () => {
                                                     <div>
                                                         <Group>
                                                             <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} type="brand" />
+                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}/>
                                                         </Group>
                                                         {data?.brand?.email &&
                                                             <Group>

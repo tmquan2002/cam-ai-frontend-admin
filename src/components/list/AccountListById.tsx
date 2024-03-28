@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, LoadingOverlay, Text } from "@mantine/core";
+import { Box, Button, Card, Grid, Group, LoadingOverlay, Text } from "@mantine/core";
 import { MdAccountCircle, MdEmail, MdHome } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllAccounts } from "../../hooks/useAccounts";
@@ -19,12 +19,12 @@ const AccountCard = ({ item }: { item: Account }) => {
         <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <div>
-                <Text fw={500} size="lg">{item?.name}</Text>
-                {item.accountStatus &&
-                    <StatusBadge statusName={item?.accountStatus} type="account" mb={15} mt={15} />
+            <Group mb={10}>
+                <Text fw={500} size="lg">{item.name}</Text>
+                {item?.accountStatus &&
+                    <StatusBadge statusName={item?.accountStatus} padding={10} size="sm" />
                 }
-            </div>
+            </Group>
 
             <div className={styled["icon-text"]}>
                 <MdAccountCircle style={{ width: '20px', height: '20px' }} />
@@ -48,7 +48,7 @@ const AccountCard = ({ item }: { item: Account }) => {
             }
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
                 onClick={() => navigate(`/account/${item.id}`)}>
-                View Detail
+                View Account
             </Button>
         </Card>
     )

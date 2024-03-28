@@ -104,6 +104,13 @@ export enum EvidenceStatus {
   NotFound = "NotFound"
 }
 
+export enum CommonStatus {
+  New = "New",
+  Active = "Active",
+  Inactive = "Inactive",
+
+}
+
 export enum StatusColor {
   ACTIVE = "#23a55a",
   INACTIVE = "#f23f43",

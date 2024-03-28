@@ -130,7 +130,7 @@ const ShopList = () => {
                 <Table.Td>{e.phone}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.shopStatus ? e.shopStatus : "None"} type="shop" fullWidth />
+                    <StatusBadge statusName={e.shopStatus ? e.shopStatus : "None"} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

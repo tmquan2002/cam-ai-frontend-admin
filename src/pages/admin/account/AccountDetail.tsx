@@ -8,7 +8,7 @@ import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdHome, MdOut
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import { ShopListById } from "../../../components/list/ShopListById";
+import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { AccountStatus, RoleEnum } from "../../../types/enum";
@@ -87,7 +87,7 @@ const AccountDetail = () => {
                                             {data?.role && <Text size="md">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
                                         </div>
                                         <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
-                                            type="account" mb={15} mt={15} />
+                                            mb={15} mt={15} />
                                     </Group>
                                     {data?.gender &&
                                         <Group>
@@ -177,7 +177,7 @@ const AccountDetail = () => {
                                                 <Group>
                                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
                                                     <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
-                                                        type="brand" />
+                                                        />
                                                 </Group>
                                                 {data?.brand?.email &&
                                                     <Group>
@@ -216,7 +216,7 @@ const AccountDetail = () => {
                     <div className={styled["container-detail"]}>
                         <div className={styled["shop-detail"]}>
                             <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOPS</Text>
-                            <ShopListById id={data?.brand.id} idType="brand" />
+                            <ShopShortListById id={data?.brand.id} idType="brand" />
                         </div>
                     </div>
                 }
@@ -232,7 +232,7 @@ const AccountDetail = () => {
                                             <Group mb={20}>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.managingShop?.name}</Text>
                                                 <StatusBadge statusName={data?.managingShop?.shopStatus ? data?.managingShop?.shopStatus : "None"}
-                                                    type="shop" />
+                                                 />
                                             </Group>
                                             <Group>
                                                 <MdOutlineAccessTime />

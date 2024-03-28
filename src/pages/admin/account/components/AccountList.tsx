@@ -133,7 +133,7 @@ const AccountList = () => {
                 <Table.Td>{e.role.replace(/([A-Z])/g, ' $1').trim()}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} type="account" fullWidth />
+                    <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>

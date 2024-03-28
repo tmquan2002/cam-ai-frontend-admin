@@ -139,7 +139,7 @@ const EdgeBoxList = () => {
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
-                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} type="edgebox" fullWidth />
+                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} fullWidth />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
