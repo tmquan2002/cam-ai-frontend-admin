@@ -23,7 +23,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
             <Group mb={10}>
                 <Text fw={500} size="lg">{item.name}</Text>
                 {item.shopStatus &&
-                    <StatusBadge statusName={item?.shopStatus} type="shop" padding={10} size="sm" />
+                    <StatusBadge statusName={item?.shopStatus} padding={10} size="sm" />
                 }
             </Group>
 
@@ -79,7 +79,7 @@ export const ShopShortListById = ({ idType, id }: ShortShopListParam) => {
     )
 }
 
-export const ShopListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
+export const ShopShortListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
     return (
         <div className={styled["card-detail"]}>
             <Grid mt={20}>

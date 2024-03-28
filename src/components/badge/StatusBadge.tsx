@@ -1,5 +1,5 @@
-import { Badge } from "@mantine/core";
-import { CommonStatus, StatusColor } from "../../types/enum";
+import { Badge, Tooltip } from "@mantine/core";
+import { CommonStatus, EdgeBoxLocation, StatusColor } from "../../types/enum";
 
 interface BadgeParams {
     statusName: string;
@@ -7,18 +7,21 @@ interface BadgeParams {
     mt?: number;
     mb?: number;
     size?: string;
-    padding?: number
+    padding?: number;
+    tooltip?: string
 }
 
-const StatusBadge = ({ statusName, fullWidth, mt, mb, size, padding }: BadgeParams) => {
+const StatusBadge = ({ statusName, fullWidth, mt, mb, size, padding, tooltip }: BadgeParams) => {
     return (
-        <Badge size={size || "lg"} radius={"lg"} p={padding || 15} autoContrast fullWidth={fullWidth}
-            color={statusName == CommonStatus.Active ? StatusColor.ACTIVE :
-                statusName == CommonStatus.Inactive ? StatusColor.INACTIVE :
-                    statusName == CommonStatus.New ? StatusColor.NEW : StatusColor.NONE}
-            mt={mt || 0} mb={mb || 0}>
-            {statusName || ""}
-        </Badge>
+        <Tooltip label={tooltip || "Status"} withArrow>
+            <Badge size={size || "lg"} radius={"lg"} p={padding || 15} autoContrast fullWidth={fullWidth}
+                color={statusName == CommonStatus.Active || statusName == EdgeBoxLocation.Idle ? StatusColor.ACTIVE :
+                    statusName == CommonStatus.Inactive || statusName == EdgeBoxLocation.Disposed ? StatusColor.INACTIVE :
+                        statusName == CommonStatus.New || statusName == EdgeBoxLocation.Occupied ? StatusColor.NEW : StatusColor.NONE}
+                mt={mt || 0} mb={mb || 0}>
+                {statusName || ""}
+            </Badge>
+        </Tooltip>
     )
 }
 

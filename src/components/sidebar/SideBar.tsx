@@ -1,6 +1,7 @@
 import { Divider, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AiFillControl, AiFillDashboard, AiFillShop, AiFillSnippets } from "react-icons/ai";
+import { GrInstall } from "react-icons/gr";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { WINDOW_BREAK_POINT } from "../../constants/WindowBreakPoint";
 import { LinksGroup } from './LinksGroup';
@@ -12,6 +13,7 @@ const data = [
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
+    { label: 'Installs', icon: GrInstall , path: '/install' },
 ];
 
 export function SideBar() {

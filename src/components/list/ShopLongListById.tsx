@@ -17,7 +17,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
     const navigate = useNavigate();
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder m={10}
+        <Card shadow="sm" padding="lg" radius="md" m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
             <Group mb={10}>
@@ -65,13 +65,11 @@ export const ShopLongListById = ({ idType, id }: LongShopListParam) => {
                 </Box> :
                 <div className={styled["card-detail"]}>
                     {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Found</Text> :
-                        <Grid mt={20}>
+                        <Box mt={20}>
                             {data?.values.map((item, index) => (
-                                <Grid.Col key={index} span={{ base: 12, md: 6 }}>
-                                    <ShopCard item={item} />
-                                </Grid.Col>
+                                <ShopCard item={item} key={index} />
                             ))}
-                        </Grid>
+                        </Box>
                     }
                 </div>
             }
@@ -79,16 +77,14 @@ export const ShopLongListById = ({ idType, id }: LongShopListParam) => {
     )
 }
 
-export const ShopListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
+export const ShopLongListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
     return (
         <div className={styled["card-detail"]}>
-            <Grid mt={20}>
+            <Box mt={20}>
                 {data?.map((item, index) => (
-                    <Grid.Col key={index} span={{ base: 12, md: 6 }}>
-                        <ShopCard item={item.shop} />
-                    </Grid.Col>
+                    <ShopCard item={item.shop} key={index} />
                 ))}
-            </Grid>
+            </Box>
         </div>
     )
 }

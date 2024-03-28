@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { VscLayersActive } from "react-icons/vsc";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -10,6 +11,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
+import { GrInstall } from "react-icons/gr";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -95,7 +97,7 @@ const ShopDetail = () => {
                                             Employees
                                         </Tabs.Tab>
                                         <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
-                                            Edge Boxes
+                                           Edge Boxes
                                         </Tabs.Tab>
                                     </Tabs.List>
 
@@ -111,7 +113,7 @@ const ShopDetail = () => {
                                                     <div>
                                                         <Group>
                                                             <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}/>
+                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} />
                                                         </Group>
                                                         {data?.brand?.email &&
                                                             <Group>
@@ -143,7 +145,23 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <EdgeBoxListById id={params.shopId!} type="shop" />
+                                        <Tabs defaultValue="active" orientation="vertical" mt={20} >
+                                            <Tabs.List>
+                                                <Tabs.Tab value="active" leftSection={<VscLayersActive />}>
+                                                    Active
+                                                </Tabs.Tab>
+                                                <Tabs.Tab value="installed" leftSection={<GrInstall />}>
+                                                    Installed
+                                                </Tabs.Tab>
+                                            </Tabs.List>
+                                            <Tabs.Panel value="active">
+                                                <EdgeBoxListById id={params.shopId!} type="shop" />
+                                            </Tabs.Panel>
+                                            {/* TODO: Add history it has been installed */}
+                                            <Tabs.Panel value="installed">
+                                                <EdgeBoxListById id={params.shopId!} type="install" />
+                                            </Tabs.Panel>
+                                        </Tabs>
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>

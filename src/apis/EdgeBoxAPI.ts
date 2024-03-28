@@ -32,7 +32,7 @@ export type AddEdgeBoxInstallParams = {
     edgeBoxId: string;
     shopId: string;
     ipAddress?: string;
-    port?: string;
+    port?: number;
 }
 
 export const EdgeBoxAPI = {
@@ -55,6 +55,15 @@ export const EdgeBoxAPI = {
     getEdgeBoxInstallsByEdgeBoxId: async (edgeBoxId: string) => {
         const token = getAccessToken();
         const res = await http.get<CommonResponse<EdgeBoxInstall>>(`/api/edgeboxes/${edgeBoxId}/installs`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+        return res.data;
+    },
+    getEdgeBoxInstallsByShopId: async (shopId: string) => {
+        const token = getAccessToken();
+        const res = await http.get<CommonResponse<EdgeBoxInstall>>(`/api/shops/${shopId}/installs`, {
             headers: {
                 Authorization: "Bearer " + token,
             },

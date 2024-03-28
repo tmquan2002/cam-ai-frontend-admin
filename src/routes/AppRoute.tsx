@@ -19,6 +19,7 @@ import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackgrou
 import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import InstallMainPage from "../pages/admin/install/InstallMainPage";
 
 const AppRoute = () => {
   return useRoutes([
@@ -123,6 +124,16 @@ const AppRoute = () => {
               path: ":edgeBoxId",
               element: <EdgeBoxDetail />,
             }
+          ]
+        },
+        {
+          path: "/install",
+          element: <MainLayout />,
+          children: [
+            {
+              element: <InstallMainPage />,
+              index: true,
+            },
           ]
         },
         {
