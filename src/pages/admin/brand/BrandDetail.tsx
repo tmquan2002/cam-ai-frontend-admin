@@ -124,7 +124,7 @@ const BrandDetail = () => {
                                         <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
                                         <div>
                                             <Group mb={15}>
-                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
                                                 <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"}
                                                 />
                                             </Group>

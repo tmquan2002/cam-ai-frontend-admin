@@ -31,16 +31,17 @@ const AccountCard = ({ item }: { item: Account }) => {
                 <span className={styled["information"]}><b>{item.role.replace(/([A-Z])/g, ' $1').trim()}</b></span>
             </div>
 
-            <div className={styled["icon-text"]}>
-                <MdHome style={{ width: '20px', height: '20px' }} />
-                {item.addressLine && item.ward ?
-                    <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
-                    : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
-                        : item.ward ? <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
-                            : "None"
-                }
-            </div>
-            {item.email &&
+            {item?.addressLine || item?.ward &&
+                <div className={styled["icon-text"]}>
+                    <MdHome style={{ width: '20px', height: '20px' }} />
+                    {item.addressLine && item.ward ?
+                        <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                        : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
+                            : <span className={styled["information"]}>{item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
+                    }
+                </div>
+            }
+            {item?.email &&
                 <div className={styled["icon-text"]}>
                     <MdEmail style={{ width: '20px', height: '20px' }} />
                     <span className={styled["information"]}>{item.email}</span>

@@ -1,5 +1,5 @@
 import { Box, Button, Card, Grid, Group, LoadingOverlay, Text } from "@mantine/core";
-import { MdHome, MdPhone } from "react-icons/md";
+import { MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
 import { Shop } from "../../models/Shop";
@@ -26,6 +26,11 @@ const ShopCard = ({ item }: { item: Shop }) => {
                     <StatusBadge statusName={item?.shopStatus} padding={10} size="sm" />
                 }
             </Group>
+
+            <div className={styled["icon-text"]}>
+                <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
+                <span className={styled["information"]}><b>Open:</b> {item?.openTime || "No Data"} - <b>Close:</b> {item?.closeTime || "No Data"}</span>
+            </div>
 
             {(item.addressLine || item.ward) &&
                 <div className={styled["icon-text"]}>

@@ -1,5 +1,5 @@
-import { Box, Button, Card, Grid, Group, LoadingOverlay, Text } from "@mantine/core";
-import { MdHome, MdPhone } from "react-icons/md";
+import { Box, Button, Card, Group, LoadingOverlay, Text } from "@mantine/core";
+import { MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
@@ -27,7 +27,12 @@ const ShopCard = ({ item }: { item: Shop }) => {
                 }
             </Group>
 
-            {(item.addressLine || item.ward) &&
+            <div className={styled["icon-text"]}>
+                <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
+                <span className={styled["information"]}><b>Open:</b> {item?.openTime || "No Data"} - <b>Close:</b> {item?.closeTime || "No Data"}</span>
+            </div>
+
+            {(item?.addressLine || item?.ward) &&
                 <div className={styled["icon-text"]}>
                     <MdHome style={{ width: '20px', height: '20px' }} />
                     {item.addressLine && item.ward ?
@@ -45,11 +50,17 @@ const ShopCard = ({ item }: { item: Shop }) => {
                     <span className={styled["information"]}>{item.phone}</span>
                 </div>
             }
-
-            <Button color="light-blue.6" fullWidth mt="md" radius="xs"
-                onClick={() => navigate(`/shop/${item.id}`)}>
-                View Shop
-            </Button>
+            <Group grow>
+                <Button color="light-blue.6" fullWidth mt="md" radius="xs"
+                    onClick={() => navigate(`/shop/${item.id}`)}>
+                    View Shop
+                </Button>
+                {/* TODO: Add uninstall box from a shop here */}
+                <Button color="pale-red.4" mt="sm" radius="xs"
+                    onClick={() => navigate(`/edgebox/${item.id}`)}>
+                    Uninstall
+                </Button>
+            </Group>
         </Card>
     )
 }

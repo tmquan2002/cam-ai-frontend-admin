@@ -4,7 +4,7 @@ import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { GoVersions } from "react-icons/go";
-import { MdAccessTime, MdDelete, MdEdit, MdInfo } from "react-icons/md";
+import { MdAccessTime, MdDelete, MdEdit, MdInfo, MdLocationOn } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -85,10 +85,17 @@ const EdgeBoxDetail = () => {
                                     <div className={styled["profile-header-left"]}>
                                         <div>
                                             <Group mb={15}>
-                                                <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
                                                 <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} />
-                                                <StatusBadge statusName={data?.edgeBoxLocation ? data.edgeBoxLocation : "None"} tooltip="Location"/>
                                             </Group>
+                                            {data?.edgeBoxLocation &&
+                                                <Group mb={10}>
+                                                    <MdLocationOn />
+                                                    <Text size="md">
+                                                        Location status: <StatusBadge statusName={data?.edgeBoxLocation} padding={10} ml={10} size="sm" tooltip="Location Status" />
+                                                    </Text>
+                                                </Group>
+                                            }
                                             {data?.version &&
                                                 <Group mb={10}>
                                                     <GoVersions />
@@ -145,7 +152,7 @@ const EdgeBoxDetail = () => {
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>MODEL</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Model</Text>
                                     <div className={styled["model-detail"]}>
                                         <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.edgeBoxModel?.name}</Text>
                                         {data?.edgeBoxModel?.description &&
@@ -181,7 +188,7 @@ const EdgeBoxDetail = () => {
                         {!isLoadingInstall ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>INSTALLED SHOPS</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Installed Shops</Text>
                                     <ShopLongListByEdgeBox data={dataInstall.values} />
                                 </div>
                             </div>

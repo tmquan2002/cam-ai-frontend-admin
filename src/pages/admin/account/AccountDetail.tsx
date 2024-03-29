@@ -83,7 +83,7 @@ const AccountDetail = () => {
                                 <div>
                                     <Group mb={15} gap={30}>
                                         <div>
-                                            <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                            <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
                                             {data?.role && <Text size="md">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
                                         </div>
                                         <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
@@ -169,7 +169,7 @@ const AccountDetail = () => {
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>BRAND</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Brand</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <Group mt={20}>
                                             <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
@@ -215,7 +215,7 @@ const AccountDetail = () => {
                     data?.role == RoleEnum.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>
                         <div className={styled["shop-detail"]}>
-                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOPS</Text>
+                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shops</Text>
                             <ShopShortListById id={data?.brand.id} idType="brand" />
                         </div>
                     </div>
@@ -226,7 +226,7 @@ const AccountDetail = () => {
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>SHOP</Text>
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop</Text>
                                     <div className={styled["shop-brand-detail"]}>
                                         <div>
                                             <Group mb={20}>

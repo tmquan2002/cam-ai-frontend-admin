@@ -1,7 +1,6 @@
 import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { VscLayersActive } from "react-icons/vsc";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -11,7 +10,6 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
-import { GrInstall } from "react-icons/gr";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -44,7 +42,7 @@ const ShopDetail = () => {
                                 <div className={styled["profile-header-left"]}>
                                     <div>
                                         <Group mb={15}>
-                                            <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.name}</Text>
+                                            <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
                                             <StatusBadge statusName={data?.shopStatus ? data.shopStatus : "None"} />
                                         </Group>
                                         <Group>
@@ -97,7 +95,7 @@ const ShopDetail = () => {
                                             Employees
                                         </Tabs.Tab>
                                         <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
-                                           Edge Boxes
+                                            Edge Boxes
                                         </Tabs.Tab>
                                     </Tabs.List>
 
@@ -145,23 +143,7 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <Tabs defaultValue="active" orientation="vertical" mt={20} >
-                                            <Tabs.List>
-                                                <Tabs.Tab value="active" leftSection={<VscLayersActive />}>
-                                                    Active
-                                                </Tabs.Tab>
-                                                <Tabs.Tab value="installed" leftSection={<GrInstall />}>
-                                                    Installed
-                                                </Tabs.Tab>
-                                            </Tabs.List>
-                                            <Tabs.Panel value="active">
-                                                <EdgeBoxListById id={params.shopId!} type="shop" />
-                                            </Tabs.Panel>
-                                            {/* TODO: Add history it has been installed */}
-                                            <Tabs.Panel value="installed">
-                                                <EdgeBoxListById id={params.shopId!} type="install" />
-                                            </Tabs.Panel>
-                                        </Tabs>
+                                        <EdgeBoxListById id={params.shopId!} type="install" />
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>
