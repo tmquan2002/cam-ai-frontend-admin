@@ -1,10 +1,10 @@
-import { ActionIcon, Box, Button, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { GoVersions } from "react-icons/go";
-import { MdAccessTime, MdDelete, MdEdit, MdInfo, MdLocationOn } from "react-icons/md";
+import { MdAccessTime, MdDelete, MdEdit, MdLocationOn } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -91,9 +91,8 @@ const EdgeBoxDetail = () => {
                                             {data?.edgeBoxLocation &&
                                                 <Group mb={10}>
                                                     <MdLocationOn />
-                                                    <Text size="md">
-                                                        Location status: <StatusBadge statusName={data?.edgeBoxLocation} padding={10} ml={10} size="sm" tooltip="Location Status" />
-                                                    </Text>
+                                                    <Text size="md">Location status</Text>
+                                                    <StatusBadge statusName={data?.edgeBoxLocation} padding={10} ml={10} size="sm" tooltip="Location Status" />
                                                 </Group>
                                             }
                                             {data?.version &&
@@ -154,23 +153,59 @@ const EdgeBoxDetail = () => {
                                 <div>
                                     <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Model</Text>
                                     <div className={styled["model-detail"]}>
-                                        <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.edgeBoxModel?.name}</Text>
+                                        <Group grow mb={10}>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>Name</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.name}</Text>
+                                            </Box>
+                                            {(dataInstall?.values && dataInstall?.values.length > 0) &&
+                                                <Box>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Valid From</Text>
+                                                    <Text size="md" fw={500}>{dataInstall?.values[0].validFrom || "No Data"}</Text>
+                                                </Box>
+                                            }
+                                            {(dataInstall?.values && dataInstall?.values.length > 0) &&
+                                                <Box>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Valid Until</Text>
+                                                    <Text size="md" fw={500}>{dataInstall?.values[0].validUntil || "No Data"}</Text>
+                                                </Box>
+                                            }
+                                        </Group>
+                                        <Divider mb={10} />
                                         {data?.edgeBoxModel?.description &&
-                                            <Text size="md" mb={20}>{data?.edgeBoxModel?.description}</Text>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>Description</Text>
+                                                <Text size="sm" mb={10}>{data?.edgeBoxModel?.description}</Text>
+                                            </Box>
                                         }
-                                        <Group mb={5}>
-                                            <MdInfo />
-                                            <Text size="md">Stats: </Text>
+                                        <Divider mb={10} />
+                                        <Group grow mb={15}>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>Model code</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.modelCode || "No Data"}</Text>
+                                            </Box>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>Manufacturer</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.manufacturer || "No Data"}</Text>
+                                            </Box>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>Storage</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.storage || "No Data"}</Text>
+                                            </Box>
                                         </Group>
-                                        <Group justify="space-between" gap={0}>
-                                            <Text size="md"><b>Model code:</b> {data?.edgeBoxModel?.modelCode || "No Data"}</Text>
-                                            <Text size="md"><b>Manufacturer:</b> {data?.edgeBoxModel?.manufacturer || "No Data"}</Text>
-                                            <Text size="md"><b>Storage:</b> {data?.edgeBoxModel?.storage || "No Data"}</Text>
-                                        </Group>
-                                        <Group justify="space-between" gap={0}>
-                                            <Text size="md"><b>CPU:</b> {data?.edgeBoxModel?.cpu || "No Data"}</Text>
-                                            <Text size="md"><b>RAM:</b> {data?.edgeBoxModel?.ram || "No Data"}</Text>
-                                            <Text size="md"><b>OS:</b> {data?.edgeBoxModel?.os || "No Data"}</Text>
+                                        <Group grow>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>CPU</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.cpu || "No Data"}</Text>
+                                            </Box>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>RAM</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.ram || "No Data"}</Text>
+                                            </Box>
+                                            <Box>
+                                                <Text size="xs" c={"dimmed"} fw={500}>OS</Text>
+                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.os || "No Data"}</Text>
+                                            </Box>
                                         </Group>
                                     </div>
                                 </div>

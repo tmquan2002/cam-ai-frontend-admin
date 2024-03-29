@@ -9,6 +9,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
+import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
@@ -16,8 +18,6 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
-import { EmployeeListById } from "../../../components/list/EmployeeListById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -125,8 +125,7 @@ const BrandDetail = () => {
                                         <div>
                                             <Group mb={15}>
                                                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
-                                                <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"}
-                                                />
+                                                <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"} />
                                             </Group>
 
                                             {isLoadingManager ? <Loader size="sm" /> :

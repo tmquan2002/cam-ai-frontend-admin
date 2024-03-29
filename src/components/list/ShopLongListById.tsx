@@ -91,7 +91,7 @@ export const ShopLongListById = ({ idType, id }: LongShopListParam) => {
 export const ShopLongListByEdgeBox = ({ data }: { data: EdgeBoxInstall[] }) => {
     return (
         <div className={styled["card-detail"]}>
-            <Box mt={20}>
+            <Box mt={10}>
                 {data?.map((item, index) => (
                     <ShopCard item={item.shop} key={index} />
                 ))}
