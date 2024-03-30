@@ -105,14 +105,6 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Install Status" />
                 </Box>
                 <Box>
-                    <Text size="xs" c={"dimmed"} fw={500}>Valid From</Text>
-                    <Text size="md" fw={500}>{item?.validFrom ? removeTime(new Date(item?.validFrom), "/") : "No Data"}</Text>
-                </Box>
-                <Box>
-                    <Text size="xs" c={"dimmed"} fw={500}>Valid Until</Text>
-                    <Text size="md" fw={500}>{item?.validFrom ? removeTime(new Date(item?.validUntil), "/") : "No Data"}</Text>
-                </Box>
-                <Box>
                     <Text size="xs" c={"dimmed"} fw={500}>Installed Date</Text>
                     <Text size="md" fw={500}>{removeTime(new Date(item?.createdDate || Date.now()), "/")}</Text>
                 </Box>
@@ -135,7 +127,7 @@ export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
                 <div className={styled["card-detail"]}>
                     {type == "install" ?
                         <>
-                            {(installData?.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Installs Found</Text> :
+                            {(installData?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Installs Found</Text> :
                                 <Box mt={5} mb={5}>
                                     {installData?.map((item, index) => (
                                         <InstallCard item={item} key={index} />

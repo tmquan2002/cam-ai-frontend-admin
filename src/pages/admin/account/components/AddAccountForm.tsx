@@ -9,7 +9,7 @@ import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { Gender, RoleEnum } from "../../../../types/enum";
+import { Gender, Role } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
 import { isEmpty } from "lodash";
 
@@ -29,7 +29,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
-            role: initialBrandId ? RoleEnum.BrandManager : "",
+            role: initialBrandId ? Role.BrandManager : "",
             province: "",
             district: "",
             ward: "",
@@ -91,7 +91,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         };
         // console.log(addAccountParams)
 
-        if (addAccountParams.role == RoleEnum.BrandManager && isEmpty(brandId)) {
+        if (addAccountParams.role == Role.BrandManager && isEmpty(brandId)) {
             notifications.show({
                 message: "A Brand is required for Brand Manager",
                 color: "pale-red.5",
@@ -141,12 +141,12 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Role" placeholder="Select" withAsterisk
                     disabled={!isEmpty(initialBrandId)}
                     data={[
-                        { value: RoleEnum.Technician, label: 'Technician' },
-                        { value: RoleEnum.BrandManager, label: 'Brand Manager' },
+                        { value: Role.Technician, label: 'Technician' },
+                        { value: Role.BrandManager, label: 'Brand Manager' },
                     ]}
                     {...form.getInputProps('role')} />
                 <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.role != RoleEnum.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
+                    disabled={form.values.role != Role.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
                     nothingFoundMessage={brandList && "Not Found"}
                     value={brandId} searchValue={brand}
                     placeholder="Pick value" clearable searchable

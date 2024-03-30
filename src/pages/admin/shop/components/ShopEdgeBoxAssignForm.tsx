@@ -1,11 +1,10 @@
 import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
-import { ApiErrorResponse } from "../../../../hooks/useAuth";
 import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
-import { useForm } from "@mantine/form";
 
 export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
 
@@ -51,7 +50,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
-                    console.error(error.response?.data as ApiErrorResponse);
+                    // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
                         message: error.response?.data.message,
                         color: "pale-red.5",

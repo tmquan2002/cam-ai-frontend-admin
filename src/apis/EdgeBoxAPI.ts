@@ -63,7 +63,7 @@ export const EdgeBoxAPI = {
     },
     getEdgeBoxInstallsByShopId: async (shopId: string) => {
         const token = getAccessToken();
-        const res = await http.get<EdgeBoxInstall[]>(`/api/shops/${shopId}/installs`, {
+        const res = await http.get<CommonResponse<EdgeBoxInstall>>(`/api/shops/${shopId}/installs`, {
             headers: {
                 Authorization: "Bearer " + token,
             },

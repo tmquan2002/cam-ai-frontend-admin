@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useStorageState } from "../hooks/useStorageState";
 import { AuthToken } from "../models/Auth";
+import * as jwt from "../utils/jwt";
+import { useStorageState } from "../hooks/useStorageState";
 import { CommonConstant } from "../types/constant";
 import http from "../utils/http";
-import * as jwt from "../utils/jwt";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Role } from "../types/enum";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -32,11 +34,11 @@ export const getRefreshToken = (): string | null => {
   return REFRESH_TOKEN;
 };
 
-export function getUserRole(): string | null {
+export function getUserRole(): Role | null {
   const accessToken: string | null = getAccessToken();
 
   if (accessToken) {
-    const role: string = jwt.getRoleFromToken(accessToken);
+    const role: Role = jwt.getRoleFromToken(accessToken);
     return role;
   }
 
@@ -45,6 +47,7 @@ export function getUserRole(): string | null {
 
 export function getUserId(): string | null {
   const accessToken: string | null = getAccessToken();
+
   if (accessToken) {
     const id: string = jwt.getIdFromToken(accessToken);
     return id;
@@ -53,30 +56,14 @@ export function getUserId(): string | null {
   return null;
 }
 
-export function checkRole(acceptableRoles: string[]): boolean {
-  const userRole = getUserRole();
-  if (!userRole) return false;
-
-  const arr1 = acceptableRoles.filter((acceptableRole) => {
-    return userRole == acceptableRole;
-  });
-
-  // userRole?.forEach((role) => {
-  //   if (role.Id == acceptableRole.Id) {
-  //     check = true;
-  //     return;
-  //   }
-  // });
-
-  return arr1.length > 0;
-}
-
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isAccessTokenLoading], setAccessToken] = useStorageState(
+    // const [[isAccessTokenLoading, accessToken], setAccessToken] = useStorageState(
     CommonConstant.USER_ACCESS_TOKEN
   );
 
   const [[isRefreshTokenLoading], setRefreshToken] =
+    // const [[isRefreshTokenLoading, refreshToken], setRefreshToken] =
     useStorageState(CommonConstant.USER_REFRESH_TOKEN);
 
   const navigate = useNavigate();
@@ -84,16 +71,12 @@ export function SessionProvider(props: React.PropsWithChildren) {
   useEffect(() => {
     http.interceptors.response.use(
       (res) => {
-        if (res && res?.data) {
-          return res;
-        }
-
         return res;
       },
       async (err) => {
-        try {
-          if (err?.response?.status == 401) {
-            if (err?.response?.headers.auto == "True") {
+        if (err?.response?.status == 401) {
+          if (err?.response?.headers.auto == "True") {
+            try {
               const { config } = err;
 
               const isAlreadyFetchingAccessToken = localStorage.getItem(
@@ -107,7 +90,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   "true"
                 );
 
-                const res = await http.post("/api/auth/refresh",
+                const res = await axios.post(
+                  "http://185.81.167.44:8090/api/Auth/refresh",
                   {
                     accessToken: getAccessToken(),
                     refreshToken: getRefreshToken(),
@@ -124,16 +108,18 @@ export function SessionProvider(props: React.PropsWithChildren) {
               });
 
               return retryOriginalRequest;
-            } else {
-              throw err;
+            } catch (error) {
+              setAccessToken(null);
+              setRefreshToken(null);
+              // navigate("/");
+            } finally {
+              localStorage.removeItem(
+                CommonConstant.IS_ALREADY_FETCHING_ACCESS
+              );
             }
           }
-        } catch (error) {
-          setAccessToken(null);
-          setRefreshToken(null);
-          navigate("/");
-        } finally {
-          localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
+
+          throw err;
         }
 
         throw err;
@@ -153,7 +139,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         signOut: () => {
           setAccessToken(null);
           setRefreshToken(null);
-          navigate("/");
+          // navigate("/");
         },
         isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}

@@ -11,7 +11,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
-import { AccountStatus, RoleEnum } from "../../../types/enum";
+import { AccountStatus, Role } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/accountdetail.module.scss";
 
@@ -131,7 +131,7 @@ const AccountDetail = () => {
                                         </Group>
                                     }
                                 </div>
-                                {data?.role == RoleEnum.BrandManager && data?.brand &&
+                                {data?.role == Role.BrandManager && data?.brand &&
                                     <div>
                                         <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                             <Menu.Target>
@@ -164,7 +164,7 @@ const AccountDetail = () => {
                     </div>
                 }
 
-                {data?.role == RoleEnum.BrandManager && data?.brand &&
+                {data?.role == Role.BrandManager && data?.brand &&
                     <>
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
@@ -212,7 +212,7 @@ const AccountDetail = () => {
                 }
                 
                 {
-                    data?.role == RoleEnum.BrandManager && data?.brand &&
+                    data?.role == Role.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>
                         <div className={styled["shop-detail"]}>
                             <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shops</Text>
@@ -221,7 +221,7 @@ const AccountDetail = () => {
                     </div>
                 }
                 {
-                    data?.role == RoleEnum.ShopManager && data?.managingShop &&
+                    data?.role == Role.ShopManager && data?.managingShop &&
                     <>
                         {!isLoading ?
                             <div className={styled["container-detail"]}>

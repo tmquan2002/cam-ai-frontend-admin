@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
-import { AccountStatus, RoleEnum } from '../../../../types/enum';
+import { AccountStatus, Role } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/account.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
@@ -203,10 +203,10 @@ const AccountList = () => {
                     <RadioGroup name="role" size='sm' value={filterRole}
                         onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
                         <Group>
-                            <Radio value={RoleEnum.Technician} label={"Technician"} />
-                            <Radio value={RoleEnum.BrandManager} label={"Brand Manager"} />
-                            <Radio value={RoleEnum.ShopManager} label={"Shop Manager"} />
-                            <Radio value={RoleEnum.Employee} label={"Employee"} />
+                            <Radio value={Role.Technician} label={"Technician"} />
+                            <Radio value={Role.BrandManager} label={"Brand Manager"} />
+                            <Radio value={Role.ShopManager} label={"Shop Manager"} />
+                            <Radio value={Role.Employee} label={"Employee"} />
                         </Group>
                     </RadioGroup>
                 </Group>

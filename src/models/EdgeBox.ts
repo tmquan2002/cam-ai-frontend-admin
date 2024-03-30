@@ -25,11 +25,12 @@ export interface EdgeBoxInstall {
     shopId: string;
     ipAddress: string;
     port: number;
-    validFrom: string;
-    validUntil: string;
+    uninstalledTime: string;
     edgeBox: EdgeBox;
     shop: Shop;
     edgeBoxInstallStatus: string;
+    activationStatus: string;
+    activationCode: string;
 }
 
 export interface EdgeBoxModel {

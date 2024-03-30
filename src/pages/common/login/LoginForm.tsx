@@ -39,8 +39,7 @@ export const LoginForm = () => {
 
     login(loginParams, {
       onSuccess(data) {
-        console.log({ data });
-
+        // console.log({ data });
         sessionHook?.signIn(data);
       },
       onError(error) {

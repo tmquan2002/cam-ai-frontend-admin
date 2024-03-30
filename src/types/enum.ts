@@ -1,12 +1,4 @@
-export enum RoleEnum {
-  Admin = "Admin",
-  Technician = "Technician",
-  BrandManager = "BrandManager",
-  ShopManager = "ShopManager",
-  Employee = "Employee",
-}
-
-export enum RoleEnumName {
+export enum Role {
   Admin = "Admin",
   Technician = "Technician",
   BrandManager = "BrandManager",
@@ -55,8 +47,17 @@ export enum EdgeBoxLocation {
 }
 
 export enum EdgeBoxInstallStatus {
-  Valid = "Valid",
-  Expired = "Expired",
+  Working = "Working",
+  Unhealthy = "Unhealthy",
+  Disabled = "Disabled",
+  New = "New",
+}
+
+export enum EdgeBoxActivationStatusstring {
+  NotActivated = "NotActivated",
+  Activated = "Activated",
+  Pending = "Pending",
+  Failed = "Failed",
 }
 
 export enum RequestType {
