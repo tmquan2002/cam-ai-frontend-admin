@@ -5,8 +5,7 @@ class Http {
   constructor() {
     this.instance = axios.create({
       baseURL: process.env.REACT_APP_VITE_SERVER_LINK,
-      // TODO: Testing and Styling, please change this back to 10000 later
-      timeout: 100000,
+      timeout: 10000,
       headers: {
         "Content-Type": "application/json",
       },

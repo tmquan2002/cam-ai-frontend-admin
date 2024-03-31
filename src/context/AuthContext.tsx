@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect } from "react";
-import { AuthToken } from "../models/Auth";
-import * as jwt from "../utils/jwt";
-import { useStorageState } from "../hooks/useStorageState";
-import { CommonConstant } from "../types/constant";
-import http from "../utils/http";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useStorageState } from "../hooks/useStorageState";
+import { AuthToken } from "../models/Auth";
+import { CommonConstant } from "../types/constant";
 import { Role } from "../types/enum";
+import http from "../utils/http";
+import * as jwt from "../utils/jwt";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -89,13 +88,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   CommonConstant.IS_ALREADY_FETCHING_ACCESS,
                   "true"
                 );
-                // TODO: Testing and Styling, please change this back to env later
-                const res = await axios.post(
-                  "http://185.81.167.44:8090/api/Auth/refresh",
-                  {
-                    accessToken: getAccessToken(),
-                    refreshToken: getRefreshToken(),
-                  }
+                const res = await http.post("/api/auth/refresh", {
+                  accessToken: getAccessToken(),
+                  refreshToken: getRefreshToken(),
+                }
                 );
 
                 setAccessToken(res?.data);
