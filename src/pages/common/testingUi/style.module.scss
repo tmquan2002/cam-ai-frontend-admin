@@ -1,0 +1,64 @@
+.container-main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 100px 2rem;
+
+    .image-container {
+        width: 400px;
+        text-align: left;
+
+        @include light {
+            color: var(--mantine-color-shading-9);
+        }
+
+        @include dark {
+            color: white;
+        }
+
+        margin: 0 30px 30px 0;
+
+        .title {
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+        .description {
+            text-align: left;
+            padding: 0 0 30px 0;
+            font-size: 18px;
+        }
+
+        .auth-image {
+            width: 400px;
+        }
+    }
+
+    .container {
+        border-radius: 15px;
+        @include light {
+            background-color: white;
+        }
+
+        @include dark {
+            background-color: #1f1f1f;
+        }
+
+        width: 600px;
+        height: fit-content;
+        padding: 30px 50px;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.14),
+        0px 3px 1px rgba(0, 0, 0, 0.12),
+        0px 1px 5px rgba(0, 0, 0, 0.2);
+
+        .title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 40px;
+        }
+    }
+}

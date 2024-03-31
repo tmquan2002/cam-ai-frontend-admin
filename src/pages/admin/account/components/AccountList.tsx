@@ -11,7 +11,7 @@ import { AccountStatus, Role } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/account.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { AccountFilterProps } from '../../../../types/constant';
+import { AccountFilterProps, pageSizeSelect } from '../../../../types/constant';
 
 const AccountList = () => {
 
@@ -268,7 +268,7 @@ const AccountList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['5', '10', '15', '20']} defaultValue={"5"}
+                                data={pageSizeSelect} defaultValue={"5"}
                             />
                         </Group>
                     </>

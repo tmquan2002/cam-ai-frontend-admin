@@ -1,5 +1,5 @@
-import { Box, Button, Card, Group, LoadingOverlay, Text } from "@mantine/core";
-import { MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { ActionIcon, Box, Card, Group, LoadingOverlay, Text, Tooltip, rem } from "@mantine/core";
+import { MdDelete, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
@@ -20,11 +20,28 @@ const ShopCard = ({ item }: { item: Shop }) => {
         <Card shadow="sm" padding="lg" radius="md" m={10}
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <Group mb={10}>
-                <Text fw={500} size="lg">{item.name}</Text>
-                {item.shopStatus &&
-                    <StatusBadge statusName={item?.shopStatus} padding={10} size="sm" />
-                }
+            <Group mb={10} justify="space-between">
+                <Group>
+                    <Text fw={500} size="lg">{item.name}</Text>
+                    {item.shopStatus &&
+                        <StatusBadge statusName={item?.shopStatus} padding={10} size="sm" />
+                    }
+                </Group>
+                <ActionIcon.Group>
+                    <Tooltip label="View Shop" withArrow>
+                        <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
+                            onClick={() => navigate(`/shop/${item.id}`)}>
+                            <MdPageview style={{ width: rem(20) }} stroke={1.5} />
+                        </ActionIcon>
+                    </Tooltip>
+                    {/* TODO: Add uninstall box from a shop here */}
+                    <Tooltip label="Uninstall" withArrow>
+                        <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4"
+                            onClick={() => navigate(`/shop/${item.id}`)}>
+                            <MdDelete style={{ width: rem(20) }} stroke={1.5} />
+                        </ActionIcon>
+                    </Tooltip>
+                </ActionIcon.Group>
             </Group>
 
             <div className={styled["icon-text"]}>
@@ -50,17 +67,6 @@ const ShopCard = ({ item }: { item: Shop }) => {
                     <span className={styled["information"]}>{item.phone}</span>
                 </div>
             }
-            <Group grow>
-                <Button color="light-blue.6" fullWidth mt="md" radius="xs"
-                    onClick={() => navigate(`/shop/${item.id}`)}>
-                    View Shop
-                </Button>
-                {/* TODO: Add uninstall box from a shop here */}
-                <Button color="pale-red.4" mt="sm" radius="xs"
-                    onClick={() => navigate(`/edgebox/${item.id}`)}>
-                    Uninstall
-                </Button>
-            </Group>
         </Card>
     )
 }

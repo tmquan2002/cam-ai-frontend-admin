@@ -20,6 +20,7 @@ import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import InstallMainPage from "../pages/admin/install/InstallMainPage";
+import TestingUi from "../pages/common/testingUi/TestingUi";
 
 const AppRoute = () => {
   return useRoutes([
@@ -29,6 +30,11 @@ const AppRoute = () => {
         {
           path: "/",
           element: <LoginPage />,
+        },
+        // TODO: Remove /testingUi route and the entire testingUI folder pages when done testing
+        {
+          path: "/testingUi",
+          element: <TestingUi />,
         },
       ],
     },

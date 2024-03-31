@@ -84,7 +84,7 @@ export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
 
 export const useGetEdgeBoxInstallByShopId = (shopId: string) => {
   const { isError, isLoading, data, error, refetch,
-  }: UseQueryResult<EdgeBoxInstall[], Error> = useQuery({
+  }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
     queryKey: ["edgeBoxInstallList", shopId],
     queryFn: async () => {
       if (shopId) {

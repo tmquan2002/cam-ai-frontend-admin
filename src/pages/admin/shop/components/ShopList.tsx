@@ -11,7 +11,7 @@ import { ShopStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/shop.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { ShopFilterProps } from '../../../../types/constant';
+import { ShopFilterProps, pageSizeSelect } from '../../../../types/constant';
 
 const ShopList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(ShopFilterProps.FILTER, {
@@ -249,7 +249,7 @@ const ShopList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['5', '10', '15', '20']} defaultValue={"5"}
+                                data={pageSizeSelect} defaultValue={"5"}
                             />
                         </Group>
                     </> : <></>

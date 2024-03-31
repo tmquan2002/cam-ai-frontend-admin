@@ -36,6 +36,16 @@ export function removeVietnameseTones(str: string) {
   return str;
 }
 
+export function enumToSelect<T extends { [key: string]: string }>(value: T): { label: string; value: string }[] {
+  const keys = Object.keys(value);
+  return keys.map((key): { label: string; value: string } => {
+    return {
+      label: key,
+      value: value[key],
+    };
+  });
+}
+
 export function generateRandomString(length: number) {
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let randomString = '';

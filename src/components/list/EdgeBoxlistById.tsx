@@ -129,7 +129,7 @@ export const EdgeBoxListById = ({ id, type }: EdgeBoxListParam) => {
                         <>
                             {(installData?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Installs Found</Text> :
                                 <Box mt={5} mb={5}>
-                                    {installData?.map((item, index) => (
+                                    {installData?.values.map((item, index) => (
                                         <InstallCard item={item} key={index} />
                                     ))}
                                 </Box>

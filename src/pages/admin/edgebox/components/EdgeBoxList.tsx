@@ -10,7 +10,7 @@ import { EdgeBoxLocation, EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/edgebox.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { EdgeBoxFilterProps } from '../../../../types/constant';
+import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 
@@ -272,7 +272,7 @@ const EdgeBoxList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['5', '10', '15', '20']} defaultValue={"5"}
+                                data={pageSizeSelect} defaultValue={"5"}
                             />
                         </Group>
                     </> :

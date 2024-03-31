@@ -89,7 +89,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
                   CommonConstant.IS_ALREADY_FETCHING_ACCESS,
                   "true"
                 );
-
+                // TODO: Testing and Styling, please change this back to env later
                 const res = await axios.post(
                   "http://185.81.167.44:8090/api/Auth/refresh",
                   {
@@ -111,7 +111,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
             } catch (error) {
               setAccessToken(null);
               setRefreshToken(null);
-              // navigate("/");
+              navigate("/");
             } finally {
               localStorage.removeItem(
                 CommonConstant.IS_ALREADY_FETCHING_ACCESS
@@ -139,7 +139,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         signOut: () => {
           setAccessToken(null);
           setRefreshToken(null);
-          // navigate("/");
+          navigate("/");
         },
         isLoading: isAccessTokenLoading || isRefreshTokenLoading,
       }}

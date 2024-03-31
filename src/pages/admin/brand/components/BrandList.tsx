@@ -10,7 +10,7 @@ import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { BrandStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/brand.module.scss";
-import { BrandFilterProps } from '../../../../types/constant';
+import { BrandFilterProps, pageSizeSelect } from '../../../../types/constant';
 
 const BrandList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(BrandFilterProps.FILTER, {
@@ -210,7 +210,7 @@ const BrandList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={['5', '10', '15', '20']} defaultValue={"5"}
+                                data={pageSizeSelect} defaultValue={"5"}
                             />
                         </Group>
                     </> :
