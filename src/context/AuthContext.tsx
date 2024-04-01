@@ -5,6 +5,7 @@ import { AuthToken } from "../models/Auth";
 import { CommonConstant } from "../types/constant";
 import * as jwt from "../utils/jwt";
 import http from "../utils/http";
+import { Role } from "../types/enum";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -32,11 +33,11 @@ export const getRefreshToken = (): string | null => {
   return REFRESH_TOKEN;
 };
 
-export function getUserRole(): string | null {
+export function getUserRole(): Role | null {
   const accessToken: string | null = getAccessToken();
 
   if (accessToken) {
-    const role: string = jwt.getRoleFromToken(accessToken);
+    const role: Role = jwt.getRoleFromToken(accessToken);
     return role;
   }
 

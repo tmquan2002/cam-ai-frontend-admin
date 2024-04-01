@@ -69,3 +69,5 @@ export enum RequestFilterProps {
   FILTER_SEARCH_ACCOUNT_ID = "filterSearchAccountId",
   FILTER_HAS_REPLY = "filterHasReply"
 }
+
+export const pageSizeSelect = ['5', '10', '15', '20']

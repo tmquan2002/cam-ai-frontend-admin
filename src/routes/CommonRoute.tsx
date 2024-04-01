@@ -1,25 +1,20 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { checkRole, useSession } from "../context/AuthContext";
-import { RoleEnum } from "../types/enum";
+import { getUserRole } from "../context/AuthContext";
+import { Role } from "../types/enum";
 
 const CommonRoute = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const sessionHook = useSession();
-
+  const [userRole, setUserRole] = useState<Role | null>(Role.Employee);
   useEffect(() => {
-    const isUserHavePermission: boolean | undefined = checkRole([RoleEnum.Admin]);
-    if (isUserHavePermission) {
-      setIsAuthenticated(true);
-    } else {
-      sessionHook?.signOut()
-    }
+    const currentUserRole: Role | null = getUserRole();
+    setUserRole(currentUserRole);
   }, []);
 
-  if (!isAuthenticated) {
-    return <Outlet />;
-  } else {
-    return <Navigate to={"dashboard"} />;
+  switch (userRole) {
+    case Role.Admin:
+      return <Navigate to={"/dashboard"} />;
+    default:
+      return <Outlet />;
   }
 };
 

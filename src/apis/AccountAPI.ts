@@ -1,6 +1,7 @@
 import { getAccessToken } from "../context/AuthContext";
 import { Account } from "../models/Account";
 import { CommonResponse } from "../models/CommonResponse";
+import { Gender, Role } from "../types/enum";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetAccountsParams = {
@@ -18,14 +19,13 @@ export type AddAccountParams = {
   email: string;
   password: string;
   name: string;
-  gender: string;
+  gender: Gender;
   phone: string;
-  birthday: string;
+  birthday: string | null;
   wardId: string | null;
   addressLine: string;
   brandId: string | null;
-  // workingShopId: string;
-  role: string;
+  role: Role;
 };
 
 export type UpdateAccountParams = {

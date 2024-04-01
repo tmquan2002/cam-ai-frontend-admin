@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AuthToken, Login, Password } from "../models/Auth";
+
 import http from "../utils/http";
 
 export const AuthAPI = {

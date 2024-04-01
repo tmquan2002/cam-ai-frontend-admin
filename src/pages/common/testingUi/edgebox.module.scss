@@ -1,5 +1,6 @@
-.container-right {
+.container-detail {
     width: calc(100% - 50px);
+    padding-bottom: 20px;
 
     @include light {
         background-color: #f6f8fc;
@@ -9,8 +10,7 @@
         background-color: #242424;
     }
 
-    .container-detail,
-    .loader {
+    .table-container {
         @include light {
             background-color: white;
         }
@@ -19,35 +19,22 @@
             background-color: #1f1f1f;
         }
 
-        display: block;
         padding: 20px;
         width: 95%;
         text-align: left;
-        margin: 20px auto;
+        margin: 0 auto;
         position: relative;
         box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.14),
         0px 3px 3px rgba(0, 0, 0, 0.12),
         0px 1px 8px rgba(0, 0, 0, 0.2);
 
-        .profile-header {
+        .table-footer,
+        .table-header {
             display: flex;
+            width: 100%;
             flex-direction: row;
             justify-content: space-between;
-
-            .profile-header-left {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-            }
+            align-items: center;
         }
-    }
-
-    .model-detail {
-        width: 80%;
-        margin-left: 10px;
-    }
-
-    .loader {
-        height: 80%;
     }
 }

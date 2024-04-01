@@ -9,9 +9,25 @@ import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { Gender, RoleEnum } from "../../../../types/enum";
+import { Gender, Role } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
 import { isEmpty } from "lodash";
+import { enumToSelect } from "../../../../utils/helperFunction";
+
+type AddAccountFieldValue = {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    name: string;
+    gender: Gender;
+    phone: string;
+    birthday: Date;
+    addressLine: string;
+    province: string;
+    district: string;
+    ward: string | null;
+    role: Role;
+};
 
 export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBrandId?: string, initialBrandName?: string }) => {
     const [brand, setBrand] = useState<string>(initialBrandName || "");
@@ -19,17 +35,17 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
     const [wardSearch, setWardSearch] = useState<string>("");
     const [brandId, setBrandId] = useState<string | null>(initialBrandId || null);
 
-    const form = useForm({
+    const form = useForm<AddAccountFieldValue>({
         initialValues: {
             email: "",
             password: "",
             confirmPassword: "",
             name: "",
-            gender: '',
+            gender: Gender.Male,
             phone: "",
-            birthday: new Date(2000, 0),
+            birthday: new Date("01/01/2000"),
             addressLine: "",
-            role: initialBrandId ? RoleEnum.BrandManager : "",
+            role: Role.BrandManager,
             province: "",
             district: "",
             ward: "",
@@ -42,7 +58,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 value.trim().length === 0 ? "Email is required"
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
-                value.trim().length === 0 ? "Phone is required" :
+                value.trim().length === 0 ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",
@@ -50,10 +66,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 value.trim().length === 0 ? "Password is required" : null,
             confirmPassword: (value: string) =>
                 value.trim().length === 0 ? "Confirm Password is required" : null,
-            gender: (value) =>
-                value === '' ? "Please choose a gender" : null,
-            role: (value) =>
-                value === '' ? "Please choose a role" : null,
         },
     });
 
@@ -82,16 +94,16 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             email: form.values.email,
             phone: form.values.phone,
             addressLine: form.values.addressLine,
-            birthday: removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd"),
+            birthday: form.values.birthday ? removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd") : null,
             gender: form.values.gender,
             password: form.values.password,
             role: form.values.role,
             brandId: brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
-        // console.log(addAccountParams)
+        console.log(addAccountParams)
 
-        if (addAccountParams.role == RoleEnum.BrandManager && isEmpty(brandId)) {
+        if (addAccountParams.role == Role.BrandManager && isEmpty(brandId)) {
             notifications.show({
                 message: "A Brand is required for Brand Manager",
                 color: "pale-red.5",
@@ -141,12 +153,12 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Role" placeholder="Select" withAsterisk
                     disabled={!isEmpty(initialBrandId)}
                     data={[
-                        { value: RoleEnum.Technician, label: 'Technician' },
-                        { value: RoleEnum.BrandManager, label: 'Brand Manager' },
+                        { value: Role.Technician, label: 'Technician' },
+                        { value: Role.BrandManager, label: 'Brand Manager' },
                     ]}
                     {...form.getInputProps('role')} />
                 <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.role != RoleEnum.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
+                    disabled={form.values.role != Role.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
                     nothingFoundMessage={brandList && "Not Found"}
                     value={brandId} searchValue={brand}
                     placeholder="Pick value" clearable searchable
@@ -173,19 +185,15 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             </Group>
             <Group grow mt={10}>
                 <DateInput
-                    withAsterisk label="Birthday"
+                    label="Birthday"
                     placeholder="January 1, 2000"
                     maxDate={getDateFromSetYear(18)}
                     {...form.getInputProps('birthday')} />
                 <TextInput
-                    label="Phone" placeholder="Phone Number" withAsterisk
+                    label="Phone" placeholder="Phone Number"
                     {...form.getInputProps("phone")} />
                 <Select label="Gender" placeholder="Select" withAsterisk
-                    data={[
-                        // { value: '', label: 'Select' },
-                        { value: Gender.Male, label: 'Male' },
-                        { value: Gender.Female, label: 'Female' },
-                    ]}
+                    data={enumToSelect(Gender ?? {})}
                     {...form.getInputProps('gender')} />
             </Group>
             <Group grow mt={10}>

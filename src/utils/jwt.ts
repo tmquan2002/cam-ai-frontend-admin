@@ -1,9 +1,17 @@
 import { jwtDecode } from "jwt-decode";
-import { RoleEnum } from "../types/enum";
+import { AccountStatus, Role } from "../types/enum";
+
+
+
+export type StatusDetail = {
+  Id: number;
+  Name: string;
+};
 
 export type UserDetail = {
   id: string;
-  role: RoleEnum;
+  role: Role;
+  status: AccountStatus;
   exp: number;
 };
 
@@ -12,12 +20,17 @@ export const getPayloadFromToken = (token: string): UserDetail => {
   return user_detail;
 };
 
-export const getRoleFromToken = (token: string): RoleEnum => {
-  const role: RoleEnum = getPayloadFromToken(token).role;
+export const getRoleFromToken = (token: string): Role => {
+  const role: Role = getPayloadFromToken(token).role;
   return role;
 };
 
 export const getIdFromToken = (token: string): string => {
   const id: string = getPayloadFromToken(token).id;
   return id;
+};
+
+export const getStatusFromToken = (token: string): AccountStatus => {
+  const status: AccountStatus = getPayloadFromToken(token).status;
+  return status;
 };
