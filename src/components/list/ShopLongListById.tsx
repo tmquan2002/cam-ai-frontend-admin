@@ -25,14 +25,14 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <Tooltip label="View Shop" withArrow>
                         <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
                             onClick={() => navigate(`/shop/${item.shop.id}`)}>
-                            <MdPageview style={{ width: rem(20) }} stroke={1.5} />
+                            <MdPageview style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
                     {/* TODO: Add uninstall box from a shop here */}
                     <Tooltip label="Uninstall" withArrow>
                         <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4"
                             onClick={() => {}}>
-                            <MdDelete style={{ width: rem(20) }} stroke={1.5} />
+                            <MdDelete style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
                 </ActionIcon.Group>
@@ -65,7 +65,7 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
             <Divider mb={10} mt={10} />
 
             {/* Install Section */}
-            <Group grow mb={10}>
+            <Group grow mb={10} ml={10}>
                 <Box mb={10}>
                     <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
                     <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
@@ -75,7 +75,7 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Location Status" />
                 </Box>
             </Group>
-            <Group grow mb={15}>
+            <Group grow mb={15} ml={10}>
                 {item.uninstalledTime &&
                     <Box mb={10}>
                         <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>

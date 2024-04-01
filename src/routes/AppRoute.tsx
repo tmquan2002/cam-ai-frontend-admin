@@ -12,6 +12,7 @@ import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
+import InstallMainPage from "../pages/admin/install/InstallMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
 import ShopEdgeBoxAssign from "../pages/admin/shop/ShopEdgeBoxAssign";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
@@ -19,8 +20,6 @@ import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackgrou
 import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import InstallMainPage from "../pages/admin/install/InstallMainPage";
-import TestingUi from "../pages/common/testingUi/TestingUi";
 
 const AppRoute = () => {
   return useRoutes([
@@ -30,11 +29,6 @@ const AppRoute = () => {
         {
           path: "/",
           element: <LoginPage />,
-        },
-        // TODO: Remove /testingUi route and the entire testingUI folder pages when done testing
-        {
-          path: "/testingUi",
-          element: <TestingUi />,
         },
       ],
     },

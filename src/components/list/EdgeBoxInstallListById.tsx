@@ -22,13 +22,13 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <Tooltip label="View Edge Box" withArrow>
                         <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
                             onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
-                            <MdPageview style={{ width: rem(20) }} stroke={1.5} />
+                            <MdPageview style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
 
                     <Tooltip label="Uninstall" withArrow>
                         <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4">
-                            <MdDelete style={{ width: rem(20) }} stroke={1.5} />
+                            <MdDelete style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
                 </ActionIcon.Group>

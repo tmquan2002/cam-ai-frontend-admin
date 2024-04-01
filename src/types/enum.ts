@@ -53,7 +53,7 @@ export enum EdgeBoxInstallStatus {
   New = "New",
 }
 
-export enum EdgeBoxActivationStatusstring {
+export enum EdgeBoxActivationStatus {
   NotActivated = "NotActivated",
   Activated = "Activated",
   Pending = "Pending",

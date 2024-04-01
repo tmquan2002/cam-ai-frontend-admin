@@ -88,19 +88,19 @@ const EdgeBoxDetail = () => {
                                                 <StatusBadge statusName={data?.edgeBoxStatus ? data.edgeBoxStatus : "None"} padding={10}/>
                                             </Group>
                                             {data?.edgeBoxLocation &&
-                                                <Box mb={10}>
+                                                <Box mb={10} ml={10}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
                                                     <StatusBadge statusName={data?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
                                                 </Box>
                                             }
                                             {data?.version &&
-                                                <Box mb={10}>
+                                                <Box mb={10} ml={10}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
                                                     <Text size="md" fw={500}>{data?.version}</Text>
                                                 </Box>
                                             }
                                             {data?.createdDate &&
-                                                <Box mb={10}>
+                                                <Box mb={10} ml={10}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                                                     <Text size="md" fw={500}>{removeTime(new Date(data?.createdDate || Date.now()), "/")}</Text>
                                                 </Box>

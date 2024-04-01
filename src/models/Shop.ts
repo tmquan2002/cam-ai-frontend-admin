@@ -1,3 +1,4 @@
+import { ShopStatus } from "../types/enum";
 import { Account } from "./Account";
 import { Brand } from "./Brand";
 import { Camera } from "./Camera";
@@ -21,7 +22,7 @@ export interface Shop {
     shopManager: Account;
     ward: Ward;
     brand: Brand;
-    shopStatus: string;
+    shopStatus: ShopStatus;
     employees: Employee[];
     cameras: Camera[];
     edgeBoxInstalls: EdgeBoxInstall[];

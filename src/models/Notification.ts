@@ -1,3 +1,4 @@
+import { NotificationStatus } from "../types/enum";
 import { Account } from "./Account";
 
 export interface Notification {
@@ -8,6 +9,6 @@ export interface Notification {
     title: string;
     content: string;
     sentBy: Account;
-    status: string;
+    status: NotificationStatus;
     sentTo: Account[];
 }

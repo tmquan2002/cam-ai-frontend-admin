@@ -6,6 +6,7 @@ import { Employee } from "../../models/Employee";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 import { removeTime } from "../../utils/dateFunction";
+import { Gender } from "../../types/enum";
 
 interface EmployeeListParam {
     id: string;
@@ -27,7 +28,7 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
             </Group>
             {item?.gender &&
                 <div className={styled["icon-text"]}>
-                    {item?.gender == "Female" ?
+                    {item?.gender == Gender.Female ?
                         <BsGenderFemale style={{ width: '20px', height: '20px' }} /> :
                         <BsGenderMale style={{ width: '20px', height: '20px' }} />
                     }

@@ -43,7 +43,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             name: "",
             gender: Gender.Male,
             phone: "",
-            birthday: new Date("01/01/2000"),
+            birthday: new Date(2000, 0),
             addressLine: "",
             role: Role.BrandManager,
             province: "",
@@ -151,6 +151,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
             <Group grow mt={10}>
                 <Select label="Role" placeholder="Select" withAsterisk
+                    allowDeselect={false}
                     disabled={!isEmpty(initialBrandId)}
                     data={[
                         { value: Role.Technician, label: 'Technician' },
@@ -193,6 +194,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                     label="Phone" placeholder="Phone Number"
                     {...form.getInputProps("phone")} />
                 <Select label="Gender" placeholder="Select" withAsterisk
+                    allowDeselect={false}
                     data={enumToSelect(Gender ?? {})}
                     {...form.getInputProps('gender')} />
             </Group>

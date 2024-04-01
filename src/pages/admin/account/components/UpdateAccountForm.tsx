@@ -11,6 +11,19 @@ import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks
 import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
 import { isEmpty } from "lodash";
+import { enumToSelect } from "../../../../utils/helperFunction";
+
+type UpdateAccountFieldValue = {
+    email: string;
+    name: string;
+    gender: Gender;
+    phone: string;
+    birthday: Date;
+    addressLine: string;
+    province: string;
+    district: string;
+    ward: string | null;
+};
 
 export const UpdateAccountForm = ({ id }: { id: string }) => {
     const [provinceSearch, setProvinceSearch] = useState<string>("");
@@ -19,11 +32,11 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
 
     const { data, isLoading: initialDataLoading, error } = useGetAccountById(id);
 
-    const form = useForm({
+    const form = useForm<UpdateAccountFieldValue>({
         initialValues: {
             email: "",
             name: "",
-            gender: "",
+            gender: Gender.Male,
             phone: "",
             birthday: new Date(2000, 0),
             addressLine: "",
@@ -39,12 +52,10 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 value.trim().length === 0 ? "Email is required"
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
-                value.trim().length === 0 ? "Phone is required" :
+                value.trim().length === 0 ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",
-            gender: (value) =>
-                value === '' ? "Please choose a gender" : null,
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {
@@ -69,7 +80,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 name: data?.name || "",
                 phone: data?.phone || "",
                 addressLine: data?.addressLine || "",
-                gender: data?.gender == "Male" ? "Male" : data?.gender == "Female" ? "Female" : "",
+                gender: data?.gender || Gender.Male,
                 birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
                 province: data?.ward?.district?.province?.id.toString() || "",
                 district: data?.ward?.district?.id.toString() || "",
@@ -149,11 +160,8 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                     label="Phone" placeholder="Phone Number" withAsterisk
                                     {...form.getInputProps("phone")} />
                                 <Select label="Gender" placeholder="Select" withAsterisk
-                                    data={[
-                                        { value: '', label: 'Select' },
-                                        { value: Gender.Male.toString(), label: 'Male' },
-                                        { value: Gender.Female.toString(), label: 'Female' },
-                                    ]}
+                                    allowDeselect={false}
+                                    data={enumToSelect(Gender ?? {})}
                                     {...form.getInputProps('gender')} />
                             </Group>
                             <Group grow mt={10}>
@@ -209,7 +217,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                             name: data?.name ? data.name : "",
                                             phone: data?.phone ? data.phone : "",
                                             addressLine: data?.addressLine ? data.addressLine : "",
-                                            gender: data?.gender == "Male" ? "Male" : data?.gender == "Female" ? "Female" : "",
+                                            gender: data?.gender || Gender.Male,
                                             birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
                                             province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
                                             district: data?.ward?.district?.id.toString() || "",

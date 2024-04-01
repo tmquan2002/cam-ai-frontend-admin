@@ -154,7 +154,7 @@ const BrandList = () => {
                 </Grid.Col>
             </Grid>
 
-            {/* Filter */}
+            {/* Filter Section*/}
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={10} justify='space-between'>
@@ -178,7 +178,7 @@ const BrandList = () => {
                 <Divider />
             </Collapse>
 
-            {/* Table */}
+            {/* Table Section*/}
             <ScrollArea.Autosize mah={400}>
                 <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover>

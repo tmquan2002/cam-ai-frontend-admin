@@ -1,3 +1,4 @@
+import { EmployeeStatus, Gender } from "../types/enum";
 import { Incident } from "./Incident";
 import { Ward } from "./Location";
 import { Shop } from "./Shop";
@@ -9,7 +10,7 @@ export interface Employee {
     modifiedDate: string;
     email: string;
     name: string;
-    gender: number | string;
+    gender: Gender;
     phone: string;
     image: string;
     birthday: string;
@@ -18,6 +19,6 @@ export interface Employee {
     addressLine: string;
     ward: Ward;
     shop: Shop;
-    employeeStatus: string;
+    employeeStatus: EmployeeStatus;
     incidents: Incident;
 };

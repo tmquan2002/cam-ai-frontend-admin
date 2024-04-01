@@ -1,3 +1,4 @@
+import { EvidenceStatus, EvidenceType } from "../types/enum";
 import { Camera } from "./Camera";
 import { Image } from "./Image";
 import { Incident } from "./Incident";
@@ -10,8 +11,8 @@ export interface Evidence {
     incidentId: string;
     cameraId: string;
     imageId: string;
-    evidenceType: string;
-    status: string;
+    evidenceType: EvidenceType;
+    status: EvidenceStatus;
     image: Image;
     incident: Incident;
     camera: Camera;

@@ -1,3 +1,4 @@
+import { BrandStatus } from "../types/enum";
 import { Account } from "./Account";
 import { Image } from "./Image";
 import { Shop } from "./Shop";
@@ -16,7 +17,7 @@ export type Brand = {
     banner: Image;
     brandManagerId: string;
     brandManager: Account;
-    brandStatus: string;
+    brandStatus: BrandStatus;
     accounts: Account[];
     shops: Shop[];
 };

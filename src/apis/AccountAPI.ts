@@ -32,10 +32,10 @@ export type UpdateAccountParams = {
   id: string;
   values: {
     name: string;
-    gender: string;
+    gender: Gender;
     email: string;
     phone: string;
-    birthday: string;
+    birthday: string | null;
     wardId: string | null;
     addressLine: string;
   };
