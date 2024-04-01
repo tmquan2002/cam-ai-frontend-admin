@@ -19,18 +19,19 @@
     "@mantine/notifications": "^7.4.2",
     "@tabler/icons-react": "^2.46.0",
     "axios": "^1.6.3",
+    "axios-auth-refresh": "^3.3.6",
     "dayjs": "^1.11.10",
+    "firebase": "^8.2.0",
     "i18next": "^23.7.19",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-vue": "^3.0.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
-    "firebase": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
-    "react-query": "^3.39.3",
     "react-player": "^2.14.1",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.21.0",
     "recharts": "^2.10.4"
   },
@@ -47,6 +48,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "sass": "^1.69.5",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.0.8",
+    "vue": "^3.3.4"
   }
 }

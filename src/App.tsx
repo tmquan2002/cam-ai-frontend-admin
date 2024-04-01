@@ -10,8 +10,8 @@ import { SessionProvider } from "./context/AuthContext";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      cacheTime: 0,
-      refetchOnWindowFocus: false,
+      retry: false,
+      // refetchOnWindowFocus: false
     },
   },
 });

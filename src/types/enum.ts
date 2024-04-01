@@ -6,13 +6,6 @@ export enum RoleEnum {
   Employee = "Employee",
 }
 
-export enum RoleEnumName {
-  Admin = "Admin",
-  Technician = "Technician",
-  BrandManager = "BrandManager",
-  ShopManager = "ShopManager",
-  Employee = "Employee",
-}
 
 export enum Gender {
   Male = "Male",

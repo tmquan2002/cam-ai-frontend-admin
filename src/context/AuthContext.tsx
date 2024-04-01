@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useStorageState } from "../hooks/useStorageState";
 import { AuthToken } from "../models/Auth";
 import { CommonConstant } from "../types/constant";
-import http from "../utils/http";
 import * as jwt from "../utils/jwt";
+import http from "../utils/http";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -61,13 +61,6 @@ export function checkRole(acceptableRoles: string[]): boolean {
     return userRole == acceptableRole;
   });
 
-  // userRole?.forEach((role) => {
-  //   if (role.Id == acceptableRole.Id) {
-  //     check = true;
-  //     return;
-  //   }
-  // });
-
   return arr1.length > 0;
 }
 
@@ -76,67 +69,26 @@ export function SessionProvider(props: React.PropsWithChildren) {
     CommonConstant.USER_ACCESS_TOKEN
   );
 
-  const [[isRefreshTokenLoading], setRefreshToken] =
-    useStorageState(CommonConstant.USER_REFRESH_TOKEN);
+  const [[isRefreshTokenLoading], setRefreshToken] = useStorageState(
+    CommonConstant.USER_REFRESH_TOKEN
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
     http.interceptors.response.use(
       (res) => {
-        if (res && res?.data) {
-          return res;
-        }
-
         return res;
       },
-      async (err) => {
-        try {
+      (err) => {
           if (err?.response?.status == 401) {
-            if (err?.response?.headers.auto == "True") {
-              const { config } = err;
-
-              const isAlreadyFetchingAccessToken = localStorage.getItem(
-                CommonConstant.IS_ALREADY_FETCHING_ACCESS
-              );
-              const originalRequest = config;
-
-              if (!isAlreadyFetchingAccessToken) {
-                localStorage.setItem(
-                  CommonConstant.IS_ALREADY_FETCHING_ACCESS,
-                  "true"
-                );
-
-                const res = await http.post("/api/auth/refresh",
-                  {
-                    accessToken: getAccessToken(),
-                    refreshToken: getRefreshToken(),
-                  }
-                );
-
-                setAccessToken(res?.data);
-              }
-              const retryOriginalRequest = new Promise((resolve) => {
-                originalRequest.headers[
-                  "Authorization"
-                ] = `Bearer ${getAccessToken()}`;
-                resolve(http(originalRequest));
-              });
-
-              return retryOriginalRequest;
-            } else {
-              throw err;
+            if (err?.response?.headers.auto != "True") {
+              localStorage.clear();
+              navigate("/");
             }
           }
-        } catch (error) {
-          setAccessToken(null);
-          setRefreshToken(null);
-          navigate("/");
-        } finally {
-          localStorage.removeItem(CommonConstant.IS_ALREADY_FETCHING_ACCESS);
-        }
 
-        throw err;
+        Promise.reject(err);
       }
     );
   }, []);
@@ -144,7 +96,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: async ({ accessToken, refreshToken }: AuthToken) => {
+        signIn: ({ accessToken, refreshToken }: AuthToken) => {
           // Perform sign-in logic here
           setAccessToken(accessToken);
           setRefreshToken(refreshToken);
