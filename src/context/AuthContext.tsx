@@ -74,48 +74,48 @@ export function SessionProvider(props: React.PropsWithChildren) {
       },
       async (err) => {
         if (err?.response?.status == 401) {
-          if (err?.response?.headers.auto == "True") {
-            try {
-              const { config } = err;
+          // if (err?.response?.headers.auto == "True") {
+          //   try {
+          //     const { config } = err;
 
-              const isAlreadyFetchingAccessToken = localStorage.getItem(
-                CommonConstant.IS_ALREADY_FETCHING_ACCESS
-              );
-              const originalRequest = config;
+          //     const isAlreadyFetchingAccessToken = localStorage.getItem(
+          //       CommonConstant.IS_ALREADY_FETCHING_ACCESS
+          //     );
+          //     const originalRequest = config;
 
-              if (!isAlreadyFetchingAccessToken) {
-                localStorage.setItem(
-                  CommonConstant.IS_ALREADY_FETCHING_ACCESS,
-                  "true"
-                );
-                const res = await http.post("/api/auth/refresh", {
-                  accessToken: getAccessToken(),
-                  refreshToken: getRefreshToken(),
-                }
-                );
+          //     if (!isAlreadyFetchingAccessToken) {
+          //       localStorage.setItem(
+          //         CommonConstant.IS_ALREADY_FETCHING_ACCESS,
+          //         "true"
+          //       );
+          //       const res = await http.post("/api/auth/refresh", {
+          //         accessToken: getAccessToken(),
+          //         refreshToken: getRefreshToken(),
+          //       }
+          //       );
 
-                setAccessToken(res?.data);
-              }
-              const retryOriginalRequest = new Promise((resolve) => {
-                originalRequest.headers[
-                  "Authorization"
-                ] = `Bearer ${getAccessToken()}`;
-                resolve(http(originalRequest));
-              });
+          //       setAccessToken(res?.data);
+          //     }
+          //     const retryOriginalRequest = new Promise((resolve) => {
+          //       originalRequest.headers[
+          //         "Authorization"
+          //       ] = `Bearer ${getAccessToken()}`;
+          //       resolve(http(originalRequest));
+          //     });
 
-              return retryOriginalRequest;
-            } catch (error) {
-              setAccessToken(null);
-              setRefreshToken(null);
-              navigate("/");
-            } finally {
-              localStorage.removeItem(
-                CommonConstant.IS_ALREADY_FETCHING_ACCESS
-              );
-            }
-          }
+          //     return retryOriginalRequest;
+          //   } catch (error) {
+          //     setAccessToken(null);
+          //     setRefreshToken(null);
+          //     navigate("/");
+          //   } finally {
+          //     localStorage.removeItem(
+          //       CommonConstant.IS_ALREADY_FETCHING_ACCESS
+          //     );
+          //   }
+          // }
 
-          throw err;
+          // throw err;
         }
 
         throw err;

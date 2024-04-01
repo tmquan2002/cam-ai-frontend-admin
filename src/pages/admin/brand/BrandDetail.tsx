@@ -9,7 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxListById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";

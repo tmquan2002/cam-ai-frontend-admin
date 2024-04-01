@@ -151,101 +151,80 @@ const EdgeBoxDetail = () => {
 
                 <div className={styled["container-detail"]}>
                     <>
-                        <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Current Active Install</Text>
-                        <Group grow mb={15}>
-                            <Box mb={10}>
-                                <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
-                                <StatusBadge statusName={dataInstall?.values[0].edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
-                            </Box>
-                            <Box mb={10}>
-                                <Text size="xs" c={"dimmed"} fw={500}>Acivation Status</Text>
-                                <StatusBadge statusName={dataInstall?.values[0].activationStatus} padding={10} size="sm" tooltip="Location Status" />
-                            </Box>
-                        </Group>
-                        <Group grow mb={15}>
-                            {dataInstall?.values[0]?.uninstalledTime &&
-                                <Box mb={10}>
-                                    <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
-                                    <Text size="md" fw={500}>{removeTime(new Date(dataInstall?.values[0]?.uninstalledTime), "/")}</Text>
-                                </Box>
-                            }
-                            <Box>
-                                <Text size="xs" c={"dimmed"} fw={500}>Installed Date</Text>
-                                <Text size="md" fw={500}>{removeTime(new Date(dataInstall?.values[0]?.createdDate || Date.now()), "/")}</Text>
-                            </Box>
-                        </Group>
-                    </>
-                </div>
-
-                <div className={styled["container-detail"]}>
-                    <>
-                        <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Installed Shops</Text>
+                        <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Installs</Text>
                         <div className={styledList["list-container"]}>
                             <div className={styledList["card-detail"]}>
+                                <Box mt={10}>
+                                    {dataInstall?.values?.map((item, index) => (
+                                        <Card shadow="sm" padding="lg" radius="md" m={10} key={index}
+                                            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
+                                            <Group mb={10} justify="space-between">
+                                                <Group>
+                                                    <Text fw={500} size="lg">{item.shop.name}</Text>
+                                                    {item.shop.shopStatus &&
+                                                        <StatusBadge statusName={item?.shop.shopStatus} padding={10} size="sm" />
+                                                    }
+                                                </Group>
+                                                <ActionIcon.Group>
+                                                    <Tooltip label="View Edge Box" withArrow>
+                                                        <ActionIcon variant="filled" size="lg" aria-label="View Shop" color="light-blue.6"
+                                                            onClick={() => { }}>
+                                                            <MdPageview style={{ width: rem(20) }} stroke={1.5} />
+                                                        </ActionIcon>
+                                                    </Tooltip>
+
+                                                    <Tooltip label="Uninstall" withArrow>
+                                                        <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4">
+                                                            <MdDelete style={{ width: rem(20) }} stroke={1.5} />
+                                                        </ActionIcon>
+                                                    </Tooltip>
+                                                </ActionIcon.Group>
+                                            </Group>
+
+                                            <div className={styledList["icon-text"]}>
+                                                <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
+                                                <span className={styledList["information"]}><b>Open:</b> {item?.shop.openTime || "No Data"} - <b>Close:</b> {item?.shop.closeTime || "No Data"}</span>
+                                            </div>
+
+                                            {item.shop.phone &&
+                                                <div className={styledList["icon-text"]}>
+                                                    <MdPhone style={{ width: '20px', height: '20px' }} />
+                                                    <span className={styledList["information"]}>{item.shop.phone}</span>
+                                                </div>
+                                            }
+                                            <Divider mb={10} mt={10}/>
+
+                                            {/* Install Section */}
+                                            <Group grow mb={10}>
+                                                <Box mb={10}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
+                                                    <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
+                                                </Box>
+                                                <Box mb={10}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Acivation Status</Text>
+                                                    <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Location Status" />
+                                                </Box>
+                                            </Group>
+                                            <Group grow mb={15}>
+                                                {item.uninstalledTime &&
+                                                    <Box mb={10}>
+                                                        <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
+                                                        <Text size="md" fw={500}>{removeTime(new Date(item.uninstalledTime), "/")}</Text>
+                                                    </Box>
+                                                }
+                                                <Box>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Installed Date</Text>
+                                                    <Text size="md" fw={500}>{removeTime(new Date(item.createdDate || Date.now()), "/")}</Text>
+                                                </Box>
+                                            </Group>
+                                        </Card>
+                                    ))}
+                                </Box>
                             </div>
                         </div>
                     </>
                 </div>
-
-                <>
-                    <div className={styled["container-detail"]}>
-                        <div>
-                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Installed Shops</Text>
-
-                            <div className={styledList["list-container"]}>
-                                <div className={styledList["card-detail"]}>
-                                    <Box mt={10}>
-                                        {dataInstall?.values?.map((item, index) => (
-                                            <Card shadow="sm" padding="lg" radius="md" m={10} key={index}
-                                                style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-
-                                                <Group mb={10} justify="space-between">
-                                                    <Group>
-                                                        <Text fw={500} size="lg">{item.shop.name}</Text>
-                                                        {item.shop.shopStatus &&
-                                                            <StatusBadge statusName={item?.shop.shopStatus} padding={10} size="sm" />
-                                                        }
-                                                    </Group>
-                                                    <ActionIcon.Group>
-                                                        <Tooltip label="View Edge Box" withArrow>
-                                                            <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
-                                                                onClick={() => { }}>
-                                                                <MdPageview style={{ width: rem(20) }} stroke={1.5} />
-                                                            </ActionIcon>
-                                                        </Tooltip>
-
-                                                        <Tooltip label="Uninstall" withArrow>
-                                                            <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4">
-                                                                <MdDelete style={{ width: rem(20) }} stroke={1.5} />
-                                                            </ActionIcon>
-                                                        </Tooltip>
-                                                    </ActionIcon.Group>
-                                                </Group>
-
-                                                <div className={styledList["icon-text"]}>
-                                                    <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
-                                                    <span className={styledList["information"]}><b>Open:</b> {item?.shop.openTime || "No Data"} - <b>Close:</b> {item?.shop.closeTime || "No Data"}</span>
-                                                </div>
-
-                                                {item.shop.phone &&
-                                                    <div className={styledList["icon-text"]}>
-                                                        <MdPhone style={{ width: '20px', height: '20px' }} />
-                                                        <span className={styledList["information"]}>{item.shop.phone}</span>
-                                                    </div>
-                                                }
-                                            </Card>
-                                        ))}
-                                    </Box>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* <Box className={styled["loader"]}>
-                        <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-                    </Box> */}
-                </>
             </div>
             <Modal opened={modalDeleteOpen} onClose={closeDelete}
                 title="Delete this edge box?" centered>

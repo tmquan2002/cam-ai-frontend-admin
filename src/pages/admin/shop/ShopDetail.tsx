@@ -4,7 +4,7 @@ import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, Md
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
+import { EdgeBoxInstallListById } from "../../../components/list/EdgeBoxInstallListById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
@@ -27,6 +27,7 @@ const ShopDetail = () => {
 
     const { data, isLoading, error } = useGetShopById(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+
 
     return (
         <div className={styled["container-right"]}>
@@ -143,7 +144,7 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <EdgeBoxListById id={params.shopId!} type="install" />
+                                        <EdgeBoxInstallListById id={params.shopId!} />
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>

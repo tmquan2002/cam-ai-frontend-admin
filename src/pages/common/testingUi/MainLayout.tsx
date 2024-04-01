@@ -1,5 +1,5 @@
 import { SideBar } from "../../../components/sidebar/SideBar";
-import EdgeBoxMainPage from "./EdgeBoxMainPage";
+import EdgeBoxDetail from "./EdgeBoxDetail";
 import styled from "./adminlayout.module.scss";
 
 const MainLayout = () => {
@@ -7,7 +7,7 @@ const MainLayout = () => {
     return (
         <div className={styled["container-main"]}>
             <SideBar />
-            <EdgeBoxMainPage />
+            <EdgeBoxDetail />
         </div>
     );
 };
