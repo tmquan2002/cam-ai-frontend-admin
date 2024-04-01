@@ -84,12 +84,12 @@ export enum Zone {
   Customer = "Customer",
 }
 
-export enum IncidenttType {
+export enum IncidentType {
   Phone = "Phone",
   Uniform = "Uniform"
 }
 
-export enum IncidenttStatus {
+export enum IncidentStatus {
   New = "New",
   Accepted = "Accepted",
   Rejected = "Rejected"

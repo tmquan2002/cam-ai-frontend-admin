@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useStorageState } from "../hooks/useStorageState";
 import { AuthToken } from "../models/Auth";
 import { CommonConstant } from "../types/constant";
-import { Role } from "../types/enum";
-import http from "../utils/http";
 import * as jwt from "../utils/jwt";
+import http from "../utils/http";
+import { Role } from "../types/enum";
 
 const AuthContext = createContext<{
   signIn: (params: AuthToken) => void;
@@ -46,7 +46,6 @@ export function getUserRole(): Role | null {
 
 export function getUserId(): string | null {
   const accessToken: string | null = getAccessToken();
-
   if (accessToken) {
     const id: string = jwt.getIdFromToken(accessToken);
     return id;
@@ -55,15 +54,25 @@ export function getUserId(): string | null {
   return null;
 }
 
+export function checkRole(acceptableRoles: string[]): boolean {
+  const userRole = getUserRole();
+  if (!userRole) return false;
+
+  const arr1 = acceptableRoles.filter((acceptableRole) => {
+    return userRole == acceptableRole;
+  });
+
+  return arr1.length > 0;
+}
+
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isAccessTokenLoading], setAccessToken] = useStorageState(
-    // const [[isAccessTokenLoading, accessToken], setAccessToken] = useStorageState(
     CommonConstant.USER_ACCESS_TOKEN
   );
 
-  const [[isRefreshTokenLoading], setRefreshToken] =
-    // const [[isRefreshTokenLoading, refreshToken], setRefreshToken] =
-    useStorageState(CommonConstant.USER_REFRESH_TOKEN);
+  const [[isRefreshTokenLoading], setRefreshToken] = useStorageState(
+    CommonConstant.USER_REFRESH_TOKEN
+  );
 
   const navigate = useNavigate();
 
@@ -72,53 +81,15 @@ export function SessionProvider(props: React.PropsWithChildren) {
       (res) => {
         return res;
       },
-      async (err) => {
-        if (err?.response?.status == 401) {
-          // if (err?.response?.headers.auto == "True") {
-          //   try {
-          //     const { config } = err;
+      (err) => {
+          if (err?.response?.status == 401) {
+            if (err?.response?.headers.auto != "True") {
+              localStorage.clear();
+              navigate("/");
+            }
+          }
 
-          //     const isAlreadyFetchingAccessToken = localStorage.getItem(
-          //       CommonConstant.IS_ALREADY_FETCHING_ACCESS
-          //     );
-          //     const originalRequest = config;
-
-          //     if (!isAlreadyFetchingAccessToken) {
-          //       localStorage.setItem(
-          //         CommonConstant.IS_ALREADY_FETCHING_ACCESS,
-          //         "true"
-          //       );
-          //       const res = await http.post("/api/auth/refresh", {
-          //         accessToken: getAccessToken(),
-          //         refreshToken: getRefreshToken(),
-          //       }
-          //       );
-
-          //       setAccessToken(res?.data);
-          //     }
-          //     const retryOriginalRequest = new Promise((resolve) => {
-          //       originalRequest.headers[
-          //         "Authorization"
-          //       ] = `Bearer ${getAccessToken()}`;
-          //       resolve(http(originalRequest));
-          //     });
-
-          //     return retryOriginalRequest;
-          //   } catch (error) {
-          //     setAccessToken(null);
-          //     setRefreshToken(null);
-          //     navigate("/");
-          //   } finally {
-          //     localStorage.removeItem(
-          //       CommonConstant.IS_ALREADY_FETCHING_ACCESS
-          //     );
-          //   }
-          // }
-
-          // throw err;
-        }
-
-        throw err;
+        Promise.reject(err);
       }
     );
   }, []);
@@ -126,7 +97,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: async ({ accessToken, refreshToken }: AuthToken) => {
+        signIn: ({ accessToken, refreshToken }: AuthToken) => {
           // Perform sign-in logic here
           setAccessToken(accessToken);
           setRefreshToken(refreshToken);

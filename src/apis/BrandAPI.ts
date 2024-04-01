@@ -30,6 +30,7 @@ export type UpdateBrandParams = {
 export const BrandAPI = {
   getAllFilter: async (params: GetBrandsParams) => {
     const token = getAccessToken();
+    
     const res = await http.get<CommonResponse<Brand>>(
       `/api/brands?${toQueryParams(params)}`,
       {
