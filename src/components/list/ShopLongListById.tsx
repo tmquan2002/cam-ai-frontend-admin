@@ -23,14 +23,14 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                 </Group>
                 <ActionIcon.Group>
                     <Tooltip label="View Shop" withArrow>
-                        <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
+                        <ActionIcon variant="outline" size="lg" aria-label="View Edge Box" color="light-blue.6"
                             onClick={() => navigate(`/shop/${item.shop.id}`)}>
                             <MdPageview style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
                     {/* TODO: Add uninstall box from a shop here */}
                     <Tooltip label="Uninstall" withArrow>
-                        <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4"
+                        <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4"
                             onClick={() => {}}>
                             <MdDelete style={{ width: rem(20) }} />
                         </ActionIcon>

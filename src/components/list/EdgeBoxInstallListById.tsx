@@ -6,9 +6,11 @@ import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { removeTime } from "../../utils/dateFunction";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface EdgeBoxInstallListParam {
     id: string;
+    setAssign: Dispatch<SetStateAction<boolean>>;
 }
 
 const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
@@ -20,14 +22,14 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"}>{item?.edgeBox?.name}</Text>
                 <ActionIcon.Group>
                     <Tooltip label="View Edge Box" withArrow>
-                        <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
+                        <ActionIcon variant="outline" size="lg" aria-label="View Edge Box" color="light-blue.6"
                             onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
                             <MdPageview style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
 
                     <Tooltip label="Uninstall" withArrow>
-                        <ActionIcon variant="filled" size="lg" aria-label="Uninstall" color="pale-red.4">
+                        <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4">
                             <MdDelete style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
@@ -79,10 +81,17 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
         </Card>
     )
 }
-export const EdgeBoxInstallListById = ({ id }: EdgeBoxInstallListParam) => {
+export const EdgeBoxInstallListById = ({ id, setAssign }: EdgeBoxInstallListParam) => {
 
     const { isLoading: isLoadingInstall, data: installData, error: installError } = useGetEdgeBoxInstallByShopId(id);
 
+    useEffect(() => {
+        if (installData?.values.length == 0) {
+            setAssign(true)
+        } else {
+            setAssign(false)
+        }
+    }, [installData])
     // console.log(installData)
     return (
         <div className={styled["list-container"]}>
@@ -92,7 +101,7 @@ export const EdgeBoxInstallListById = ({ id }: EdgeBoxInstallListParam) => {
                 </Box>
                 :
                 <div className={styled["card-detail"]}>
-                    {(installData?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Installs Found</Text> :
+                    {(installData?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
                         <Box mt={5} mb={5}>
                             {installData?.values.map((item, index) => (
                                 <InstallCard item={item} key={index} />

@@ -13,7 +13,7 @@ const data = [
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
-    { label: 'Installs', icon: GrInstall , path: '/install' },
+    { label: 'Installs', icon: GrInstall , path: '/install', disabled: true },
 ];
 
 export function SideBar() {

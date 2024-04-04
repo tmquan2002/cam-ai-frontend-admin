@@ -38,7 +38,7 @@ export enum EdgeBoxStatus {
   Broken = "Broken",
 }
 
-export enum EdgeBoxLocation {
+export enum EdgeBoxLocationStatus {
   Idle = "Idle",
   Installing = "Installing",
   Occupied = "Occupied",
@@ -114,6 +114,7 @@ export enum CommonStatus {
 
 export enum StatusColor {
   ACTIVE = "#23a55a",
+  MIDDLE = "#465574",
   INACTIVE = "#f23f43",
   NEW = "#f0b232",
   NONE = "#80848e"

@@ -1,6 +1,7 @@
 import { getAccessToken } from "../context/AuthContext";
 import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBox, EdgeBoxInstall, EdgeBoxModel } from "../models/EdgeBox";
+import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 import http, { toQueryParams } from "../utils/http";
 
 export type GetEdgeBoxParams = {
@@ -88,7 +89,7 @@ export const EdgeBoxAPI = {
         });
         return res.data;
     },
-    update: async (params: UpdateEdgeBoxParams) => {
+    updateInfo: async (params: UpdateEdgeBoxParams) => {
         const token = getAccessToken();
         const res = await http.put<EdgeBox>(`/api/edgeboxes/${params.id}`, params.values, {
             headers: {
@@ -114,5 +115,21 @@ export const EdgeBoxAPI = {
             },
         });
         return res.data;
+    },
+    updateStatus: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
+        const token = getAccessToken();
+        await http.put(`/api/edgeboxes/${params.id}/status`, params.values, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+    },
+    updateLocation: async (params: { id: string; values: { location: EdgeBoxLocationStatus } }) => {
+        const token = getAccessToken();
+        await http.put(`/api/edgeboxes/${params.id}/location`, params.values, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
     },
 };

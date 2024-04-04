@@ -10,6 +10,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/shopdetail.module.scss";
+import { useState } from "react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -27,7 +28,7 @@ const ShopDetail = () => {
 
     const { data, isLoading, error } = useGetShopById(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-
+    const [assign, setAssign] = useState(false)
 
     return (
         <div className={styled["container-right"]}>
@@ -76,14 +77,16 @@ const ShopDetail = () => {
                                         }
                                     </div>
                                 </div>
-                                <div>
-                                    <Button
-                                        onClick={() => navigate(`/shop/${params.shopId!}/assign`)} variant="gradient"
-                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
-                                    >
-                                        Assign Edge Box
-                                    </Button>
-                                </div>
+                                {assign &&
+                                    <div>
+                                        <Button
+                                            onClick={() => navigate(`/shop/${params.shopId!}/assign`)} variant="gradient"
+                                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
+                                        >
+                                            Assign Edge Box
+                                        </Button>
+                                    </div>
+                                }
                             </div>
                             <Divider my="md" />
                             <div className={styled["profile-detail"]}>
@@ -144,7 +147,7 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <EdgeBoxInstallListById id={params.shopId!} />
+                                        <EdgeBoxInstallListById id={params.shopId!} setAssign={setAssign} />
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>

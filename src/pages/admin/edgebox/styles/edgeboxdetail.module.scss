@@ -36,6 +36,7 @@
 
             .profile-header-left {
                 display: flex;
+                width: 19%;
                 flex-direction: row;
                 justify-content: space-between;
             }
@@ -44,7 +45,6 @@
 
     .model-detail {
         width: 80%;
-        margin-left: 10px;
     }
 
     .loader {

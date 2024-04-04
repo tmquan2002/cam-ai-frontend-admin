@@ -1,7 +1,8 @@
-import { UseQueryResult, useMutation, useQuery } from "react-query";
+import { UseQueryResult, useMutation, useQueries, useQuery } from "react-query";
 import { AddEdgeBoxInstallParams, AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
 import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBox, EdgeBoxInstall } from "../models/EdgeBox";
+import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 
 export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error,
@@ -82,6 +83,26 @@ export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
   return { isError, isLoading, data, error, refetch };
 };
 
+export const useGetEdgeBoxInstallsByAllEdgeBoxId = (edgeBoxes: CommonResponse<EdgeBox> | undefined) => {
+  if (!edgeBoxes) return [];
+
+  const result = useQueries<CommonResponse<EdgeBoxInstall>[]>(
+    edgeBoxes.values.map(edgeBox => ({
+      queryKey: ['edgeBoxInstallList', edgeBox.id],
+      queryFn: async () => {
+        if (edgeBox.id) {
+          return await EdgeBoxAPI.getEdgeBoxInstallsByEdgeBoxId(edgeBox.id);
+        } else {
+          return {}
+        }
+      },
+      enabled: !!edgeBoxes
+    }))
+  ) as UseQueryResult<CommonResponse<EdgeBoxInstall>>[]
+
+  return result;
+};
+
 export const useGetEdgeBoxInstallByShopId = (shopId: string) => {
   const { isError, isLoading, data, error, refetch,
   }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
@@ -114,7 +135,7 @@ export const useUpdateEdgeBox = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "updateEdgeBox",
     mutationFn: async (params: UpdateEdgeBoxParams) => {
-      return await EdgeBoxAPI.update(params);
+      return await EdgeBoxAPI.updateInfo(params);
     },
   });
 
@@ -137,6 +158,28 @@ export const useInstallEdgeBox = () => {
     mutationKey: "installEdgeBox",
     mutationFn: async (params: AddEdgeBoxInstallParams) => {
       return await EdgeBoxAPI.install(params);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
+export const useUpdateEdgeBoxStatus = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "updateEdgeBoxStatus",
+    mutationFn: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
+      return await EdgeBoxAPI.updateStatus(params);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
+export const useUpdateEdgeBoxLocation = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "updateEdgeBoxStatus",
+    mutationFn: async (params: { id: string; values: { location: EdgeBoxLocationStatus } }) => {
+      return await EdgeBoxAPI.updateLocation(params);
     },
   });
 

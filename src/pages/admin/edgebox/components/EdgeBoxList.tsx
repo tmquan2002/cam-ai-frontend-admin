@@ -6,7 +6,7 @@ import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
-import { EdgeBoxLocation, EdgeBoxStatus } from '../../../../types/enum';
+import { EdgeBoxLocationStatus, EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateFunction';
 import styled from "../styles/edgebox.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
@@ -210,11 +210,11 @@ const EdgeBoxList = () => {
                     <RadioGroup name="location" value={filterLocation}
                         onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_LOCATION, value)}>
                         <Group>
-                            <Radio value={EdgeBoxLocation.Idle.toString()} label={"Idle"} />
-                            <Radio value={EdgeBoxLocation.Installing.toString()} label={"Installing"} />
-                            <Radio value={EdgeBoxLocation.Occupied.toString()} label={"Occupied"} />
-                            <Radio value={EdgeBoxLocation.Uninstalling.toString()} label={"Uninstalling"} />
-                            <Radio value={EdgeBoxLocation.Disposed.toString()} label={"Disposed"} />
+                            <Radio value={EdgeBoxLocationStatus.Idle.toString()} label={"Idle"} />
+                            <Radio value={EdgeBoxLocationStatus.Installing.toString()} label={"Installing"} />
+                            <Radio value={EdgeBoxLocationStatus.Occupied.toString()} label={"Occupied"} />
+                            <Radio value={EdgeBoxLocationStatus.Uninstalling.toString()} label={"Uninstalling"} />
+                            <Radio value={EdgeBoxLocationStatus.Disposed.toString()} label={"Disposed"} />
                         </Group>
                     </RadioGroup>
                 </Group>

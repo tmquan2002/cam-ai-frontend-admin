@@ -1,6 +1,6 @@
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
-import EdgeBoxInstallList from "./components/EdgeBoxList";
+import InstallList from "./components/InstallList";
 import styled from "./styles/edgeboxinstall.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -15,7 +15,7 @@ const InstallMainPage = () => {
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} />
             <div className={styled["table-container"]}>
-                <EdgeBoxInstallList />
+                <InstallList />
             </div>
         </div>
 
