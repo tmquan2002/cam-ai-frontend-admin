@@ -32,7 +32,7 @@ export const useGetAllShopsSelect = (params: GetShopsParams) => {
 };
 
 export const useGetShopById = (id: string | undefined) => {
-  const { isError, isLoading, data, error, refetch,
+  const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<Shop, Error> = useQuery({
     queryKey: ["shopDetail", id],
     queryFn: async () => {
@@ -45,5 +45,5 @@ export const useGetShopById = (id: string | undefined) => {
     enabled: !!id,
   });
 
-  return { isError, isLoading, data, error, refetch };
+  return { isError, isLoading, isFetching, data, error, refetch };
 };

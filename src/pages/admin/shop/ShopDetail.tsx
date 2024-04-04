@@ -1,7 +1,9 @@
-import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Tabs, Text, useComputedColorScheme } from "@mantine/core";
+import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text, useComputedColorScheme } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { EdgeBoxInstallListById } from "../../../components/list/EdgeBoxInstallListById";
@@ -9,8 +11,8 @@ import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
+import { ShopEdgeBoxAssignForm } from "./components/ShopEdgeBoxAssignForm";
 import styled from "./styles/shopdetail.module.scss";
-import { useState } from "react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -24,16 +26,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 const ShopDetail = () => {
 
     const params = useParams();
-    const navigate = useNavigate();
 
-    const { data, isLoading, error } = useGetShopById(params.shopId!);
+    const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
+    const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [assign, setAssign] = useState(false)
 
     return (
         <div className={styled["container-right"]}>
             <Navbar items={breadcrumbs} goBack />
-            {isLoading ?
+            {isFetching ?
                 <Box className={styled["loader"]}>
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
@@ -80,7 +82,7 @@ const ShopDetail = () => {
                                 {assign &&
                                     <div>
                                         <Button
-                                            onClick={() => navigate(`/shop/${params.shopId!}/assign`)} variant="gradient"
+                                            onClick={openAssign} variant="gradient"
                                             gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
                                         >
                                             Assign Edge Box
@@ -104,7 +106,7 @@ const ShopDetail = () => {
                                     </Tabs.List>
 
                                     <Tabs.Panel value="brand">
-                                        {isLoading ?
+                                        {isFetching ?
                                             <Box className={styled["loader-tab"]}>
                                                 <Loader />
                                             </Box>
@@ -151,6 +153,12 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>
+
+                            {/* Modal Update Section */}
+                            <Modal opened={modalAssignOpen} onClose={closeAssign}
+                                title="Assign Edge Box" centered>
+                                <ShopEdgeBoxAssignForm shopId={params.shopId!} close={closeAssign} refetch={refetch} />
+                            </Modal>
                         </>
                     }
                 </div>

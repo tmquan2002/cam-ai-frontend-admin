@@ -29,7 +29,8 @@ const EdgeBoxDetail = () => {
     const navigate = useNavigate();
 
     const [modalDeleteOpen, { open: openDelete, close: closeDelete }] = useDisclosure(false);
-    const [modalupdateOpen, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
+    const [modalUpdateOpen, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
+    const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
 
     const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
     const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetEdgeBoxInstallByEdgeBoxId(params.edgeBoxId!);
@@ -149,7 +150,7 @@ const EdgeBoxDetail = () => {
                                         </div>
                                     </div>
                                     <Divider orientation="vertical" ml={10} mr={10} />
-                                    {/* Model section */}
+                                    {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>
                                         <Group justify="space-between">
                                             <Text size='sm' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
@@ -164,11 +165,7 @@ const EdgeBoxDetail = () => {
                                                 }
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Occupied &&
                                                     <Button
-                                                        onClick={() => notifications.show({
-                                                            message: "This feature is in development",
-                                                            color: "pale-red.5",
-                                                            withCloseButton: true,
-                                                        })} variant="filled"
+                                                        onClick={openUninstall} variant="filled"
                                                         color="pale-red.4" size="sm" loading={isLoadingLocation}
                                                     >
                                                         Uninstall
@@ -242,7 +239,8 @@ const EdgeBoxDetail = () => {
                         }
                     </div>
                 }
-
+                
+                {/* Install section */}
                 {dataInstall && dataInstall?.values?.length > 0 &&
                     <>
                         {!isLoadingInstall ?
@@ -260,8 +258,10 @@ const EdgeBoxDetail = () => {
                     </>
                 }
             </div>
-            <Modal opened={modalDeleteOpen} onClose={closeDelete}
-                title="Delete this edge box?" centered>
+
+            {/* Modal section*/}
+            {/* Delete */}
+            <Modal opened={modalDeleteOpen} onClose={closeDelete} withCloseButton={false} centered>
                 <Text>
                     Do you want to remove this edge box?
                 </Text>
@@ -281,9 +281,40 @@ const EdgeBoxDetail = () => {
                     </Button>
                 </Group>
             </Modal>
-            <Modal opened={modalupdateOpen} onClose={closeUpdate}
+
+            {/* Update Info */}
+            <Modal opened={modalUpdateOpen} onClose={closeUpdate}
                 title="Update Model" centered>
                 <UpdateEdgeBoxForm id={params.edgeBoxId!} close={closeUpdate} refetch={refetch} refetchInstall={refetchInstall} />
+            </Modal>
+
+            {/* Uninstall */}
+            <Modal opened={modalUninstallOpen} onClose={closeUninstall} withCloseButton={false} centered>
+                <Text>
+                    Do you want to uninstall this edge box from the shop?
+                </Text>
+                <Group align="end">
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={closeUninstall}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
+                    </Button>
+                    <Button
+                        variant="gradient" size="md" mt={20}
+                        onClick={() => {
+                            notifications.show({
+                                message: "This feature is in development",
+                                color: "pale-yellow.5",
+                                withCloseButton: true,
+                            })
+                            closeUninstall();
+                        }}
+                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                    >
+                        UNINSTALL
+                    </Button>
+                </Group>
             </Modal>
         </>
     );

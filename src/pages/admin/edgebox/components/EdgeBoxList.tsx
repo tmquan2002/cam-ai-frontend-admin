@@ -42,6 +42,7 @@ const EdgeBoxList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
@@ -138,8 +139,11 @@ const EdgeBoxList = () => {
 
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
-                <Table.Td>
-                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} fullWidth />
+                <Table.Td ta={"center"}>
+                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"}/>
+                </Table.Td>
+                <Table.Td ta={"center"}>
+                    <StatusBadge statusName={e.edgeBoxLocation ? e.edgeBoxLocation : "None"} />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -251,6 +255,7 @@ const EdgeBoxList = () => {
                                 <Table.Th>Name</Table.Th>
                                 <Table.Th>Created Date</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
+                                <Table.Th ta={"center"}>Location Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>

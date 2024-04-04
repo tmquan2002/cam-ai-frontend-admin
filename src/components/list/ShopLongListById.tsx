@@ -18,7 +18,7 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                 <Group>
                     <Text fw={500} size="lg">{item.shop.name}</Text>
                     {item.shop.shopStatus &&
-                        <StatusBadge statusName={item?.shop.shopStatus} padding={10} size="sm" />
+                        <StatusBadge statusName={item?.shop.shopStatus} padding={10} size="sm" tooltip="Shop Status"/>
                     }
                 </Group>
                 <ActionIcon.Group>
@@ -71,8 +71,8 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
                 </Box>
                 <Box mb={10}>
-                    <Text size="xs" c={"dimmed"} fw={500}>Acivation Status</Text>
-                    <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Location Status" />
+                    <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
+                    <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
                 </Box>
             </Group>
             <Group grow mb={15} ml={10}>

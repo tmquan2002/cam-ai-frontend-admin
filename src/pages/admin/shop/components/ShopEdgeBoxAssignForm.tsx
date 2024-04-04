@@ -1,24 +1,21 @@
-import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
+import { Button, Group, Loader, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
+import { EdgeBoxLocationStatus } from "../../../../types/enum";
 
-export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
+export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: string, close: () => void, refetch: () => {} }) => {
 
     const { mutate: installEdgeBox, isLoading: isLoadingInstall } = useInstallEdgeBox();
-    const navigate = useNavigate();
     const { data: edgeBoxList, isFetching, isLoading: isLoadingEdgeBoxSelect
-    } = useGetAllEdgeBoxesSelect({})
+    } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle })
 
     const form = useForm({
         initialValues: {
             edgeBoxId: "",
             shopId: shopId,
-            port: 0,
-            ipAddress: "",
         },
 
         validate: {
@@ -32,8 +29,6 @@ export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
         const installEdgeBoxParams: AddEdgeBoxInstallParams = {
             edgeBoxId: values.edgeBoxId,
             shopId: shopId,
-            ipAddress: values.ipAddress,
-            port: values.port
         };
 
         console.log(values)
@@ -46,7 +41,8 @@ export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
                     color: "green",
                     withCloseButton: true,
                 });
-                navigate(`/shop/${shopId}`, { replace: true })
+                close();
+                refetch();
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
@@ -71,34 +67,19 @@ export const ShopEdgeBoxAssignForm = ({ shopId }: { shopId: string }) => {
     return (
         <form
             onSubmit={form.onSubmit((values) => onSubmitForm(values))}
-            style={{ textAlign: "left", marginTop: 10 }}
+            style={{ textAlign: "left", marginTop: 5 }}
         >
             <Select data={edgeBoxList || []} limit={5} size='sm'
-                label="Edge Box"
+                label="Edge Box" allowDeselect={false}
                 nothingFoundMessage={edgeBoxList && "Not Found"}
                 rightSection={(isLoadingEdgeBoxSelect || isFetching) ? <Loader size="1rem" /> : null}
                 placeholder="Pick value"
                 {...form.getInputProps("edgeBoxId")}
             />
 
-            <TextInput mt={10}
-                label="Ip Address"
-                placeholder="Ip Address"
-                size="sm"
-                {...form.getInputProps("ipAddress")}
-            />
-
-            <TextInput mt={10}
-                label="Port"
-                placeholder="Port"
-                type="number"
-                size="sm"
-                {...form.getInputProps("port")}
-            />
-
             <Group
                 justify="flex-start"
-                mt={10}
+                mt={5}
             >
                 <Button
                     loading={isLoadingInstall}
