@@ -199,7 +199,7 @@ const AccountDetail = () => {
                                                 }
                                             </div>
                                         </Group>
-                                        <Link to={`/brand/${data?.brand?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                        <Link to={`/brand/${data?.brand?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@ const AccountDetail = () => {
                                                 </Group>
                                             }
                                         </div>
-                                        <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                        <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Shop</Link>
                                     </div>
                                 </div>
                             </div>

@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Card, Divider, Group, Modal, Text, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, Divider, Group, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
@@ -13,11 +13,12 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
     // console.log(item)
     const navigate = useNavigate();
     const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     if (item)
         return (
             <>
-                <Card padding="sm" radius="md" m={10}
+                <Card padding="lg" radius="md" m={10}
                     style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
                     {item?.shop ?
@@ -42,13 +43,14 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                     <Tooltip label="View Shop" withArrow>
                                         <ActionIcon variant="outline" size="lg" aria-label="View Edge Box" color="light-blue.6"
                                             onClick={() => navigate(`/shop/${item?.shop?.id}`)}>
-                                            <MdPageview style={{ width: rem(20) }} />
+                                            <MdPageview />
                                         </ActionIcon>
                                     </Tooltip>
+                                    {/* TODO: Make a log list here */}
                                     <Tooltip label="View Old Installs" withArrow>
-                                        <ActionIcon variant="outline" size="lg" aria-label="View Old Installs" color="black"
-                                            onClick={() => navigate(`/shop/${item?.shop?.id}`)}>
-                                            <MdHistory style={{ width: rem(20) }} />
+                                        <ActionIcon variant="outline" size="lg" aria-label="View Old Installs" color={computedColorScheme == "dark" ? "white" : "black"}
+                                            onClick={() => { }}>
+                                            <MdHistory />
                                         </ActionIcon>
                                     </Tooltip>
                                 </ActionIcon.Group>

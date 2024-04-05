@@ -6,7 +6,7 @@ import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, Md
 import { Link, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import { EdgeBoxInstallListById } from "../../../components/list/EdgeBoxInstallListById";
+import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetShopById } from "../../../hooks/useShops";
@@ -139,7 +139,7 @@ const ShopDetail = () => {
                                                         }
                                                     </div>
                                                 </Group>
-                                                <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View More</Link>
+                                                <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
                                             </div>
                                         }
                                     </Tabs.Panel>
@@ -149,7 +149,7 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <EdgeBoxInstallListById id={params.shopId!} setAssign={setAssign} />
+                                        <EdgeBoxInstallListByShopId id={params.shopId!} setAssign={setAssign} />
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>

@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Divider, Flex, Group, LoadingOverlay, Modal, Text, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Flex, Group, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -167,14 +167,14 @@ const EdgeBoxDetail = () => {
                                                     <Tooltip label="Edit Edge Box information" withArrow>
                                                         <ActionIcon variant="outline" size="lg" aria-label="Edit Edge Box information" color="light-blue.6"
                                                             onClick={openUpdate}>
-                                                            <MdEdit style={{ width: rem(20) }} />
+                                                            <MdEdit />
                                                         </ActionIcon>
                                                     </Tooltip>
 
                                                     <Tooltip label="Delete Edge Box" withArrow>
                                                         <ActionIcon variant="outline" size="lg" aria-label="Delete Edge Box" color="pale-red.4"
                                                             onClick={openDelete}>
-                                                            <MdDelete style={{ width: rem(20) }} />
+                                                            <MdDelete />
                                                         </ActionIcon>
                                                     </Tooltip>
                                                 </ActionIcon.Group>

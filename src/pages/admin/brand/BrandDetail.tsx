@@ -17,7 +17,7 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
+import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -227,7 +227,7 @@ const BrandDetail = () => {
                                         </Tabs.Panel>
 
                                         <Tabs.Panel value="edge boxes">
-                                            <EdgeBoxListById id={params.brandId!} type="brand" />
+                                            <EdgeBoxListByBrandId brandId={params.brandId!} />
                                         </Tabs.Panel>
                                     </Tabs>
                                 </div>
