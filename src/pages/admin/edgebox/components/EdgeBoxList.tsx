@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Modal, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
+import { AddEdgeBoxForm } from './AddEdgeBoxForm';
 
 const EdgeBoxList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxFilterProps.FILTER, {
@@ -33,6 +34,7 @@ const EdgeBoxList = () => {
 
     const [clear, setClear] = useState(false)
     const [opened, { toggle }] = useDisclosure(false);
+    const [modalAddOpen, { open: openAdd, close: closeAdd }] = useDisclosure(false);
     const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
@@ -140,7 +142,7 @@ const EdgeBoxList = () => {
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"}/>
+                    <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} />
                 </Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBoxLocation ? e.edgeBoxLocation : "None"} />
@@ -166,7 +168,7 @@ const EdgeBoxList = () => {
                                 </ActionIcon>
                             </Tooltip>
                             <Button
-                                onClick={() => navigate("/edgebox/add")} variant="gradient"
+                                onClick={openAdd} variant="gradient"
                                 gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                             >
                                 New
@@ -284,6 +286,11 @@ const EdgeBoxList = () => {
                     <></>
                 }
             </div>
+
+            {/* Modal Add */}
+            <Modal onClose={closeAdd} opened={modalAddOpen} title="New Edge Box" centered>
+                <AddEdgeBoxForm close={closeAdd} refetch={refetch} />
+            </Modal>
         </>
     );
 }

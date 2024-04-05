@@ -4,16 +4,14 @@ import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AddEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
 import { useAddEdgeBox, useGetEdgeBoxModel } from "../../../../hooks/useEdgeBoxes";
 
-export const AddEdgeBoxForm = () => {
+export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch: () => {} }) => {
 
     const { mutate: addEdgeBox, isLoading } = useAddEdgeBox();
     const [edgeBoxModelId, setEdgeBoxModelId] = useState<string | null>(null);
     const { data: edgeBoxModelList, isLoading: edgeBoxModelLoading } = useGetEdgeBoxModel();
-    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -55,11 +53,12 @@ export const AddEdgeBoxForm = () => {
             onSuccess(data) {
                 console.log(data)
                 notifications.show({
-                    message: "Added!",
+                    message: "Edge Box Added!",
                     color: "green",
                     withCloseButton: true,
                 });
-                navigate(`/edgebox/${data.id}`, { replace: true })
+                close();
+                refetch();
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
@@ -82,6 +81,7 @@ export const AddEdgeBoxForm = () => {
     };
 
     return (
+        // TODO: Remove Username and Password field
         <form
             onSubmit={form.onSubmit(() => onSubmitForm())}
             style={{ textAlign: "left" }}

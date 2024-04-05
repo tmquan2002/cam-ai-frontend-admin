@@ -28,7 +28,7 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                             <MdPageview style={{ width: rem(20) }} />
                         </ActionIcon>
                     </Tooltip>
-                    {/* TODO: Add uninstall box from a shop here */}
+                    {/* TODO: Add uninstall button from a shop here */}
                     <Tooltip label="Uninstall" withArrow>
                         <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4"
                             onClick={() => {}}>
@@ -83,7 +83,7 @@ const ShopCard = ({ item }: { item: EdgeBoxInstall }) => {
                     </Box>
                 }
                 <Box>
-                    <Text size="xs" c={"dimmed"} fw={500}>Installed Date</Text>
+                    <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                     <Text size="md" fw={500}>{removeTime(new Date(item.createdDate || Date.now()), "/")}</Text>
                 </Box>
             </Group>

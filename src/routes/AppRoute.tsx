@@ -9,7 +9,6 @@ import BrandDetail from "../pages/admin/brand/BrandDetail";
 import BrandMainPage from "../pages/admin/brand/BrandMainPage";
 import BrandUpdate from "../pages/admin/brand/BrandUpdate";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
-import EdgeBoxAdd from "../pages/admin/edgebox/EdgeBoxAdd";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
 import InstallMainPage from "../pages/admin/install/InstallMainPage";
@@ -110,10 +109,6 @@ const AppRoute = () => {
             {
               element: <EdgeBoxMainPage />,
               index: true,
-            },
-            {
-              path: "add",
-              element: <EdgeBoxAdd />,
             },
             {
               path: ":edgeBoxId",

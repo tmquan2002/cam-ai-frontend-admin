@@ -42,7 +42,6 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                 {item?.edgeBox?.edgeBoxStatus &&
                     <StatusBadge statusName={item?.edgeBox?.edgeBoxStatus} padding={10} size="sm" tooltip="Edge Box Status" />
                 }
-                {/* TODO: Add one more status and start date here */}
             </Group>
             <Group grow mb={20}>
                 <Box>
@@ -78,7 +77,7 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                     <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
                 </Box>
             </Group>
-            <Group grow mb={15} ml={10}>
+            <Group grow mb={15}>
                 {item.uninstalledTime &&
                     <Box mb={10}>
                         <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
@@ -86,7 +85,7 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall }) => {
                     </Box>
                 }
                 <Box>
-                    <Text size="xs" c={"dimmed"} fw={500}>Installed Date</Text>
+                    <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                     <Text size="md" fw={500}>{removeTime(new Date(item.createdDate || Date.now()), "/")}</Text>
                 </Box>
             </Group>
