@@ -9,7 +9,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxListById";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
@@ -18,6 +17,7 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxListById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
