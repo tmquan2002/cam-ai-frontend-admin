@@ -6,15 +6,12 @@ export interface EdgeBox {
     id: string;
     createdDate: string;
     modifiedDate: string;
-    username: string;
-    password: string;
     name: string;
     version: string;
     edgeBoxModelId: string;
     edgeBoxStatus: EdgeBoxStatus;
     edgeBoxLocation: EdgeBoxLocationStatus;
     edgeBoxModel: EdgeBoxModel;
-    installs: EdgeBoxInstall[];
 }
 
 export interface EdgeBoxInstall {
