@@ -17,7 +17,7 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
-import { EdgeBoxListById } from "../../../components/list/EdgeBoxListById";
+import { EdgeBoxListById } from "../../../components/list/EdgeBoxlistById";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

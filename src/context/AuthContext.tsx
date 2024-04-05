@@ -89,7 +89,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
             }
           }
 
-        Promise.reject(err);
+       throw err
       }
     );
   }, []);

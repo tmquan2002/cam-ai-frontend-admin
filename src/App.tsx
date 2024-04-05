@@ -10,7 +10,7 @@ import { SessionProvider } from "./context/AuthContext";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
+      retry: 2,
       refetchOnWindowFocus: false
     },
   },
