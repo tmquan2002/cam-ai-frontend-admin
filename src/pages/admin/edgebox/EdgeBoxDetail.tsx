@@ -23,6 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
+//TODO: Add activity log of an edge box
 const EdgeBoxDetail = () => {
 
     const params = useParams();

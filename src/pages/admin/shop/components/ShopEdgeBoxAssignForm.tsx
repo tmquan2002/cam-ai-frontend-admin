@@ -5,6 +5,7 @@ import axios from "axios";
 import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
 import { EdgeBoxLocationStatus } from "../../../../types/enum";
+import { isEmpty } from "lodash";
 
 export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: string, close: () => void, refetch: () => {} }) => {
 
@@ -20,7 +21,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: stri
 
         validate: {
             edgeBoxId: (value) =>
-                value.trim().length === 0 ? "Please choose an edge box" : null,
+                isEmpty(value) ? "Please choose an edge box" : null,
         },
     });
 

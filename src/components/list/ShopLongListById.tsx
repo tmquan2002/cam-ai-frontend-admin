@@ -8,11 +8,13 @@ import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
 import { removeTime } from "../../utils/dateFunction";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
+import { ShopHistoryList } from "./HistoryList";
 
 const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined, edgeBoxLocation: EdgeBoxLocationStatus }) => {
     // console.log(item)
     const navigate = useNavigate();
     const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
+    const [modalLogOpen, { open: openLog, close: closeLog }] = useDisclosure(false);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     if (item)
@@ -29,7 +31,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                     <StatusBadge statusName={item?.shop?.shopStatus} padding={10} size="sm" tooltip="Shop Status" />
                                 }
                             </Group>
-                            {/* TODO: Add unistall API here */}
+                            {/* TODO: Add uninstall API here */}
                             <Group>
                                 {edgeBoxLocation == EdgeBoxLocationStatus.Occupied &&
                                     <Button
@@ -49,7 +51,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                     {/* TODO: Make a log list here */}
                                     <Tooltip label="View Old Installs" withArrow>
                                         <ActionIcon variant="outline" size="lg" aria-label="View Old Installs" color={computedColorScheme == "dark" ? "white" : "black"}
-                                            onClick={() => { }}>
+                                            onClick={openLog}>
                                             <MdHistory />
                                         </ActionIcon>
                                     </Tooltip>
@@ -117,6 +119,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                     </Group>
                 </Card>
 
+                {/* Modal section */}
                 {/* Uninstall */}
                 <Modal opened={modalUninstallOpen} onClose={closeUninstall} withCloseButton={false} centered>
                     <Text>
@@ -144,6 +147,9 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                             UNINSTALL
                         </Button>
                     </Group>
+                </Modal>
+                <Modal opened={modalLogOpen} onClose={closeLog} title="Old shops installed" centered>
+                    <ShopHistoryList />
                 </Modal>
             </>
         )

@@ -12,7 +12,7 @@ const data = [
     { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
-    { label: 'Edgebox', icon: AiFillControl, path: '/edgebox' },
+    { label: 'Edge Box', icon: AiFillControl, path: '/edgebox' },
     { label: 'Installs', icon: GrInstall , path: '/install', disabled: true },
 ];
 
