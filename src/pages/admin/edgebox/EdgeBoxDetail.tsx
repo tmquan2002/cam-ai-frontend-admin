@@ -11,6 +11,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
+import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
 const breadcrumbs: BreadcrumbItem[] = [
@@ -31,7 +32,7 @@ const EdgeBoxDetail = () => {
 
     const [modalDeleteOpen, { open: openDelete, close: closeDelete }] = useDisclosure(false);
     const [modalUpdateOpen, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
-
+    const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
 
     const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
     const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetEdgeBoxInstallByEdgeBoxId(params.edgeBoxId!);
@@ -154,7 +155,7 @@ const EdgeBoxDetail = () => {
                                     {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>
                                         <Group justify="space-between">
-                                            <Text size='sm' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
+                                            <Text size='md' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
                                             <Group>
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Installing &&
                                                     <Button
@@ -162,6 +163,14 @@ const EdgeBoxDetail = () => {
                                                         color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
                                                     >
                                                         Finish Installing
+                                                    </Button>
+                                                }
+                                                {dataInstall &&
+                                                    <Button
+                                                        onClick={openAssign} variant="gradient"
+                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
+                                                    >
+                                                        Assign to Shop
                                                     </Button>
                                                 }
                                                 <ActionIcon.Group>
@@ -279,6 +288,12 @@ const EdgeBoxDetail = () => {
             <Modal opened={modalUpdateOpen} onClose={closeUpdate}
                 title="Update Model" centered>
                 <UpdateEdgeBoxForm id={params.edgeBoxId!} close={closeUpdate} refetch={refetch} refetchInstall={refetchInstall} />
+            </Modal>
+
+            {/* Modal Assign Section */}
+            <Modal opened={modalAssignOpen} onClose={closeAssign}
+                title="Assign to Shop" centered>
+                <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} />
             </Modal>
         </>
     );

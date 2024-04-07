@@ -123,3 +123,18 @@ export const asyncLocalStorage = {
       });
   }
 };
+
+/**
+ * Add a space after amount of characters
+ * @param str The string to add space
+ * @param atEvery Number of characters between each spaces
+ * @returns 
+ */
+export function addSpace(str: string, atEvery: number) {
+  let result = '';
+  for (let i = 0; i < str.length; i += atEvery) {
+    result += str.substring(i, i + atEvery) + ' ';
+  }
+  // Remove the extra space at the end
+  return result.trim();
+}

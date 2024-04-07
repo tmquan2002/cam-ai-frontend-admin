@@ -1,3 +1,4 @@
+//Main enum section
 export enum Role {
   Admin = "Admin",
   Technician = "Technician",
@@ -112,10 +113,32 @@ export enum CommonStatus {
 
 }
 
+//Status badge section
+export enum ActiveStatusGroup {
+  Active = CommonStatus.Active,
+  Working = EdgeBoxInstallStatus.Working,
+  Activated = EdgeBoxActivationStatus.Activated,
+}
+
+export enum InactiveStatusGroup {
+  Inactive = CommonStatus.Inactive,
+  Disposed = EdgeBoxLocationStatus.Disposed,
+  Disabled = EdgeBoxInstallStatus.Disabled,
+}
+
+export enum IdleStatusGroup {
+  New = CommonStatus.New,
+  Idle = EdgeBoxLocationStatus.Idle,
+}
+
+export enum MiddleStatusGroup {
+  Occupied = EdgeBoxLocationStatus.Occupied,
+}
+
 export enum StatusColor {
   ACTIVE = "#23a55a",
   MIDDLE = "#465574",
   INACTIVE = "#f23f43",
-  NEW = "#f0b232",
+  IDLE = "#f0b232",
   NONE = "#80848e"
 }

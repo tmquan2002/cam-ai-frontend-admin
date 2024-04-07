@@ -124,6 +124,10 @@ const AppRoute = () => {
               element: <InstallMainPage />,
               index: true,
             },
+            {
+              path: ":edgeBoxId",
+              element: <EdgeBoxDetail />,
+            }
           ]
         },
         {

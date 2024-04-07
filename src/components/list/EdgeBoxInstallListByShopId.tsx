@@ -1,29 +1,31 @@
-import { ActionIcon, Box, Card, Divider, Group, LoadingOverlay, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { ActionIcon, Box, Card, CopyButton, Divider, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { MdDelete, MdHistory, MdPageview } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdDelete, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetEdgeBoxInstallByShopId } from "../../hooks/useEdgeBoxes";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { removeTime } from "../../utils/dateFunction";
+import { addSpace } from "../../utils/helperFunction";
 import StatusBadge from "../badge/StatusBadge";
 import { EdgeBoxHistoryList } from "./HistoryList";
 import styled from "./list.module.scss";
+import { EdgeBoxInstallStatus } from "../../types/enum";
 
 interface EdgeBoxInstallListParam {
     id: string;
     setAssign: Dispatch<SetStateAction<boolean>>;
 }
 
-const InstallCard = ({ item, installList }: { item: EdgeBoxInstall, installList: EdgeBoxInstall[] }) => {
+const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
     const navigate = useNavigate();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-    const [modalLogOpen, { open: openLog, close: closeLog }] = useDisclosure(false);
+
+    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge box currently connected</Text>
 
     return (
         <>
-            <Card padding="lg" radius="md" m={10}
-                style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <Card pt={10} pl={20} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+                bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}>
                 <Group justify="space-between">
                     <Text size='md' fw={'bold'} fz={25}
                         c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
@@ -35,14 +37,6 @@ const InstallCard = ({ item, installList }: { item: EdgeBoxInstall, installList:
                                 color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.7"}
                                 onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
                                 <MdPageview />
-                            </ActionIcon>
-                        </Tooltip>
-                        {/* TODO: Make a log list here */}
-                        <Tooltip label="View Old Edge Boxes" withArrow>
-                            <ActionIcon variant="outline" size="lg" aria-label="View Old Edge Boxes"
-                                color={computedColorScheme == "dark" ? "white" : "black"}
-                                onClick={openLog}>
-                                <MdHistory />
                             </ActionIcon>
                         </Tooltip>
                         {/* TODO: Add uninstall API here */}
@@ -98,7 +92,20 @@ const InstallCard = ({ item, installList }: { item: EdgeBoxInstall, installList:
                 <Group grow mb={15}>
                     <Box mb={10}>
                         <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
-                        <Text size="md" fw={500}>{item?.activationCode || "No Data"}</Text>
+                        <Group gap={5}>
+                            <Text size="md" fw={500}>{addSpace(item?.activationCode, 4) || "No Data"}</Text>
+                            <CopyButton value={item?.activationCode}>
+                                {({ copied, copy }) => (
+                                    <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
+                                        <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                            {copied ? <MdCheck /> :
+                                                <MdContentCopy />
+                                            }
+                                        </ActionIcon>
+                                    </Tooltip>
+                                )}
+                            </CopyButton>
+                        </Group>
                     </Box>
                     {item.uninstalledTime &&
                         <Box mb={10}>
@@ -114,15 +121,13 @@ const InstallCard = ({ item, installList }: { item: EdgeBoxInstall, installList:
                     </Box>
                 </Group>
             </Card>
-            <Modal opened={modalLogOpen} onClose={closeLog} title="Old edge boxes installed" centered>
-                <EdgeBoxHistoryList disabledEdgeBoxList={installList}/>
-            </Modal>
         </>
     )
 }
 export const EdgeBoxInstallListByShopId = ({ id, setAssign }: EdgeBoxInstallListParam) => {
 
     const { isLoading: isLoadingInstall, data: dataInstalls, error: installError } = useGetEdgeBoxInstallByShopId(id);
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     useEffect(() => {
         if (dataInstalls?.values.length == 0) {
@@ -141,11 +146,27 @@ export const EdgeBoxInstallListByShopId = ({ id, setAssign }: EdgeBoxInstallList
                 :
                 <div className={styled["card-detail"]}>
                     {(dataInstalls?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
-                        <Box mt={5} mb={5}>
-                            {dataInstalls?.values.map((item, index) => (
-                                <InstallCard item={item} key={index} installList={dataInstalls.values}/>
-                            ))}
-                        </Box>
+                        <Tabs defaultValue="current" orientation="vertical" mt={20}
+                            color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
+                            <Tabs.List>
+                                <Tabs.Tab value="current" leftSection={<MdPlayArrow />}>
+                                    Current
+                                </Tabs.Tab>
+                                <Tabs.Tab value="history" leftSection={<MdHistory />}>
+                                    History
+                                </Tabs.Tab>
+                            </Tabs.List>
+                            <Tabs.Panel value="current">
+                                <Box ml={20}>
+                                    {dataInstalls?.values &&
+                                        <InstallCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)} />
+                                    }
+                                </Box>
+                            </Tabs.Panel>
+                            <Tabs.Panel value="history">
+                                <EdgeBoxHistoryList disabledEdgeBoxList={dataInstalls?.values.filter(e => e.edgeBoxInstallStatus == EdgeBoxInstallStatus.Disabled) ?? []} />
+                            </Tabs.Panel>
+                        </Tabs>
                     }
                 </div>
             }

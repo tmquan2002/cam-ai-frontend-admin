@@ -6,33 +6,59 @@ import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
 import { EdgeBoxLocationStatus } from "../../../../types/enum";
 import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
+import { useGetAllShopsSelect } from "../../../../hooks/useShops";
 
-export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: string, close: () => void, refetch: () => {} }) => {
+type AssignFormParams = {
+    shopId?: string,
+    edgeBoxId?: string,
+    close: () => void,
+    refetch: () => {}
+}
+
+export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch }: AssignFormParams) => {
+
+    const [edgeBoxSearch, setEdgeBoxSearch] = useState<string>("");
+    const [shopSearch, setShopSearch] = useState<string>("");
 
     const { mutate: installEdgeBox, isLoading: isLoadingInstall } = useInstallEdgeBox();
-    const { data: edgeBoxList, isFetching, isLoading: isLoadingEdgeBoxSelect
-    } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle })
+    const { data: edgeBoxList, isFetching: isFetchingEdgeBox, refetch: refetchSearchEdgeBox
+    } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch })
+    const { data: shopList, isFetching: isFetchingShop, refetch: refetchSearchShop
+    } = useGetAllShopsSelect({ name: shopSearch })
+
+    useEffect(() => {
+        const timer = setTimeout(() => refetchSearchEdgeBox(), 500);
+        return () => { clearTimeout(timer); };
+    }, [edgeBoxSearch])
+
+    useEffect(() => {
+        const timer = setTimeout(() => refetchSearchShop(), 500);
+        return () => { clearTimeout(timer); };
+    }, [shopSearch])
 
     const form = useForm({
         initialValues: {
-            edgeBoxId: "",
-            shopId: shopId,
+            edgeBoxId: edgeBoxId ?? "",
+            shopId: shopId ?? "",
         },
 
         validate: {
             edgeBoxId: (value) =>
                 isEmpty(value) ? "Please choose an edge box" : null,
+            shopId: (value) =>
+                isEmpty(value) ? "Please choose a shop" : null,
         },
     });
 
     const onSubmitForm = async (values: AddEdgeBoxInstallParams) => {
 
         const installEdgeBoxParams: AddEdgeBoxInstallParams = {
-            edgeBoxId: values.edgeBoxId,
-            shopId: shopId,
+            edgeBoxId: edgeBoxId ?? values.edgeBoxId,
+            shopId: shopId ?? values.shopId,
         };
 
-        console.log(values)
+        // console.log(installEdgeBoxParams)
 
         installEdgeBox(installEdgeBoxParams, {
             onSuccess(data) {
@@ -49,7 +75,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: stri
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
-                        message: error.response?.data.message,
+                        message: error.response?.data.message || "Unknown error occured",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });
@@ -70,12 +96,24 @@ export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: stri
             onSubmit={form.onSubmit((values) => onSubmitForm(values))}
             style={{ textAlign: "left", marginTop: 5 }}
         >
-            <Select data={edgeBoxList || []} limit={5} size='sm'
+            <Select data={edgeBoxList || []} limit={5} size='sm' mb={10}
                 label="Edge Box" allowDeselect={false}
+                disabled={edgeBoxId ? true : false}
                 nothingFoundMessage={edgeBoxList && "Not Found"}
-                rightSection={(isLoadingEdgeBoxSelect || isFetching) ? <Loader size="1rem" /> : null}
-                placeholder="Pick value"
+                rightSection={isFetchingEdgeBox ? <Loader size="1rem" /> : null}
+                placeholder="Pick value" searchable
+                searchValue={edgeBoxSearch} onSearchChange={setEdgeBoxSearch}
                 {...form.getInputProps("edgeBoxId")}
+            />
+
+            <Select data={shopList || []} limit={5} size='sm'
+                label="Shop" allowDeselect={false}
+                disabled={shopId ? true : false}
+                nothingFoundMessage={shopList && "Not Found"}
+                rightSection={isFetchingShop ? <Loader size="1rem" /> : null}
+                placeholder="Pick value" searchable
+                searchValue={shopSearch} onSearchChange={setShopSearch}
+                {...form.getInputProps("shopId")}
             />
 
             <Group
@@ -83,11 +121,17 @@ export const ShopEdgeBoxAssignForm = ({ shopId, close, refetch }: { shopId: stri
                 mt={5}
             >
                 <Button
+                    variant="outline" size="md" mt={20} onClick={close}
+                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                >
+                    CANCEL
+                </Button>
+                <Button
                     loading={isLoadingInstall}
                     type="submit" variant="gradient" size="md" mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
-                    Assign
+                    ASSIGN
                 </Button>
             </Group>
         </form>

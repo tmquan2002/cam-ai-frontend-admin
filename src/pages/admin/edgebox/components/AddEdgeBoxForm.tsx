@@ -3,30 +3,25 @@ import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { useState } from "react";
 import { AddEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
 import { useAddEdgeBox, useGetEdgeBoxModel } from "../../../../hooks/useEdgeBoxes";
 
 export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch: () => {} }) => {
 
     const { mutate: addEdgeBox, isLoading } = useAddEdgeBox();
-    const [edgeBoxModelId, setEdgeBoxModelId] = useState<string | null>(null);
     const { data: edgeBoxModelList, isLoading: edgeBoxModelLoading } = useGetEdgeBoxModel();
 
     const form = useForm({
         initialValues: {
             name: "",
-            username: "",
-            password: ""
+            edgeBoxModelId: ""
         },
 
         validate: {
             name: (value) =>
-                value.trim().length === 0 ? "Name is required" : null,
-            username: (value) =>
-                value.trim().length === 0 ? "Username is required" : null,
-            password: (value) =>
-                value.trim().length === 0 ? "Password is required" : null,
+                isEmpty(value) ? "Name is required" : null,
+            edgeBoxModelId: (value) =>
+                isEmpty(value) ? "Please choose a model" : null,
         },
     });
 
@@ -35,19 +30,8 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
 
         const addEdgeBoxParams: AddEdgeBoxParams = {
             name: form.values.name,
-            username: form.values.username,
-            password: form.values.password,
-            edgeBoxModelId: edgeBoxModelId,
+            edgeBoxModelId: form.values.edgeBoxModelId,
         };
-
-        if (isEmpty(edgeBoxModelId)) {
-            notifications.show({
-                message: "Please select a model",
-                color: "pale-red.5",
-                withCloseButton: true,
-            });
-            return;
-        }
 
         addEdgeBox(addEdgeBoxParams, {
             onSuccess(data) {
@@ -86,45 +70,31 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
             onSubmit={form.onSubmit(() => onSubmitForm())}
             style={{ textAlign: "left" }}
         >
-            <Group grow mt={10}>
-                <TextInput mt={10}
-                    withAsterisk
-                    label="Username"
-                    placeholder="your@email.com"
-                    size="md"
-                    {...form.getInputProps("username")}
-                />
-                <TextInput mt={10}
-                    withAsterisk
-                    label="Password"
-                    type="password"
-                    placeholder="Password"
-                    size="md"
-                    {...form.getInputProps("password")}
-                />
-            </Group>
-
-            <Group grow mt={20}>
-                <TextInput
-                    withAsterisk
-                    label="Edge Box Name"
-                    placeholder="Edge Box Name"
-                    size="md"
-                    {...form.getInputProps("name")}
-                />
-                <Select label="Edge Box Model" data={edgeBoxModelList || []} limit={5}
-                    withAsterisk error={false} size="md" 
-                    nothingFoundMessage={edgeBoxModelList && "Not Found"}
-                    value={edgeBoxModelId} disabled={edgeBoxModelLoading}
-                    rightSection={edgeBoxModelLoading ? <Loader size={16} /> : null}
-                    placeholder="Pick value" onChange={setEdgeBoxModelId}
-                />
-            </Group>
-
+            <TextInput
+                withAsterisk
+                label="Name"
+                placeholder="Edge Box Name"
+                size="md"
+                {...form.getInputProps("name")}
+            />
+            <Select label="Model" data={edgeBoxModelList || []} limit={5} mt={10}
+                withAsterisk error={false} size="md" allowDeselect={false}
+                nothingFoundMessage={edgeBoxModelList && "Not Found"}
+                disabled={edgeBoxModelLoading}
+                rightSection={edgeBoxModelLoading ? <Loader size={16} /> : null}
+                placeholder="Pick value"
+                {...form.getInputProps("edgeBoxModelId")}
+            />
             <Group
                 justify="flex-start"
                 mt={10}
             >
+                <Button
+                    variant="outline" size="md" mt={20} onClick={close}
+                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                >
+                    CANCEL
+                </Button>
                 <Button
                     loading={isLoading}
                     type="submit"
@@ -133,7 +103,7 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
                     mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
-                    Add
+                    ADD
                 </Button>
             </Group>
         </form>

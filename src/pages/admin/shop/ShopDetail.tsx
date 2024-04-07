@@ -80,14 +80,12 @@ const ShopDetail = () => {
                                     </div>
                                 </div>
                                 {assign &&
-                                    <div>
-                                        <Button
-                                            onClick={openAssign} variant="gradient"
-                                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
-                                        >
-                                            Assign Edge Box
-                                        </Button>
-                                    </div>
+                                    <Button
+                                        onClick={openAssign} variant="gradient"
+                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
+                                    >
+                                        Assign Edge Box
+                                    </Button>
                                 }
                             </div>
                             <Divider my="md" />
@@ -154,7 +152,7 @@ const ShopDetail = () => {
                                 </Tabs>
                             </div>
 
-                            {/* Modal Update Section */}
+                            {/* Modal Assign Section */}
                             <Modal opened={modalAssignOpen} onClose={closeAssign}
                                 title="Assign Edge Box" centered>
                                 <ShopEdgeBoxAssignForm shopId={params.shopId!} close={closeAssign} refetch={refetch} />

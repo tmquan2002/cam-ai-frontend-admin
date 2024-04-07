@@ -1,7 +1,7 @@
-import { ActionIcon, Box, Button, Card, Divider, Group, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
@@ -9,6 +9,7 @@ import { removeTime } from "../../utils/dateFunction";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 import { ShopHistoryList } from "./HistoryList";
+import { addSpace } from "../../utils/helperFunction";
 
 const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined, edgeBoxLocation: EdgeBoxLocationStatus }) => {
     // console.log(item)
@@ -43,13 +44,13 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                 }
                                 <ActionIcon.Group>
                                     <Tooltip label="View Shop" withArrow>
-                                        <ActionIcon variant="outline" size="lg" aria-label="View Edge Box" color="light-blue.6"
+                                        <ActionIcon variant="outline" size="lg" aria-label="View Shop" color="light-blue.6"
                                             onClick={() => navigate(`/shop/${item?.shop?.id}`)}>
                                             <MdPageview />
                                         </ActionIcon>
                                     </Tooltip>
                                     {/* TODO: Make a log list here */}
-                                    <Tooltip label="View Old Installs" withArrow>
+                                    <Tooltip label="View Installs history" withArrow>
                                         <ActionIcon variant="outline" size="lg" aria-label="View Old Installs" color={computedColorScheme == "dark" ? "white" : "black"}
                                             onClick={openLog}>
                                             <MdHistory />
@@ -102,7 +103,20 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                     <Group grow mb={10} ml={10}>
                         <Box mb={10}>
                             <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
-                            <Text size="md" fw={500}>{item?.activationCode || "No Data"}</Text>
+                            <Group gap={5}>
+                                <Text size="md" fw={500}>{addSpace(item?.activationCode, 4) || "No Data"}</Text>
+                                <CopyButton value={item?.activationCode}>
+                                    {({ copied, copy }) => (
+                                        <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
+                                            <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                                {copied ? <MdCheck /> :
+                                                    <MdContentCopy />
+                                                }
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    )}
+                                </CopyButton>
+                            </Group>
                         </Box>
                         {item.uninstalledTime &&
                             <Box mb={10}>

@@ -15,8 +15,6 @@ export type GetEdgeBoxParams = {
 };
 
 export type AddEdgeBoxParams = {
-    username: string;
-    password: string;
     name: string;
     edgeBoxModelId: string | null;
 }
