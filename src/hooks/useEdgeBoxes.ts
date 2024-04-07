@@ -67,7 +67,7 @@ export const useGetEdgeBoxModel = () => {
 };
 
 export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
-  const { isError, isLoading, data, error, refetch,
+  const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
     queryKey: ["edgeBoxInstallList", edgeBoxId],
     queryFn: async () => {
@@ -80,7 +80,7 @@ export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
     enabled: !!edgeBoxId,
   });
 
-  return { isError, isLoading, data, error, refetch };
+  return { isError, isLoading, isFetching, data, error, refetch };
 };
 
 export const useGetEdgeBoxInstallsByAllEdgeBoxId = (edgeBoxes: CommonResponse<EdgeBox> | undefined) => {

@@ -248,8 +248,8 @@ const EdgeBoxDetail = () => {
                         {!isLoadingInstall ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Current Shop Installed</Text>
-                                    <ShopLongListByEdgeBox edgeBoxLocation={data.edgeBoxLocation} dataInstalls={dataInstall.values} />
+                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text>
+                                    <ShopLongListByEdgeBox edgeBoxLocation={data.edgeBoxLocation} dataInstalls={dataInstall} />
                                 </div>
                             </div>
                             :

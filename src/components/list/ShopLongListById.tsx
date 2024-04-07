@@ -1,7 +1,7 @@
-import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
@@ -10,13 +10,15 @@ import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 import { ShopHistoryList } from "./HistoryList";
 import { addSpace } from "../../utils/helperFunction";
+import { CommonResponse } from "../../models/CommonResponse";
 
 const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined, edgeBoxLocation: EdgeBoxLocationStatus }) => {
     // console.log(item)
     const navigate = useNavigate();
     const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
-    const [modalLogOpen, { open: openLog, close: closeLog }] = useDisclosure(false);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+
+    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop currently connected to this Edge Box</Text>
 
     if (item)
         return (
@@ -49,18 +51,11 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                             <MdPageview />
                                         </ActionIcon>
                                     </Tooltip>
-                                    {/* TODO: Make a log list here */}
-                                    <Tooltip label="View Installs history" withArrow>
-                                        <ActionIcon variant="outline" size="lg" aria-label="View Old Installs" color={computedColorScheme == "dark" ? "white" : "black"}
-                                            onClick={openLog}>
-                                            <MdHistory />
-                                        </ActionIcon>
-                                    </Tooltip>
                                 </ActionIcon.Group>
                             </Group>
                         </Group>
                         :
-                        <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop Installed</Text>
+                        <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop currently connected to this Edge Box</Text>
                     }
 
                     <div className={styled["icon-text"]}>
@@ -162,20 +157,38 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                         </Button>
                     </Group>
                 </Modal>
-                <Modal opened={modalLogOpen} onClose={closeLog} title="Old shops installed" centered>
-                    <ShopHistoryList />
-                </Modal>
             </>
         )
 }
 
-export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls }: { edgeBoxLocation: EdgeBoxLocationStatus, dataInstalls: EdgeBoxInstall[] }) => {
+export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls }: { edgeBoxLocation: EdgeBoxLocationStatus, dataInstalls: CommonResponse<EdgeBoxInstall> }) => {
+
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+
     return (
         <div className={styled["card-detail"]}>
-            <Box mt={10}>
-                <ShopCard item={dataInstalls.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)}
-                    edgeBoxLocation={edgeBoxLocation} />
-            </Box>
+            <Tabs defaultValue="current" orientation="vertical" mt={20}
+                color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
+                <Tabs.List>
+                    <Tabs.Tab value="current" leftSection={<MdPlayArrow />}>
+                        Current
+                    </Tabs.Tab>
+                    <Tabs.Tab value="history" leftSection={<MdHistory />}>
+                        History
+                    </Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panel value="current">
+                    <Box ml={20}>
+                        {dataInstalls?.values &&
+                            <ShopCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)}
+                                edgeBoxLocation={edgeBoxLocation} />
+                        }
+                    </Box>
+                </Tabs.Panel>
+                <Tabs.Panel value="history">
+                    <ShopHistoryList disabledEdgeBoxList={dataInstalls?.values.filter(e => e.edgeBoxInstallStatus == EdgeBoxInstallStatus.Disabled) ?? []} />
+                </Tabs.Panel>
+            </Tabs>
         </div>
     )
 }
