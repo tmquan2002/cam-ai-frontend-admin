@@ -12,18 +12,18 @@ const ActivityCard = ({ activity, index }: { activity: EdgeBoxActivity, index: n
                         <Text size="xs" fw="bold">{index + 1}</Text>
                     </ThemeIcon>
                     <Flex wrap="nowrap" gap="md" align="center">
-                        <Badge variant="outline" size="sm" fw={500}>{activity?.modifiedTime ? getDateTime(new Date(activity?.modifiedTime)) : "No Data"}</Badge>
+                        <Badge variant="outline" size="md" fw={500}>{activity?.modifiedTime ? getDateTime(new Date(activity?.modifiedTime)) : "No Data"}</Badge>
                         <Box>
-                            <Text size="xs" c="dimmed">Description</Text>
-                            <Text size="sm" fw={500}>{activity?.description}</Text>
+                            <Text fz={10} c="dimmed">Description</Text>
+                            <Text fz={13} fw={500}>{activity?.description}</Text>
                         </Box>
                     </Flex>
                 </Flex>
             </Grid.Col>
 
             <Grid.Col span={4}>
-                <Text size="xs" c="dimmed">Type</Text>
-                <Text size="sm" fw={500}>{activity?.type}</Text>
+                <Text fz={10} c="dimmed">Type</Text>
+                <Text fz={13} fw={500}>{activity?.type}</Text>
             </Grid.Col>
         </Grid>
     )

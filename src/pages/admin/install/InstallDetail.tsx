@@ -1,6 +1,6 @@
-import { Box, Button, Divider, Flex, Group, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { TbActivity } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
@@ -10,6 +10,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetEdgeBoxActivitiesByEdgeBoxId } from "../../../hooks/useEdgeBoxes";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
+import { addSpace } from "../../../utils/helperFunction";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,14 +22,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
-//TODO: Add activity log of an edge box
 const InstallDetail = () => {
 
     //TODO: Make UI without any API first, use shop detail as reference
     const params = useParams();
     const navigate = useNavigate();
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    const { isFetching, data, refetch, error } = useGetEdgeBoxActivitiesByEdgeBoxId({ edgeBoxId: "379eb0d1-b555-4f76-81a7-6d28c5991c85", values: {} })
+    const { isFetching, data, error } = useGetEdgeBoxActivitiesByEdgeBoxId({ edgeBoxId: "379eb0d1-b555-4f76-81a7-6d28c5991c85", values: {} })
     return (
         <div className={styled["container-right"]}>
             <Navbar items={breadcrumbs} goBack />
@@ -41,7 +42,49 @@ const InstallDetail = () => {
                         <Text fs="italic" ta="center">No installation found</Text> :
                         <>
                             <Box>
-                                {/* TODO: Install infos here */}
+                                {/* TODO: Install infos here NOT DONE*/}
+                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Install</Text>
+                                <Group grow mb={10}>
+                                    <Box>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
+                                        <StatusBadge statusName={"Status"} padding={10} size="sm" tooltip="Install Status" />
+                                    </Box>
+                                    <Box mb={10}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
+                                        <StatusBadge statusName={"Status"} padding={10} size="sm" tooltip="Activation Status" />
+                                    </Box>
+                                </Group>
+                                <Group grow mb={15}>
+                                    <Box mb={10}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
+                                        <Group gap={5}>
+                                            <Text size="md" fw={500}>{addSpace("LKDGNDDZ8IBYP9HA", 4) || "No Data"}</Text>
+                                            <CopyButton value={"LKDGNDDZ8IBYP9HA"}>
+                                                {({ copied, copy }) => (
+                                                    <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
+                                                        <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                                            {copied ? <MdCheck /> :
+                                                                <MdContentCopy />
+                                                            }
+                                                        </ActionIcon>
+                                                    </Tooltip>
+                                                )}
+                                            </CopyButton>
+                                        </Group>
+                                    </Box>
+                                    {/* {item.uninstalledTime && */}
+                                        <Box mb={10}>
+                                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
+                                            <Text size="md" fw={500}>{removeTime(new Date('01/01/2000'), "/")}</Text>
+                                        </Box>
+                                    {/* } */}
+                                </Group>
+                                <Group>
+                                    <Box>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
+                                        <Text size="md" fw={500}>{removeTime(new Date("01/01/2000" || Date.now()), "/")}</Text>
+                                    </Box>
+                                </Group>
                             </Box>
                             <Divider my="md" />
                             <Box>
