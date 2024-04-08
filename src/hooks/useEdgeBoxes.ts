@@ -1,7 +1,7 @@
 import { UseQueryResult, useMutation, useQueries, useQuery } from "react-query";
-import { AddEdgeBoxInstallParams, AddEdgeBoxParams, EdgeBoxAPI, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
+import { AddEdgeBoxInstallParams, AddEdgeBoxParams, EdgeBoxAPI, EdgeBoxActivityParams, GetEdgeBoxParams, UpdateEdgeBoxParams } from "../apis/EdgeBoxAPI";
 import { CommonResponse } from "../models/CommonResponse";
-import { EdgeBox, EdgeBoxInstall } from "../models/EdgeBox";
+import { EdgeBox, EdgeBoxActivity, EdgeBoxInstall } from "../models/EdgeBox";
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 
 export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
@@ -184,4 +184,21 @@ export const useUpdateEdgeBoxLocation = () => {
   });
 
   return { mutate, isLoading, error, data };
+};
+
+export const useGetEdgeBoxActivitiesByEdgeBoxId = (params: EdgeBoxActivityParams) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<CommonResponse<EdgeBoxActivity>, Error> = useQuery({
+    queryKey: ["edgeBoxActivityList", params.edgeBoxId],
+    queryFn: async () => {
+      if (params.edgeBoxId) {
+        return await EdgeBoxAPI.getActivitiesByEdgeBoxId(params);
+      } else {
+        return {}
+      }
+    },
+    enabled: !!params.edgeBoxId,
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
 };

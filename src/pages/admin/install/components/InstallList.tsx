@@ -37,8 +37,8 @@ const InstallList = () => {
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th>#</Table.Th>
-                                <Table.Th>Shop Name</Table.Th>
-                                <Table.Th>EdgeBox Name</Table.Th>
+                                <Table.Th>Shop</Table.Th>
+                                <Table.Th>EdgeBox</Table.Th>
                                 <Table.Th ta={"center"}>Install Status</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                                 <Table.Th ta={"center"}>Activation Status</Table.Th>

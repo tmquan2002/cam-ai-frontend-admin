@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Card, CopyButton, Divider, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, LoadingOverlay, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { MdCheck, MdContentCopy, MdDelete, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,8 @@ import StatusBadge from "../badge/StatusBadge";
 import { EdgeBoxHistoryList } from "./HistoryList";
 import styled from "./list.module.scss";
 import { EdgeBoxInstallStatus } from "../../types/enum";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 
 interface EdgeBoxInstallListParam {
     id: string;
@@ -18,6 +20,7 @@ interface EdgeBoxInstallListParam {
 
 const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
     const navigate = useNavigate();
+    const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge box currently connected</Text>
@@ -41,7 +44,8 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
                         </Tooltip>
                         {/* TODO: Add uninstall API here */}
                         <Tooltip label="Uninstall" withArrow>
-                            <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4">
+                            <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4"
+                                onClick={openUninstall}>
                                 <MdDelete />
                             </ActionIcon>
                         </Tooltip>
@@ -121,6 +125,36 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
                     </Box>
                 </Group>
             </Card>
+
+            {/* Modal section */}
+            {/* Uninstall */}
+            <Modal opened={modalUninstallOpen} onClose={closeUninstall} withCloseButton={false} centered>
+                <Text>
+                    Do you want to uninstall this edge box from the shop?
+                </Text>
+                <Group align="end">
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={closeUninstall}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
+                    </Button>
+                    <Button
+                        variant="gradient" size="md" mt={20}
+                        onClick={() => {
+                            notifications.show({
+                                message: "This feature is in development",
+                                color: "light-yellow.5",
+                                withCloseButton: true,
+                            })
+                            closeUninstall();
+                        }}
+                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                    >
+                        UNINSTALL
+                    </Button>
+                </Group>
+            </Modal>
         </>
     )
 }

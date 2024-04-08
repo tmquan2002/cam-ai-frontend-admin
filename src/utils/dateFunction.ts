@@ -5,15 +5,31 @@ export function removeTime(date: Date, seperator: string, format?: "dd/MM/yyyy" 
             + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + seperator
             + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate())
     }
-    
+
     return (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + seperator
         + ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + seperator
         + date.getFullYear()
 }
 
+//hh:mm:ss
+export function removeDate(date: Date, withSecond?: boolean) {
+    if (withSecond) {
+        return (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()) + ":"
+            + (date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()) + ":"
+            + (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds());
+    } else {
+        return (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()) + ":"
+            + (date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes());
+    }
+}
+
 export function getDateFromSetYear(yearLength: number) {
     const today = new Date();
     return new Date(today.getFullYear() - yearLength, today.getMonth(), today.getDate());
+}
+
+export function getDateTime(date: Date) {
+    return removeTime(date, "/") + " " + removeDate(date);
 }
 
 export function timeSince(date: Date) {

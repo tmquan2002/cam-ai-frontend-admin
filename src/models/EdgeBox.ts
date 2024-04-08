@@ -1,4 +1,5 @@
-import { EdgeBoxActivationStatus, EdgeBoxInstallStatus, EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
+import { EdgeBoxActivationStatus, EdgeBoxActivityType, EdgeBoxInstallStatus, EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
+import { Account } from "./Account";
 import { Shop } from "./Shop";
 
 export interface EdgeBox {
@@ -45,4 +46,16 @@ export interface EdgeBoxModel {
     storage: string;
     os: string;
     edgeBoxes: EdgeBox[];
+}
+
+export interface EdgeBoxActivity {
+
+    id: string;
+    description: string;
+    modifiedById: string;
+    modifiedTime: string;
+    modifiedBy: Account;
+    edgeBoxId: string;
+    edgeBoxInstallId: string;
+    type: EdgeBoxActivityType;
 }

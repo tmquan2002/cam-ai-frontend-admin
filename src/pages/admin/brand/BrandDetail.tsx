@@ -5,7 +5,7 @@ import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
@@ -18,6 +18,7 @@ import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import styled from "./styles/branddetail.module.scss";
 import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
+import { useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -33,8 +34,10 @@ const BrandDetail = () => {
 
     const params = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
+    const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'shops')
 
     const { data, isLoading, error } = useGetBrandById(params.brandId!);
     const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId);
@@ -198,7 +201,7 @@ const BrandDetail = () => {
                                 </div>
                                 <Divider my="md" />
                                 <div className={styled["profile-detail"]}>
-                                    <Tabs defaultValue="shops">
+                                    <Tabs value={activeTab} onChange={setActiveTab}>
                                         <Tabs.List>
                                             <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
                                                 Shops

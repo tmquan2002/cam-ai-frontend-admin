@@ -47,7 +47,9 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                                 <ActionIcon.Group>
                                     <Tooltip label="View Shop" withArrow>
                                         <ActionIcon variant="outline" size="lg" aria-label="View Shop" color="light-blue.6"
-                                            onClick={() => navigate(`/shop/${item?.shop?.id}`)}>
+                                            onClick={() => navigate(`/shop/${item?.shop?.id}`, {
+                                                state: { tab: "edge boxes", }
+                                            })}>
                                             <MdPageview />
                                         </ActionIcon>
                                     </Tooltip>

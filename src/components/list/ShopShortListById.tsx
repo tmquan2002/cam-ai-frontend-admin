@@ -52,7 +52,9 @@ const ShopCard = ({ item }: { item: Shop }) => {
             }
 
             <Button color="light-blue.6" fullWidth mt="md" radius="xs"
-                onClick={() => navigate(`/shop/${item.id}`)}>
+                onClick={() => navigate(`/shop/${item.id}`, {
+                    state: { tab: "brand", }
+                })}>
                 View Shop
             </Button>
         </Card>

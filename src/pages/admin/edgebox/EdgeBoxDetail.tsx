@@ -70,18 +70,18 @@ const EdgeBoxDetail = () => {
         });
     }
 
-    const onUpdateLocation = () => {
+    const onUpdateLocation = (type: EdgeBoxLocationStatus.Installing | EdgeBoxLocationStatus.Uninstalling) => {
         const updateLocationParams = {
             id: params.edgeBoxId!,
             values: {
-                location: EdgeBoxLocationStatus.Occupied
+                location: type == EdgeBoxLocationStatus.Installing ? EdgeBoxLocationStatus.Occupied : EdgeBoxLocationStatus.Idle
             }
         }
         updateLocation(updateLocationParams, {
             onSuccess() {
                 refetch()
                 notifications.show({
-                    message: "Edge Box finished installing!",
+                    message: type == EdgeBoxLocationStatus.Installing ? "Edge Box finished installing!" : "Reassigned!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -159,13 +159,21 @@ const EdgeBoxDetail = () => {
                                             <Group>
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Installing &&
                                                     <Button
-                                                        onClick={() => onUpdateLocation()} variant="filled"
+                                                        onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Installing)} variant="filled"
                                                         color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
                                                     >
                                                         Finish Installing
                                                     </Button>
                                                 }
-                                                {dataInstall &&
+                                                {data?.edgeBoxLocation == EdgeBoxLocationStatus.Uninstalling &&
+                                                    <Button
+                                                        onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Uninstalling)} variant="filled"
+                                                        color="light-blue.6" size="sm" loading={isLoadingLocation}
+                                                    >
+                                                        Reassign
+                                                    </Button>
+                                                }
+                                                {dataInstall?.values.length == 0 &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
                                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"

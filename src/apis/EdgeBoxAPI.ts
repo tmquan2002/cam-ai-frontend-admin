@@ -1,6 +1,6 @@
 import { getAccessToken } from "../context/AuthContext";
 import { CommonResponse } from "../models/CommonResponse";
-import { EdgeBox, EdgeBoxInstall, EdgeBoxModel } from "../models/EdgeBox";
+import { EdgeBox, EdgeBoxActivity, EdgeBoxInstall, EdgeBoxModel } from "../models/EdgeBox";
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 import http, { toQueryParams } from "../utils/http";
 
@@ -24,6 +24,14 @@ export type UpdateEdgeBoxParams = {
     values: {
         name: string;
         edgeBoxModelId: string | null;
+    }
+};
+
+export type EdgeBoxActivityParams = {
+    edgeBoxId: string;
+    values: {
+        size?: string | number | null;
+        pageIndex?: number;
     }
 };
 
@@ -72,6 +80,15 @@ export const EdgeBoxAPI = {
     getById: async (id: string) => {
         const token = getAccessToken();
         const res = await http.get<EdgeBox>(`/api/edgeboxes/${id}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+        return res.data;
+    },
+    getActivitiesByEdgeBoxId: async (params: EdgeBoxActivityParams) => {
+        const token = getAccessToken();
+        const res = await http.get<CommonResponse<EdgeBoxActivity>>(`/api/edgeboxes/${params.edgeBoxId}/activities?${toQueryParams(params.values)}`, {
             headers: {
                 Authorization: "Bearer " + token,
             },

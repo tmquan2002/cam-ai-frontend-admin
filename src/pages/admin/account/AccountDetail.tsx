@@ -177,7 +177,7 @@ const AccountDetail = () => {
                                                 <Group>
                                                     <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
                                                     <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
-                                                        />
+                                                    />
                                                 </Group>
                                                 {data?.brand?.email &&
                                                     <Group>
@@ -199,7 +199,10 @@ const AccountDetail = () => {
                                                 }
                                             </div>
                                         </Group>
-                                        <Link to={`/brand/${data?.brand?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
+                                        <Link to={`/brand/${data?.brand?.id}`} state={{ tab: "managers" }}
+                                            style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>
+                                            View Brand
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +213,7 @@ const AccountDetail = () => {
                         }
                     </>
                 }
-                
+
                 {
                     data?.role == Role.BrandManager && data?.brand &&
                     <div className={styled["container-detail"]}>
@@ -232,7 +235,7 @@ const AccountDetail = () => {
                                             <Group mb={20}>
                                                 <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.managingShop?.name}</Text>
                                                 <StatusBadge statusName={data?.managingShop?.shopStatus ? data?.managingShop?.shopStatus : "None"}
-                                                 />
+                                                />
                                             </Group>
                                             <Group>
                                                 <MdOutlineAccessTime />
@@ -259,7 +262,8 @@ const AccountDetail = () => {
                                                 </Group>
                                             }
                                         </div>
-                                        <Link to={`/shop/${data?.managingShop?.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Shop</Link>
+                                        <Link to={`/shop/${data?.managingShop?.id}`} state={{ tab: "employees" }}
+                                            style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Shop</Link>
                                     </div>
                                 </div>
                             </div>

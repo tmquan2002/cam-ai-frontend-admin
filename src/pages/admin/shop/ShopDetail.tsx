@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
@@ -26,11 +26,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const ShopDetail = () => {
 
     const params = useParams();
+    const location = useLocation();
 
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
     const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [assign, setAssign] = useState(false)
+    const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'brand')
 
     return (
         <div className={styled["container-right"]}>
@@ -90,7 +92,7 @@ const ShopDetail = () => {
                             </div>
                             <Divider my="md" />
                             <div className={styled["profile-detail"]}>
-                                <Tabs defaultValue="brand">
+                                <Tabs value={activeTab} onChange={setActiveTab}>
                                     <Tabs.List>
                                         <Tabs.Tab value="brand" leftSection={<AiFillSnippets />}>
                                             Brand
@@ -137,7 +139,8 @@ const ShopDetail = () => {
                                                         }
                                                     </div>
                                                 </Group>
-                                                <Link to={`/brand/${data?.brand.id}`} style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
+                                                <Link to={`/brand/${data?.brand.id}`} state={{ tab: "shops" }}
+                                                style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
                                             </div>
                                         }
                                     </Tabs.Panel>

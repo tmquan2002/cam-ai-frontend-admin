@@ -61,6 +61,13 @@ export enum EdgeBoxActivationStatus {
   Failed = "Failed",
 }
 
+export enum EdgeBoxActivityType {
+  EdgeBoxStatus ="EdgeBoxStatus",
+  EdgeBoxLocation ="EdgeBoxLocation",
+  EdgeBoxHealth ="EdgeBoxHealth",
+  EdgeBoxActivation ="EdgeBoxActivation",
+}
+
 export enum RequestType {
   Install = "Install",
   Repair = "Repair",
