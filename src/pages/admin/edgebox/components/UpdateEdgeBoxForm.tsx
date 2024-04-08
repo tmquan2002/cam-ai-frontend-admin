@@ -2,7 +2,8 @@ import { Button, Group, Loader, Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { isEmpty } from "lodash";
+import { useEffect } from "react";
 import { UpdateEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetEdgeBoxById, useGetEdgeBoxModel, useUpdateEdgeBox } from "../../../../hooks/useEdgeBoxes";
 
@@ -11,23 +12,26 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
     const { mutate: updateEdgeBox, isLoading } = useUpdateEdgeBox();
     const { data, isLoading: initialDataLoading, error } = useGetEdgeBoxById(id);
     const { data: edgeBoxModelList, isLoading: edgeBoxModelLoading } = useGetEdgeBoxModel();
-    const [edgeBoxModelId, setEdgeBoxModelId] = useState<string | null>(data?.edgeBoxModelId || null);
 
     const form = useForm({
         initialValues: {
-            model: ""
+            name: "",
+            edgeBoxModelId: "",
         },
 
         validate: {
-            model: (value) =>
-                value.trim().length === 0 ? "Model is required" : null
+            name: (value) =>
+                isEmpty(value) ? "Name is required" : null,
+            edgeBoxModelId: (value) =>
+                isEmpty(value) ? "Please choose a model" : null
         },
     });
 
     useEffect(() => {
         if (data) {
             form.setValues({
-                model: data?.name
+                name: data?.name,
+                edgeBoxModelId: data?.edgeBoxModelId
             });
         }
     }, [data]);
@@ -38,8 +42,8 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
         const updateBrandParams: UpdateEdgeBoxParams = {
             id: id,
             values: {
-                name: form.values.model,
-                edgeBoxModelId: edgeBoxModelId,
+                name: form.values.name,
+                edgeBoxModelId: form.values.edgeBoxModelId,
             }
         };
 
@@ -86,18 +90,18 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                         >
                             <TextInput mt={10}
                                 withAsterisk
-                                label="Model"
-                                placeholder="Model"
+                                label="Name"
+                                placeholder="Name"
                                 size="md"
-                                {...form.getInputProps("model")}
+                                {...form.getInputProps("name")}
                             />
 
                             <Select label="Edge Box Model" data={edgeBoxModelList || []} limit={5}
-                                withAsterisk error={false} size="md" mt={20}
+                                withAsterisk error={false} size="md" mt={20} allowDeselect={false}
                                 nothingFoundMessage={edgeBoxModelList && "Not Found"}
-                                value={edgeBoxModelId} disabled={edgeBoxModelLoading}
-                                rightSection={edgeBoxModelLoading ? <Loader size={16} /> : null}
-                                placeholder="Pick value" onChange={setEdgeBoxModelId}
+                                disabled={edgeBoxModelLoading} rightSection={edgeBoxModelLoading ? <Loader size={16} /> : null}
+                                placeholder="Pick value"
+                                {...form.getInputProps("edgeBoxModelId")}
                             />
 
                             <Group

@@ -1,12 +1,17 @@
 import { Grid, Group, Loader, ScrollArea, Table, Text } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 // TODO: This install list (has Shop, edge box and 3 status)
 const InstallList = () => {
 
+    const navigate = useNavigate();
+
     const loadingData = [...Array(Number(3))].map((_, i) => (
-        <Table.Tr key={i}>
+        <Table.Tr key={i} onClick={() => navigate(`/install/asdasd`)}>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
@@ -35,6 +40,8 @@ const InstallList = () => {
                                 <Table.Th>Shop Name</Table.Th>
                                 <Table.Th>EdgeBox Name</Table.Th>
                                 <Table.Th ta={"center"}>Install Status</Table.Th>
+                                <Table.Th ta={"center"}>Location Status</Table.Th>
+                                <Table.Th ta={"center"}>Activation Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>{loadingData}</Table.Tbody>

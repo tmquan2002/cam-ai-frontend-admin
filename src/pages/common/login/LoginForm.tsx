@@ -6,6 +6,7 @@ import { notifications } from "@mantine/notifications";
 import { useSession } from "../../../context/AuthContext";
 import { useForm } from "@mantine/form";
 import { MdEmail, MdLockOutline } from "react-icons/md";
+import { isEmpty } from "lodash";
 
 export const LoginForm = () => {
   const sessionHook = useSession();
@@ -19,13 +20,13 @@ export const LoginForm = () => {
 
     validate: {
       email: (value) =>
-        value.trim().length === 0
+        isEmpty(value)
           ? "Email is required"
           : /^\S+@(\S+\.)+\S{2,4}$/g.test(value)
             ? null
             : "Invalid email",
       password: (value) =>
-        value.trim().length === 0 ? "Password is required" : null,
+        isEmpty(value) ? "Password is required" : null,
     },
   });
 

@@ -286,7 +286,7 @@ const EdgeBoxDetail = () => {
 
             {/* Update Info */}
             <Modal opened={modalUpdateOpen} onClose={closeUpdate}
-                title="Update Model" centered>
+                title="Update Edge Box Model" centered>
                 <UpdateEdgeBoxForm id={params.edgeBoxId!} close={closeUpdate} refetch={refetch} refetchInstall={refetchInstall} />
             </Modal>
 

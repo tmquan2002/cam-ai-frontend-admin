@@ -47,12 +47,12 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
 
         validate: {
             name: (value: string) =>
-                value.trim().length === 0 ? "Name is required" : null,
+                isEmpty(value) ? "Name is required" : null,
             email: (value: string) =>
-                value.trim().length === 0 ? "Email is required"
+                isEmpty(value) ? "Email is required"
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
-                value.trim().length === 0 ? null :
+                isEmpty(value) ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",

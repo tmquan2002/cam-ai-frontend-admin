@@ -6,6 +6,7 @@ import { AddBrandParams, UpdateBrandParams } from "../../../../apis/BrandAPI";
 import { useGetBrandById, useUpdateBrand } from "../../../../hooks/useBrands";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { isEmpty } from "lodash";
 
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
@@ -22,12 +23,12 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
 
         validate: {
             name: (value) =>
-                value.trim().length === 0 ? "Name is required" : null,
+                isEmpty(value) ? "Name is required" : null,
             email: (value: string) =>
-                value.trim().length === 0 ? "Email is required"
+                isEmpty(value) ? "Email is required"
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
-                value.trim().length === 0 ? "Phone is required" :
+                isEmpty(value) ? "Phone is required" :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",
