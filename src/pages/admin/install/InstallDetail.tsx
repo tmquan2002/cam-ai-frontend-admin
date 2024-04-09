@@ -2,15 +2,14 @@ import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Group, LoadingOverl
 import { AiFillControl, AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { TbActivity } from "react-icons/tb";
-import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ActivityList } from "../../../components/list/ActivityList";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetEdgeBoxActivitiesByEdgeBoxId } from "../../../hooks/useEdgeBoxes";
 import { removeTime } from "../../../utils/dateFunction";
-import styled from "./styles/edgeboxinstalldetail.module.scss";
 import { addSpace } from "../../../utils/helperFunction";
+import styled from "./styles/edgeboxinstalldetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,8 +24,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 const InstallDetail = () => {
 
     //TODO: Make UI without any API first, use shop detail as reference
-    const params = useParams();
-    const navigate = useNavigate();
+    // const params = useParams();
+    // const navigate = useNavigate();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     const { isFetching, data, error } = useGetEdgeBoxActivitiesByEdgeBoxId({ edgeBoxId: "379eb0d1-b555-4f76-81a7-6d28c5991c85", values: {} })
