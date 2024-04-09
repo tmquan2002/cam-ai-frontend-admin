@@ -9,7 +9,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ShopLongListByEdgeBox } from "../../../components/list/ShopLongListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
-import { EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
+import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
@@ -172,7 +172,7 @@ const EdgeBoxDetail = () => {
                                                         Finish Uninstalling
                                                     </Button>
                                                 }
-                                                {dataInstall?.values.length == 0 &&
+                                                {dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0 &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
                                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
@@ -300,7 +300,7 @@ const EdgeBoxDetail = () => {
             {/* Modal Assign Section */}
             <Modal opened={modalAssignOpen} onClose={closeAssign}
                 title="Assign to Shop" centered>
-                <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall}/>
+                <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall} />
             </Modal>
         </>
     );
