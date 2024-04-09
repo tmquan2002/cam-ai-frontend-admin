@@ -44,7 +44,6 @@ export enum EdgeBoxLocationStatus {
   Installing = "Installing",
   Occupied = "Occupied",
   Uninstalling = "Uninstalling",
-  Disposed = "Disposed",
 }
 
 export enum EdgeBoxInstallStatus {
@@ -129,7 +128,6 @@ export enum ActiveStatusGroup {
 
 export enum InactiveStatusGroup {
   Inactive = CommonStatus.Inactive,
-  Disposed = EdgeBoxLocationStatus.Disposed,
   Disabled = EdgeBoxInstallStatus.Disabled,
 }
 

@@ -164,6 +164,17 @@ export const useInstallEdgeBox = () => {
   return { mutate, isLoading, error, data };
 };
 
+export const useUninstallEdgeBox = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "updateEdgeBoxStatus",
+    mutationFn: async (edgeBoxId: string) => {
+      return await EdgeBoxAPI.uninstall(edgeBoxId);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};
+
 export const useUpdateEdgeBoxStatus = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "updateEdgeBoxStatus",

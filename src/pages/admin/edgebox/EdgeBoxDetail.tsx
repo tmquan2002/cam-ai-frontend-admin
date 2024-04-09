@@ -24,7 +24,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
-//TODO: Add activity log of an edge box
 const EdgeBoxDetail = () => {
 
     const params = useParams();
@@ -44,7 +43,7 @@ const EdgeBoxDetail = () => {
             onSuccess() {
                 navigate('/edgebox')
                 notifications.show({
-                    message: "Edge box disposed!",
+                    message: "Edge box removed!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -81,7 +80,7 @@ const EdgeBoxDetail = () => {
             onSuccess() {
                 refetch()
                 notifications.show({
-                    message: type == EdgeBoxLocationStatus.Installing ? "Edge Box finished installing!" : "Reassigned!",
+                    message: type == EdgeBoxLocationStatus.Installing ? "Edge Box finished installing!" : "Edge Box finished uninstalling!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -170,7 +169,7 @@ const EdgeBoxDetail = () => {
                                                         onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Uninstalling)} variant="filled"
                                                         color="light-blue.6" size="sm" loading={isLoadingLocation}
                                                     >
-                                                        Reassign
+                                                        Finish Uninstalling
                                                     </Button>
                                                 }
                                                 {dataInstall?.values.length == 0 &&
@@ -257,7 +256,7 @@ const EdgeBoxDetail = () => {
                             <div className={styled["container-detail"]}>
                                 <div>
                                     <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text>
-                                    <ShopLongListByEdgeBox edgeBoxLocation={data.edgeBoxLocation} dataInstalls={dataInstall} />
+                                    <ShopLongListByEdgeBox edgeBoxLocation={data.edgeBoxLocation} dataInstalls={dataInstall} refetch={refetch} refetchInstall={refetchInstall} />
                                 </div>
                             </div>
                             :
@@ -301,7 +300,7 @@ const EdgeBoxDetail = () => {
             {/* Modal Assign Section */}
             <Modal opened={modalAssignOpen} onClose={closeAssign}
                 title="Assign to Shop" centered>
-                <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} />
+                <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall}/>
             </Modal>
         </>
     );

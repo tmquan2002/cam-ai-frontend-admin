@@ -65,7 +65,6 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
     };
 
     return (
-        // TODO: Remove Username and Password field
         <form
             onSubmit={form.onSubmit(() => onSubmitForm())}
             style={{ textAlign: "left" }}

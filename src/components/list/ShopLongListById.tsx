@@ -11,14 +11,66 @@ import styled from "./list.module.scss";
 import { ShopHistoryList } from "./HistoryList";
 import { addSpace } from "../../utils/helperFunction";
 import { CommonResponse } from "../../models/CommonResponse";
+import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
+import axios from "axios";
 
-const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined, edgeBoxLocation: EdgeBoxLocationStatus }) => {
+interface ShopCardParams {
+    item: EdgeBoxInstall | undefined;
+    edgeBoxLocation: EdgeBoxLocationStatus;
+    refetch: () => void;
+    refetchInstall: () => void;
+}
+
+interface ShopLongListByEdgeBoxParams {
+    edgeBoxLocation: EdgeBoxLocationStatus;
+    dataInstalls: CommonResponse<EdgeBoxInstall>;
+    refetch: () => void;
+    refetchInstall: () => void;
+}
+
+const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardParams) => {
     // console.log(item)
     const navigate = useNavigate();
     const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+    const { mutate: uninstall, isLoading } = useUninstallEdgeBox();
 
-    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop currently connected to this Edge Box</Text>
+    const onUninstall = () => {
+        // console.log("aa")
+        uninstall(item?.id || "", {
+            onSuccess() {
+                notifications.show({
+                    message: "Edge Box is uninstalling...",
+                    color: "light-yellow.5",
+                    withCloseButton: true,
+                });
+                refetch();
+                refetchInstall();
+                closeUninstall();
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen when trying to remove this account",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                }
+                close();
+            },
+        });
+    }
+
+
+    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20} fs="italic">No Shop currently connected to this Edge Box</Text>
 
     if (item)
         return (
@@ -57,7 +109,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                             </Group>
                         </Group>
                         :
-                        <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Shop currently connected to this Edge Box</Text>
+                        <Text c="dimmed" w={'100%'} ta={"center"} mt={20} fs="italic">No Shop currently connected to this Edge Box</Text>
                     }
 
                     <div className={styled["icon-text"]}>
@@ -145,14 +197,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
                         </Button>
                         <Button
                             variant="gradient" size="md" mt={20}
-                            onClick={() => {
-                                notifications.show({
-                                    message: "This feature is in development",
-                                    color: "light-yellow.5",
-                                    withCloseButton: true,
-                                })
-                                closeUninstall();
-                            }}
+                            onClick={onUninstall} loading={isLoading}
                             gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                         >
                             UNINSTALL
@@ -163,7 +208,7 @@ const ShopCard = ({ item, edgeBoxLocation }: { item: EdgeBoxInstall | undefined,
         )
 }
 
-export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls }: { edgeBoxLocation: EdgeBoxLocationStatus, dataInstalls: CommonResponse<EdgeBoxInstall> }) => {
+export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls, refetch, refetchInstall }: ShopLongListByEdgeBoxParams) => {
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -183,7 +228,7 @@ export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls }: { edgeB
                     <Box ml={20}>
                         {dataInstalls?.values &&
                             <ShopCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)}
-                                edgeBoxLocation={edgeBoxLocation} />
+                                edgeBoxLocation={edgeBoxLocation} refetch={refetch} refetchInstall={refetchInstall} />
                         }
                     </Box>
                 </Tabs.Panel>

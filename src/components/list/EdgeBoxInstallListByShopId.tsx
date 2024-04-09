@@ -1,29 +1,72 @@
-import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, LoadingOverlay, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { MdCheck, MdContentCopy, MdDelete, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { useGetEdgeBoxInstallByShopId } from "../../hooks/useEdgeBoxes";
+import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
+import { CommonResponse } from "../../models/CommonResponse";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
+import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
 import { removeTime } from "../../utils/dateFunction";
 import { addSpace } from "../../utils/helperFunction";
 import StatusBadge from "../badge/StatusBadge";
 import { EdgeBoxHistoryList } from "./HistoryList";
 import styled from "./list.module.scss";
-import { EdgeBoxInstallStatus } from "../../types/enum";
-import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 
 interface EdgeBoxInstallListParam {
-    id: string;
     setAssign: Dispatch<SetStateAction<boolean>>;
+    refetch: () => void;
+    refetchInstall: () => void;
+    dataInstalls: CommonResponse<EdgeBoxInstall>;
 }
 
-const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
+interface InstallCardParams {
+    item: EdgeBoxInstall | undefined;
+    refetch: () => void;
+    refetchInstall: () => void;
+}
+
+const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
     const navigate = useNavigate();
     const [modalUninstallOpen, { open: openUninstall, close: closeUninstall }] = useDisclosure(false);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+    const { mutate: uninstall, isLoading } = useUninstallEdgeBox();
 
-    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge box currently connected</Text>
+    const onUninstall = () => {
+        uninstall(item?.id || "", {
+            onSuccess() {
+                notifications.show({
+                    message: "Edge Box is uninstalling...",
+                    color: "light-yellow.5",
+                    withCloseButton: true,
+                });
+                refetch();
+                refetchInstall();
+                closeUninstall();
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        message: "Something wrong happen when trying to remove this account",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                }
+                close();
+            },
+        });
+    }
+    if (!item) return <Text c="dimmed" w={'100%'} ta={"center"} mt={20} fs="italic">No Edge box currently connected</Text>
 
     return (
         <>
@@ -34,22 +77,25 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
                         c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
                         {item?.edgeBox?.name}
                     </Text>
-                    <ActionIcon.Group>
-                        <Tooltip label="View Edge Box" withArrow>
-                            <ActionIcon variant="outline" size="lg" aria-label="View Edge Box"
-                                color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.7"}
-                                onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
-                                <MdPageview />
-                            </ActionIcon>
-                        </Tooltip>
-                        {/* TODO: Add uninstall API here */}
-                        <Tooltip label="Uninstall" withArrow>
-                            <ActionIcon variant="outline" size="lg" aria-label="Uninstall" color="pale-red.4"
-                                onClick={openUninstall}>
-                                <MdDelete />
-                            </ActionIcon>
-                        </Tooltip>
-                    </ActionIcon.Group>
+                    <Group>
+                        {item?.edgeBox?.edgeBoxLocation == EdgeBoxLocationStatus.Occupied &&
+                            <Button
+                                onClick={openUninstall} variant="filled"
+                                color="pale-red.4" size="sm"
+                            >
+                                Uninstall
+                            </Button>
+                        }
+                        <ActionIcon.Group>
+                            <Tooltip label="View Edge Box" withArrow>
+                                <ActionIcon variant="outline" size="lg" aria-label="View Edge Box"
+                                    color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.7"}
+                                    onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
+                                    <MdPageview />
+                                </ActionIcon>
+                            </Tooltip>
+                        </ActionIcon.Group>
+                    </Group>
                 </Group>
 
                 {/* Edgebox section*/}
@@ -141,14 +187,7 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
                     </Button>
                     <Button
                         variant="gradient" size="md" mt={20}
-                        onClick={() => {
-                            notifications.show({
-                                message: "This feature is in development",
-                                color: "light-yellow.5",
-                                withCloseButton: true,
-                            })
-                            closeUninstall();
-                        }}
+                        onClick={onUninstall} loading={isLoading}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
                         UNINSTALL
@@ -158,13 +197,12 @@ const InstallCard = ({ item }: { item: EdgeBoxInstall | undefined }) => {
         </>
     )
 }
-export const EdgeBoxInstallListByShopId = ({ id, setAssign }: EdgeBoxInstallListParam) => {
+export const EdgeBoxInstallListByShopId = ({ setAssign, refetch, dataInstalls, refetchInstall }: EdgeBoxInstallListParam) => {
 
-    const { isLoading: isLoadingInstall, data: dataInstalls, error: installError } = useGetEdgeBoxInstallByShopId(id);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     useEffect(() => {
-        if (dataInstalls?.values.length == 0) {
+        if (dataInstalls?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0) {
             setAssign(true)
         } else {
             setAssign(false)
@@ -172,38 +210,29 @@ export const EdgeBoxInstallListByShopId = ({ id, setAssign }: EdgeBoxInstallList
     }, [dataInstalls])
     // console.log(installData)
     return (
-        <div className={styled["list-container"]}>
-            {isLoadingInstall ?
-                <Box className={styled["loader"]}>
-                    <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-                </Box>
-                :
-                <div className={styled["card-detail"]}>
-                    {(dataInstalls?.values.length == 0 || installError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
-                        <Tabs defaultValue="current" orientation="vertical" mt={20}
-                            color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
-                            <Tabs.List>
-                                <Tabs.Tab value="current" leftSection={<MdPlayArrow />}>
-                                    Current
-                                </Tabs.Tab>
-                                <Tabs.Tab value="history" leftSection={<MdHistory />}>
-                                    History
-                                </Tabs.Tab>
-                            </Tabs.List>
-                            <Tabs.Panel value="current">
-                                <Box ml={20}>
-                                    {dataInstalls?.values &&
-                                        <InstallCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)} />
-                                    }
-                                </Box>
-                            </Tabs.Panel>
-                            <Tabs.Panel value="history">
-                                <EdgeBoxHistoryList disabledEdgeBoxList={dataInstalls?.values.filter(e => e.edgeBoxInstallStatus == EdgeBoxInstallStatus.Disabled) ?? []} />
-                            </Tabs.Panel>
-                        </Tabs>
-                    }
-                </div>
-            }
+        <div className={styled["card-detail"]}>
+            <Tabs defaultValue="current" orientation="vertical" mt={20}
+                color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>
+                <Tabs.List>
+                    <Tabs.Tab value="current" leftSection={<MdPlayArrow />}>
+                        Current
+                    </Tabs.Tab>
+                    <Tabs.Tab value="history" leftSection={<MdHistory />}>
+                        History
+                    </Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panel value="current">
+                    <Box ml={20}>
+                        {dataInstalls?.values &&
+                            <InstallCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)}
+                                refetch={refetch} refetchInstall={refetchInstall} />
+                        }
+                    </Box>
+                </Tabs.Panel>
+                <Tabs.Panel value="history">
+                    <EdgeBoxHistoryList disabledEdgeBoxList={dataInstalls?.values.filter(e => e.edgeBoxInstallStatus == EdgeBoxInstallStatus.Disabled) ?? []} />
+                </Tabs.Panel>
+            </Tabs>
         </div>
     )
 }

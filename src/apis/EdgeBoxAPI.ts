@@ -131,6 +131,14 @@ export const EdgeBoxAPI = {
         });
         return res.data;
     },
+    uninstall: async (edgeBoxId: string) => {
+        const token = getAccessToken();
+        await http.put(`/api/edgeboxinstalls/${edgeBoxId}/uninstall`, {}, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+    },
     updateStatus: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
         const token = getAccessToken();
         await http.put(`/api/edgeboxes/${params.id}/status`, params.values, {

@@ -220,7 +220,6 @@ const EdgeBoxList = () => {
                             <Radio value={EdgeBoxLocationStatus.Installing.toString()} label={"Installing"} />
                             <Radio value={EdgeBoxLocationStatus.Occupied.toString()} label={"Occupied"} />
                             <Radio value={EdgeBoxLocationStatus.Uninstalling.toString()} label={"Uninstalling"} />
-                            <Radio value={EdgeBoxLocationStatus.Disposed.toString()} label={"Disposed"} />
                         </Group>
                     </RadioGroup>
                 </Group>

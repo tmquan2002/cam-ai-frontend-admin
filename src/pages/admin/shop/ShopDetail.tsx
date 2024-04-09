@@ -13,6 +13,7 @@ import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import { ShopEdgeBoxAssignForm } from "./components/ShopEdgeBoxAssignForm";
 import styled from "./styles/shopdetail.module.scss";
+import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxes";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -30,6 +31,7 @@ const ShopDetail = () => {
 
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
     const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
+    const { isLoading: isLoadingInstall, data: dataInstall, error: installError, refetch: refetchInstall } = useGetEdgeBoxInstallByShopId(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [assign, setAssign] = useState(false)
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'brand')
@@ -140,7 +142,7 @@ const ShopDetail = () => {
                                                     </div>
                                                 </Group>
                                                 <Link to={`/brand/${data?.brand.id}`} state={{ tab: "shops" }}
-                                                style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
+                                                    style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
                                             </div>
                                         }
                                     </Tabs.Panel>
@@ -150,7 +152,23 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        <EdgeBoxInstallListByShopId id={params.shopId!} setAssign={setAssign} />
+                                        {data && !installError && dataInstall && dataInstall?.values?.length > 0 &&
+                                            <>
+                                                {!isLoadingInstall ?
+                                                    <Box ml={10} mt={10}>
+                                                        <div>
+                                                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text>
+                                                            <EdgeBoxInstallListByShopId dataInstalls={dataInstall} setAssign={setAssign}
+                                                                refetch={refetch} refetchInstall={refetchInstall} />
+                                                        </div>
+                                                    </Box>
+                                                    :
+                                                    <Box className={styled["loader"]}>
+                                                        <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                                                    </Box>
+                                                }
+                                            </>
+                                        }
                                     </Tabs.Panel>
                                 </Tabs>
                             </div>
@@ -158,7 +176,7 @@ const ShopDetail = () => {
                             {/* Modal Assign Section */}
                             <Modal opened={modalAssignOpen} onClose={closeAssign}
                                 title="Assign Edge Box" centered>
-                                <ShopEdgeBoxAssignForm shopId={params.shopId!} close={closeAssign} refetch={refetch} />
+                                <ShopEdgeBoxAssignForm shopId={params.shopId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall} />
                             </Modal>
                         </>
                     }

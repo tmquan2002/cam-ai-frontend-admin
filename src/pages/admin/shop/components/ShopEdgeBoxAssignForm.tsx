@@ -9,14 +9,15 @@ import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useGetAllShopsSelect } from "../../../../hooks/useShops";
 
-type AssignFormParams = {
-    shopId?: string,
-    edgeBoxId?: string,
-    close: () => void,
-    refetch: () => {}
+interface AssignFormParams {
+    shopId?: string;
+    edgeBoxId?: string;
+    close: () => void;
+    refetch: () => {};
+    refetchInstall: () => {};
 }
 
-export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch }: AssignFormParams) => {
+export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refetchInstall }: AssignFormParams) => {
 
     const [edgeBoxSearch, setEdgeBoxSearch] = useState<string>("");
     const [shopSearch, setShopSearch] = useState<string>("");
@@ -70,6 +71,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch }: Ass
                 });
                 close();
                 refetch();
+                refetchInstall();
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
