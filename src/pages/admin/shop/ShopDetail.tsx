@@ -9,11 +9,12 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
+import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxes";
 import { useGetShopById } from "../../../hooks/useShops";
 import { removeTime } from "../../../utils/dateFunction";
 import { ShopEdgeBoxAssignForm } from "./components/ShopEdgeBoxAssignForm";
 import styled from "./styles/shopdetail.module.scss";
-import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxes";
+import { ShopStatus } from "../../../types/enum";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -33,7 +34,6 @@ const ShopDetail = () => {
     const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
     const { isLoading: isLoadingInstall, data: dataInstall, error: installError, refetch: refetchInstall } = useGetEdgeBoxInstallByShopId(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-    const [assign, setAssign] = useState(false)
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'brand')
 
     return (
@@ -83,7 +83,7 @@ const ShopDetail = () => {
                                         }
                                     </div>
                                 </div>
-                                {assign &&
+                                {data?.shopStatus == ShopStatus.Active &&
                                     <Button
                                         onClick={openAssign} variant="gradient"
                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
@@ -152,13 +152,13 @@ const ShopDetail = () => {
                                     </Tabs.Panel>
 
                                     <Tabs.Panel value="edge boxes">
-                                        {data && !installError && dataInstall && dataInstall?.values?.length > 0 &&
+                                        {data && !installError && dataInstall && dataInstall?.values?.length > 0 ?
                                             <>
                                                 {!isLoadingInstall ?
                                                     <Box ml={10} mt={10}>
                                                         <div>
                                                             <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text>
-                                                            <EdgeBoxInstallListByShopId dataInstalls={dataInstall} setAssign={setAssign}
+                                                            <EdgeBoxInstallListByShopId dataInstalls={dataInstall}
                                                                 refetch={refetch} refetchInstall={refetchInstall} />
                                                         </div>
                                                     </Box>
@@ -168,6 +168,8 @@ const ShopDetail = () => {
                                                     </Box>
                                                 }
                                             </>
+                                            :
+                                            <Text fs="italic" ta="center" c="dimmed" mt={20}>No edge box connected to this shop</Text>
                                         }
                                     </Tabs.Panel>
                                 </Tabs>

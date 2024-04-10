@@ -2,7 +2,6 @@ import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs,
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect } from "react";
 import { MdCheck, MdContentCopy, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
@@ -16,7 +15,6 @@ import { EdgeBoxHistoryList } from "./HistoryList";
 import styled from "./list.module.scss";
 
 interface EdgeBoxInstallListParam {
-    setAssign: Dispatch<SetStateAction<boolean>>;
     refetch: () => void;
     refetchInstall: () => void;
     dataInstalls: CommonResponse<EdgeBoxInstall>;
@@ -197,17 +195,9 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
         </>
     )
 }
-export const EdgeBoxInstallListByShopId = ({ setAssign, refetch, dataInstalls, refetchInstall }: EdgeBoxInstallListParam) => {
+export const EdgeBoxInstallListByShopId = ({ refetch, dataInstalls, refetchInstall }: EdgeBoxInstallListParam) => {
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-
-    useEffect(() => {
-        if (dataInstalls?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0) {
-            setAssign(true)
-        } else {
-            setAssign(false)
-        }
-    }, [dataInstalls])
     // console.log(installData)
     return (
         <div className={styled["card-detail"]}>
@@ -223,9 +213,14 @@ export const EdgeBoxInstallListByShopId = ({ setAssign, refetch, dataInstalls, r
                 </Tabs.List>
                 <Tabs.Panel value="current">
                     <Box ml={20}>
-                        {dataInstalls?.values &&
-                            <InstallCard item={dataInstalls?.values.find(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled)}
-                                refetch={refetch} refetchInstall={refetchInstall} />
+                        {(dataInstalls?.values && dataInstalls?.values?.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length > 0) ?
+                            <>
+                                {dataInstalls?.values?.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).map((installFilter) => (
+                                    <InstallCard item={installFilter} refetch={refetch} refetchInstall={refetchInstall} />
+                                ))}
+                            </>
+                            :
+                            <Text fs="italic" ta="center" c="dimmed" mt={20}>No edge box currently connected to this shop</Text>
                         }
                     </Box>
                 </Tabs.Panel>

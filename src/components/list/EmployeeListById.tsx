@@ -78,7 +78,7 @@ export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
                 <div className={styled["card-detail"]}>
-                    {(data?.values.length == 0 || error) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Employee Found</Text> :
+                    {(data?.values.length == 0 || error) ? <Text fs="italic" ta="center" c="dimmed" mt={20}>No Employee Found</Text> :
                         <Box mt={20}>
                             {data?.values.map((item, index) => (
                                 <EmployeeCard item={item} key={index} />

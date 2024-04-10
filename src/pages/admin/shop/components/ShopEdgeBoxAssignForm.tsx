@@ -4,7 +4,7 @@ import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
-import { EdgeBoxLocationStatus } from "../../../../types/enum";
+import { EdgeBoxLocationStatus, ShopStatus } from "../../../../types/enum";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useGetAllShopsSelect } from "../../../../hooks/useShops";
@@ -26,7 +26,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
     const { data: edgeBoxList, isFetching: isFetchingEdgeBox, refetch: refetchSearchEdgeBox
     } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch })
     const { data: shopList, isFetching: isFetchingShop, refetch: refetchSearchShop
-    } = useGetAllShopsSelect({ name: shopSearch })
+    } = useGetAllShopsSelect({ status: ShopStatus.Active, name: shopSearch })
 
     useEffect(() => {
         const timer = setTimeout(() => refetchSearchEdgeBox(), 500);

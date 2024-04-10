@@ -86,14 +86,13 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                                     <StatusBadge statusName={item?.shop?.shopStatus} padding={10} size="sm" tooltip="Shop Status" />
                                 }
                             </Group>
-                            {/* TODO: Add uninstall API here */}
                             <Group>
                                 {edgeBoxLocation == EdgeBoxLocationStatus.Occupied &&
                                     <Button
                                         onClick={openUninstall} variant="filled"
                                         color="pale-red.4" size="sm"
                                     >
-                                        Uninstall
+                                        UNINSTALL
                                     </Button>
                                 }
                                 <ActionIcon.Group>

@@ -172,6 +172,7 @@ const EdgeBoxDetail = () => {
                                                         Finish Uninstalling
                                                     </Button>
                                                 }
+                                                {/* TODO: Fix this: 1 edge box only connect to 1 shop */}
                                                 {dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0 &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
