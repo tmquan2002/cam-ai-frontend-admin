@@ -152,12 +152,12 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                 {...form.getInputProps("email")} />
                             <Group grow mt={10}>
                                 <DateInput
-                                    withAsterisk label="Birthday"
+                                    label="Birthday"
                                     placeholder="January 1, 2000"
                                     maxDate={getDateFromSetYear(18)}
                                     {...form.getInputProps('birthday')} />
                                 <TextInput
-                                    label="Phone" placeholder="Phone Number" withAsterisk
+                                    label="Phone" placeholder="Phone Number"
                                     {...form.getInputProps("phone")} />
                                 <Select label="Gender" placeholder="Select" withAsterisk
                                     allowDeselect={false}

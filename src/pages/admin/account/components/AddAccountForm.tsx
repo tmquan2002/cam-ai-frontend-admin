@@ -27,6 +27,7 @@ type AddAccountFieldValue = {
     district: string;
     ward: string | null;
     role: Role;
+    brandId: string;
 };
 
 export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBrandId?: string, initialBrandName?: string }) => {
@@ -49,6 +50,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             province: "",
             district: "",
             ward: "",
+            brandId: initialBrandId || "",
         },
 
         validate: {
@@ -66,6 +68,8 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 isEmpty(value) ? "Password is required" : null,
             confirmPassword: (value: string) =>
                 isEmpty(value) ? "Confirm Password is required" : null,
+            brandId: (value: string) =>
+                isEmpty(value) ? "Please select a brand" : null,
         },
     });
 
@@ -98,7 +102,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             gender: form.values.gender,
             password: form.values.password,
             role: form.values.role,
-            brandId: brandId,
+            brandId: form.values.brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
         console.log(addAccountParams)
@@ -149,23 +153,14 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
 
     return (
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
-            <Group grow mt={10}>
-                <Select label="Role" placeholder="Select" withAsterisk
-                    allowDeselect={false}
-                    disabled={!isEmpty(initialBrandId)}
-                    data={[
-                        { value: Role.Technician, label: 'Technician' },
-                        { value: Role.BrandManager, label: 'Brand Manager' },
-                    ]}
-                    {...form.getInputProps('role')} />
-                <Select label="Brand (For Brand Manager)" data={brandList || []} limit={5}
-                    disabled={form.values.role != Role.BrandManager || !isEmpty(initialBrandId)} withAsterisk={form.values.role == "BrandManager"}
-                    nothingFoundMessage={brandList && "Not Found"}
-                    value={brandId} searchValue={brand}
-                    placeholder="Pick value" clearable searchable
-                    onSearchChange={setBrand} onChange={setBrandId}
-                />
-            </Group>
+            <Select label="Brand" data={brandList || []} limit={5}
+                withAsterisk
+                disabled={!isEmpty(initialBrandId)}
+                nothingFoundMessage={brandList && "Not Found"}
+                searchValue={brand} onSearchChange={setBrand}
+                placeholder="Pick value" clearable searchable
+                {...form.getInputProps("brandId")}
+            />
             <TextInput mt={10}
                 withAsterisk label="Full Name"
                 placeholder="Nguyen Van A"

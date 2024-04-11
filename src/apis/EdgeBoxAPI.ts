@@ -6,7 +6,7 @@ import http, { toQueryParams } from "../utils/http";
 
 export type GetEdgeBoxParams = {
     name?: string;
-    edgeBoxStatus?: number | string;
+    edgeBoxStatus?: EdgeBoxStatus;
     edgeBoxLocation?: string;
     brandId?: string;
     shopId?: string;

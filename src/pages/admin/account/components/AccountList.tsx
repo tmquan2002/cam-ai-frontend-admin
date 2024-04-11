@@ -203,10 +203,8 @@ const AccountList = () => {
                     <RadioGroup name="role" size='sm' value={filterRole}
                         onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
                         <Group>
-                            <Radio value={Role.Technician} label={"Technician"} />
                             <Radio value={Role.BrandManager} label={"Brand Manager"} />
                             <Radio value={Role.ShopManager} label={"Shop Manager"} />
-                            <Radio value={Role.Employee} label={"Employee"} />
                         </Group>
                     </RadioGroup>
                 </Group>

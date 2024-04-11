@@ -22,7 +22,7 @@ const AccountAdd = () => {
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
-                <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>NEW ACCOUNT</Text>
+                <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>NEW BRAND MANAGER ACCOUNT</Text>
                 <AddAccountForm initialBrandId={location?.state?.brandId} initialBrandName={location?.state?.name} />
             </div>
         </div>

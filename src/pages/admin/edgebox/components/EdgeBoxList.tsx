@@ -208,6 +208,7 @@ const EdgeBoxList = () => {
                             <Radio value={EdgeBoxStatus.Active.toString()} label={"Active"} />
                             <Radio value={EdgeBoxStatus.Inactive.toString()} label={"Inactive"} />
                             <Radio value={EdgeBoxStatus.Broken.toString()} label={"Broken"} />
+                            <Radio value={EdgeBoxStatus.Disposed.toString()} label={"Disposed"} />
                         </Group>
                     </RadioGroup>
                 </Group>

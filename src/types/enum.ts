@@ -37,6 +37,7 @@ export enum EdgeBoxStatus {
   Active = "Active",
   Inactive = "Inactive",
   Broken = "Broken",
+  Disposed = "Disposed",
 }
 
 export enum EdgeBoxLocationStatus {
@@ -65,20 +66,6 @@ export enum EdgeBoxActivityType {
   EdgeBoxLocation ="EdgeBoxLocation",
   EdgeBoxHealth ="EdgeBoxHealth",
   EdgeBoxActivation ="EdgeBoxActivation",
-}
-
-export enum RequestType {
-  Install = "Install",
-  Repair = "Repair",
-  Remove = "Remove",
-  Other = "Other"
-}
-
-export enum RequestStatus {
-  Open = "Open",
-  Canceled = "Canceled",
-  Done = "Done",
-  Rejected = "Rejected ",
 }
 
 export enum EmployeeStatus {

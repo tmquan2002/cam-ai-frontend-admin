@@ -23,10 +23,10 @@ export const AddBrandForm = () => {
             name: (value) =>
                 isEmpty(value) ? "Name is required" : null,
             email: (value: string) =>
-                isEmpty(value) ? "Email is required"
+                isEmpty(value) ? null
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
             phone: (value: string) =>
-                isEmpty(value) ? "Phone is required" :
+                isEmpty(value) ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",
@@ -85,7 +85,6 @@ export const AddBrandForm = () => {
                 {...form.getInputProps("name")}
             />
             <TextInput mt={10}
-                withAsterisk
                 label="Email"
                 placeholder="your@email.com"
                 size="md"
@@ -93,7 +92,7 @@ export const AddBrandForm = () => {
             />
 
             <TextInput mt={10}
-                label="Phone" withAsterisk
+                label="Phone"
                 placeholder="Phone Number"
                 size="md"
                 {...form.getInputProps("phone")}
