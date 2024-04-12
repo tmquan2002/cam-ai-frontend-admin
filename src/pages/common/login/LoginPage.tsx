@@ -9,7 +9,7 @@ const LoginPage = () => {
     <>
       <div className={styled["container-main"]}>
         <div className={styled["image-container"]}>
-          <div className={styled["title"]}>CAMAI</div>
+          <div className={styled["title"]}>CAMAI - ADMIN</div>
           <div className={styled["description"]}>Solution for coffee brands to detect customers and employee behaviors
           </div>
           <img src={AuthImage} alt="AuthImage" className={styled["auth-image"]} />
