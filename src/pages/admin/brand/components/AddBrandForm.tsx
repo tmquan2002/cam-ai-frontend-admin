@@ -24,7 +24,7 @@ export const AddBrandForm = () => {
                 isEmpty(value) ? "Name is required" : null,
             email: (value: string) =>
                 isEmpty(value) ? null
-                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
+                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
             phone: (value: string) =>
                 isEmpty(value) ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)

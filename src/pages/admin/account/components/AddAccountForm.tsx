@@ -1,6 +1,6 @@
 import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
@@ -57,12 +57,13 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 isEmpty(value) ? "Name is required" : null,
             email: (value: string) =>
                 isEmpty(value) ? "Email is required"
-                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "An email should have a name, @ sign, a server name and domain in order and no whitespace. Valid example abc@email.com",
+                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
             phone: (value: string) =>
                 isEmpty(value) ? null :
                     /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
                         ? null
                         : "A Phone number should have a length of 10-12 characters",
+            gender: isNotEmpty("Please select a gender"),
             password: (value: string) =>
                 isEmpty(value) ? "Password is required" : null,
             confirmPassword: (value: string) =>
