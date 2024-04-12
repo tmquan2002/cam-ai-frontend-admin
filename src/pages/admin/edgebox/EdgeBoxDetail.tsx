@@ -283,17 +283,17 @@ const EdgeBoxDetail = () => {
                 </Text>
                 <Group align="end">
                     <Button
-                        variant="outline" size="md" mt={20} onClick={closeDelete}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        CANCEL
-                    </Button>
-                    <Button
                         variant="gradient" size="md" mt={20} onClick={onDelete}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                         loading={isLoadingDelete}
                     >
                         DELETE
+                    </Button>
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={closeDelete}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
                     </Button>
                 </Group>
             </Modal>

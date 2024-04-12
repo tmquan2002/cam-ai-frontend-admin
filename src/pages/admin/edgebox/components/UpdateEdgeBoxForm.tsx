@@ -113,12 +113,6 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                                 align="end"
                             >
                                 <Button
-                                    variant="outline" size="md" mt={20} onClick={close}
-                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                                >
-                                    CANCEL
-                                </Button>
-                                <Button
                                     loading={isLoading}
                                     type="submit"
                                     variant="gradient"
@@ -127,6 +121,12 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                                 >
                                     UPDATE
+                                </Button>
+                                <Button
+                                    variant="outline" size="md" mt={20} onClick={close}
+                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                >
+                                    CANCEL
                                 </Button>
                             </Group>
                         </form>

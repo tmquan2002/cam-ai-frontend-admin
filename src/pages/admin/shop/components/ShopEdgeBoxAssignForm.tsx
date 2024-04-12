@@ -126,17 +126,17 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
                 mt={5}
             >
                 <Button
-                    variant="outline" size="md" mt={20} onClick={close}
-                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                >
-                    CANCEL
-                </Button>
-                <Button
                     loading={isLoadingInstall}
                     type="submit" variant="gradient" size="md" mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
                     ASSIGN
+                </Button>
+                <Button
+                    variant="outline" size="md" mt={20} onClick={close}
+                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                >
+                    CANCEL
                 </Button>
             </Group>
         </form>

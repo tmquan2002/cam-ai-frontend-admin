@@ -258,12 +258,6 @@ const BrandDetail = () => {
                     </Text>
                 }
                 <Group align="end">
-                    <Button
-                        variant="outline" size="md" mt={20} onClick={close}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        CANCEL
-                    </Button>
                     {data?.brandStatus === BrandStatus.Active ?
                         <Button
                             variant="gradient" size="md" mt={20} onClick={onDelete}
@@ -278,6 +272,12 @@ const BrandDetail = () => {
                             REACTIVATE
                         </Button>
                     }
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={close}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
+                    </Button>
                 </Group>
             </Modal>
         </>

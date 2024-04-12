@@ -293,16 +293,16 @@ const AccountDetail = () => {
                 </Text>
                 <Group>
                     <Button
-                        variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        CANCEL
-                    </Button>
-                    <Button
                         variant="gradient" size="md" mt={20} onClick={onDelete} loading={isLoadingDelete}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
                         DELETE
+                    </Button>
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
                     </Button>
                 </Group>
             </Modal>

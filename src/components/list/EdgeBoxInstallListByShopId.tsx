@@ -181,17 +181,17 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 </Text>
                 <Group align="end">
                     <Button
-                        variant="outline" size="md" mt={20} onClick={closeUninstall}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        CANCEL
-                    </Button>
-                    <Button
                         variant="gradient" size="md" mt={20}
                         onClick={onUninstall} loading={isLoading}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
                         UNINSTALL
+                    </Button>
+                    <Button
+                        variant="outline" size="md" mt={20} onClick={closeUninstall}
+                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                    >
+                        CANCEL
                     </Button>
                 </Group>
             </Modal>
