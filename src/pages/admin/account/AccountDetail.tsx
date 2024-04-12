@@ -33,7 +33,7 @@ const AccountDetail = () => {
     const [modalOpen, { open, close }] = useDisclosure(false);
 
     const { data, isLoading, error } = useGetAccountById(params.accountId!);
-    const { mutate: deleteAccount } = useDeleteAccount();
+    const { mutate: deleteAccount, isLoading: isLoadingDelete } = useDeleteAccount();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -159,6 +159,15 @@ const AccountDetail = () => {
                                         </Menu>
                                     </div>
                                 }
+                                {data?.role == Role.ShopManager && data?.managingShop &&
+                                    <Button
+                                        variant="gradient" size="sm"
+                                        onClick={open} loading={isLoading}
+                                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                                    >
+                                        DELETE
+                                    </Button>
+                                }
                             </div>
                         }
                     </div>
@@ -277,20 +286,20 @@ const AccountDetail = () => {
             </div >
             <Modal opened={modalOpen} onClose={close} title="Delete this account?" centered>
                 <Text>
-                    Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
+                    Do you want to remove this account? This action will switch a account status to <b>INACTIVE</b>
                 </Text>
                 <Group>
                     <Button
-                        variant="gradient" size="md" mt={20} onClick={onDelete}
-                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                    >
-                        DELETE
-                    </Button>
-                    <Button
-                        variant="outline" size="md" mt={20} onClick={close}
+                        variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}
                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                     >
                         CANCEL
+                    </Button>
+                    <Button
+                        variant="gradient" size="md" mt={20} onClick={onDelete} loading={isLoadingDelete}
+                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                    >
+                        DELETE
                     </Button>
                 </Group>
             </Modal>
