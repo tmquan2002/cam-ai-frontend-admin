@@ -3,6 +3,7 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddAccountParams } from "../../../../apis/AccountAPI";
@@ -11,7 +12,6 @@ import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender, Role } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
-import { isEmpty } from "lodash";
 import { enumToSelect } from "../../../../utils/helperFunction";
 
 type AddAccountFieldValue = {
@@ -21,7 +21,7 @@ type AddAccountFieldValue = {
     name: string;
     gender: Gender;
     phone: string;
-    birthday: Date;
+    birthday: Date | null;
     addressLine: string;
     province: string;
     district: string;
@@ -34,7 +34,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
     const [brand, setBrand] = useState<string>(initialBrandName || "");
     const [districtSearch, setDistrictSearch] = useState<string>("");
     const [wardSearch, setWardSearch] = useState<string>("");
-    const [brandId, setBrandId] = useState<string | null>(initialBrandId || null);
 
     const form = useForm<AddAccountFieldValue>({
         initialValues: {
@@ -44,7 +43,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             name: "",
             gender: Gender.Male,
             phone: "",
-            birthday: new Date(2000, 0),
+            birthday: null,
             addressLine: "",
             role: Role.BrandManager,
             province: "",
@@ -106,15 +105,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
         console.log(addAccountParams)
-
-        if (addAccountParams.role == Role.BrandManager && isEmpty(brandId)) {
-            notifications.show({
-                message: "A Brand is required for Brand Manager",
-                color: "pale-red.5",
-                withCloseButton: true,
-            });
-            return;
-        }
 
         addAccount(addAccountParams, {
             onSuccess(data) {
@@ -208,7 +198,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="District" placeholder="Select"
                     disabled={form.values.province == ""}
                     data={districtsList || []}
-                    rightSection={form.values.province != "" || isFetchingDistricts ? <Loader size="1rem" /> : null}
+                    rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('district')}
                     onChange={(value) => {
                         form.setFieldValue('district', value || "")
@@ -220,7 +210,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <Select label="Ward" placeholder="Select"
                     disabled={form.values.province == "" || districtSearch == ""}
                     data={wardsList || []}
-                    rightSection={form.values.province != "" || districtSearch != "" || isFetchingWards ? <Loader size="1rem" /> : null}
+                    rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('ward')}
                     searchValue={wardSearch} onSearchChange={setWardSearch}
                     searchable nothingFoundMessage="Not Found"

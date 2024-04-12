@@ -18,7 +18,7 @@ type UpdateAccountFieldValue = {
     name: string;
     gender: Gender;
     phone: string;
-    birthday: Date;
+    birthday: Date | null;
     addressLine: string;
     province: string;
     district: string;
@@ -38,7 +38,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             name: "",
             gender: Gender.Male,
             phone: "",
-            birthday: new Date(2000, 0),
+            birthday: null,
             addressLine: "",
             province: "",
             district: "",
@@ -99,7 +99,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 email: form.values.email,
                 phone: form.values.phone,
                 addressLine: form.values.addressLine,
-                birthday: removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd"),
+                birthday: form.values.birthday ? removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd") : null,
                 gender: form.values.gender,
                 wardId: isEmpty(form.values.ward) ? null : form.values.ward,
             }
