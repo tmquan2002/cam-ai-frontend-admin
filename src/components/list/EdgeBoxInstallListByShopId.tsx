@@ -36,6 +36,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
         uninstall(item?.id || "", {
             onSuccess() {
                 notifications.show({
+                    title: "Successfully",
                     message: "Edge Box is uninstalling...",
                     color: "light-yellow.5",
                     withCloseButton: true,
@@ -48,6 +49,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -55,7 +57,8 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 } else {
                     console.error(error);
                     notifications.show({
-                        message: "Something wrong happen when trying to remove this account",
+                        title: "Failed",
+                        message: "Something wrong happen when trying to uninstall",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });

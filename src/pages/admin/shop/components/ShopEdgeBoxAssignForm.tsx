@@ -65,6 +65,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
             onSuccess(data) {
                 console.log(data)
                 notifications.show({
+                    title: "Successfully",
                     message: "Assign successful!",
                     color: "green",
                     withCloseButton: true,
@@ -77,6 +78,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message || "Unknown error occured",
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -84,6 +86,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
                 } else {
                     // console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen trying to assign an edge box",
                         color: "pale-red.5",
                         withCloseButton: true,

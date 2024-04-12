@@ -86,6 +86,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
 
         if (form.values.password !== form.values.confirmPassword) {
             notifications.show({
+                title: "Validate failed",
                 message: "Password and Confirm Password does not match",
                 color: "pale-red.5",
                 withCloseButton: true,
@@ -110,7 +111,8 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             onSuccess(data) {
                 // console.log(data)
                 notifications.show({
-                    message: "Added!",
+                    title: "Successfully",
+                    message: "New account added!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -120,6 +122,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -127,6 +130,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 } else {
                     // console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen trying to add a new account",
                         color: "pale-red.5",
                         withCloseButton: true,

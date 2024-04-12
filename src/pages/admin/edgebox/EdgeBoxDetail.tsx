@@ -43,6 +43,7 @@ const EdgeBoxDetail = () => {
             onSuccess() {
                 navigate('/edgebox')
                 notifications.show({
+                    title: "Successfully",
                     message: "Edge box removed!",
                     color: "green",
                     withCloseButton: true,
@@ -52,6 +53,7 @@ const EdgeBoxDetail = () => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -59,6 +61,7 @@ const EdgeBoxDetail = () => {
                 } else {
                     console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen when trying to remove this edge box",
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -80,6 +83,7 @@ const EdgeBoxDetail = () => {
             onSuccess() {
                 refetch()
                 notifications.show({
+                    title: "Successfully",
                     message: type == EdgeBoxLocationStatus.Installing ? "Edge Box finished installing!" : "Edge Box finished uninstalling!",
                     color: "green",
                     withCloseButton: true,
@@ -89,6 +93,7 @@ const EdgeBoxDetail = () => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -96,6 +101,7 @@ const EdgeBoxDetail = () => {
                 } else {
                     console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen when trying to finish installing this edge box",
                         color: "pale-red.5",
                         withCloseButton: true,

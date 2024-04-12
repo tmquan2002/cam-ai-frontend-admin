@@ -51,7 +51,8 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
             onSuccess(data) {
                 console.log(data)
                 notifications.show({
-                    message: "Update successful!",
+                    title: "Successfully",
+                    message: "Update edge box successful!",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -63,6 +64,7 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -70,6 +72,7 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                 } else {
                     // console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen trying to update this edge box",
                         color: "pale-red.5",
                         withCloseButton: true,

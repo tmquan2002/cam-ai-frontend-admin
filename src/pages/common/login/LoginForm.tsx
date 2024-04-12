@@ -47,6 +47,7 @@ export const LoginForm = () => {
         if (axios.isAxiosError(error)) {
           // console.error(error.response?.data as ApiErrorResponse);
           notifications.show({
+            title: "Failed",
             message: error.response?.data.message,
             color: "pale-red.5",
             withCloseButton: true,
@@ -54,6 +55,7 @@ export const LoginForm = () => {
         } else {
           // console.error(error);
           notifications.show({
+            title: "Failed",
             message: "Something wrong happen trying to login",
             color: "pale-red.5",
             withCloseButton: true,

@@ -52,6 +52,7 @@ const BrandDetail = () => {
             onSuccess() {
                 navigate('/brand')
                 notifications.show({
+                    title: "Successfully",
                     message: "Brand disabled!",
                     color: "green",
                     withCloseButton: true,
@@ -61,6 +62,7 @@ const BrandDetail = () => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -68,6 +70,7 @@ const BrandDetail = () => {
                 } else {
                     console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen when trying to remove this brand",
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -83,6 +86,7 @@ const BrandDetail = () => {
             onSuccess() {
                 navigate('/brand')
                 notifications.show({
+                    title: "Successfully",
                     message: "Brand Reactivated!",
                     color: "green",
                     withCloseButton: true,
@@ -92,6 +96,7 @@ const BrandDetail = () => {
                 if (axios.isAxiosError(error)) {
                     // console.error(error.response?.data as ApiErrorResponse);
                     notifications.show({
+                        title: "Failed",
                         message: error.response?.data.message,
                         color: "pale-red.5",
                         withCloseButton: true,
@@ -99,6 +104,7 @@ const BrandDetail = () => {
                 } else {
                     console.error(error);
                     notifications.show({
+                        title: "Failed",
                         message: "Something wrong happen when trying to reactivate this brand",
                         color: "pale-red.5",
                         withCloseButton: true,
