@@ -11,14 +11,12 @@ import BrandUpdate from "../pages/admin/brand/BrandUpdate";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
-import InstallMainPage from "../pages/admin/install/InstallMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
 import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import InstallDetail from "../pages/admin/install/InstallDetail";
 
 const AppRoute = () => {
   return useRoutes([
@@ -117,20 +115,20 @@ const AppRoute = () => {
             }
           ]
         },
-        {
-          path: "/install",
-          element: <MainLayout />,
-          children: [
-            {
-              element: <InstallMainPage />,
-              index: true,
-            },
-            {
-              path: ":edgeBoxId",
-              element: <InstallDetail />,
-            }
-          ]
-        },
+        // {
+        //   path: "/install",
+        //   element: <MainLayout />,
+        //   children: [
+        //     {
+        //       element: <InstallMainPage />,
+        //       index: true,
+        //     },
+        //     {
+        //       path: ":edgeBoxId",
+        //       element: <InstallDetail />,
+        //     }
+        //   ]
+        // },
         {
           path: "*",
           element: <NothingFoundBackground />,
