@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Box, Center, Divider, Flex, Indicator, Popover, ScrollArea, Tabs, Text, Tooltip, rem } from "@mantine/core";
 import { useState } from "react";
 import { MdNotifications } from "react-icons/md";
-import { timeSince } from "../../utils/dateFunction";
+import { timeSince } from "../../utils/dateTimeFunction";
 import styled from "./Notification.module.scss";
 
 const TabsHeader = ({ active, number, text, }: { text: string; number: number; active: boolean; }) => {

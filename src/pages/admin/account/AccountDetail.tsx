@@ -12,7 +12,7 @@ import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { AccountStatus, Role } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateFunction";
+import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
 import styled from "./styles/accountdetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -251,7 +251,9 @@ const AccountDetail = () => {
                                             </Group>
                                             <Group>
                                                 <MdOutlineAccessTime />
-                                                <Text size="md">Open: {data?.managingShop?.openTime || "No Data"} - Close: {data?.managingShop?.closeTime || "No Data"}</Text>
+                                                <Text size="md">
+                                                    <b>Open:</b> {data?.managingShop?.openTime ? formatTime(data?.managingShop?.openTime, false, false) : "No Data"} - <b>Close:</b> {data?.managingShop?.closeTime ? formatTime(data?.managingShop?.closeTime, false, false) : "No Data"}
+                                                </Text>
                                             </Group>
                                             {data?.brand?.phone &&
                                                 <Group>

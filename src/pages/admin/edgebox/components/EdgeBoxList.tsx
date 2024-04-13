@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateFunction';
+import { removeTime } from '../../../../utils/dateTimeFunction';
 import styled from "../styles/edgebox.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';

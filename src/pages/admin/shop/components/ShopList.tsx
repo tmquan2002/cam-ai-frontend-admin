@@ -8,7 +8,7 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { useGetAllShops } from '../../../../hooks/useShops';
 import { ShopStatus } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateFunction';
+import { removeTime } from '../../../../utils/dateTimeFunction';
 import styled from "../styles/shop.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { ShopFilterProps, pageSizeSelect } from '../../../../types/constant';

@@ -15,7 +15,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { BrandStatus } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateFunction";
+import { removeTime } from "../../../utils/dateTimeFunction";
 import styled from "./styles/branddetail.module.scss";
 import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 import { useState } from "react";

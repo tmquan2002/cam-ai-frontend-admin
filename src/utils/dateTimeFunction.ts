@@ -39,23 +39,45 @@ export function timeSince(date: Date) {
     var interval = seconds / 31536000;
 
     if (interval >= 1) {
-        return Math.floor(interval) > 1 ? Math.floor(interval) + " years ago" : Math.floor(interval) + " year ago";
+        return Math.floor(interval) > 1 ? `${Math.floor(interval)} years ago` : `${Math.floor(interval)} year ago`;
     }
     interval = seconds / 2592000;
     if (interval >= 1) {
-        return Math.floor(interval) > 1 ? Math.floor(interval) + " months ago" : Math.floor(interval) + " month ago";
+        return Math.floor(interval) > 1 ? `${Math.floor(interval)} months ago` : `${Math.floor(interval)} month ago`;
     }
     interval = seconds / 86400;
     if (interval >= 1) {
-        return Math.floor(interval) > 1 ? Math.floor(interval) + " days ago" : Math.floor(interval) + " day ago";
+        return Math.floor(interval) > 1 ? `${Math.floor(interval)} days ago` : `${Math.floor(interval)} day ago`;
     }
     interval = seconds / 3600;
     if (interval >= 1) {
-        return Math.floor(interval) > 1 ? Math.floor(interval) + " hours ago" : Math.floor(interval) + " hour ago";
+        return Math.floor(interval) > 1 ? `${Math.floor(interval)} hours ago` : `${Math.floor(interval)} hour ago`;
     }
     interval = seconds / 60;
     if (interval >= 1) {
-        return Math.floor(interval) > 1 ? Math.floor(interval) + " minutes ago" : Math.floor(interval) + " minute ago";
+        return Math.floor(interval) > 1 ? `${Math.floor(interval)} minutes ago` : `${Math.floor(interval)} minute ago`;
     }
-    return Math.floor(interval) == 1 ? Math.floor(interval) + " second ago" : Math.floor(interval) + " seconds ago";
+    return Math.floor(interval) == 1 ? `${Math.floor(interval)} second ago` : `${Math.floor(interval)} seconds ago`;
+}
+
+export function formatTime(inputTime: string, withSeconds?: boolean, use24HourFormat?: boolean) {
+    let [hours, minutes, seconds] = inputTime.split(':');
+
+    if (!withSeconds) {
+        seconds = '';
+    }
+
+    if (!use24HourFormat) {
+        let suffix = 'AM';
+        if (Number(hours) >= 12) {
+            suffix = 'PM';
+            hours = (parseFloat(hours) % 12).toString();
+            if (Number(hours) === 0) {
+                hours = "12";
+            }
+        }
+        return `${hours}:${minutes}${withSeconds ? `:${seconds}` : ''} ${suffix}`;
+    }
+
+    return `${hours}:${minutes}${withSeconds ? `:${seconds}` : ''}`;
 }

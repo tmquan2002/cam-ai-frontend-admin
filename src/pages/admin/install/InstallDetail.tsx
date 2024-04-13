@@ -7,7 +7,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ActivityList } from "../../../components/list/ActivityList";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetEdgeBoxActivitiesByEdgeBoxId } from "../../../hooks/useEdgeBoxes";
-import { removeTime } from "../../../utils/dateFunction";
+import { removeTime } from "../../../utils/dateTimeFunction";
 import { addSpace } from "../../../utils/helperFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
 
@@ -112,12 +112,10 @@ const InstallDetail = () => {
                                                 </Group>
                                                 <Group>
                                                     <MdAccountCircle style={{ width: 18, height: 18 }} />
-                                                    {/* Shop Manager: <Text size="md">{data?.shopManager ? data?.shopManager.name : "None"}</Text> */}
                                                     Shop Manager: <Text size="md">{"None"}</Text>
                                                 </Group>
                                                 <Group>
                                                     <MdOutlineAccessTime />
-                                                    {/* <Text size="md">Open: {data?.openTime || "No Data"} - Close: {data?.closeTime || "No Data"}</Text> */}
                                                     <Text size="md">Open: {"No Data"} - Close: {"No Data"}</Text>
                                                 </Group>
 

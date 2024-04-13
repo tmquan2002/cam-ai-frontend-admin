@@ -10,7 +10,7 @@ import { ShopLongListByEdgeBox } from "../../../components/list/ShopLongListById
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateFunction";
+import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
@@ -178,7 +178,8 @@ const EdgeBoxDetail = () => {
                                                         Finish Uninstalling
                                                     </Button>
                                                 }
-                                                {dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0 &&
+                                                {(dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0
+                                                    && data?.edgeBoxLocation !== EdgeBoxLocationStatus.Uninstalling) &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
                                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"

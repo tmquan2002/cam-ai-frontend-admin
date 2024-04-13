@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Grid, ScrollArea, Text, ThemeIcon } from "@mantine/core"
 import { CommonResponse } from "../../models/CommonResponse"
 import { EdgeBoxActivity } from "../../models/EdgeBox"
-import { getDateTime } from "../../utils/dateFunction"
+import { getDateTime } from "../../utils/dateTimeFunction"
 
 const ActivityCard = ({ activity, index }: { activity: EdgeBoxActivity, index: number }) => {
     return (

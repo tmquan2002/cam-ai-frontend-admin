@@ -8,7 +8,7 @@ import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
 import { CommonResponse } from "../../models/CommonResponse";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
-import { removeTime } from "../../utils/dateFunction";
+import { removeTime } from "../../utils/dateTimeFunction";
 import { addSpace } from "../../utils/helperFunction";
 import StatusBadge from "../badge/StatusBadge";
 import { EdgeBoxHistoryList } from "./HistoryList";
@@ -218,8 +218,8 @@ export const EdgeBoxInstallListByShopId = ({ refetch, dataInstalls, refetchInsta
                     <Box ml={20}>
                         {(dataInstalls?.values && dataInstalls?.values?.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length > 0) ?
                             <>
-                                {dataInstalls?.values?.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).map((installFilter) => (
-                                    <InstallCard item={installFilter} refetch={refetch} refetchInstall={refetchInstall} />
+                                {dataInstalls?.values?.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).map((installFilter, index) => (
+                                    <InstallCard item={installFilter} refetch={refetch} refetchInstall={refetchInstall} key={index}/>
                                 ))}
                             </>
                             :

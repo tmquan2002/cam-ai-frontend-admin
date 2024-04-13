@@ -9,7 +9,7 @@ import { UpdateAccountParams } from "../../../../apis/AccountAPI";
 import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccounts";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender } from "../../../../types/enum";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
+import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { isEmpty } from "lodash";
 import { enumToSelect } from "../../../../utils/helperFunction";
 

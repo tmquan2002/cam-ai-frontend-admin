@@ -11,10 +11,10 @@ import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxes";
 import { useGetShopById } from "../../../hooks/useShops";
-import { removeTime } from "../../../utils/dateFunction";
+import { ShopStatus } from "../../../types/enum";
+import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "./components/ShopEdgeBoxAssignForm";
 import styled from "./styles/shopdetail.module.scss";
-import { ShopStatus } from "../../../types/enum";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Shop",
@@ -59,7 +59,7 @@ const ShopDetail = () => {
                                         </Group>
                                         <Group>
                                             <MdOutlineAccessTime />
-                                            <Text size="md">Open: {data?.openTime || "No Data"} - Close: {data?.closeTime || "No Data"}</Text>
+                                            <Text size="md"><b>Open:</b> {data?.openTime ? formatTime(data?.openTime, false, false) : "No Data"} - <b>Close:</b> {data?.closeTime ? formatTime(data?.closeTime, false, false) : "No Data"} </Text>
                                         </Group>
                                         {data?.phone &&
                                             <Group>

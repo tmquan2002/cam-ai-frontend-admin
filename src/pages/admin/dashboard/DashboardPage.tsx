@@ -69,7 +69,7 @@ const DashboardPage = () => {
                                     value={sortBy} onChange={setSortBy}
                                     label="Sort by"
                                     placeholder="Pick value"
-                                    data={['Date', 'Total']}
+                                    data={['Daily ', 'Cumulative ']}
                                     allowDeselect={false}
                                 />
                                 <Select
@@ -80,7 +80,7 @@ const DashboardPage = () => {
                                     allowDeselect={false}
                                 />
                             </Group>
-                            <Text fs="italic" mr={30} size="sm">Data based from 50 latest records</Text>
+                            <Text fs="italic" mr={30} size="sm">Data based from 30 latest dates</Text>
                         </Group>
                         <BarChart h={300}
                             data={value == "Brand" ? countDataByDate(brandList, sortBy) :

@@ -5,7 +5,7 @@ import { useGetAllEmployees } from "../../hooks/useEmployees";
 import { Employee } from "../../models/Employee";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
-import { removeTime } from "../../utils/dateFunction";
+import { removeTime } from "../../utils/dateTimeFunction";
 import { Gender } from "../../types/enum";
 
 interface EmployeeListParam {

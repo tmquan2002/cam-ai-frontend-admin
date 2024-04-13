@@ -11,7 +11,7 @@ import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender, Role } from "../../../../types/enum";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateFunction";
+import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { enumToSelect } from "../../../../utils/helperFunction";
 
 type AddAccountFieldValue = {

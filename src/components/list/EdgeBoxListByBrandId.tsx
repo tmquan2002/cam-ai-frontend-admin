@@ -3,7 +3,7 @@ import { MdOutlineTaskAlt, MdPageview } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllEdgeBoxes } from "../../hooks/useEdgeBoxes";
 import { EdgeBox } from "../../models/EdgeBox";
-import { removeTime } from "../../utils/dateFunction";
+import { removeTime } from "../../utils/dateTimeFunction";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
 

@@ -1,7 +1,7 @@
 import { ChartData } from "@mantine/charts";
 import { CommonResponse } from "../models/CommonResponse";
 import { ShopCount } from "../models/Realtime";
-import { removeTime } from "./dateFunction";
+import { removeTime } from "./dateTimeFunction";
 
 export function isEmpty(value: string | null | undefined) {
   return (

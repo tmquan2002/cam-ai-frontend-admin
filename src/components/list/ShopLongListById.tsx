@@ -1,18 +1,18 @@
 import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import axios from "axios";
 import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
+import { CommonResponse } from "../../models/CommonResponse";
 import { EdgeBoxInstall } from "../../models/EdgeBox";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
-import { removeTime } from "../../utils/dateFunction";
-import StatusBadge from "../badge/StatusBadge";
-import styled from "./list.module.scss";
-import { ShopHistoryList } from "./HistoryList";
+import { formatTime, removeTime } from "../../utils/dateTimeFunction";
 import { addSpace } from "../../utils/helperFunction";
-import { CommonResponse } from "../../models/CommonResponse";
-import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxes";
-import axios from "axios";
+import StatusBadge from "../badge/StatusBadge";
+import { ShopHistoryList } from "./HistoryList";
+import styled from "./list.module.scss";
 
 interface ShopCardParams {
     item: EdgeBoxInstall | undefined;
@@ -116,7 +116,9 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
 
                     <div className={styled["icon-text"]}>
                         <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
-                        <span className={styled["information"]}><b>Open:</b> {item?.shop.openTime || "No Data"} - <b>Close:</b> {item?.shop.closeTime || "No Data"}</span>
+                        <span className={styled["information"]}>
+                            <b>Open:</b> {item?.shop?.openTime ? formatTime(item?.shop?.openTime, false, false) : "No Data"} - <b>Close:</b> {item?.shop?.closeTime ? formatTime(item?.shop?.closeTime, false, false) : "No Data"}
+                        </span>
                     </div>
 
                     {(item?.shop.addressLine || item?.shop.ward) &&
