@@ -17,7 +17,9 @@ export const ShopHistoryList = ({ disabledEdgeBoxList }: { disabledEdgeBoxList: 
                         <Tooltip label="View Installation" withArrow>
                             <ActionIcon variant="filled" size="lg" aria-label="View Installation"
                                 color="light-blue.6"
-                                onClick={() => navigate(`/install/${install?.id}`)}>
+                                onClick={() => navigate(`/install/${install?.id}`, {
+                                    state: { tab: "shop", }
+                                })}>
                                 <GrInstall />
                             </ActionIcon>
                         </Tooltip>
@@ -46,7 +48,9 @@ export const EdgeBoxHistoryList = ({ disabledEdgeBoxList }: { disabledEdgeBoxLis
                         <Tooltip label="View Installation" withArrow>
                             <ActionIcon variant="filled" size="lg" aria-label="View Installation"
                                 color="light-blue.6"
-                                onClick={() => navigate(`/install/${install?.id}`)}>
+                                onClick={() => navigate(`/install/${install?.id}`, {
+                                    state: { tab: "edge box", }
+                                })}>
                                 <GrInstall />
                             </ActionIcon>
                         </Tooltip>

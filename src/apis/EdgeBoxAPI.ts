@@ -30,7 +30,7 @@ export type UpdateEdgeBoxParams = {
 };
 
 export type EdgeBoxActivityParams = {
-    edgeBoxId: string;
+    edgeBoxId: string | undefined;
     values: {
         size?: string | number | null;
         pageIndex?: number;

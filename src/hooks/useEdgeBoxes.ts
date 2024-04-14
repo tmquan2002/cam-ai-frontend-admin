@@ -33,8 +33,8 @@ export const useGetAllEdgeBoxesSelect = (params: GetEdgeBoxParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetEdgeBoxById = (id: string) => {
-  const { isError, isLoading, data, error, refetch,
+export const useGetEdgeBoxById = (id: string | undefined) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<EdgeBox, Error> = useQuery({
     queryKey: ["edgeBoxDetail", id],
     queryFn: async () => {
@@ -47,7 +47,7 @@ export const useGetEdgeBoxById = (id: string) => {
     enabled: !!id,
   });
 
-  return { isError, isLoading, data, error, refetch };
+  return { isError, isLoading, isFetching, data, error, refetch };
 };
 
 export const useGetEdgeBoxModel = () => {
