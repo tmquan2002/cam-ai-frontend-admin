@@ -62,10 +62,10 @@ export enum EdgeBoxActivationStatus {
 }
 
 export enum EdgeBoxActivityType {
-  EdgeBoxStatus ="EdgeBoxStatus",
-  EdgeBoxLocation ="EdgeBoxLocation",
-  EdgeBoxHealth ="EdgeBoxHealth",
-  EdgeBoxActivation ="EdgeBoxActivation",
+  EdgeBoxStatus = "EdgeBoxStatus",
+  EdgeBoxLocation = "EdgeBoxLocation",
+  EdgeBoxHealth = "EdgeBoxHealth",
+  EdgeBoxActivation = "EdgeBoxActivation",
 }
 
 export enum EmployeeStatus {
@@ -125,6 +125,11 @@ export enum IdleStatusGroup {
 
 export enum MiddleStatusGroup {
   Occupied = EdgeBoxLocationStatus.Occupied,
+}
+
+export enum DashBoardChartSortBy {
+  Daily = "Daily",
+  Cumulative = "Cumulative",
 }
 
 export enum StatusColor {

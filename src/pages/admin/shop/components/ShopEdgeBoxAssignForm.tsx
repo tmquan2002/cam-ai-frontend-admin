@@ -2,12 +2,13 @@ import { Button, Group, Loader, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxAPI";
-import { useGetAllEdgeBoxesSelect, useInstallEdgeBox } from "../../../../hooks/useEdgeBoxes";
+import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxInstallAPI";
+import { useGetAllEdgeBoxesSelect } from "../../../../hooks/useEdgeBoxes";
 import { EdgeBoxLocationStatus, ShopStatus } from "../../../../types/enum";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useGetAllShopsSelect } from "../../../../hooks/useShops";
+import { useInstallEdgeBox } from "../../../../hooks/useEdgeBoxInstalls";
 
 interface AssignFormParams {
     shopId?: string;

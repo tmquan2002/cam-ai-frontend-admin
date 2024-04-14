@@ -7,9 +7,10 @@ import { useGetAllAccounts } from "../../../hooks/useAccounts";
 import { useGetAllBrands } from "../../../hooks/useBrands";
 import { useGetAllEdgeBoxes } from "../../../hooks/useEdgeBoxes";
 import { useGetAllShops } from "../../../hooks/useShops";
-import { countDataByDate } from "../../../utils/helperFunction";
+import { countDataByDate, enumToSelect } from "../../../utils/helperFunction";
 import styled from "./dashboard.module.scss";
 import { useState } from "react";
+import { DashBoardChartSortBy } from "../../../types/enum";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,7 +36,7 @@ const DashboardPage = () => {
     const { data: accountList, isLoading: isLoadingAccount } = useGetAllAccounts({ size: 50 });
     const { data: shopList, isLoading: isLoadingShop } = useGetAllShops({ size: 50 });
     const { data: edgeBoxList, isLoading: isLoadingEdgeBox } = useGetAllEdgeBoxes({ size: 50 });
-    const [sortBy, setSortBy] = useState<string | null>('Date');
+    const [sortBy, setSortBy] = useState<string | null>('Daily');
     const [value, setValue] = useState<string | null>('Brand');
 
     return (
@@ -69,7 +70,7 @@ const DashboardPage = () => {
                                     value={sortBy} onChange={setSortBy}
                                     label="Sort by"
                                     placeholder="Pick value"
-                                    data={['Daily ', 'Cumulative ']}
+                                    data={enumToSelect(DashBoardChartSortBy)}
                                     allowDeselect={false}
                                 />
                                 <Select

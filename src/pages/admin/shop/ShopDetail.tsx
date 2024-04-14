@@ -9,7 +9,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxes";
+import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetShopById } from "../../../hooks/useShops";
 import { ShopStatus } from "../../../types/enum";
 import { formatTime, removeTime } from "../../../utils/dateTimeFunction";

@@ -1,7 +1,7 @@
 import { ActionIcon, List, Text, Tooltip } from "@mantine/core";
 import { GrInstall } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
-import { EdgeBoxInstall } from "../../models/EdgeBox";
+import { EdgeBoxInstall } from "../../models/EdgeBoxInstall";
 import { removeTime } from "../../utils/dateTimeFunction";
 
 export const ShopHistoryList = ({ disabledEdgeBoxList }: { disabledEdgeBoxList: EdgeBoxInstall[] }) => {

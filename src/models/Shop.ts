@@ -2,7 +2,7 @@ import { ShopStatus } from "../types/enum";
 import { Account } from "./Account";
 import { Brand } from "./Brand";
 import { Camera } from "./Camera";
-import { EdgeBoxInstall } from "./EdgeBox";
+import { EdgeBoxInstall } from "./EdgeBoxInstall";
 import { Employee } from "./Employee";
 import { Ward } from "./Location";
 

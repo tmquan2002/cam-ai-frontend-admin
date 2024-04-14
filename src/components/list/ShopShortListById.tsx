@@ -2,7 +2,7 @@ import { Box, Button, Card, Grid, Group, LoadingOverlay, Text } from "@mantine/c
 import { MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
-import { EdgeBoxInstall } from "../../models/EdgeBox";
+import { EdgeBoxInstall } from "../../models/EdgeBoxInstall";
 import { Shop } from "../../models/Shop";
 import { formatTime } from "../../utils/dateTimeFunction";
 import StatusBadge from "../badge/StatusBadge";

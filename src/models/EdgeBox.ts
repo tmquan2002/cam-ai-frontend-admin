@@ -1,6 +1,5 @@
-import { EdgeBoxActivationStatus, EdgeBoxActivityType, EdgeBoxInstallStatus, EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
+import { EdgeBoxActivityType, EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 import { Account } from "./Account";
-import { Shop } from "./Shop";
 
 export interface EdgeBox {
     timestamp: string;
@@ -9,27 +8,12 @@ export interface EdgeBox {
     modifiedDate: string;
     name: string;
     version: string;
+    macAddress: string;
+    serialNumber: string;
     edgeBoxModelId: string;
     edgeBoxStatus: EdgeBoxStatus;
     edgeBoxLocation: EdgeBoxLocationStatus;
     edgeBoxModel: EdgeBoxModel;
-}
-
-export interface EdgeBoxInstall {
-    timestamp: string;
-    id: string;
-    createdDate: string;
-    modifiedDate: string;
-    edgeBoxId: string;
-    shopId: string;
-    ipAddress: string;
-    port: number;
-    uninstalledTime: string;
-    edgeBox: EdgeBox;
-    shop: Shop;
-    edgeBoxInstallStatus: EdgeBoxInstallStatus;
-    activationStatus: EdgeBoxActivationStatus;
-    activationCode: string;
 }
 
 export interface EdgeBoxModel {

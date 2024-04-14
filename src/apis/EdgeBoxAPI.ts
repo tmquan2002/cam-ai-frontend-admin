@@ -1,6 +1,6 @@
 import { getAccessToken } from "../context/AuthContext";
 import { CommonResponse } from "../models/CommonResponse";
-import { EdgeBox, EdgeBoxActivity, EdgeBoxInstall, EdgeBoxModel } from "../models/EdgeBox";
+import { EdgeBox, EdgeBoxActivity, EdgeBoxModel } from "../models/EdgeBox";
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../types/enum";
 import http, { toQueryParams } from "../utils/http";
 
@@ -35,13 +35,6 @@ export type EdgeBoxActivityParams = {
     }
 };
 
-export type AddEdgeBoxInstallParams = {
-    edgeBoxId: string;
-    shopId: string;
-    ipAddress?: string;
-    port?: number;
-}
-
 export const EdgeBoxAPI = {
     getAllFilter: async (params: GetEdgeBoxParams) => {
         const token = getAccessToken();
@@ -57,24 +50,6 @@ export const EdgeBoxAPI = {
     },
     getEdgeBoxModel: async () => {
         const res = await http.get<EdgeBoxModel[]>(`/api/edgeboxmodels`);
-        return res.data;
-    },
-    getEdgeBoxInstallsByEdgeBoxId: async (edgeBoxId: string) => {
-        const token = getAccessToken();
-        const res = await http.get<CommonResponse<EdgeBoxInstall>>(`/api/edgeboxes/${edgeBoxId}/installs`, {
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        });
-        return res.data;
-    },
-    getEdgeBoxInstallsByShopId: async (shopId: string) => {
-        const token = getAccessToken();
-        const res = await http.get<CommonResponse<EdgeBoxInstall>>(`/api/shops/${shopId}/installs`, {
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        });
         return res.data;
     },
     getById: async (id: string) => {
@@ -121,23 +96,6 @@ export const EdgeBoxAPI = {
             },
         });
         return res.data;
-    },
-    install: async (params: AddEdgeBoxInstallParams) => {
-        const access_token = getAccessToken();
-        const res = await http.post(`/api/edgeboxinstalls`, params, {
-            headers: {
-                Authorization: `Bearer ${access_token}`,
-            },
-        });
-        return res.data;
-    },
-    uninstall: async (edgeBoxId: string) => {
-        const token = getAccessToken();
-        await http.put(`/api/edgeboxinstalls/${edgeBoxId}/uninstall`, {}, {
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        });
     },
     updateStatus: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
         const token = getAccessToken();

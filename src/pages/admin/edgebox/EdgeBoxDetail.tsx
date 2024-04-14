@@ -8,12 +8,13 @@ import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopLongListByEdgeBox } from "../../../components/list/ShopLongListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { useDeleteEdgeBox, useGetEdgeBoxById, useGetEdgeBoxInstallByEdgeBoxId, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
+import { useDeleteEdgeBox, useGetEdgeBoxById, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
+import { useGetEdgeBoxInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",

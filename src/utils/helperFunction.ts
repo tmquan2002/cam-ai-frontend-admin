@@ -2,6 +2,7 @@ import { ChartData } from "@mantine/charts";
 import { CommonResponse } from "../models/CommonResponse";
 import { ShopCount } from "../models/Realtime";
 import { removeTime } from "./dateTimeFunction";
+import { DashBoardChartSortBy } from "../types/enum";
 
 export function isEmpty(value: string | null | undefined) {
   return (
@@ -95,17 +96,17 @@ export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, 
     }
   });
 
-  if (sortBy == "Date") {
+  if (sortBy == DashBoardChartSortBy.Daily) {
     return countByDate.sort((a, b) => {
       const dateA = new Date(a.Date);
       const dateB = new Date(b.Date);
       return dateA.getTime() - dateB.getTime();
-    }).slice(-10);
+    });
   }
-  if (sortBy == "Total") {
+  if (sortBy == DashBoardChartSortBy.Cumulative) {
     return countByDate.sort((a, b) => {
       return a.Total - b.Total;
-    }).slice(-10);
+    });
   }
   return countByDate;
 }
@@ -113,14 +114,14 @@ export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, 
 
 export const asyncLocalStorage = {
   setItem(key: string, value: string) {
-      return Promise.resolve().then(function () {
-          localStorage.setItem(key, value);
-      });
+    return Promise.resolve().then(function () {
+      localStorage.setItem(key, value);
+    });
   },
-  getItem(key:string) {
-      return Promise.resolve().then(function () {
-          return localStorage.getItem(key);
-      });
+  getItem(key: string) {
+    return Promise.resolve().then(function () {
+      return localStorage.getItem(key);
+    });
   }
 };
 
