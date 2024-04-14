@@ -45,8 +45,8 @@ const InstallDetail = () => {
                                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Install</Text>
                                 <Group grow mb={10}>
                                     <Box>
-                                        <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
-                                        <StatusBadge statusName={"Status"} padding={10} size="sm" tooltip="Install Status" />
+                                        <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
+                                        <StatusBadge statusName={"Status"} padding={10} size="sm" tooltip="Install Health" />
                                     </Box>
                                     <Box mb={10}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>

@@ -1,8 +1,7 @@
 import { Button, Group, Loader, Select, Text, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { UpdateEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
 import { useGetEdgeBoxById, useGetEdgeBoxModel, useUpdateEdgeBox } from "../../../../hooks/useEdgeBoxes";
@@ -17,13 +16,13 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
         initialValues: {
             name: "",
             edgeBoxModelId: "",
+            serialNumber: "",
         },
 
         validate: {
-            name: (value) =>
-                isEmpty(value) ? "Name is required" : null,
-            edgeBoxModelId: (value) =>
-                isEmpty(value) ? "Please choose a model" : null
+            name: isNotEmpty("Name is required"),
+            serialNumber: isNotEmpty("Serail number is required"),
+            edgeBoxModelId: isNotEmpty("Please select a model"),
         },
     });
 
@@ -31,7 +30,8 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
         if (data) {
             form.setValues({
                 name: data?.name,
-                edgeBoxModelId: data?.edgeBoxModelId
+                edgeBoxModelId: data?.edgeBoxModelId,
+                serialNumber: data?.serialNumber,
             });
         }
     }, [data]);
@@ -44,6 +44,7 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
             values: {
                 name: form.values.name,
                 edgeBoxModelId: form.values.edgeBoxModelId,
+                serialNumber: form.values.serialNumber,
             }
         };
 
@@ -97,6 +98,15 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
                                 placeholder="Name"
                                 size="md"
                                 {...form.getInputProps("name")}
+                            />
+
+                            <TextInput
+                                mt={10}
+                                withAsterisk
+                                label="Serial Number"
+                                placeholder="Serial Number"
+                                size="md"
+                                {...form.getInputProps("serialNumber")}
                             />
 
                             <Select label="Edge Box Model" data={edgeBoxModelList || []} limit={5}

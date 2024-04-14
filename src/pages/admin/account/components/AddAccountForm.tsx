@@ -53,8 +53,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         },
 
         validate: {
-            name: (value: string) =>
-                isEmpty(value) ? "Name is required" : null,
+            name: isNotEmpty("Name is required"),
             email: (value: string) =>
                 isEmpty(value) ? "Email is required"
                     : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
@@ -64,12 +63,9 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                         ? null
                         : "A phone number should have a length of 10-12 characters",
             gender: isNotEmpty("Please select a gender"),
-            password: (value: string) =>
-                isEmpty(value) ? "Password is required" : null,
-            confirmPassword: (value: string) =>
-                isEmpty(value) ? "Confirm Password is required" : null,
-            brandId: (value: string) =>
-                isEmpty(value) ? "Please select a brand" : null,
+            password: isNotEmpty("Password is required"),
+            confirmPassword: isNotEmpty("Confirm password is required"),
+            brandId: isNotEmpty("Please select a brand"),
         },
     });
 
@@ -88,7 +84,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         if (form.values.password !== form.values.confirmPassword) {
             notifications.show({
                 title: "Validate failed",
-                message: "Password and Confirm Password does not match",
+                message: "Passwords are not match",
                 color: "pale-red.5",
                 withCloseButton: true,
             });

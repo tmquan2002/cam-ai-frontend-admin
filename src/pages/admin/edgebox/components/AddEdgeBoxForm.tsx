@@ -1,8 +1,7 @@
 import { Button, Group, Loader, Select, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { isEmpty } from "lodash";
 import { AddEdgeBoxParams } from "../../../../apis/EdgeBoxAPI";
 import { useAddEdgeBox, useGetEdgeBoxModel } from "../../../../hooks/useEdgeBoxes";
 
@@ -14,14 +13,14 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
     const form = useForm({
         initialValues: {
             name: "",
-            edgeBoxModelId: ""
+            edgeBoxModelId: "",
+            serialNumber: "",
         },
 
         validate: {
-            name: (value) =>
-                isEmpty(value) ? "Name is required" : null,
-            edgeBoxModelId: (value) =>
-                isEmpty(value) ? "Please choose a model" : null,
+            name: isNotEmpty("Name is required"),
+            serialNumber: isNotEmpty("Serail number is required"),
+            edgeBoxModelId: isNotEmpty("Please select a model"),
         },
     });
 
@@ -31,6 +30,7 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
         const addEdgeBoxParams: AddEdgeBoxParams = {
             name: form.values.name,
             edgeBoxModelId: form.values.edgeBoxModelId,
+            serialNumber: form.values.serialNumber,
         };
 
         addEdgeBox(addEdgeBoxParams, {
@@ -78,6 +78,14 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
                 placeholder="Edge Box Name"
                 size="md"
                 {...form.getInputProps("name")}
+            />
+            <TextInput
+                mt={10}
+                withAsterisk
+                label="Serial Number"
+                placeholder="Serial Number"
+                size="md"
+                {...form.getInputProps("serialNumber")}
             />
             <Select label="Model" data={edgeBoxModelList || []} limit={5} mt={10}
                 withAsterisk error={false} size="md" allowDeselect={false}

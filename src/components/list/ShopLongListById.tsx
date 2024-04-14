@@ -145,7 +145,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                     {/* Install Section */}
                     <Group grow mb={10} ml={10}>
                         <Box mb={10}>
-                            <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
+                            <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
                             <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
                         </Box>
                         <Box mb={10}>

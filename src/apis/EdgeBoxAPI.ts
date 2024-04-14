@@ -17,6 +17,7 @@ export type GetEdgeBoxParams = {
 export type AddEdgeBoxParams = {
     name: string;
     edgeBoxModelId: string | null;
+    serialNumber: string | null;
 }
 
 export type UpdateEdgeBoxParams = {
@@ -24,6 +25,7 @@ export type UpdateEdgeBoxParams = {
     values: {
         name: string;
         edgeBoxModelId: string | null;
+        serialNumber: string | null;
     }
 };
 

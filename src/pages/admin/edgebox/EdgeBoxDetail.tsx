@@ -148,6 +148,12 @@ const EdgeBoxDetail = () => {
                                                         <Text size="md" fw={500}>{data?.version}</Text>
                                                     </Box>
                                                 }
+                                                {data?.serialNumber &&
+                                                    <Box mb={10} ml={5}>
+                                                        <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
+                                                        <Text size="md" fw={500}>{data?.serialNumber}</Text>
+                                                    </Box>
+                                                }
                                                 {data?.createdDate &&
                                                     <Box mb={10} ml={5}>
                                                         <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>

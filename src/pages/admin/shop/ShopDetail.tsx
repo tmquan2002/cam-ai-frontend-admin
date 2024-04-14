@@ -55,7 +55,14 @@ const ShopDetail = () => {
                                         </Group>
                                         <Group>
                                             <MdAccountCircle style={{ width: 18, height: 18 }} />
-                                            Shop Manager: <Text size="md">{data?.shopManager ? data?.shopManager.name : "None"}</Text>
+                                            Shop Manager:
+                                            {data?.shopManager ?
+                                                <Link to={`/account/${data?.shopManager.id}`} style={{ textDecoration: 'none' }}>
+                                                    <Text size="md">{data?.shopManager.name}</Text>
+                                                </Link>
+                                                :
+                                                <Text size="md">None</Text>
+                                            }
                                         </Group>
                                         <Group>
                                             <MdOutlineAccessTime />

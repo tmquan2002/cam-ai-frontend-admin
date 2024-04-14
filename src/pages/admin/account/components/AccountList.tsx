@@ -124,13 +124,13 @@ const AccountList = () => {
     }
 
     const rows = accountList?.values.map((e, i) => (
-        <Tooltip label="View Detail" key={e.id} openDelay={1000}>
+        <Tooltip label="View Detail" key={e.id} openDelay={1000}>F
             <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1)}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{e.email}</Table.Td>
-                <Table.Td>{e.role.replace(/([A-Z])/g, ' $1').trim()}</Table.Td>
+                <Table.Td>{e.role.toString().replace(/([A-Z])/g, ' $1').trim()}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
                 <Table.Td>
                     <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} fullWidth />

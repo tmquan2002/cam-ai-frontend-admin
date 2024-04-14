@@ -39,7 +39,7 @@ const InstallList = () => {
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Shop</Table.Th>
                                 <Table.Th>EdgeBox</Table.Th>
-                                <Table.Th ta={"center"}>Install Status</Table.Th>
+                                <Table.Th ta={"center"}>Install Health</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                                 <Table.Th ta={"center"}>Activation Status</Table.Th>
                             </Table.Tr>

@@ -108,12 +108,16 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 </Group>
                 <Group grow mb={20}>
                     <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
-                        <Text size="md" fw={500}>{item?.edgeBox?.version || "No Data"}</Text>
-                    </Box>
-                    <Box>
                         <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
                         <StatusBadge statusName={item?.edgeBox?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
+                    </Box>
+                    <Box>
+                        <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
+                        <Text size="md" fw={500}>{item?.edgeBox?.serialNumber || "No Data"}</Text>
+                    </Box>
+                    <Box>
+                        <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
+                        <Text size="md" fw={500}>{item?.edgeBox?.version || "No Data"}</Text>
                     </Box>
                 </Group>
                 <Group grow mb={15}>
@@ -132,8 +136,8 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 <Text fw={500} size="sm" mb={10} c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
                 <Group grow mb={10}>
                     <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Install Status</Text>
-                        <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Install Status" />
+                        <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
+                        <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Install Health" />
                     </Box>
                     <Box mb={10}>
                         <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
