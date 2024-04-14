@@ -103,7 +103,11 @@ export enum CommonStatus {
   New = "New",
   Active = "Active",
   Inactive = "Inactive",
+}
 
+export enum DashBoardChartSortBy {
+  Daily = "Daily",
+  Cumulative = "Cumulative",
 }
 
 //Status badge section
@@ -116,20 +120,17 @@ export enum ActiveStatusGroup {
 export enum InactiveStatusGroup {
   Inactive = CommonStatus.Inactive,
   Disabled = EdgeBoxInstallStatus.Disabled,
+  Failed = EdgeBoxActivationStatus.Failed,
 }
 
 export enum IdleStatusGroup {
   New = CommonStatus.New,
   Idle = EdgeBoxLocationStatus.Idle,
+  Pending = EdgeBoxActivationStatus.Pending,
 }
 
 export enum MiddleStatusGroup {
   Occupied = EdgeBoxLocationStatus.Occupied,
-}
-
-export enum DashBoardChartSortBy {
-  Daily = "Daily",
-  Cumulative = "Cumulative",
 }
 
 export enum StatusColor {

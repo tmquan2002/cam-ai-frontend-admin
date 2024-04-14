@@ -14,7 +14,7 @@ import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
-import { useGetEdgeBoxInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
+import { useGetInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -35,7 +35,7 @@ const EdgeBoxDetail = () => {
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
 
     const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
-    const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetEdgeBoxInstallByEdgeBoxId(params.edgeBoxId!);
+    const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetInstallByEdgeBoxId(params.edgeBoxId!);
     const { mutate: deleteEdgeBox, isLoading: isLoadingDelete } = useDeleteEdgeBox();
     const { mutate: updateLocation, isLoading: isLoadingLocation } = useUpdateEdgeBoxLocation();
 

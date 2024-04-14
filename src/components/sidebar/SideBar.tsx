@@ -5,6 +5,7 @@ import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { WINDOW_BREAK_POINT } from "../../constants/WindowBreakPoint";
 import { LinksGroup } from './LinksGroup';
 import styled from './sidebar.module.scss';
+import { GrInstall } from "react-icons/gr";
 
 const data = [
     { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
@@ -12,7 +13,7 @@ const data = [
     { label: 'Brand', icon: AiFillSnippets, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edge Box', icon: AiFillControl, path: '/edgebox' },
-    // { label: 'Installs', icon: GrInstall , path: '/install' },
+    { label: 'Installs', icon: GrInstall , path: '/install' },
 ];
 
 export function SideBar() {

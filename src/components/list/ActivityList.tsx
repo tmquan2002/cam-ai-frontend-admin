@@ -30,7 +30,7 @@ const ActivityCard = ({ activity, index }: { activity: EdgeBoxActivity, index: n
 }
 export const ActivityList = ({ activityList }: { activityList: CommonResponse<EdgeBoxActivity> | undefined }) => {
     if (!activityList || activityList.values.length == 0) {
-        return <Text c="dimmed" w={'100%'} ta={"center"} mt={20} fs="italic">No Activity found fot this installation</Text>
+        return <Text c="dimmed" w={'100%'} ta={"center"} mt={20} fs="italic">No Activity found for this installation</Text>
     } else {
         return (
             <>

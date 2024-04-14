@@ -53,4 +53,14 @@ export enum EdgeBoxFilterProps {
   INITIAL_DATA = "initialData",
 }
 
+export enum EdgeBoxInstallFilterProps {
+  FILTER = "edgeBoxInstallFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  FILTER_INSTALL_STATUS = "filterInstallStatus",
+  FILTER_ACTIVATION_STATUS = "filterActivationStatus",
+  FILTER_SEARCH_SHOP = "filterSearchShop",
+  FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
+}
+
 export const pageSizeSelect = ['5', '10', '15', '20']

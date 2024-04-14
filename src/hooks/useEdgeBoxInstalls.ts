@@ -3,7 +3,7 @@ import { AddEdgeBoxInstallParams, EdgeBoxInstallAPI, GetEdgeBoxInstallParams } f
 import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBoxInstall } from "../models/EdgeBoxInstall";
 
-export const useGetAllEdgeBoxes = (params: GetEdgeBoxInstallParams) => {
+export const useGetAllInstalls = (params: GetEdgeBoxInstallParams) => {
     const { isError, isLoading, isFetching, data, error,
         refetch,
     }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
@@ -16,7 +16,24 @@ export const useGetAllEdgeBoxes = (params: GetEdgeBoxInstallParams) => {
     return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
+export const useGetInstallById = (id: string) => {
+    const { isError, isLoading, isFetching, data, error, refetch,
+    }: UseQueryResult<EdgeBoxInstall, Error> = useQuery({
+        queryKey: ["edgeBoxDetail", id],
+        queryFn: async () => {
+            if (id) {
+                return await EdgeBoxInstallAPI.getById(id);
+            } else {
+                return {}
+            }
+        },
+        enabled: !!id,
+    });
+
+    return { isError, isLoading, isFetching, data, error, refetch };
+};
+
+export const useGetInstallByEdgeBoxId = (edgeBoxId: string) => {
     const { isError, isLoading, isFetching, data, error, refetch,
     }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
         queryKey: ["edgeBoxInstallList", edgeBoxId],
@@ -33,7 +50,7 @@ export const useGetEdgeBoxInstallByEdgeBoxId = (edgeBoxId: string) => {
     return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetEdgeBoxInstallByShopId = (shopId: string) => {
+export const useGetInstallByShopId = (shopId: string) => {
     const { isError, isLoading, data, error, refetch,
     }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
         queryKey: ["edgeBoxInstallList", shopId],

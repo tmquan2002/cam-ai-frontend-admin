@@ -9,7 +9,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
-import { useGetEdgeBoxInstallByShopId } from "../../../hooks/useEdgeBoxInstalls";
+import { useGetInstallByShopId } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetShopById } from "../../../hooks/useShops";
 import { ShopStatus } from "../../../types/enum";
 import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
@@ -32,7 +32,7 @@ const ShopDetail = () => {
 
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
     const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
-    const { isLoading: isLoadingInstall, data: dataInstall, error: installError, refetch: refetchInstall } = useGetEdgeBoxInstallByShopId(params.shopId!);
+    const { isLoading: isLoadingInstall, data: dataInstall, error: installError, refetch: refetchInstall } = useGetInstallByShopId(params.shopId!);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'brand')
 
