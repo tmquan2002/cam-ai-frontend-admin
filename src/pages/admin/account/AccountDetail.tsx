@@ -5,7 +5,7 @@ import { IconDots } from "@tabler/icons-react";
 import axios from "axios";
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
@@ -168,7 +168,7 @@ const AccountDetail = () => {
                                         onClick={open} loading={isLoading}
                                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                                     >
-                                        DELETE
+                                        Delete
                                     </Button>
                                 }
                             </div>
@@ -211,10 +211,12 @@ const AccountDetail = () => {
                                                 }
                                             </div>
                                         </Group>
-                                        <Link to={`/brand/${data?.brand?.id}`} state={{ tab: "managers" }}
-                                            style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>
+                                        <Button variant="filled" size="sm" color="light-blue.6" mt={20}
+                                            onClick={() => navigate(`/brand/${data?.brand?.id}`, {
+                                                state: { tab: "managers", }
+                                            })}>
                                             View Brand
-                                        </Link>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -276,8 +278,12 @@ const AccountDetail = () => {
                                                 </Group>
                                             }
                                         </div>
-                                        <Link to={`/shop/${data?.managingShop?.id}`} state={{ tab: "employees" }}
-                                            style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Shop</Link>
+                                        <Button variant="filled" size="sm" color="light-blue.6" mt={20}
+                                            onClick={() => navigate(`/shop/${data?.managingShop?.id}`, {
+                                                state: { tab: "employees", }
+                                            })}>
+                                            View Shop
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +304,7 @@ const AccountDetail = () => {
                         variant="gradient" size="md" mt={20} onClick={onDelete} loading={isLoadingDelete}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
-                        DELETE
+                        Delete
                     </Button>
                     <Button
                         variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}

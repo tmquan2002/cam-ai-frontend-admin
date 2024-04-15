@@ -1,6 +1,7 @@
-import { ActionIcon, Box, CopyButton, Divider, Flex, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { useState } from "react";
 import { AiFillControl, AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPageview, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { TbActivity } from "react-icons/tb";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
@@ -12,7 +13,6 @@ import { useGetEdgeBoxActivitiesByEdgeBoxId, useGetEdgeBoxById } from "../../../
 import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
 import { addSpace } from "../../../utils/helperFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
-import { useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -109,7 +109,7 @@ const InstallDetail = () => {
                                     }
                                     {dataInstall?.uninstalledTime &&
                                         <Box>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
+                                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
                                             <Text size="md" fw={500}>{removeTime(new Date(dataInstall?.uninstalledTime), "/")}</Text>
                                         </Box>
                                     }
@@ -140,14 +140,12 @@ const InstallDetail = () => {
                                                             <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{dataInstall?.shop?.name}</Text>
                                                             <StatusBadge statusName={dataInstall?.shop?.shopStatus ?? "None"} />
                                                         </Group>
-                                                        <Tooltip label="View Shop" withArrow>
-                                                            <ActionIcon variant="outline" size="lg" aria-label="View Shop" color="light-blue.6"
-                                                                onClick={() => navigate(`/shop/${dataInstall?.shop?.id}`, {
-                                                                    state: { tab: "edge boxes", }
-                                                                })}>
-                                                                <MdPageview />
-                                                            </ActionIcon>
-                                                        </Tooltip>
+                                                        <Button variant="filled" size="sm" color="light-blue.6"
+                                                            onClick={() => navigate(`/shop/${dataInstall?.shop?.id}`, {
+                                                                state: { tab: "edge boxes", }
+                                                            })}>
+                                                            View Shop
+                                                        </Button>
                                                     </Group>
                                                     <Group>
                                                         <MdAccountCircle style={{ width: 18, height: 18 }} />
@@ -239,14 +237,12 @@ const InstallDetail = () => {
                                                     <Box w={'100%'} ml={10}>
                                                         <Group justify="space-between">
                                                             <Text size='md' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
-                                                            <Tooltip label="View Edge Box" withArrow>
-                                                                <ActionIcon variant="outline" size="lg" aria-label="View Edge Box" color="light-blue.6"
-                                                                    onClick={() => navigate(`/edgebox/${dataEdgeBox?.id}`, {
-                                                                        state: { tab: "edge boxes", }
-                                                                    })}>
-                                                                    <MdPageview />
-                                                                </ActionIcon>
-                                                            </Tooltip>
+                                                            <Button variant="filled" size="sm" color="light-blue.6"
+                                                                onClick={() => navigate(`/edgebox/${dataEdgeBox?.id}`, {
+                                                                    state: { tab: "edge boxes", }
+                                                                })}>
+                                                                View Edge Box
+                                                            </Button>
                                                         </Group>
                                                         <Group grow mb={10} mt={10}>
                                                             <Box>

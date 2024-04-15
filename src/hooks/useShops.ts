@@ -15,6 +15,34 @@ export const useGetAllShops = (params: GetShopsParams) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+export const useGetAllShopsInstalling = (params: { q: boolean }) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<CommonResponse<Shop>, Error> = useQuery({
+    queryKey: ["shopListInstalling"],
+    queryFn: async () => {
+      return await ShopAPI.getAllInstalling(params);
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
+};
+
+export const useGetAllShopsInstallingSelect = (params: { q: boolean }) => {
+  const { isError, isLoading, isFetching, data, error, refetch,
+  }: UseQueryResult<SelectType[], Error> = useQuery({
+    queryKey: ["shopListInstallSelect"],
+    queryFn: async () => {
+      const res = await ShopAPI.getAllInstalling(params);
+      return res.values.map((items) => ({
+        value: items.id,
+        label: items.name
+      }))
+    },
+  });
+
+  return { isError, isLoading, isFetching, data, error, refetch };
+};
+
 export const useGetAllShopsSelect = (params: GetShopsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<SelectType[], Error> = useQuery({

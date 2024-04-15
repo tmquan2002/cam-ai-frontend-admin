@@ -2,13 +2,13 @@ import { Button, Group, Loader, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxInstallAPI";
-import { useGetAllEdgeBoxesSelect } from "../../../../hooks/useEdgeBoxes";
-import { EdgeBoxLocationStatus, ShopStatus } from "../../../../types/enum";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
-import { useGetAllShopsSelect } from "../../../../hooks/useShops";
+import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxInstallAPI";
 import { useInstallEdgeBox } from "../../../../hooks/useEdgeBoxInstalls";
+import { useGetAllEdgeBoxesSelect } from "../../../../hooks/useEdgeBoxes";
+import { useGetAllShopsInstallingSelect } from "../../../../hooks/useShops";
+import { EdgeBoxLocationStatus } from "../../../../types/enum";
 
 interface AssignFormParams {
     shopId?: string;
@@ -26,18 +26,18 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
     const { mutate: installEdgeBox, isLoading: isLoadingInstall } = useInstallEdgeBox();
     const { data: edgeBoxList, isFetching: isFetchingEdgeBox, refetch: refetchSearchEdgeBox
     } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch })
-    const { data: shopList, isFetching: isFetchingShop, refetch: refetchSearchShop
-    } = useGetAllShopsSelect({ status: ShopStatus.Active, name: shopSearch })
+    const { data: shopList, isFetching: isFetchingShop
+    } = useGetAllShopsInstallingSelect({ q: false })
 
     useEffect(() => {
         const timer = setTimeout(() => refetchSearchEdgeBox(), 500);
         return () => { clearTimeout(timer); };
     }, [edgeBoxSearch])
 
-    useEffect(() => {
-        const timer = setTimeout(() => refetchSearchShop(), 500);
-        return () => { clearTimeout(timer); };
-    }, [shopSearch])
+    // useEffect(() => {
+    //     const timer = setTimeout(() => refetchSearchShop(), 500);
+    //     return () => { clearTimeout(timer); };
+    // }, [shopSearch])
 
     const form = useForm({
         initialValues: {

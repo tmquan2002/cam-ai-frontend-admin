@@ -1,9 +1,9 @@
-import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text, useComputedColorScheme } from "@mantine/core";
+import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { EdgeBoxInstallListByShopId } from "../../../components/list/EdgeBoxInstallListByShopId";
@@ -11,7 +11,7 @@ import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetInstallByShopId } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetShopById } from "../../../hooks/useShops";
-import { ShopStatus } from "../../../types/enum";
+import { EdgeBoxInstallStatus, ShopStatus } from "../../../types/enum";
 import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "./components/ShopEdgeBoxAssignForm";
 import styled from "./styles/shopdetail.module.scss";
@@ -29,11 +29,11 @@ const ShopDetail = () => {
 
     const params = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
     const { data, isFetching, error, refetch } = useGetShopById(params.shopId!);
     const { isLoading: isLoadingInstall, data: dataInstall, error: installError, refetch: refetchInstall } = useGetInstallByShopId(params.shopId!);
-    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'brand')
 
     return (
@@ -90,7 +90,7 @@ const ShopDetail = () => {
                                         }
                                     </div>
                                 </div>
-                                {data?.shopStatus == ShopStatus.Active &&
+                                {data?.shopStatus == ShopStatus.Active && dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0 &&
                                     <Button
                                         onClick={openAssign} variant="gradient"
                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
@@ -148,8 +148,12 @@ const ShopDetail = () => {
                                                         }
                                                     </div>
                                                 </Group>
-                                                <Link to={`/brand/${data?.brand.id}`} state={{ tab: "shops" }}
-                                                    style={{ marginTop: 20, color: computedColorScheme === "dark" ? "white" : "#2d4b81" }}>View Brand</Link>
+                                                <Button variant="filled" size="sm" color="light-blue.6" mt={20}
+                                                    onClick={() => navigate(`/brand/${data?.brand.id}`, {
+                                                        state: { tab: "shops", }
+                                                    })}>
+                                                    View Brand
+                                                </Button>
                                             </div>
                                         }
                                     </Tabs.Panel>

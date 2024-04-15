@@ -27,6 +27,18 @@ export const ShopAPI = {
     );
     return res.data;
   },
+  getAllInstalling: async (params: { q: boolean }) => {
+    const token = getAccessToken();
+    const res = await http.get<CommonResponse<Shop>>(
+      `/api/shops/installing?${toQueryParams(params)}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return res.data;
+  },
   getById: async (id: string) => {
     const token = getAccessToken();
     const res = await http.get<Shop>(`/api/shops/${id}`, {

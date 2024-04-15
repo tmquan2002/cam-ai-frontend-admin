@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs,
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPageview, MdPhone, MdPlayArrow } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPhone, MdPlayArrow } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxInstalls";
 import { CommonResponse } from "../../models/CommonResponse";
@@ -95,19 +95,15 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                                         onClick={openUninstall} variant="filled"
                                         color="pale-red.4" size="sm"
                                     >
-                                        UNINSTALL
+                                        Uninstall
                                     </Button>
                                 }
-                                <ActionIcon.Group>
-                                    <Tooltip label="View Shop" withArrow>
-                                        <ActionIcon variant="outline" size="lg" aria-label="View Shop" color="light-blue.6"
-                                            onClick={() => navigate(`/shop/${item?.shop?.id}`, {
-                                                state: { tab: "edge boxes", }
-                                            })}>
-                                            <MdPageview />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                </ActionIcon.Group>
+                                <Button variant="filled" size="sm" color="light-blue.6"
+                                    onClick={() => navigate(`/shop/${item?.shop?.id}`, {
+                                        state: { tab: "edge boxes", }
+                                    })}>
+                                    View Shop
+                                </Button>
                             </Group>
                         </Group>
                         :
@@ -173,7 +169,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                         </Box>
                         {item.uninstalledTime &&
                             <Box mb={10}>
-                                <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
+                                <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
                                 <Text size="md" fw={500}>{removeTime(new Date(item.uninstalledTime), "/")}</Text>
                             </Box>
                         }

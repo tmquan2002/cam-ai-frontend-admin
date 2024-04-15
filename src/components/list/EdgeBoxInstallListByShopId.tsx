@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs,
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdCheck, MdContentCopy, MdHistory, MdPageview, MdPlayArrow } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdPlayArrow, MdRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxInstalls";
 import { CommonResponse } from "../../models/CommonResponse";
@@ -87,15 +87,11 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                                 Uninstall
                             </Button>
                         }
-                        <ActionIcon.Group>
-                            <Tooltip label="View Edge Box" withArrow>
-                                <ActionIcon variant="outline" size="lg" aria-label="View Edge Box"
-                                    color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.7"}
-                                    onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
-                                    <MdPageview />
-                                </ActionIcon>
-                            </Tooltip>
-                        </ActionIcon.Group>
+                        <Button variant="filled" size="sm"
+                            color={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.7"}
+                            onClick={() => navigate(`/edgebox/${item.edgeBox.id}`)}>
+                            View Edge Box
+                        </Button>
                     </Group>
                 </Group>
 
@@ -133,7 +129,15 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
 
                 {/* Install section*/}
                 <Divider mb={10} />
-                <Text fw={500} size="sm" mb={10} c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
+                <Group mb={10}>
+                    <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
+                    <Tooltip label="View Installation" withArrow>
+                        <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`)}>
+                            <MdRemoveRedEye />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+
                 <Group grow mb={10}>
                     <Box>
                         <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
@@ -164,7 +168,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                     </Box>
                     {item.uninstalledTime &&
                         <Box mb={10}>
-                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Time</Text>
+                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
                             <Text size="md" fw={500}>{removeTime(new Date(item.uninstalledTime), "/")}</Text>
                         </Box>
                     }
@@ -189,7 +193,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                         onClick={onUninstall} loading={isLoading}
                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                     >
-                        UNINSTALL
+                        Uninstall
                     </Button>
                     <Button
                         variant="outline" size="md" mt={20} onClick={closeUninstall}
