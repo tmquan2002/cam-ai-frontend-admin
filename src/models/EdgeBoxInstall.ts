@@ -9,9 +9,8 @@ export interface EdgeBoxInstall {
     modifiedDate: string;
     edgeBoxId: string;
     shopId: string;
-    lastSeen: Date;
+    lastSeen: string;
     ipAddress: string;
-    port: number;
     operatingSystem: string;
     uninstalledTime: string;
     edgeBox: EdgeBox;

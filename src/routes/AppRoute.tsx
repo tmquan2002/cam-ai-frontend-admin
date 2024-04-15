@@ -132,6 +132,16 @@ const AppRoute = () => {
           ]
         },
         {
+          path: "/report",
+          element: <MainLayout />,
+          children: [
+            {
+              element: <InstallMainPage />,
+              index: true,
+            }
+          ]
+        },
+        {
           path: "*",
           element: <NothingFoundBackground />,
         },

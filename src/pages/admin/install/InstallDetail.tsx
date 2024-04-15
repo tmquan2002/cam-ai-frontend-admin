@@ -71,8 +71,8 @@ const InstallDetail = () => {
                                         <Text size="md" fw={500}>{dataInstall?.ipAddress ?? "No Data"}</Text>
                                     </Box>
                                     <Box mb={10}>
-                                        <Text size="xs" c={"dimmed"} fw={500}>Port</Text>
-                                        <Text size="md" fw={500}>{dataInstall?.port ?? "No Data"}</Text>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Last Connected</Text>
+                                        <Text size="md" fw={500}>{dataInstall?.lastSeen ?? "No Data"}</Text>
                                     </Box>
                                     <Box mb={10}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Operating System</Text>

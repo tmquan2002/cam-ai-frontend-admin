@@ -148,12 +148,14 @@ const EdgeBoxDetail = () => {
                                                         <Text size="md" fw={500}>{data?.version}</Text>
                                                     </Box>
                                                 }
-                                                {data?.serialNumber &&
-                                                    <Box mb={10} ml={5}>
-                                                        <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
-                                                        <Text size="md" fw={500}>{data?.serialNumber}</Text>
-                                                    </Box>
-                                                }
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
+                                                    <Text size="md" fw={500}>{data?.serialNumber || "No Data"}</Text>
+                                                </Box>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>MAC Address</Text>
+                                                    <Text size="md" fw={500}>{data?.macAddress || "No Data"}</Text>
+                                                </Box>
                                                 {data?.createdDate &&
                                                     <Box mb={10} ml={5}>
                                                         <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
@@ -163,7 +165,7 @@ const EdgeBoxDetail = () => {
                                             </Flex>
                                         </div>
                                     </div>
-                                    <Divider orientation="vertical" ml={10} mr={10} />
+                                    <Divider orientation="vertical" ml={20} mr={10} />
                                     {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>
                                         <Group justify="space-between">

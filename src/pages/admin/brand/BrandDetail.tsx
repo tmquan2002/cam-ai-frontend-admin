@@ -127,7 +127,7 @@ const BrandDetail = () => {
                     <div className={styled["container-detail"]}>
                         {error ? <Text fs="italic" ta="center">Brand not found</Text> :
                             <>
-                                {data?.banner && <Image h={200} mb={20} src={data?.banner?.hostingUri} />}
+                                {data?.banner && <Image h={220} mb={20} radius={5} src={data?.banner?.hostingUri} />}
                                 <div className={styled["profile-header"]}>
                                     <div className={styled["profile-header-left"]}>
                                         <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
