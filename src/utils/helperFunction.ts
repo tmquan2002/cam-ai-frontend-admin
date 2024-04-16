@@ -100,7 +100,7 @@ export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, 
     return countByDate.sort((a, b) => {
       const dateA = new Date(a.Date);
       const dateB = new Date(b.Date);
-      return dateA.getTime() - dateB.getTime();
+      return dateB.getTime() - dateA.getTime();
     });
   }
   if (sortBy == DashBoardChartSortBy.Cumulative) {

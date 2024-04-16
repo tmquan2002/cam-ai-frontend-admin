@@ -134,6 +134,16 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                 >
                                     Update
                                 </Button>
+                                <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
+                                    onClick={() => {
+                                        form.setValues({
+                                            email: data?.email ? data.email : "",
+                                            name: data?.name ? data.name : "",
+                                            phone: data?.phone ? data.phone : "",
+                                        })
+                                    }}>
+                                    Reset
+                                </Button>
                             </Group>
                         </form>
                     }
