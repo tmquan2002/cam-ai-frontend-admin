@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from '../../../../types/enum';

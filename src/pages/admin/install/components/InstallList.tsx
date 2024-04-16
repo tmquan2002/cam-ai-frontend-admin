@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
-import { useGetAllInstalls } from '../../../../hooks/useEdgeBoxInstalls';
+import { useGetAllInstallsFilter } from '../../../../hooks/useEdgeBoxInstalls';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { EdgeBoxInstallFilterProps, pageSizeSelect } from '../../../../types/constant';
@@ -43,7 +43,7 @@ const InstallList = () => {
     ))
 
     const { data: installList, isFetching, refetch
-    } = useGetAllInstalls({
+    } = useGetAllInstallsFilter({
         pageIndex: (pageIndex - 1), size,
         edgeBoxInstallStatus: filterInstallStatus !== "None" && filterInstallStatus !== "" ? filterInstallStatus : "",
         activationStatus: filterActivationStatus !== "None" && filterActivationStatus !== "" ? filterActivationStatus : "",

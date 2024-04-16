@@ -33,6 +33,18 @@ export const EdgeBoxInstallAPI = {
         );
         return res.data;
     },
+    getAll: async () => {
+        const token = getAccessToken();
+        const res = await http.get<CommonResponse<EdgeBoxInstall>>(
+            `/api/edgeboxinstalls/all`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        return res.data;
+    },
     getById: async (id: string) => {
         const token = getAccessToken();
         const res = await http.get<EdgeBoxInstall>(`/api/edgeboxinstalls/${id}`, {

@@ -3,13 +3,26 @@ import { AddEdgeBoxInstallParams, EdgeBoxInstallAPI, GetEdgeBoxInstallParams } f
 import { CommonResponse } from "../models/CommonResponse";
 import { EdgeBoxInstall } from "../models/EdgeBoxInstall";
 
-export const useGetAllInstalls = (params: GetEdgeBoxInstallParams) => {
+export const useGetAllInstallsFilter = (params: GetEdgeBoxInstallParams) => {
     const { isError, isLoading, isFetching, data, error,
         refetch,
     }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
         queryKey: ["edgeBoxInstallList", params.size, params.pageIndex],
         queryFn: async () => {
             return await EdgeBoxInstallAPI.getAllFilter(params);
+        },
+    });
+
+    return { isError, isLoading, isFetching, data, error, refetch };
+};
+
+export const useGetAllInstalls = () => {
+    const { isError, isLoading, isFetching, data, error,
+        refetch,
+    }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
+        queryKey: ["edgeBoxAllInstallList"],
+        queryFn: async () => {
+            return await EdgeBoxInstallAPI.getAll();
         },
     });
 

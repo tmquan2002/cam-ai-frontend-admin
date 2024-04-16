@@ -19,6 +19,7 @@ import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import InstallMainPage from "../pages/admin/install/InstallMainPage";
 import InstallDetail from "../pages/admin/install/InstallDetail";
+import ReportMainPage from "../pages/admin/report/ReportMainPage";
 
 const AppRoute = () => {
   return useRoutes([
@@ -136,7 +137,7 @@ const AppRoute = () => {
           element: <MainLayout />,
           children: [
             {
-              element: <InstallMainPage />,
+              element: <ReportMainPage />,
               index: true,
             }
           ]
