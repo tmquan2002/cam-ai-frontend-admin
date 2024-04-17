@@ -1,5 +1,5 @@
 import { Box, Group } from "@mantine/core";
-import styled from "../dashboard.module.scss";
+import styled from "../report.module.scss";
 import { DonutChart } from "@mantine/charts";
 
 const data = [

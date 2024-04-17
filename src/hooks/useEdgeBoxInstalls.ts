@@ -16,10 +16,11 @@ export const useGetAllInstallsFilter = (params: GetEdgeBoxInstallParams) => {
     return { isError, isLoading, isFetching, data, error, refetch };
 };
 
+// TODO: Change format back to CommonResponse layer
 export const useGetAllInstalls = () => {
     const { isError, isLoading, isFetching, data, error,
         refetch,
-    }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
+    }: UseQueryResult<EdgeBoxInstall[], Error> = useQuery({
         queryKey: ["edgeBoxAllInstallList"],
         queryFn: async () => {
             return await EdgeBoxInstallAPI.getAll();

@@ -4,7 +4,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { DonutChartContainer } from "./components/DonutChartContainer";
 import { EdgeBoxReportCard } from "./components/EdgeBoxReportCard";
 import { InstallReportCard } from "./components/InstallReportCard";
-import styled from "./dashboard.module.scss";
+import styled from "./report.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

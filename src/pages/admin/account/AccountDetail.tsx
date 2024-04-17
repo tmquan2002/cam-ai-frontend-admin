@@ -181,7 +181,15 @@ const AccountDetail = () => {
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Brand</Text>
+                                    <Group mt={20} justify="space-between">
+                                        <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Brand</Text>
+                                        <Button variant="filled" size="sm" color="light-blue.6"
+                                            onClick={() => navigate(`/brand/${data?.brand?.id}`, {
+                                                state: { tab: "managers", }
+                                            })}>
+                                            View Brand
+                                        </Button>
+                                    </Group>
                                     <div className={styled["shop-brand-detail"]}>
                                         <Group mt={20}>
                                             <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
@@ -211,12 +219,6 @@ const AccountDetail = () => {
                                                 }
                                             </div>
                                         </Group>
-                                        <Button variant="filled" size="sm" color="light-blue.6" mt={20}
-                                            onClick={() => navigate(`/brand/${data?.brand?.id}`, {
-                                                state: { tab: "managers", }
-                                            })}>
-                                            View Brand
-                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +245,15 @@ const AccountDetail = () => {
                         {!isLoading ?
                             <div className={styled["container-detail"]}>
                                 <div>
-                                    <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop</Text>
+                                    <Group mt={10} justify="space-between">
+                                        <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop</Text>
+                                        <Button variant="filled" size="sm" color="light-blue.6"
+                                            onClick={() => navigate(`/shop/${data?.managingShop?.id}`, {
+                                                state: { tab: "employees", }
+                                            })}>
+                                            View Shop
+                                        </Button>
+                                    </Group>
                                     <div className={styled["shop-brand-detail"]}>
                                         <div>
                                             <Group mb={20}>
@@ -278,12 +288,6 @@ const AccountDetail = () => {
                                                 </Group>
                                             }
                                         </div>
-                                        <Button variant="filled" size="sm" color="light-blue.6" mt={20}
-                                            onClick={() => navigate(`/shop/${data?.managingShop?.id}`, {
-                                                state: { tab: "employees", }
-                                            })}>
-                                            View Shop
-                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +314,7 @@ const AccountDetail = () => {
                         variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}
                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                     >
-                        CANCEL
+                        Cancel
                     </Button>
                 </Group>
             </Modal>

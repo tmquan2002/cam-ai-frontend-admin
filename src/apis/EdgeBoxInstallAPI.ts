@@ -33,9 +33,10 @@ export const EdgeBoxInstallAPI = {
         );
         return res.data;
     },
+    // TODO: Change format back to CommonResponse layer
     getAll: async () => {
         const token = getAccessToken();
-        const res = await http.get<CommonResponse<EdgeBoxInstall>>(
+        const res = await http.get<EdgeBoxInstall[]>(
             `/api/edgeboxinstalls/all`,
             {
                 headers: {

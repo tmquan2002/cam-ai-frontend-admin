@@ -11,7 +11,7 @@ import { EdgeBoxInstallFilterProps, pageSizeSelect } from '../../../../types/con
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from '../../../../types/enum';
 import styled from "../styles/edgeboxinstall.module.scss";
 import { MdFilterAlt } from 'react-icons/md';
-// TODO: This install list (has Shop, edge box and 3 status)
+
 const InstallList = () => {
 
     const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxInstallFilterProps.FILTER, {

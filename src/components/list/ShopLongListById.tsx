@@ -202,13 +202,13 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                             onClick={onUninstall} loading={isLoading}
                             gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                         >
-                            UNINSTALL
+                            Uninstall
                         </Button>
                         <Button
                             variant="outline" size="md" mt={20} onClick={closeUninstall}
                             gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                         >
-                            CANCEL
+                            Cancel
                         </Button>
                     </Group>
                 </Modal>

@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconNotes, IconRouter } from "@tabler/icons-react";
 import { useState } from "react";
-import { AiFillControl, AiFillSnippets } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
@@ -103,13 +103,13 @@ const ShopDetail = () => {
                             <div className={styled["profile-detail"]}>
                                 <Tabs value={activeTab} onChange={setActiveTab}>
                                     <Tabs.List>
-                                        <Tabs.Tab value="brand" leftSection={<AiFillSnippets />}>
+                                        <Tabs.Tab value="brand" leftSection={<IconNotes />}>
                                             Brand
                                         </Tabs.Tab>
                                         <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
                                             Employees
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
+                                        <Tabs.Tab value="edge boxes" leftSection={<IconRouter/>}>
                                             Edge Boxes
                                         </Tabs.Tab>
                                     </Tabs.List>

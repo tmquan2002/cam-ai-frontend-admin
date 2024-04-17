@@ -119,8 +119,8 @@ export enum ActiveStatusGroup {
 
 export enum InactiveStatusGroup {
   Inactive = CommonStatus.Inactive,
-  Disabled = EdgeBoxInstallStatus.Disabled,
   Failed = EdgeBoxActivationStatus.Failed,
+  Unhealthy = EdgeBoxInstallStatus.Unhealthy,
 }
 
 export enum IdleStatusGroup {

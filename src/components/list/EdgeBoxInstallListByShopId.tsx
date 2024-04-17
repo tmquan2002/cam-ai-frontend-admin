@@ -199,7 +199,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                         variant="outline" size="md" mt={20} onClick={closeUninstall}
                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                     >
-                        CANCEL
+                        Cancel
                     </Button>
                 </Group>
             </Modal>

@@ -1,6 +1,9 @@
 import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconRouter } from "@tabler/icons-react";
+import axios from "axios";
 import { useState } from "react";
-import { AiFillControl, AiFillShop } from "react-icons/ai";
+import { AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { TbActivity } from "react-icons/tb";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -10,12 +13,10 @@ import { ActivityList } from "../../../components/list/ActivityList";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetInstallById } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetEdgeBoxActivitiesByEdgeBoxId, useGetEdgeBoxById, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
+import { EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
 import { formatTime, getDateTime, removeTime } from "../../../utils/dateTimeFunction";
 import { addSpace } from "../../../utils/helperFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
-import { EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
-import { notifications } from "@mantine/notifications";
-import axios from "axios";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -29,7 +30,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const InstallDetail = () => {
 
-    //TODO: Make UI without any API first, use shop detail as reference
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
@@ -92,7 +92,6 @@ const InstallDetail = () => {
                         <Text fs="italic" ta="center">No installation found</Text> :
                         <>
                             <Box>
-                                {/* TODO: Install infos here NOT DONE*/}
                                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Install</Text>
                                 <Group grow mb={10}>
                                     {dataInstall?.edgeBoxInstallStatus &&
@@ -165,7 +164,7 @@ const InstallDetail = () => {
                                         <Tabs.Tab value="shop" leftSection={<AiFillShop />}>
                                             Shop
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="edge box" leftSection={<AiFillControl />}>
+                                        <Tabs.Tab value="edge box" leftSection={<IconRouter />}>
                                             Edge Box
                                         </Tabs.Tab>
                                         <Tabs.Tab value="activities" leftSection={<TbActivity />} ml="auto">
@@ -246,6 +245,24 @@ const InstallDetail = () => {
                                                     <Flex justify={"space-between"} mr={10}>
                                                         <div>
                                                             <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"} mb={10}>{dataEdgeBox?.name}</Text>
+                                                            <Box mb={10} ml={5}>
+
+                                                                <Text size="xs" c={"dimmed"} fw={500}>Id</Text>
+                                                                <Group gap={5}>
+                                                                    <Text size="md" fw={500}>{dataEdgeBox?.id}</Text>
+                                                                    <CopyButton value={dataEdgeBox?.id || ""}>
+                                                                        {({ copied, copy }) => (
+                                                                            <Tooltip label={copied ? 'Copied' : 'Copy id'} withArrow>
+                                                                                <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                                                                    {copied ? <MdCheck /> :
+                                                                                        <MdContentCopy />
+                                                                                    }
+                                                                                </ActionIcon>
+                                                                            </Tooltip>
+                                                                        )}
+                                                                    </CopyButton>
+                                                                </Group>
+                                                            </Box>
                                                             <Flex wrap="wrap" justify="space-between" gap="md">
                                                                 {dataEdgeBox?.edgeBoxStatus &&
                                                                     <Box mb={10} ml={5}>
@@ -262,7 +279,7 @@ const InstallDetail = () => {
                                                                 {dataEdgeBox?.version &&
                                                                     <Box mb={10} ml={5}>
                                                                         <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
-                                                                        <Text size="md" fw={500}>{"Status"}</Text>
+                                                                        <Text size="md" fw={500}>{dataEdgeBox.version}</Text>
                                                                     </Box>
                                                                 }
                                                                 {dataEdgeBox?.createdDate &&
@@ -277,7 +294,7 @@ const InstallDetail = () => {
                                                     <Divider orientation="vertical" ml={10} mr={10} />
 
                                                     {/* Edge Box Model section */}
-                                                    <Box w={'100%'} ml={10}>
+                                                    <Box w={'65%'} ml={10}>
                                                         <Group justify="space-between">
                                                             <Text size='md' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
                                                             <Group>

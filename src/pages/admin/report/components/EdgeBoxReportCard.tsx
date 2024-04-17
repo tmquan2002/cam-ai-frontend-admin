@@ -1,7 +1,8 @@
-import { Box, Group, LoadingOverlay, Text } from "@mantine/core";
+import { Box, Group, LoadingOverlay, Text, Tooltip } from "@mantine/core";
 import { useGetAllEdgeBoxes } from "../../../../hooks/useEdgeBoxes";
 import { EdgeBoxStatus } from "../../../../types/enum";
-import styled from "../dashboard.module.scss";
+import styled from "../report.module.scss";
+import { Link } from "react-router-dom";
 
 export const EdgeBoxReportCard = () => {
     const { data: edgeBoxList, isLoading: isLoadingEdgeBox } = useGetAllEdgeBoxes({ size: 100 });
@@ -9,7 +10,9 @@ export const EdgeBoxReportCard = () => {
     return (
         <Box className={styled["static-card"]} pos={"relative"} >
             <LoadingOverlay visible={isLoadingEdgeBox} overlayProps={{ radius: "sm", blur: 2 }} />
-            <p className={styled["static-card-title"]}>Edge Box Count</p>
+            <Tooltip label="View install list" withArrow>
+                <Link className={styled["static-card-link"]} to="/edgebox">Edge Box Count</Link>
+            </Tooltip>
             <Group grow mb={15}>
                 <Box>
                     <Text size="lg" c={"dimmed"} fw={500}>All</Text>

@@ -1,14 +1,16 @@
 import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconDots } from "@tabler/icons-react";
+import { IconDots, IconRouter } from "@tabler/icons-react";
 import axios from "axios";
-import { AiFillControl, AiFillShop } from "react-icons/ai";
+import { useState } from "react";
+import { AiFillShop } from "react-icons/ai";
 import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { AccountListById } from "../../../components/list/AccountListById";
+import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import Navbar from "../../../components/navbar/Navbar";
@@ -17,8 +19,6 @@ import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../ho
 import { BrandStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
 import styled from "./styles/branddetail.module.scss";
-import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
-import { useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -218,7 +218,7 @@ const BrandDetail = () => {
                                             <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
                                                 Employees
                                             </Tabs.Tab>
-                                            <Tabs.Tab value="edge boxes" leftSection={<AiFillControl />}>
+                                            <Tabs.Tab value="edge boxes" leftSection={<IconRouter />}>
                                                 Edge Boxes
                                             </Tabs.Tab>
                                         </Tabs.List>
@@ -263,20 +263,20 @@ const BrandDetail = () => {
                             variant="gradient" size="md" mt={20} onClick={onDelete}
                             gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                         >
-                            DELETE
+                            Delete
                         </Button> :
                         <Button
                             variant="gradient" size="md" mt={20} onClick={onReactivate}
                             gradient={{ from: "green.5", to: "green.7", deg: 90 }}
                         >
-                            REACTIVATE
+                            Reactivate
                         </Button>
                     }
                     <Button
                         variant="outline" size="md" mt={20} onClick={close}
                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                     >
-                        CANCEL
+                        Cancel
                     </Button>
                 </Group>
             </Modal>

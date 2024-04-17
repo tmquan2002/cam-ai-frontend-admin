@@ -131,13 +131,13 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
                     type="submit" variant="gradient" size="md" mt={20}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
-                    ASSIGN
+                    Assign
                 </Button>
                 <Button
                     variant="outline" size="md" mt={20} onClick={close}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
-                    CANCEL
+                    Cancel
                 </Button>
             </Group>
         </form>
