@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs,
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPhone, MdPlayArrow } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPhone, MdPlayArrow, MdRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxInstalls";
 import { CommonResponse } from "../../models/CommonResponse";
@@ -139,7 +139,15 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                     <Divider mb={10} mt={10} />
 
                     {/* Install Section */}
-                    <Group grow mb={10} ml={10}>
+                    <Group mb={10}>
+                        <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
+                        <Tooltip label="View Installation" withArrow>
+                            <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`, { state: { tab: "edge box" } })}>
+                                <MdRemoveRedEye />
+                            </ActionIcon>
+                        </Tooltip>
+                    </Group>
+                    <Group grow mb={10}>
                         <Box mb={10}>
                             <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
                             <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
@@ -149,7 +157,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                             <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
                         </Box>
                     </Group>
-                    <Group grow mb={10} ml={10}>
+                    <Group grow mb={10}>
                         <Box mb={10}>
                             <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
                             <Group gap={5}>
@@ -174,7 +182,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                             </Box>
                         }
                     </Group>
-                    <Group grow mb={15} ml={10}>
+                    <Group grow mb={15}>
                         <Box>
                             <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                             <Text size="md" fw={500}>{removeTime(new Date(item?.createdDate || Date.now()), "/")}</Text>

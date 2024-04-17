@@ -132,7 +132,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 <Group mb={10}>
                     <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
                     <Tooltip label="View Installation" withArrow>
-                        <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`)}>
+                        <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`, { state: { tab: "shop" } })}>
                             <MdRemoveRedEye />
                         </ActionIcon>
                     </Tooltip>

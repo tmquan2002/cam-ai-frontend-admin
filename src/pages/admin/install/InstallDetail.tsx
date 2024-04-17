@@ -9,10 +9,13 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ActivityList } from "../../../components/list/ActivityList";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetInstallById } from "../../../hooks/useEdgeBoxInstalls";
-import { useGetEdgeBoxActivitiesByEdgeBoxId, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
+import { useGetEdgeBoxActivitiesByEdgeBoxId, useGetEdgeBoxById, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
 import { formatTime, getDateTime, removeTime } from "../../../utils/dateTimeFunction";
 import { addSpace } from "../../../utils/helperFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
+import { EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -33,9 +36,49 @@ const InstallDetail = () => {
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'shop');
 
-    const { isFetching: isFetchingInstall, data: dataInstall, error: errorInstall } = useGetInstallById(params.installId!)
+    const { isFetching: isFetchingInstall, data: dataInstall, error: errorInstall, refetch } = useGetInstallById(params.installId!)
     const { isFetching: isFetchingActivity, data: dataActivity, error: errorActivity } = useGetEdgeBoxActivitiesByEdgeBoxId({ edgeBoxId: dataInstall?.edgeBox.id, values: {} })
     const { isFetching: isFetchingEdgeBox, data: dataEdgeBox, error: errorEdgeBox } = useGetEdgeBoxById(dataInstall?.edgeBox.id);
+    const { mutate: updateLocation, isLoading: isLoadingLocation } = useUpdateEdgeBoxLocation();
+
+    const onUpdateLocation = (type: EdgeBoxLocationStatus.Installing | EdgeBoxLocationStatus.Uninstalling) => {
+        const updateLocationParams = {
+            id: params.edgeBoxId!,
+            values: {
+                location: type == EdgeBoxLocationStatus.Installing ? EdgeBoxLocationStatus.Occupied : EdgeBoxLocationStatus.Idle
+            }
+        }
+        updateLocation(updateLocationParams, {
+            onSuccess() {
+                refetch()
+                notifications.show({
+                    title: "Successfully",
+                    message: type == EdgeBoxLocationStatus.Installing ? "Edge Box finished installing!" : "Edge Box finished uninstalling!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        title: "Failed",
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        title: "Failed",
+                        message: "Something wrong happen when trying to finish installing this edge box",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                }
+            },
+        });
+    }
 
     return (
         <div className={styled["container-right"]}>
@@ -237,12 +280,30 @@ const InstallDetail = () => {
                                                     <Box w={'100%'} ml={10}>
                                                         <Group justify="space-between">
                                                             <Text size='md' fw="bold" fz={20} c={"light-blue.4"}>Model</Text>
-                                                            <Button variant="filled" size="sm" color="light-blue.6"
-                                                                onClick={() => navigate(`/edgebox/${dataEdgeBox?.id}`, {
-                                                                    state: { tab: "edge boxes", }
-                                                                })}>
-                                                                View Edge Box
-                                                            </Button>
+                                                            <Group>
+                                                                {dataEdgeBox?.edgeBoxLocation == EdgeBoxLocationStatus.Installing &&
+                                                                    <Button
+                                                                        onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Installing)} variant="filled"
+                                                                        color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
+                                                                    >
+                                                                        Finish Installing
+                                                                    </Button>
+                                                                }
+                                                                {dataEdgeBox?.edgeBoxLocation == EdgeBoxLocationStatus.Uninstalling &&
+                                                                    <Button
+                                                                        onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Uninstalling)} variant="filled"
+                                                                        color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
+                                                                    >
+                                                                        Finish Uninstalling
+                                                                    </Button>
+                                                                }
+                                                                <Button variant="filled" size="sm" color="light-blue.6"
+                                                                    onClick={() => navigate(`/edgebox/${dataEdgeBox?.id}`, {
+                                                                        state: { tab: "edge boxes", }
+                                                                    })}>
+                                                                    View Edge Box
+                                                                </Button>
+                                                            </Group>
                                                         </Group>
                                                         <Group grow mb={10} mt={10}>
                                                             <Box>

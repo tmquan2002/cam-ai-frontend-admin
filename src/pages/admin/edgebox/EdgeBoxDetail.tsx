@@ -108,7 +108,6 @@ const EdgeBoxDetail = () => {
                         withCloseButton: true,
                     });
                 }
-                closeDelete();
             },
         });
     }
@@ -165,7 +164,7 @@ const EdgeBoxDetail = () => {
                                             </Flex>
                                         </div>
                                     </div>
-                                    <Divider orientation="vertical" ml={20} mr={10} />
+                                    <Divider orientation="vertical" ml={10} mr={10} />
                                     {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>
                                         <Group justify="space-between">
@@ -182,7 +181,7 @@ const EdgeBoxDetail = () => {
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Uninstalling &&
                                                     <Button
                                                         onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Uninstalling)} variant="filled"
-                                                        color="light-blue.6" size="sm" loading={isLoadingLocation}
+                                                        color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
                                                     >
                                                         Finish Uninstalling
                                                     </Button>
