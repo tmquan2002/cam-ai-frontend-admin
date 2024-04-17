@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -11,6 +11,7 @@ import { EdgeBoxInstallStatus, EdgeBoxLocationStatus } from "../../types/enum";
 import { formatTime, removeTime } from "../../utils/dateTimeFunction";
 import { addSpace } from "../../utils/helperFunction";
 import StatusBadge from "../badge/StatusBadge";
+import { CustomModal } from "../modal/CustomSimleModel";
 import { ShopHistoryList } from "./HistoryList";
 import styled from "./list.module.scss";
 
@@ -192,26 +193,8 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
 
                 {/* Modal section */}
                 {/* Uninstall */}
-                <Modal opened={modalUninstallOpen} onClose={closeUninstall} withCloseButton={false} centered>
-                    <Text>
-                        Do you want to uninstall this edge box from the shop?
-                    </Text>
-                    <Group align="end">
-                        <Button
-                            variant="gradient" size="md" mt={20}
-                            onClick={onUninstall} loading={isLoading}
-                            gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                        >
-                            Uninstall
-                        </Button>
-                        <Button
-                            variant="outline" size="md" mt={20} onClick={closeUninstall}
-                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                        >
-                            Cancel
-                        </Button>
-                    </Group>
-                </Modal>
+                <CustomModal cancelLabel="Cancel" onClickAction={onUninstall} onClose={closeUninstall} opened={modalUninstallOpen} label="Uninstall" topTitle="Uninstall Edge Box"
+                    title="Do you want to uninstall this edge box from the shop?" centered loading={isLoading} />
             </>
         )
 }

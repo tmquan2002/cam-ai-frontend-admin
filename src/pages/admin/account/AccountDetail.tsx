@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Box, Button, Group, LoadingOverlay, Menu, Modal, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Group, LoadingOverlay, Menu, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots } from "@tabler/icons-react";
@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
+import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
 import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { AccountStatus, Role } from "../../../types/enum";
@@ -299,25 +300,8 @@ const AccountDetail = () => {
                     </>
                 }
             </div >
-            <Modal opened={modalOpen} onClose={close} title="Delete this account?" centered>
-                <Text>
-                    Do you want to remove this account? This action will switch a account status to <b>INACTIVE</b>
-                </Text>
-                <Group>
-                    <Button
-                        variant="gradient" size="md" mt={20} onClick={onDelete} loading={isLoadingDelete}
-                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        variant="outline" size="md" mt={20} onClick={close} loading={isLoadingDelete}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Cancel
-                    </Button>
-                </Group>
-            </Modal>
+            <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={close} opened={modalOpen} label="Delete" topTitle="Delete Account"
+                title="Do you want to remove this account?" centered loading={isLoadingDelete} />
         </>
     );
 };

@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Modal, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDots, IconRouter } from "@tabler/icons-react";
@@ -13,6 +13,7 @@ import { AccountListById } from "../../../components/list/AccountListById";
 import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
+import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
@@ -42,8 +43,8 @@ const BrandDetail = () => {
     const { data, isLoading, error } = useGetBrandById(params.brandId!);
     const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId);
 
-    const { mutate: deleteBrand } = useDeleteBrand();
-    const { mutate: reactivateBrand } = useReactivateBrand();
+    const { mutate: deleteBrand, isLoading: isLoadingDelete } = useDeleteBrand();
+    const { mutate: reactivateBrand, isLoading: isLoadingReactivate } = useReactivateBrand();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -246,40 +247,13 @@ const BrandDetail = () => {
                 }
             </div>
             {/* Delete Modal */}
-            <Modal opened={modalOpen} onClose={close}
-                title={data?.brandStatus === BrandStatus.Active ? "Delete this brand?" : "Reactivate this brand?"} centered>
-                {data?.brandStatus === BrandStatus.Active ?
-                    <Text>
-                        Do you want to remove this brand? This action will switch a brand status to <b>INACTIVE</b>
-                    </Text>
-                    :
-                    <Text>
-                        Do you want to reactivate this brand? This action will switch a brand status to <b>ACTIVE</b>
-                    </Text>
-                }
-                <Group align="end">
-                    {data?.brandStatus === BrandStatus.Active ?
-                        <Button
-                            variant="gradient" size="md" mt={20} onClick={onDelete}
-                            gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                        >
-                            Delete
-                        </Button> :
-                        <Button
-                            variant="gradient" size="md" mt={20} onClick={onReactivate}
-                            gradient={{ from: "green.5", to: "green.7", deg: 90 }}
-                        >
-                            Reactivate
-                        </Button>
-                    }
-                    <Button
-                        variant="outline" size="md" mt={20} onClick={close}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Cancel
-                    </Button>
-                </Group>
-            </Modal>
+            {data?.brandStatus === BrandStatus.Active ?
+                <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={close} opened={modalOpen} label="Delete" topTitle="Delete Brand"
+                    title="Do you want to remove this brand?" centered loading={isLoadingDelete}/>
+                :
+                <CustomModal cancelLabel="Cancel" onClickAction={onReactivate} onClose={close} opened={modalOpen} label="Reactivate" topTitle="Reactivate Brand"
+                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} blueModal/>
+            }
         </>
     );
 };

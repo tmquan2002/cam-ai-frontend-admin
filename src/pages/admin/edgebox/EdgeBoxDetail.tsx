@@ -7,14 +7,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import { ShopLongListByEdgeBox } from "../../../components/list/ShopLongListById";
+import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
+import { useGetInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
 import { useDeleteEdgeBox, useGetEdgeBoxById, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
-import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, StatusColor } from "../../../types/enum";
+import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, EdgeBoxStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
-import { useGetInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -187,7 +188,7 @@ const EdgeBoxDetail = () => {
                                                     </Button>
                                                 }
                                                 {(dataInstall?.values.filter(e => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length == 0
-                                                    && data?.edgeBoxLocation !== EdgeBoxLocationStatus.Uninstalling) &&
+                                                    && data?.edgeBoxLocation !== EdgeBoxLocationStatus.Uninstalling && data?.edgeBoxStatus === EdgeBoxStatus.Active) &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
                                                         gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
@@ -285,26 +286,8 @@ const EdgeBoxDetail = () => {
 
             {/* Modal section*/}
             {/* Delete */}
-            <Modal opened={modalDeleteOpen} onClose={closeDelete} withCloseButton={false} centered>
-                <Text>
-                    Do you want to remove this edge box?
-                </Text>
-                <Group align="end">
-                    <Button
-                        variant="gradient" size="md" mt={20} onClick={onDelete}
-                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
-                        loading={isLoadingDelete}
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        variant="outline" size="md" mt={20} onClick={closeDelete}
-                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                    >
-                        Cancel
-                    </Button>
-                </Group>
-            </Modal>
+            <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={closeDelete} opened={modalDeleteOpen} label="Delete" topTitle="Remove Edge Box"
+                title="Do you want to remove this edge box?" centered loading={isLoadingDelete} />
 
             {/* Update Info */}
             <Modal opened={modalUpdateOpen} onClose={closeUpdate}
