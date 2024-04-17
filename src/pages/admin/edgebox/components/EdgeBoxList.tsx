@@ -3,16 +3,16 @@ import { useDisclosure } from '@mantine/hooks';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import StatusBadge from '../../../../components/badge/StatusBadge';
+import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
+import { useGetAllShopsSelect } from '../../../../hooks/useShops';
+import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
+import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateTimeFunction';
 import styled from "../styles/edgebox.module.scss";
-import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';
-import { useGetAllShopsSelect } from '../../../../hooks/useShops';
-import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { AddEdgeBoxForm } from './AddEdgeBoxForm';
 
 const EdgeBoxList = () => {

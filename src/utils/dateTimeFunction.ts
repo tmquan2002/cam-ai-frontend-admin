@@ -28,7 +28,8 @@ export function getDateFromSetYear(yearLength: number) {
     return new Date(today.getFullYear() - yearLength, today.getMonth(), today.getDate());
 }
 
-export function getDateTime(date: Date) {
+export function getDateTime(date: Date, useAMPMFormat?: boolean) {
+    if (useAMPMFormat) return removeTime(date, "/") + " " + formatTime(removeDate(date, true), false, false);
     return removeTime(date, "/") + " " + removeDate(date);
 }
 

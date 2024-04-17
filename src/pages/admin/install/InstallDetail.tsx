@@ -10,7 +10,7 @@ import { ActivityList } from "../../../components/list/ActivityList";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetInstallById } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetEdgeBoxActivitiesByEdgeBoxId, useGetEdgeBoxById } from "../../../hooks/useEdgeBoxes";
-import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
+import { formatTime, getDateTime, removeTime } from "../../../utils/dateTimeFunction";
 import { addSpace } from "../../../utils/helperFunction";
 import styled from "./styles/edgeboxinstalldetail.module.scss";
 
@@ -61,7 +61,7 @@ const InstallDetail = () => {
                                     {dataInstall?.activationStatus &&
                                         <Box mb={10}>
                                             <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
-                                            <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Activation Status" />
+                                            <StatusBadge statusName={dataInstall?.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
                                         </Box>
                                     }
                                 </Group>
@@ -72,7 +72,7 @@ const InstallDetail = () => {
                                     </Box>
                                     <Box mb={10}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Last Connected</Text>
-                                        <Text size="md" fw={500}>{dataInstall?.lastSeen ?? "No Data"}</Text>
+                                        <Text size="md" fw={500}>{dataInstall?.lastSeen ? getDateTime(new Date(dataInstall.lastSeen), true) : "No Data"}</Text>
                                     </Box>
                                     <Box mb={10}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Operating System</Text>
