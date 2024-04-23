@@ -1,8 +1,7 @@
 import { Button, Group, Loader, Select } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxInstallAPI";
 import { useInstallEdgeBox } from "../../../../hooks/useEdgeBoxInstalls";
@@ -46,10 +45,8 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
         },
 
         validate: {
-            edgeBoxId: (value) =>
-                isEmpty(value) ? "Please choose an edge box" : null,
-            shopId: (value) =>
-                isEmpty(value) ? "Please choose a shop" : null,
+            edgeBoxId: isNotEmpty("Please choose an edge box"),
+            shopId: isNotEmpty("Please choose a shop"),
         },
     });
 
@@ -134,7 +131,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
                     Assign
                 </Button>
                 <Button
-                    variant="outline" size="md" mt={20} onClick={close}
+                    variant="outline" size="md" mt={20} onClick={close} loading={isLoadingInstall}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
                     Cancel

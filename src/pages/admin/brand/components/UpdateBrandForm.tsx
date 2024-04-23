@@ -1,39 +1,56 @@
-import { TextInput, Button, Group, Loader, Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import axios from "axios";
+import { Box, Button, Divider, Group, Loader, Select, Text, TextInput, Textarea } from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { AddBrandParams, UpdateBrandParams } from "../../../../apis/BrandAPI";
-import { useGetBrandById, useUpdateBrand } from "../../../../hooks/useBrands";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UpdateBrandParams } from "../../../../apis/BrandAPI";
+import { useGetBrandById, useUpdateBrand } from "../../../../hooks/useBrands";
+import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
+import { emailRegex, phoneRegex } from "../../../../types/constant";
 
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
-    const { mutate: updateBrand, isLoading } = useUpdateBrand();
-    const { data, isLoading: initialDataLoading, error } = useGetBrandById(id);
-    const navigate = useNavigate();
+    const [provinceSearch, setProvinceSearch] = useState<string>("");
+    const [districtSearch, setDistrictSearch] = useState<string>("");
+    const [wardSearch, setWardSearch] = useState<string>("");
+
 
     const form = useForm({
         initialValues: {
             name: "",
             email: "",
             phone: "",
+            brandWebsite: "",
+            description: "",
+            province: "",
+            district: "",
+            ward: "",
+            companyAddress: "",
+            companyName: "",
         },
 
         validate: {
-            name: (value) =>
-                isEmpty(value) ? "Name is required" : null,
-            email: (value: string) =>
-                isEmpty(value) ? null
-                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
-            phone: (value: string) =>
-                isEmpty(value) ? null :
-                    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
-                        ? null
-                        : "A phone number should have a length of 10-12 characters",
+            name: isNotEmpty("Brand name is required"),
+            email: (value) => isEmpty(value) ? null
+                : emailRegex.test(value) ? null : "Invalid email - ex: name@gmail.com",
+            phone: (value) => isEmpty(value) ? null :
+                phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
+            companyName: isNotEmpty("Company name is required"),
+            province: isNotEmpty("Please select a province"),
+            district: isNotEmpty("Please select a district"),
+            ward: isNotEmpty("Please select a ward"),
+            companyAddress: isNotEmpty("Company address is required"),
         },
     });
+
+    const { mutate: updateBrand, isLoading } = useUpdateBrand();
+    const { data, isLoading: initialDataLoading, error } = useGetBrandById(id);
+    const { data: provinceList, isLoading: isLoadingProvinces } = useGetProvinces();
+    const { data: districtList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wardList, isFetching: isFetchingWards } = useGetWards(form.values.district);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (data) {
@@ -41,19 +58,31 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                 email: data?.email,
                 name: data?.name,
                 phone: data?.phone,
+                brandWebsite: data?.brandWebsite,
+                description: data?.description,
+                province: data?.companyWard?.district?.province?.id.toString() || "",
+                district: data?.companyWard?.district?.id.toString() || "",
+                ward: data?.companyWard?.id.toString() || "",
+                companyAddress: data?.companyAddress || "",
+                companyName: data?.companyName,
             });
         }
     }, [data]);
 
-    const onSubmitForm = async (values: AddBrandParams) => {
+    const onSubmitForm = async () => {
         // console.log(values)
 
         const updateBrandParams: UpdateBrandParams = {
             id: id,
             values: {
-                name: values.name,
-                email: values.email,
-                phone: values.phone,
+                name: form.values.name,
+                email: form.values.email,
+                phone: form.values.phone,
+                description: form.values.description,
+                companyAddress: form.values.companyAddress,
+                brandWebsite: form.values.brandWebsite,
+                companyName: form.values.companyName,
+                companyWardId: form.values.ward,
             }
         };
 
@@ -92,33 +121,102 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     return (
         <>
-            {initialDataLoading ? <Loader /> :
+            {(initialDataLoading || isLoadingProvinces) ? <Loader /> :
                 <>
                     {error ? <Text w={'100%'} c="dimmed" mt={20} ta="center">Brand not found</Text> :
                         <form
-                            onSubmit={form.onSubmit((values) => onSubmitForm(values))}
-                            style={{ textAlign: "left" }}
+                            onSubmit={form.onSubmit(() => onSubmitForm())}
                         >
-                            <TextInput mt={10}
-                                withAsterisk
-                                label="Name"
-                                placeholder="Brand Name"
-                                size="md"
-                                {...form.getInputProps("name")}
-                            />
-                            <TextInput mt={10}
-                                label="Email"
-                                placeholder="your@email.com"
-                                size="md"
-                                {...form.getInputProps("email")}
-                            />
+                            <Group justify="space-between" align="baseline">
+                                <Box w={"45%"}>
+                                    <Text fz={15} mt={20} fw={"bold"}>General Information</Text>
+                                    <Divider />
+                                    <TextInput mt={10}
+                                        withAsterisk
+                                        label="Brand Name"
+                                        placeholder="Brand Name"
+                                        {...form.getInputProps("name")}
+                                    />
+                                    <Group grow align="baseline">
+                                        <TextInput mt={10}
+                                            label="Email"
+                                            placeholder="your@email.com"
+                                            {...form.getInputProps("email")}
+                                        />
+                                        <TextInput mt={10}
+                                            label="Phone"
+                                            placeholder="Phone Number"
+                                            {...form.getInputProps("phone")}
+                                        />
+                                    </Group>
+                                    <TextInput mt={10}
+                                        label="Website"
+                                        placeholder="www.example.com"
+                                        {...form.getInputProps("brandWebsite")}
+                                    />
+                                    <Textarea mt={10}
+                                        label="Description" resize="vertical" minRows={2}
+                                        placeholder="Something about this brand..."
+                                        {...form.getInputProps("description")}
+                                    />
+                                </Box>
 
-                            <TextInput mt={10}
-                                label="Phone"
-                                placeholder="Phone Number"
-                                size="md"
-                                {...form.getInputProps("phone")}
-                            />
+                                <Divider orientation="vertical" ml={5} mr={5} />
+
+                                <Box w={"45%"}>
+                                    <Text fz={15} mt={20} fw={"bold"}>Company</Text>
+                                    <Divider />
+                                    <TextInput mt={10}
+                                        withAsterisk
+                                        label="Company Name"
+                                        placeholder="Company Name"
+                                        {...form.getInputProps("companyName")}
+                                    />
+                                    <Group grow mt={10} align="baseline">
+                                        <Select label="Province" placeholder="Select"
+                                            withAsterisk
+                                            data={provinceList || []}
+                                            // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
+                                            {...form.getInputProps('province')}
+                                            onChange={(value) => {
+                                                form.setFieldValue('province', value || "")
+                                                setDistrictSearch("");
+                                                setWardSearch("");
+                                            }}
+                                            searchValue={provinceSearch} onSearchChange={setProvinceSearch}
+                                            searchable nothingFoundMessage="Not Found"
+                                        />
+                                        <Select label="District" placeholder="Select"
+                                            withAsterisk
+                                            disabled={form.values.province == ""}
+                                            data={districtList || []}
+                                            rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                                            {...form.getInputProps('district')}
+                                            onChange={(value) => {
+                                                form.setFieldValue('district', value || "")
+                                                setWardSearch("");
+                                            }}
+                                            searchValue={districtSearch} onSearchChange={setDistrictSearch}
+                                            searchable nothingFoundMessage="Not Found"
+                                        />
+                                        <Select label="Ward" placeholder="Select"
+                                            withAsterisk
+                                            disabled={form.values.province == "" || districtSearch == ""}
+                                            data={wardList || []}
+                                            rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                                            {...form.getInputProps('ward')}
+                                            searchValue={wardSearch} onSearchChange={setWardSearch}
+                                            searchable nothingFoundMessage="Not Found"
+                                        />
+                                    </Group>
+                                    <TextInput mt={10}
+                                        withAsterisk
+                                        label="Address" placeholder="123/45 ABC..."
+                                        {...form.getInputProps("companyAddress")}
+                                    />
+                                </Box>
+
+                            </Group>
 
                             <Group
                                 justify="flex-start"
@@ -137,10 +235,20 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                 <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
                                     onClick={() => {
                                         form.setValues({
-                                            email: data?.email ? data.email : "",
-                                            name: data?.name ? data.name : "",
-                                            phone: data?.phone ? data.phone : "",
+                                            email: data?.email ?? "",
+                                            name: data?.name ?? "",
+                                            phone: data?.phone ?? "",
+                                            brandWebsite: data?.brandWebsite ?? "",
+                                            description: data?.description ?? "",
+                                            province: data?.companyWard?.district?.province?.id.toString() || "",
+                                            district: data?.companyWard?.district?.id.toString() || "",
+                                            ward: data?.companyWard?.id.toString() || "",
+                                            companyAddress: data?.companyAddress || "",
+                                            companyName: data?.companyName ?? "",
                                         })
+                                        setProvinceSearch(data?.companyWard?.district?.province?.name || "")
+                                        setDistrictSearch(data?.companyWard?.district.name || "")
+                                        setWardSearch(data?.companyWard?.name || "")
                                     }}>
                                     Reset
                                 </Button>

@@ -1,6 +1,7 @@
 import { BrandStatus } from "../types/enum";
 import { Account } from "./Account";
 import { Image } from "./Image";
+import { Ward } from "./Location";
 import { Shop } from "./Shop";
 
 export type Brand = {
@@ -11,6 +12,11 @@ export type Brand = {
     name: string;
     email: string;
     phone: string;
+    description: string;
+    companyName: string;
+    brandWebsite: string;
+    companyAddress: string;
+    companyWardId: string;
     logoId: string;
     logo: Image;
     bannerId: string;
@@ -20,4 +26,5 @@ export type Brand = {
     brandStatus: BrandStatus;
     accounts: Account[];
     shops: Shop[];
+    companyWard: Ward;
 };

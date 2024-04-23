@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Divider, Flex, Group, LoadingOverlay, Modal, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Grid, Group, LoadingOverlay, Modal, Select, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -10,12 +10,14 @@ import { ShopLongListByEdgeBox } from "../../../components/list/ShopLongListById
 import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetInstallByEdgeBoxId } from "../../../hooks/useEdgeBoxInstalls";
-import { useDeleteEdgeBox, useGetEdgeBoxById, useUpdateEdgeBoxLocation } from "../../../hooks/useEdgeBoxes";
+import { useDeleteEdgeBox, useGetEdgeBoxById, useUpdateEdgeBoxLocation, useUpdateEdgeBoxStatus } from "../../../hooks/useEdgeBoxes";
 import { EdgeBoxInstallStatus, EdgeBoxLocationStatus, EdgeBoxStatus, StatusColor } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
+import { enumToSelect } from "../../../utils/helperFunction";
+import { useState } from "react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -34,11 +36,15 @@ const EdgeBoxDetail = () => {
     const [modalDeleteOpen, { open: openDelete, close: closeDelete }] = useDisclosure(false);
     const [modalUpdateOpen, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
     const [modalAssignOpen, { open: openAssign, close: closeAssign }] = useDisclosure(false);
+    const [modalStatusOpen, { open: openStatus, close: closeStatus }] = useDisclosure(false);
 
     const { isLoading, data, refetch, error } = useGetEdgeBoxById(params.edgeBoxId!);
     const { isLoading: isLoadingInstall, data: dataInstall, refetch: refetchInstall } = useGetInstallByEdgeBoxId(params.edgeBoxId!);
     const { mutate: deleteEdgeBox, isLoading: isLoadingDelete } = useDeleteEdgeBox();
     const { mutate: updateLocation, isLoading: isLoadingLocation } = useUpdateEdgeBoxLocation();
+    const { mutate: updateStatus, isLoading: isLoadingStatus } = useUpdateEdgeBoxStatus();
+
+    const [edgeBoxStatus, setEdgeBoxStatus] = useState<string | null>(data?.edgeBoxStatus || "")
 
     const onDelete = () => {
         deleteEdgeBox(params.edgeBoxId!, {
@@ -113,6 +119,44 @@ const EdgeBoxDetail = () => {
         });
     }
 
+    const onUpdateStatus = () => {
+        const updateStatusParams = {
+            id: params.edgeBoxId!,
+            values: { status: edgeBoxStatus as EdgeBoxStatus }
+        }
+        updateStatus(updateStatusParams, {
+            onSuccess() {
+                refetch();
+                closeStatus();
+                notifications.show({
+                    title: "Successfully",
+                    message: "Status Changed Successful!",
+                    color: "green",
+                    withCloseButton: true,
+                });
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        title: "Failed",
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        title: "Failed",
+                        message: "Something wrong happen when trying to finish installing this edge box",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                }
+            },
+        });
+    }
+
     return (
         <>
             <div className={styled["container-right"]}>
@@ -126,45 +170,81 @@ const EdgeBoxDetail = () => {
                             <>
                                 <div className={styled["profile-header"]}>
                                     {/* Edge Box section */}
-                                    <div className={styled["profile-header-left"]}>
-                                        <div>
-                                            <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"} mb={10}>{data?.name}</Text>
-                                            <Flex wrap="wrap" justify="space-between" gap="md">
-                                                {data?.edgeBoxStatus &&
-                                                    <Box mb={10} ml={5}>
-                                                        <Text size="xs" c={"dimmed"} fw={500}>Edge Box Status</Text>
-                                                        <StatusBadge statusName={data?.edgeBoxStatus} padding={10} size="sm" tooltip="Edge Box Status" />
-                                                    </Box>
-                                                }
-                                                {data?.edgeBoxLocation &&
-                                                    <Box mb={10} ml={5}>
-                                                        <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
-                                                        <StatusBadge statusName={data?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
-                                                    </Box>
-                                                }
-                                                {data?.version &&
-                                                    <Box mb={10} ml={5}>
-                                                        <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
-                                                        <Text size="md" fw={500}>{data?.version}</Text>
-                                                    </Box>
-                                                }
+                                    <Box>
+                                        <Group justify="space-between" gap={0} mb={10}>
+                                            <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"}>{data?.name}</Text>
+                                            <Button variant="gradient" size="xs" onClick={openStatus}
+                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                            >
+                                                Change Status
+                                            </Button>
+                                        </Group>
+                                        <Grid justify="space-between">
+
+                                            <Grid.Col span={6}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Edge Box Status</Text>
+                                                    <StatusBadge statusName={data?.edgeBoxStatus || "None"} padding={10} size="sm" tooltip="Edge Box Status" />
+                                                </Box>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
+                                                    <StatusBadge statusName={data?.edgeBoxLocation || "None"} padding={10} size="sm" tooltip="Location Status" />
+                                                </Box>
+                                            </Grid.Col>
+
+                                            <Grid.Col span={6}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
+                                                    <Text size="md" fw={500}>{data?.version || "No Data"}</Text>
+                                                </Box>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
                                                     <Text size="md" fw={500}>{data?.serialNumber || "No Data"}</Text>
                                                 </Box>
+                                            </Grid.Col>
+
+                                            <Grid.Col span={12}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>MAC Address</Text>
                                                     <Text size="md" fw={500}>{data?.macAddress || "No Data"}</Text>
                                                 </Box>
-                                                {data?.createdDate &&
-                                                    <Box mb={10} ml={5}>
-                                                        <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
-                                                        <Text size="md" fw={500}>{removeTime(new Date(data?.createdDate || Date.now()), "/")}</Text>
-                                                    </Box>
-                                                }
-                                            </Flex>
-                                        </div>
-                                    </div>
+                                            </Grid.Col>
+
+                                            <Grid.Col span={12}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
+                                                    <Text size="md" fw={500}>{data?.createdDate ? removeTime(new Date(data?.createdDate), "/") : "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                        </Grid>
+                                    </Box>
+
+                                    {/* Edge Box Status model section */}
+                                    <Modal onClose={closeStatus} opened={modalStatusOpen} title="Change Edge Box Status" centered>
+                                        <Select
+                                            value={edgeBoxStatus}
+                                            onChange={setEdgeBoxStatus}
+                                            placeholder={data?.edgeBoxStatus}
+                                            label="Edge Box Status"
+                                            data={enumToSelect(EdgeBoxStatus)}
+                                        />
+                                        <Group>
+                                            <Button
+                                                onClick={onUpdateStatus}
+                                                variant="gradient" loading={isLoadingStatus}
+                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="md" mt={20}
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                variant="outline" size="md" mt={20} onClick={closeStatus} loading={isLoadingStatus}
+                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </Group>
+                                    </Modal>
+
                                     <Divider orientation="vertical" ml={10} mr={10} />
                                     {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>

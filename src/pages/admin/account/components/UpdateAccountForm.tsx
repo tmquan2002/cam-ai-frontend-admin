@@ -12,6 +12,7 @@ import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { isEmpty } from "lodash";
 import { enumToSelect } from "../../../../utils/helperFunction";
+import { emailRegex, phoneRegex } from "../../../../types/constant";
 
 type UpdateAccountFieldValue = {
     email: string;
@@ -38,7 +39,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             name: "",
             gender: Gender.Male,
             phone: "",
-            birthday: null,
+            birthday: new Date("01/01/2000"),
             addressLine: "",
             province: "",
             district: "",
@@ -48,14 +49,13 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
         validate: {
             name: (value: string) =>
                 isEmpty(value) ? "Name is required" : null,
-            email: (value: string) =>
-                isEmpty(value) ? "Email is required"
-                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
-            phone: (value: string) =>
-                isEmpty(value) ? null :
-                    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
-                        ? null
-                        : "A phone number should have a length of 10-12 characters",
+            email: (value: string) => isEmpty(value) ? "Email is required"
+                : emailRegex.test(value) ? null : "Invalid email - ex: huy@gmail.com",
+            phone: (value) => isEmpty(value) ? null :
+                phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
+            province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
+            district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
+            ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {
@@ -156,7 +156,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                             <Group grow mt={10}>
                                 <DateInput
                                     label="Birthday"
-                                    placeholder="January 1, 2000"
+                                    placeholder="Birthday"
                                     maxDate={getDateFromSetYear(18)}
                                     {...form.getInputProps('birthday')} />
                                 <TextInput

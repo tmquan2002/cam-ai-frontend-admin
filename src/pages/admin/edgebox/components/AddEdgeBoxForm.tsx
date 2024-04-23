@@ -110,7 +110,7 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
                     Add
                 </Button>
                 <Button
-                    variant="outline" size="md" mt={20} onClick={close}
+                    variant="outline" size="md" mt={20} onClick={close} loading={isLoading}
                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                 >
                     Cancel

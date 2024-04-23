@@ -16,6 +16,11 @@ export type AddBrandParams = {
   name: string;
   email: string;
   phone: string;
+  brandWebsite: string;
+  description: string;
+  wardId: string;
+  addressLine: string;
+  companyName: string;
 };
 
 export type UpdateBrandParams = {
@@ -24,13 +29,18 @@ export type UpdateBrandParams = {
     name: string;
     email: string;
     phone: string;
+    brandWebsite: string;
+    description: string;
+    companyWardId: string;
+    companyAddress: string;
+    companyName: string;
   }
 };
 
 export const BrandAPI = {
   getAllFilter: async (params: GetBrandsParams) => {
     const token = getAccessToken();
-    
+
     const res = await http.get<CommonResponse<Brand>>(
       `/api/brands?${toQueryParams(params)}`,
       {
@@ -56,6 +66,11 @@ export const BrandAPI = {
     form.append("Brand.Name", params.name);
     form.append("Brand.Email", params.email);
     form.append("Brand.Phone", params.phone);
+    form.append("Brand.Description", params.description);
+    form.append("Brand.CompanyName", params.companyName);
+    form.append("Brand.BrandWebsite", params.brandWebsite);
+    form.append("Brand.CompanyAddress", params.addressLine);
+    form.append("Brand.CompanyWardId", params.wardId);
 
     const res = await http.post<Brand>(`/api/brands`, form, {
       headers: {

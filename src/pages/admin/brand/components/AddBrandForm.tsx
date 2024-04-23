@@ -1,45 +1,66 @@
-import { Button, Group, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { Box, Button, Divider, Group, Loader, Select, Text, TextInput, Textarea } from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { isEmpty } from "lodash";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddBrandParams } from "../../../../apis/BrandAPI";
 import { useAddBrand } from "../../../../hooks/useBrands";
-import { isEmpty } from "lodash";
+import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
+import { emailRegex, phoneRegex } from "../../../../types/constant";
 
 export const AddBrandForm = () => {
 
     const { mutate: addBrand, isLoading } = useAddBrand();
     const navigate = useNavigate();
+    const [districtSearch, setDistrictSearch] = useState<string>("");
+    const [wardSearch, setWardSearch] = useState<string>("");
 
     const form = useForm({
         initialValues: {
             name: "",
             email: "",
             phone: "",
+            brandWebsite: "",
+            description: "",
+            province: "",
+            district: "",
+            ward: "",
+            addressLine: "",
+            companyName: "",
         },
 
         validate: {
-            name: (value) =>
-                isEmpty(value) ? "Name is required" : null,
-            email: (value: string) =>
-                isEmpty(value) ? null
-                    : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
-            phone: (value: string) =>
-                isEmpty(value) ? null :
-                    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value)
-                        ? null
-                        : "A phone number should have a length of 10-12 characters",
+            name: isNotEmpty("Brand name is required"),
+            email: (value) => isEmpty(value) ? null
+                : emailRegex.test(value) ? null : "Invalid email - ex: name@gmail.com",
+            phone: (value) => isEmpty(value) ? null :
+                phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
+            companyName: isNotEmpty("Company name is required"),
+            province: isNotEmpty("Please select a province"),
+            district: isNotEmpty("Please select a district"),
+            ward: isNotEmpty("Please select a ward"),
+            addressLine: isNotEmpty("Company address is required"),
         },
     });
 
-    const onSubmitForm = async (values: AddBrandParams) => {
+    const { data: provincesList } = useGetProvinces();
+    const { data: districtsList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
+    const { data: wardsList, isFetching: isFetchingWards } = useGetWards(form.values.district);
+
+    const onSubmitForm = async () => {
         // console.log(values)
 
         const addBrandParams: AddBrandParams = {
-            name: values.name,
-            email: values.email,
-            phone: values.phone,
+            name: form.values.name,
+            email: form.values.email,
+            phone: form.values.phone,
+            description: form.values.description,
+            addressLine: form.values.addressLine,
+            brandWebsite: form.values.brandWebsite,
+            companyName: form.values.companyName,
+            wardId: form.values.ward,
         };
 
         addBrand(addBrandParams, {
@@ -77,29 +98,97 @@ export const AddBrandForm = () => {
 
     return (
         <form
-            onSubmit={form.onSubmit((values) => onSubmitForm(values))}
-            style={{ textAlign: "left" }}
+            onSubmit={form.onSubmit(() => onSubmitForm())}
         >
-            <TextInput mt={10}
-                withAsterisk
-                label="Name"
-                placeholder="Brand Name"
-                size="md"
-                {...form.getInputProps("name")}
-            />
-            <TextInput mt={10}
-                label="Email"
-                placeholder="your@email.com"
-                size="md"
-                {...form.getInputProps("email")}
-            />
+            <Group justify="space-between" align="baseline">
+                <Box w={"45%"}>
+                    <Text fz={15} mt={20} fw={"bold"}>General Information</Text>
+                    <Divider />
+                    <TextInput mt={10}
+                        withAsterisk
+                        label="Brand Name"
+                        placeholder="Brand Name"
+                        {...form.getInputProps("name")}
+                    />
+                    <Group grow align="baseline">
+                        <TextInput mt={10}
+                            label="Email"
+                            placeholder="your@email.com"
+                            {...form.getInputProps("email")}
+                        />
+                        <TextInput mt={10}
+                            label="Phone"
+                            placeholder="Phone Number"
+                            {...form.getInputProps("phone")}
+                        />
+                    </Group>
+                    <TextInput mt={10}
+                        label="Website"
+                        placeholder="www.example.com"
+                        {...form.getInputProps("brandWebsite")}
+                    />
+                    <Textarea mt={10}
+                        label="Description" resize="vertical" minRows={2}
+                        placeholder="Something about this brand..."
+                        {...form.getInputProps("description")}
+                    />
+                </Box>
 
-            <TextInput mt={10}
-                label="Phone"
-                placeholder="Phone Number"
-                size="md"
-                {...form.getInputProps("phone")}
-            />
+                <Divider orientation="vertical" ml={5} mr={5} />
+
+                <Box w={"45%"}>
+                    <Text fz={15} mt={20} fw={"bold"}>Company</Text>
+                    <Divider />
+                    <TextInput mt={10}
+                        withAsterisk
+                        label="Company Name"
+                        placeholder="Company Name"
+                        {...form.getInputProps("companyName")}
+                    />
+                    <Group grow mt={10} align="baseline">
+                        <Select label="Province" placeholder="Select"
+                            withAsterisk
+                            data={provincesList || []}
+                            // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
+                            {...form.getInputProps('province')}
+                            onChange={(value) => {
+                                form.setFieldValue('province', value || "")
+                                setDistrictSearch("");
+                                setWardSearch("");
+                            }}
+                            searchable nothingFoundMessage="Not Found"
+                        />
+                        <Select label="District" placeholder="Select"
+                            withAsterisk
+                            disabled={form.values.province == ""}
+                            data={districtsList || []}
+                            rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
+                            {...form.getInputProps('district')}
+                            onChange={(value) => {
+                                form.setFieldValue('district', value || "")
+                                setWardSearch("");
+                            }}
+                            searchValue={districtSearch} onSearchChange={setDistrictSearch}
+                            searchable nothingFoundMessage="Not Found"
+                        />
+                        <Select label="Ward" placeholder="Select"
+                            withAsterisk
+                            disabled={form.values.province == "" || districtSearch == ""}
+                            data={wardsList || []}
+                            rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
+                            {...form.getInputProps('ward')}
+                            searchValue={wardSearch} onSearchChange={setWardSearch}
+                            searchable nothingFoundMessage="Not Found"
+                        />
+                    </Group>
+                    <TextInput mt={10}
+                        withAsterisk
+                        label="Address" placeholder="123/45 ABC..."
+                        {...form.getInputProps("addressLine")}
+                    />
+                </Box>
+
+            </Group>
 
             <Group
                 justify="flex-start"
