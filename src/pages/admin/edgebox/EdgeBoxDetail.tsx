@@ -1,4 +1,5 @@
 import { ActionIcon, Box, Button, Divider, Grid, Group, LoadingOverlay, Modal, Select, Text, Tooltip } from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -16,8 +17,6 @@ import { removeTime } from "../../../utils/dateTimeFunction";
 import { ShopEdgeBoxAssignForm } from "../shop/components/ShopEdgeBoxAssignForm";
 import { UpdateEdgeBoxForm } from "./components/UpdateEdgeBoxForm";
 import styled from "./styles/edgeboxdetail.module.scss";
-import { enumToSelect } from "../../../utils/helperFunction";
-import { useState } from "react";
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Edge Box",
@@ -44,7 +43,19 @@ const EdgeBoxDetail = () => {
     const { mutate: updateLocation, isLoading: isLoadingLocation } = useUpdateEdgeBoxLocation();
     const { mutate: updateStatus, isLoading: isLoadingStatus } = useUpdateEdgeBoxStatus();
 
-    const [edgeBoxStatus, setEdgeBoxStatus] = useState<string | null>(data?.edgeBoxStatus || "")
+    const isAllInstallsDisabled = dataInstall?.values.filter((e) => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length === 0;
+    const isEdgeBoxActive = data?.edgeBoxStatus === EdgeBoxStatus.Active;
+    const isEdgeBoxBroken = data?.edgeBoxStatus === EdgeBoxStatus.Broken;
+
+    const form = useForm<{ edgeBoxStatus: EdgeBoxStatus | null }>({
+        initialValues: {
+            edgeBoxStatus: null
+        },
+
+        validate: {
+            edgeBoxStatus: isNotEmpty("Please select a status")
+        },
+    });
 
     const onDelete = () => {
         deleteEdgeBox(params.edgeBoxId!, {
@@ -122,7 +133,7 @@ const EdgeBoxDetail = () => {
     const onUpdateStatus = () => {
         const updateStatusParams = {
             id: params.edgeBoxId!,
-            values: { status: edgeBoxStatus as EdgeBoxStatus }
+            values: { status: form.values.edgeBoxStatus }
         }
         updateStatus(updateStatusParams, {
             onSuccess() {
@@ -173,11 +184,13 @@ const EdgeBoxDetail = () => {
                                     <Box>
                                         <Group justify="space-between" gap={0} mb={10}>
                                             <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"}>{data?.name}</Text>
-                                            <Button variant="gradient" size="xs" onClick={openStatus}
-                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                                            >
-                                                Change Status
-                                            </Button>
+                                            {data?.edgeBoxStatus && data?.edgeBoxStatus !== EdgeBoxStatus.Disposed &&
+                                                <Button variant="gradient" size="xs" onClick={openStatus}
+                                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                                >
+                                                    Change Status
+                                                </Button>
+                                            }
                                         </Group>
                                         <Grid justify="space-between">
 
@@ -221,28 +234,46 @@ const EdgeBoxDetail = () => {
 
                                     {/* Edge Box Status model section */}
                                     <Modal onClose={closeStatus} opened={modalStatusOpen} title="Change Edge Box Status" centered>
-                                        <Select
-                                            value={edgeBoxStatus}
-                                            onChange={setEdgeBoxStatus}
-                                            placeholder={data?.edgeBoxStatus}
-                                            label="Edge Box Status"
-                                            data={enumToSelect(EdgeBoxStatus)}
-                                        />
-                                        <Group>
-                                            <Button
-                                                onClick={onUpdateStatus}
-                                                variant="gradient" loading={isLoadingStatus}
-                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="md" mt={20}
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button
-                                                variant="outline" size="md" mt={20} onClick={closeStatus} loading={isLoadingStatus}
-                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </Group>
+                                        <form>
+                                            <Select
+                                                placeholder="Select a status"
+                                                label="Edge Box Status"
+                                                data={[
+                                                    // {
+                                                    //     label: EdgeBoxStatus.Active, value: EdgeBoxStatus.Active,
+                                                    //     disabled: true
+                                                    // },
+                                                    {
+                                                        label: EdgeBoxStatus.Inactive, value: EdgeBoxStatus.Inactive,
+                                                        disabled: !isEdgeBoxActive || !isAllInstallsDisabled
+                                                    },
+                                                    {
+                                                        label: EdgeBoxStatus.Broken, value: EdgeBoxStatus.Broken,
+                                                        disabled: !isEdgeBoxActive
+                                                    },
+                                                    {
+                                                        label: EdgeBoxStatus.Disposed, value: EdgeBoxStatus.Disposed,
+                                                        disabled: !(isEdgeBoxActive || isEdgeBoxBroken) && isAllInstallsDisabled
+                                                    },
+                                                ]}
+                                                {...form.getInputProps("edgeBoxStatus")}
+                                            />
+                                            <Group>
+                                                <Button
+                                                    onClick={onUpdateStatus}
+                                                    variant="gradient" loading={isLoadingStatus}
+                                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="md" mt={20}
+                                                >
+                                                    Save
+                                                </Button>
+                                                <Button
+                                                    variant="outline" size="md" mt={20} onClick={closeStatus} loading={isLoadingStatus}
+                                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </Group>
+                                        </form>
                                     </Modal>
 
                                     <Divider orientation="vertical" ml={10} mr={10} />

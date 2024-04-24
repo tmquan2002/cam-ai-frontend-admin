@@ -99,7 +99,7 @@ export const EdgeBoxAPI = {
         });
         return res.data;
     },
-    updateStatus: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
+    updateStatus: async (params: { id: string; values: { status: EdgeBoxStatus | null } }) => {
         const token = getAccessToken();
         await http.put(`/api/edgeboxes/${params.id}/status`, params.values, {
             headers: {

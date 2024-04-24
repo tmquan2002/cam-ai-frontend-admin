@@ -102,7 +102,7 @@ export const useDeleteEdgeBox = () => {
 export const useUpdateEdgeBoxStatus = () => {
   const { mutate, isLoading, error, data } = useMutation({
     mutationKey: "updateEdgeBoxStatus",
-    mutationFn: async (params: { id: string; values: { status: EdgeBoxStatus } }) => {
+    mutationFn: async (params: { id: string; values: { status: EdgeBoxStatus | null } }) => {
       return await EdgeBoxAPI.updateStatus(params);
     },
   });

@@ -1,11 +1,11 @@
 import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconDots, IconRouter } from "@tabler/icons-react";
+import { IconDots, IconNetwork, IconRouter } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -141,7 +141,7 @@ const BrandDetail = () => {
                                             {isLoadingManager ? <Loader size="sm" /> :
                                                 dataManager?.id ?
                                                     <Group>
-                                                        <MdAccountCircle />
+                                                        <MdAccountCircle size={20} />
                                                         Brand Manager: <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
                                                             <Text size="md">{dataManager.name}</Text>
                                                         </Link>
@@ -156,19 +156,29 @@ const BrandDetail = () => {
                                             }
                                             {data?.email &&
                                                 <Group>
-                                                    <MdEmail />
+                                                    <MdEmail size={20} />
                                                     <Text size="md">{data?.email}</Text>
+                                                </Group>
+                                            }
+                                            {data?.brandWebsite &&
+                                                <Group>
+                                                    <IconNetwork size={20} />
+                                                    <a href={data?.brandWebsite} style={{ textDecoration: "none" }} target="_blank">
+                                                        <Text size="md">
+                                                            {data?.brandWebsite}
+                                                        </Text>
+                                                    </a>
                                                 </Group>
                                             }
                                             {data?.phone &&
                                                 <Group>
-                                                    <MdPhone />
+                                                    <MdPhone size={20} />
                                                     <Text size="md">{data?.phone}</Text>
                                                 </Group>
                                             }
                                             {data?.createdDate &&
                                                 <Group mb={20}>
-                                                    <MdAccessTime />
+                                                    <MdAccessTime size={20} />
                                                     <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                                 </Group>
                                             }
@@ -206,6 +216,24 @@ const BrandDetail = () => {
                                         </Menu>
                                     </div>
                                 </div>
+                                {data?.description &&
+                                    <Box>
+                                        <Text size="sm" fw="bold">Description</Text>
+                                        <Text size="md">{data?.description}</Text>
+                                    </Box>
+                                }
+                                <Divider my="md" />
+                                <Box>
+                                    <Text size='md' fw={'bold'} fz={20} c={"light-blue.4"}>Company</Text>
+                                    <Text size='md' fw={'bold'} fz={17} mt={10}>{data?.companyName}</Text>
+                                    <Group>
+                                        <MdHome />
+                                        {(data?.companyWard && data?.companyAddress) && <Text size="md">{data.companyAddress}, {data.companyWard?.name}, {data.companyWard?.district?.name}, {data.companyWard?.district?.province?.name}</Text>}
+                                        {(data?.companyWard && !data?.companyAddress) && <Text size="md">{data.companyWard?.name}, {data.companyWard?.district?.name}, {data.companyWard?.district?.province?.name}</Text>}
+                                        {(!data?.companyWard && data?.companyAddress) && <Text size="md">{data.companyAddress}</Text>}
+                                        {(!data?.companyWard && !data?.companyAddress) && <Text size="md">No Data</Text>}
+                                    </Group>
+                                </Box>
                                 <Divider my="md" />
                                 <div className={styled["profile-detail"]}>
                                     <Tabs value={activeTab} onChange={setActiveTab}>
@@ -249,10 +277,10 @@ const BrandDetail = () => {
             {/* Delete Modal */}
             {data?.brandStatus === BrandStatus.Active ?
                 <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={close} opened={modalOpen} label="Delete" topTitle="Delete Brand"
-                    title="Do you want to remove this brand?" centered loading={isLoadingDelete}/>
+                    title="Do you want to remove this brand?" centered loading={isLoadingDelete} />
                 :
                 <CustomModal cancelLabel="Cancel" onClickAction={onReactivate} onClose={close} opened={modalOpen} label="Reactivate" topTitle="Reactivate Brand"
-                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} blueModal/>
+                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} blueModal />
             }
         </>
     );
