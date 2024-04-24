@@ -247,7 +247,7 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                             companyName: data?.companyName ?? "",
                                         })
                                         setProvinceSearch(data?.companyWard?.district?.province?.name || "")
-                                        setDistrictSearch(data?.companyWard?.district.name || "")
+                                        setDistrictSearch(data?.companyWard?.district?.name || "")
                                         setWardSearch(data?.companyWard?.name || "")
                                     }}>
                                     Reset
