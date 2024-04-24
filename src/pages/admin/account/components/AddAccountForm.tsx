@@ -17,8 +17,6 @@ import { enumToSelect } from "../../../../utils/helperFunction";
 
 type AddAccountFieldValue = {
     email: string;
-    password: string;
-    confirmPassword: string;
     name: string;
     gender: Gender;
     phone: string;
@@ -39,8 +37,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
     const form = useForm<AddAccountFieldValue>({
         initialValues: {
             email: "",
-            password: "",
-            confirmPassword: "",
             name: "",
             gender: Gender.Male,
             phone: "",
@@ -60,8 +56,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             phone: (value: string) => isEmpty(value) ? null :
                 phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
             gender: isNotEmpty("Please select a gender"),
-            password: isNotEmpty("Password is required"),
-            confirmPassword: (value, values) => isEmpty(value) ? "Confirm Password is required" : value !== values.password ? "Passwords are not matched" : null,
             province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
             district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
             ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,
@@ -80,16 +74,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
 
     const onSubmitForm = async () => {
         // console.log(values)
-
-        if (form.values.password !== form.values.confirmPassword) {
-            notifications.show({
-                title: "Validate failed",
-                message: "Passwords are not match",
-                color: "pale-red.5",
-                withCloseButton: true,
-            });
-            return;
-        }
         const addAccountParams: AddAccountParams = {
             name: form.values.name,
             email: form.values.email,
@@ -97,7 +81,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             addressLine: form.values.addressLine,
             birthday: form.values.birthday ? removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd") : null,
             gender: form.values.gender,
-            password: form.values.password,
             role: form.values.role,
             brandId: form.values.brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
@@ -160,16 +143,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 withAsterisk label="Email"
                 placeholder="your@email.com"
                 {...form.getInputProps("email")} />
-            <Group grow mt={10} align="baseline">
-                <TextInput
-                    withAsterisk label="Password"
-                    placeholder="Password" type="password"
-                    {...form.getInputProps("password")} />
-                <TextInput
-                    withAsterisk label="Confirm Password"
-                    placeholder="Confirm Password" type="password"
-                    {...form.getInputProps("confirmPassword")} />
-            </Group>
             <Group grow mt={10} align="baseline">
                 <DateInput
                     label="Birthday"

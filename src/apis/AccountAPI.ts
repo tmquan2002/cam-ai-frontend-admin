@@ -17,7 +17,6 @@ export type GetAccountsParams = {
 
 export type AddAccountParams = {
   email: string;
-  password: string;
   name: string;
   gender: Gender;
   phone: string;
