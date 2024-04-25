@@ -25,14 +25,11 @@ const ReportMainPage = () => {
                         <Grid.Col span={6}>
                             <InstallReportCard />
                         </Grid.Col>
-                        <Grid.Col span={4}>
-                            <DonutChartContainer />
+                        <Grid.Col span={6}>
+                            <DonutChartContainer type="edgeBox" />
                         </Grid.Col>
-                        <Grid.Col span={4}>
-                            <DonutChartContainer />
-                        </Grid.Col>
-                        <Grid.Col span={4}>
-                            <DonutChartContainer />
+                        <Grid.Col span={6}>
+                            <DonutChartContainer type="install" />
                         </Grid.Col>
                     </Grid>
                 </Box>

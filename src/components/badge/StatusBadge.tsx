@@ -1,5 +1,5 @@
 import { Badge, Tooltip } from "@mantine/core";
-import { getColorFromStatus } from "../../utils/helperFunction";
+import { getColorFromStatusName } from "../../utils/helperFunction";
 
 interface BadgeParams {
     statusName: string;
@@ -17,7 +17,7 @@ const StatusBadge = ({ statusName, fullWidth, mt, mb, ml, mr, size, padding, too
     return (
         <Tooltip label={tooltip || "Status"} withArrow>
             <Badge size={size || "lg"} radius={"lg"} p={padding || 15} autoContrast fullWidth={fullWidth}
-                color={getColorFromStatus(statusName)}
+                color={getColorFromStatusName(statusName)}
                 mt={mt || 0} mb={mb || 0} ml={ml || 0} mr={mr || 0}>
                 {statusName.replace(/([A-Z])/g, ' $1').trim() || ""}
             </Badge>

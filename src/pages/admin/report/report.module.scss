@@ -42,12 +42,6 @@
     }
 }
 
-.static-card-title {
-    font-size: 23px;
-    font-weight: bold;
-    line-height: 1.625rem;
-}
-
 .static-card-number {
     font-size: 30px;
     font-style: normal;
@@ -55,7 +49,7 @@
     margin-bottom: 20px;
 }
 
-.static-card-link {
+.static-card-link, .static-card-title {
     @include light {
         color: var(--mantine-color-light-blue-6);
     }
@@ -68,10 +62,11 @@
     font-style: normal;
     font-weight: bold;
     line-height: 2.5rem;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     cursor: pointer;
     text-decoration: none;
 }
+
 
 @media screen and (max-width: 1000px) {
     .static-card-title {
