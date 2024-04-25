@@ -2,7 +2,7 @@ import { ChartData } from "@mantine/charts";
 import { CommonResponse } from "../models/CommonResponse";
 import { ShopCount } from "../models/Realtime";
 import { removeTime } from "./dateTimeFunction";
-import { DashBoardChartSortBy } from "../types/enum";
+import { ActiveStatusGroup, DashBoardChartSortBy, IdleStatusGroup, InactiveStatusGroup, MiddleStatusGroup, StatusColor } from "../types/enum";
 
 export function isEmpty(value: string | null | undefined) {
   return (
@@ -138,4 +138,11 @@ export function addSpace(str: string, atEvery: number) {
   }
   // Remove the extra space at the end
   return result.trim();
+}
+
+export function getColorFromStatus(statusName: string) {
+  return Object.values(ActiveStatusGroup).includes(statusName as ActiveStatusGroup) ? StatusColor.ACTIVE :
+    Object.values(InactiveStatusGroup).includes(statusName as InactiveStatusGroup) ? StatusColor.INACTIVE :
+      Object.values(IdleStatusGroup).includes(statusName as IdleStatusGroup) ? StatusColor.IDLE :
+        Object.values(MiddleStatusGroup).includes(statusName as MiddleStatusGroup) ? StatusColor.MIDDLE : StatusColor.NONE
 }
