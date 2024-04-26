@@ -8,18 +8,17 @@ import BrandAdd from "../pages/admin/brand/BrandAdd";
 import BrandDetail from "../pages/admin/brand/BrandDetail";
 import BrandMainPage from "../pages/admin/brand/BrandMainPage";
 import BrandUpdate from "../pages/admin/brand/BrandUpdate";
-import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import EdgeBoxDetail from "../pages/admin/edgebox/EdgeBoxDetail";
 import EdgeBoxMainPage from "../pages/admin/edgebox/EdgeBoxMainPage";
+import InstallDetail from "../pages/admin/install/InstallDetail";
+import InstallMainPage from "../pages/admin/install/InstallMainPage";
+import ReportMainPage from "../pages/admin/report/ReportMainPage";
 import ShopDetail from "../pages/admin/shop/ShopDetail";
 import ShopMainPage from "../pages/admin/shop/ShopMainPage";
 import { NothingFoundBackground } from "../pages/common/404/NothingFoundBackground";
 import LoginPage from "../pages/common/login/LoginPage";
 import CommonRoute from "./CommonRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import InstallMainPage from "../pages/admin/install/InstallMainPage";
-import InstallDetail from "../pages/admin/install/InstallDetail";
-import ReportMainPage from "../pages/admin/report/ReportMainPage";
 
 const AppRoute = () => {
   return useRoutes([
@@ -36,16 +35,16 @@ const AppRoute = () => {
       path: "",
       element: <ProtectedRoute />,
       children: [
-        {
-          path: "/dashboard",
-          element: <MainLayout />,
-          children: [
-            {
-              element: <DashboardPage />,
-              index: true,
-            },
-          ]
-        },
+        // {
+        //   path: "/dashboard",
+        //   element: <MainLayout />,
+        //   children: [
+        //     {
+        //       element: <DashboardPage />,
+        //       index: true,
+        //     },
+        //   ]
+        // },
         {
           path: "/account",
           element: <MainLayout />,

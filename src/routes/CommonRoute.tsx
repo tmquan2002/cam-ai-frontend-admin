@@ -12,7 +12,7 @@ const CommonRoute = () => {
 
   switch (userRole) {
     case Role.Admin:
-      return <Navigate to={"/dashboard"} />;
+      return <Navigate to={"/account"} />;
     default:
       return <Outlet />;
   }
