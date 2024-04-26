@@ -1,8 +1,4 @@
-import { ChartData } from "@mantine/charts";
-import { CommonResponse } from "../models/CommonResponse";
-import { ShopCount } from "../models/Realtime";
-import { removeTime } from "./dateTimeFunction";
-import { ActiveStatusGroup, DashBoardChartSortBy, IdleStatusGroup, InactiveStatusGroup, MiddleStatusGroup, StatusColor } from "../types/enum";
+import { ActiveStatusGroup, IdleStatusGroup, InactiveStatusGroup, MiddleStatusGroup, StatusColor, StatusColorLight } from "../types/enum";
 
 export function isEmpty(value: string | null | undefined) {
   return (
@@ -10,7 +6,7 @@ export function isEmpty(value: string | null | undefined) {
   );
 }
 
-//Creadit: https://gist.github.com/hu2di/e80d99051529dbaa7252922baafd40e3
+//Credit: https://gist.github.com/hu2di/e80d99051529dbaa7252922baafd40e3
 export function removeVietnameseTones(str: string) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -47,84 +43,6 @@ export function enumToSelect<T extends { [key: string]: string }>(value: T): { l
   });
 }
 
-export function generateRandomString(length: number) {
-  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let randomString = '';
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters.charAt(randomIndex);
-  }
-
-  return randomString;
-}
-
-export function convertCountDataToChartData(data: ShopCount[]): ChartData {
-  const chartData = data.map((e) => {
-    const fullTime = new Date(e.time)
-    return (
-      {
-        time: fullTime.getHours() + ":" + fullTime.getMinutes(),
-        Phone: e.results.find(x => x.actionType === "Phone") ? e.results.find(x => x.actionType === "Phone")?.count : 0,
-        Laptop: e.results.find(x => x.actionType === "Laptop") ? e.results.find(x => x.actionType === "Laptop")?.count : 0,
-        Idle: e.results.find(x => x.actionType === "Idle") ? e.results.find(x => x.actionType === "Idle")?.count : 0
-      }
-    )
-  })
-  return chartData;
-}
-
-interface DataWithDate {
-  createdDate: string;
-  [key: string]: any;
-}
-
-interface CountDate {
-  Date: string;
-  DateToShow: string;
-  Total: number;
-}
-export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, sortBy?: string | null) {
-  const countByDate: CountDate[] = [];
-  data?.values.forEach(obj => {
-    const date = removeTime(new Date(obj.createdDate), "/")
-    const index = countByDate.findIndex(item => item.DateToShow == date)
-    if (index != -1) {
-      countByDate[index] = { Date: obj.createdDate, DateToShow: date, Total: countByDate[index].Total + 1 }
-    } else {
-      countByDate.push({ Date: obj.createdDate, DateToShow: date, Total: 1 })
-    }
-  });
-
-  if (sortBy == DashBoardChartSortBy.Daily) {
-    return countByDate.sort((a, b) => {
-      const dateA = new Date(a.Date);
-      const dateB = new Date(b.Date);
-      return dateB.getTime() - dateA.getTime();
-    });
-  }
-  if (sortBy == DashBoardChartSortBy.Cumulative) {
-    return countByDate.sort((a, b) => {
-      return a.Total - b.Total;
-    });
-  }
-  return countByDate;
-}
-
-
-export const asyncLocalStorage = {
-  setItem(key: string, value: string) {
-    return Promise.resolve().then(function () {
-      localStorage.setItem(key, value);
-    });
-  },
-  getItem(key: string) {
-    return Promise.resolve().then(function () {
-      return localStorage.getItem(key);
-    });
-  }
-};
-
 /**
  * Add a space after amount of characters
  * @param str The string to add space
@@ -140,7 +58,14 @@ export function addSpace(str: string, atEvery: number) {
   return result.trim();
 }
 
-export function getColorFromStatus(statusName: string) {
+export function getColorFromStatusName(statusName: string, light?: boolean) {
+
+  if (light)
+    return Object.values(ActiveStatusGroup).includes(statusName as ActiveStatusGroup) ? StatusColorLight.ACTIVE :
+      Object.values(InactiveStatusGroup).includes(statusName as InactiveStatusGroup) ? StatusColorLight.INACTIVE :
+        Object.values(IdleStatusGroup).includes(statusName as IdleStatusGroup) ? StatusColorLight.IDLE :
+          Object.values(MiddleStatusGroup).includes(statusName as MiddleStatusGroup) ? StatusColorLight.MIDDLE : StatusColorLight.NONE
+
   return Object.values(ActiveStatusGroup).includes(statusName as ActiveStatusGroup) ? StatusColor.ACTIVE :
     Object.values(InactiveStatusGroup).includes(statusName as InactiveStatusGroup) ? StatusColor.INACTIVE :
       Object.values(IdleStatusGroup).includes(statusName as IdleStatusGroup) ? StatusColor.IDLE :

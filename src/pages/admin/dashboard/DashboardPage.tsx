@@ -7,10 +7,11 @@ import { useGetAllAccounts } from "../../../hooks/useAccounts";
 import { useGetAllBrands } from "../../../hooks/useBrands";
 import { useGetAllEdgeBoxes } from "../../../hooks/useEdgeBoxes";
 import { useGetAllShops } from "../../../hooks/useShops";
-import { countDataByDate, enumToSelect } from "../../../utils/helperFunction";
 import styled from "./dashboard.module.scss";
 import { useState } from "react";
 import { DashBoardChartSortBy } from "../../../types/enum";
+import { countDataByDate } from "../../../utils/chartFunction";
+import { enumToSelect } from "../../../utils/helperFunction";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

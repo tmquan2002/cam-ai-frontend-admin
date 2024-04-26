@@ -1,7 +1,7 @@
 import { Divider, Text } from "@mantine/core";
 import { IconNotes, IconRouter } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { AiFillDashboard, AiFillShop } from "react-icons/ai";
+import { AiFillShop } from "react-icons/ai";
 import { GrInstall } from "react-icons/gr";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { TbReport } from "react-icons/tb";
@@ -10,7 +10,7 @@ import { LinksGroup } from './LinksGroup';
 import styled from './sidebar.module.scss';
 
 const data = [
-    { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
+    // { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
     { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
     { label: 'Brand', icon: IconNotes, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },

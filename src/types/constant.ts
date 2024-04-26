@@ -63,6 +63,18 @@ export enum EdgeBoxInstallFilterProps {
   FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
 }
 
+export enum NotificationColorPalette {
+  IN_PROGRESS = "#9B59B6",
+  DRAFT = "#34495E",
+  REPORT_EXPENSES = "#54A0FF",
+  UP_COMING = "#30CB83",
+  UNAPPROVED = "#F1C40F",
+  SEND_BACK = "#B33771",
+  ALERT_MESSAGE = "#E74C3C",
+  WARNING = "#F39C12",
+  DEVIATIONS = "#D35400",
+}
+
 export const pageSizeSelect = ['5', '10', '15', '20']
 
 export const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g;

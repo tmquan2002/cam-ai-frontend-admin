@@ -115,6 +115,7 @@ export enum ActiveStatusGroup {
   Active = CommonStatus.Active,
   Working = EdgeBoxInstallStatus.Working,
   Activated = EdgeBoxActivationStatus.Activated,
+  Installing = EdgeBoxLocationStatus.Installing,
 }
 
 export enum InactiveStatusGroup {
@@ -139,4 +140,12 @@ export enum StatusColor {
   INACTIVE = "#f23f43",
   IDLE = "#f0b232",
   NONE = "#80848e"
+}
+
+export enum StatusColorLight {
+  ACTIVE = "#9DFF9E",
+  MIDDLE = "#748dc0",
+  INACTIVE = "#F08080",
+  IDLE = "#E7E48C",
+  NONE = "#c4cbda"
 }
