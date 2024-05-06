@@ -137,7 +137,7 @@ const EdgeBoxList = () => {
     const rows = edgeBoxList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/edgebox/${e.id}`)}>
-                <Table.Td>{(i + 1)}</Table.Td>
+                <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
 
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>

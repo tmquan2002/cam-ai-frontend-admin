@@ -19,7 +19,7 @@ export const DonutChartContainer = ({ type }: { type: "edgeBox" | "install" }) =
                 <Group justify="center" mt={15}>
                     <Box>
                         <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Edge Box Status" : type == "install" ? "Install Status" : 0}</Text>
-                        <DonutChart withLabelsLine withLabels
+                        <DonutChart withLabelsLine={false} withLabels paddingAngle={5}
                             data={type == "edgeBox" ?
                                 convertReportResponseToChartFormat(edgeBoxReport, undefined, "edgeBoxStatus")
                                 : convertReportResponseToChartFormat(undefined, edgeBoxInstallReport, "installationStatus")
@@ -29,7 +29,7 @@ export const DonutChartContainer = ({ type }: { type: "edgeBox" | "install" }) =
                     
                     <Box>
                         <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Location Status" : type == "install" ? "Activation Status" : 0}</Text>
-                        <DonutChart withLabelsLine withLabels
+                        <DonutChart withLabelsLine={false} withLabels paddingAngle={5}
                             data={type == "edgeBox" ?
                                 convertReportResponseToChartFormat(edgeBoxReport, undefined, "locationStatus")
                                 : convertReportResponseToChartFormat(undefined, edgeBoxInstallReport, "activationStatus")

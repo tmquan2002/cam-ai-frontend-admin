@@ -84,7 +84,7 @@ const InstallList = () => {
     const rows = installList?.values.map((e, i) => (
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
-                <Table.Td>{(i + 1)}</Table.Td>
+                <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
 
                 <Table.Td>{e.shop?.name}</Table.Td>
                 <Table.Td>{e.edgeBox?.name}</Table.Td>
