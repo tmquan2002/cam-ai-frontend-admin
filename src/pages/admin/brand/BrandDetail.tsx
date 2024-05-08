@@ -228,9 +228,9 @@ const BrandDetail = () => {
                                     <Text size='md' fw={'bold'} fz={17} mt={10}>{data?.companyName}</Text>
                                     <Group>
                                         <MdHome />
-                                        {(data?.companyWard && data?.companyAddress) && <Text size="md">{data.companyAddress}, {data.companyWard?.name}, {data.companyWard?.district?.name}, {data.companyWard?.district?.province?.name}</Text>}
-                                        {(data?.companyWard && !data?.companyAddress) && <Text size="md">{data.companyWard?.name}, {data.companyWard?.district?.name}, {data.companyWard?.district?.province?.name}</Text>}
-                                        {(!data?.companyWard && data?.companyAddress) && <Text size="md">{data.companyAddress}</Text>}
+                                        {(data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}, {data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
+                                        {(data?.companyWard && !data?.companyAddress) && <Text size="md">{data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
+                                        {(!data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}</Text>}
                                         {(!data?.companyWard && !data?.companyAddress) && <Text size="md">No Data</Text>}
                                     </Group>
                                 </Box>

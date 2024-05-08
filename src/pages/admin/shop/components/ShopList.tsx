@@ -124,7 +124,7 @@ const ShopList = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}
             events={{ hover: true, focus: true, touch: false }}>
             <Table.Tr onClick={() => navigate(`/shop/${e.id}`)}>
-                <Table.Td>{(i + 1)}</Table.Td>
+                <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
                 <Table.Td>{e.name}</Table.Td>
                 <Table.Td>{e.brand?.name}</Table.Td>
                 <Table.Td>{e.phone}</Table.Td>
