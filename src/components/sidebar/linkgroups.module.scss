@@ -1,0 +1,62 @@
+.mainicon {
+    @include light {
+        color: black;
+    }
+
+    @include dark {
+        color: white;
+    }
+}
+
+.activeicon {
+    color: #1864ab;
+}
+
+.mainlink,
+.activelink {
+    padding: 0.625rem 1rem;
+    margin-bottom: 0.25rem;
+    border-radius: rem(6);
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+
+
+    .label {
+        padding-left: 15px;
+    }
+
+    @media (max-width: 900px) {
+        padding: 10px 0.6rem;
+    }
+
+    transition: padding 300ms;
+}
+
+.mainlink:hover .mainicon {
+    color: #1864ab;
+}
+
+.mainlink {
+    .label {
+        @include light {
+            color: black;
+        }
+
+        @include dark {
+            color: white;
+        }
+    }
+}
+
+.mainlink:hover,
+.activelink {
+    background-color: var(--mantine-color-light-blue-1);
+    color: #1864ab;
+
+    .label {
+        color: #1864ab;
+    }
+}

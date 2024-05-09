@@ -1,4 +1,4 @@
-import { Divider, Text } from "@mantine/core";
+import { Divider, ScrollArea, Text } from "@mantine/core";
 import { IconNotes, IconRouter } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { AiFillShop } from "react-icons/ai";
@@ -10,7 +10,6 @@ import { LinksGroup } from './LinksGroup';
 import styled from './sidebar.module.scss';
 
 const data = [
-    // { label: 'Dashboard', icon: AiFillDashboard, path: '/dashboard' },
     { label: 'Account', icon: MdOutlineSupervisorAccount, path: '/account' },
     { label: 'Brand', icon: IconNotes, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
@@ -46,7 +45,9 @@ export function SideBar() {
                 <Text m={20} fw={'bold'} size={'25px'}>CAMAI</Text>
             }
             <Divider />
-            <div className={styled.linksInner}>{links}</div>
+            <ScrollArea className={windowWidth <= breakpoint ? styled["linksMinimize"] : styled["links"]}>
+                <div className={styled["linksInner"]}>{links}</div>
+            </ScrollArea>
         </nav>
     );
 }
