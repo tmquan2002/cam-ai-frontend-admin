@@ -63,6 +63,15 @@ export enum EdgeBoxInstallFilterProps {
   FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
 }
 
+export enum DisabledEdgeBoxInstallFilterProps {
+  FILTER = "disabledEdgeBoxInstallFilter",
+  PAGE_INDEX = "pageIndex",
+  SIZE = "size",
+  FILTER_ACTIVATION_STATUS = "filterActivationStatus",
+  FILTER_SEARCH_SHOP = "filterSearchShop",
+  FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
+}
+
 export enum NotificationColorPalette {
   IN_PROGRESS = "#9B59B6",
   DRAFT = "#34495E",

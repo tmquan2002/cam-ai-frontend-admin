@@ -11,6 +11,7 @@ import { EdgeBoxInstallFilterProps, pageSizeSelect } from '../../../../types/con
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from '../../../../types/enum';
 import styled from "../styles/edgeboxinstall.module.scss";
 import { MdFilterAlt } from 'react-icons/md';
+import { removeTime } from '../../../../utils/dateTimeFunction';
 
 const InstallList = () => {
 
@@ -32,7 +33,7 @@ const InstallList = () => {
     const navigate = useNavigate();
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
-        <Table.Tr key={i} onClick={() => {}}>
+        <Table.Tr key={i} onClick={() => { }}>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
@@ -86,8 +87,10 @@ const InstallList = () => {
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
 
-                <Table.Td>{e.shop?.name}</Table.Td>
-                <Table.Td>{e.edgeBox?.name}</Table.Td>
+                <Table.Td>{e?.shop?.name}</Table.Td>
+                <Table.Td>{e?.edgeBox?.name}</Table.Td>
+                <Table.Td>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
+                <Table.Td>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBoxInstallStatus ?? "None"} />
                 </Table.Td>
@@ -169,7 +172,7 @@ const InstallList = () => {
             </Collapse>
 
             {/* Table */}
-            <ScrollArea.Autosize mah={400}>
+            <ScrollArea.Autosize mah={600}>
                 <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover>
                         <Table.Thead>
@@ -177,6 +180,8 @@ const InstallList = () => {
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Shop</Table.Th>
                                 <Table.Th>EdgeBox</Table.Th>
+                                <Table.Th>Created Date</Table.Th>
+                                <Table.Th>Uninstall Date</Table.Th>
                                 <Table.Th ta={"center"}>Install Health</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                                 <Table.Th ta={"center"}>Activation Status</Table.Th>
