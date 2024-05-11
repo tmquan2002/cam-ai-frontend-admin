@@ -74,8 +74,8 @@ const InstallList = () => {
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
 
-                <Table.Td>{e?.shop?.name}</Table.Td>
-                <Table.Td>{e?.edgeBox?.name}</Table.Td>
+                <Table.Td>{e?.shop?.name ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
                 <Table.Td>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
                 <Table.Td>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>

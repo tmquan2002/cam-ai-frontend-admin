@@ -43,6 +43,8 @@ const EdgeBoxList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
@@ -87,8 +89,9 @@ const EdgeBoxList = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/edgebox/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-
-                <Table.Td>{e.name}</Table.Td>
+                <Table.Td>{e?.name ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.serialNumber ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.edgeBoxModel?.modelCode ?? "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} padding={10} size='sm' />
                 </Table.Td>
@@ -203,6 +206,8 @@ const EdgeBoxList = () => {
                             <Table.Tr>
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Name</Table.Th>
+                                <Table.Th>Serial Number</Table.Th>
+                                <Table.Th>Modal Code</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                             </Table.Tr>
