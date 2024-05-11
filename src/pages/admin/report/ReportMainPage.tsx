@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { MdFilterAlt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
-import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import Navbar from "../../../components/navbar/Navbar";
 import { useGetAllInstallsFilter } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetAllShopsSelect } from "../../../hooks/useShops";
 import { useLocalStorageCustomHook } from "../../../hooks/useStorageState";
@@ -16,17 +14,11 @@ import { removeTime } from "../../../utils/dateTimeFunction";
 import { DonutChartContainer } from "./components/DonutChartContainer";
 import styled from "./report.module.scss";
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "Report",
-    },
-]
-
 const ReportMainPage = () => {
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [storage, setStorage] = useLocalStorageCustomHook(DisabledEdgeBoxInstallFilterProps.FILTER, {
         pageIndex: 1,
-        size: "5",
+        size: "10",
         filterActivationStatus: "None",
         filterSearchShop: "",
         filterSearchShopId: "None",
@@ -107,7 +99,6 @@ const ReportMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} />
 
             <Box m={rem(32)} p={rem(32)} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} className={styled["static-card"]}>
                 {/* Top */}
