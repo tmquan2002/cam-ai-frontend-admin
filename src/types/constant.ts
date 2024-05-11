@@ -11,7 +11,6 @@ export enum BrandFilterProps {
   SIZE = "size",
   SEARCH = "searchTerm",
   FILTER_STATUS = "filterStatus",
-  INITIAL_DATA = "initialData",
 }
 
 export enum AccountFilterProps {
@@ -24,7 +23,6 @@ export enum AccountFilterProps {
   FILTER_ROLE = "filterRole",
   FILTER_SEARCH_BRAND = "filterSearchBrand",
   FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
-  INITIAL_DATA = "initialData",
 }
 
 export enum ShopFilterProps {
@@ -36,7 +34,6 @@ export enum ShopFilterProps {
   FILTER_STATUS = "filterStatus",
   FILTER_SEARCH_BRAND = "filterSearchBrand",
   FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
-  INITIAL_DATA = "initialData",
 }
 
 export enum EdgeBoxFilterProps {
@@ -50,7 +47,6 @@ export enum EdgeBoxFilterProps {
   FILTER_SEARCH_BRAND_ID = "filterSearchBrandId",
   FILTER_SEARCH_SHOP = "filterSearchShop",
   FILTER_SEARCH_SHOP_ID = "filterSearchShopId",
-  INITIAL_DATA = "initialData",
 }
 
 export enum EdgeBoxInstallFilterProps {

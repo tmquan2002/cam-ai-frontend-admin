@@ -1,38 +1,35 @@
 import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
+import * as _ from "lodash";
 import { isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
-import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { useEffect, useMemo } from 'react';
+import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { GetAccountsParams } from '../../../../apis/AccountAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
-import { AccountStatus, Role } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateTimeFunction';
-import styled from "../styles/account.module.scss";
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { AccountFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { AccountStatus, Role } from '../../../../types/enum';
+import styled from "../styles/account.module.scss";
 
 const AccountList = () => {
 
     const [storage, setStorage] = useLocalStorageCustomHook(AccountFilterProps.FILTER, {
         pageIndex: 1,
-        size: "5",
+        size: "10",
         searchTerm: "",
         searchBy: "Name",
         filterRole: "None",
         filterStatus: "None",
         filterSearchBrand: "",
-        filterSearchBrandId: "None",
-        initialData: true
+        filterSearchBrandId: "None"
     })
 
-    const { pageIndex, size, searchTerm, searchBy, initialData,
-        filterStatus, filterRole, filterSearchBrand, filterSearchBrandId } = storage;
-
-    const [clear, setClear] = useState(false)
+    const { pageIndex, size, searchTerm, searchBy, filterStatus, filterRole, filterSearchBrand, filterSearchBrandId } = storage;
+    const [debounced] = useDebouncedValue(searchTerm, 500)
     const [opened, { toggle }] = useDisclosure(false)
-    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -43,65 +40,31 @@ const AccountList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
-            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
 
-    const { data: accountList, isLoading, isFetching, refetch
-    } = useGetAllAccounts({
-        pageIndex: (pageIndex - 1), size: Number(size),
-        name: searchBy == "Name" ? searchTerm : "",
-        email: searchBy == "Email" ? searchTerm : "",
-        accountStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
-        role: filterRole !== "None" && filterRole !== "" ? filterRole : "",
-        brandId: filterSearchBrandId !== "None" && !isEmpty(filterSearchBrandId) ? filterSearchBrandId : "",
-    });
+    const searchParams: GetAccountsParams = useMemo(() => {
+        let sb: GetAccountsParams = {
+            pageIndex: (pageIndex - 1), size: Number(size),
+            name: searchBy == "Name" ? debounced.toString() : "",
+            email: searchBy == "Email" ? debounced.toString() : "",
+            accountStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : "",
+            role: filterRole !== "None" && filterRole !== "" ? filterRole : "",
+            brandId: filterSearchBrandId !== "None" && !isEmpty(filterSearchBrandId) ? filterSearchBrandId : "",
+        };
+        sb = _.omitBy(sb, _.isNil) as GetAccountsParams;
+        sb = _.omitBy(sb, _.isNaN) as GetAccountsParams;
+        return sb;
+    }, [pageIndex, size, filterStatus, debounced, filterSearchBrandId, searchBy, filterRole]);
 
-    const { data: brandList, refetch: refetchBrand
-    } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });
-
-    useEffect(() => {
-        if (searchTerm !== "" || !clear) {
-            return;
-        } else {
-            setClear(false)
-            refetch();
-            setRendered(a => a + 1)
-        }
-    }, [searchTerm, clear])
+    const { data: accountList, isFetching } = useGetAllAccounts(searchParams);
+    const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });
 
     useEffect(() => {
         const timer = setTimeout(() => refetchBrand(), 500);
         return () => { clearTimeout(timer); };
     }, [filterSearchBrand]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if ((filterStatus !== "None" || filterRole !== "None" || filterSearchBrandId !== "None") && rendered !== 0) {
-                refetch();
-                setRendered(a => a + 1)
-                setStorage(AccountFilterProps.PAGE_INDEX, 1)
-            } else {
-                setRendered(x => x + 1)
-            }
-        }, 500);
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [filterSearchBrandId, filterRole, filterStatus]);
-
-    const onSearch = (e: any) => {
-        if (e.key == "Enter" && !isEmpty(searchTerm)) {
-            if (pageIndex == 1) {
-                refetch()
-                setRendered(a => a + 1)
-            } else {
-                setStorage(AccountFilterProps.PAGE_INDEX, 1)
-            }
-            setStorage(AccountFilterProps.INITIAL_DATA, false)
-        }
-    }
 
     const onClearFilter = () => {
         setStorage(AccountFilterProps.FILTER_ROLE, "")
@@ -110,30 +73,16 @@ const AccountList = () => {
         setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, "")
     }
 
-    const onClearSearch = () => {
-        if (initialData) {
-            setStorage(AccountFilterProps.SEARCH, "")
-            return
-        } else {
-            onClearFilter();
-            setStorage(AccountFilterProps.SEARCH, "");
-            setStorage(AccountFilterProps.PAGE_INDEX, 1);
-            setStorage(AccountFilterProps.INITIAL_DATA, true);
-            setClear(true)
-        }
-    }
-
     const rows = accountList?.values.map((e, i) => (
         <Tooltip label="View Detail" key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-                <Table.Td>{e.name}</Table.Td>
-                <Table.Td>{e.brand?.name}</Table.Td>
-                <Table.Td>{e.email}</Table.Td>
-                <Table.Td>{e.role.toString().replace(/([A-Z])/g, ' $1').trim()}</Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
-                <Table.Td>
-                    <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} fullWidth />
+                <Table.Td>{e?.name ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.brand?.name ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.email ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.role ? e?.role.toString().replace(/([A-Z])/g, ' $1').trim() : "No Data"}</Table.Td>
+                <Table.Td ta="center">
+                    <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} padding={10} size='sm' />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -148,7 +97,7 @@ const AccountList = () => {
                     <Group justify="space-between">
                         <Text size='lg' fw="bold" fz='25px'
                             c={"light-blue.4"}
-                        >ACCOUNT LIST</Text>
+                        >Account List</Text>
                         <Group>
                             <Tooltip label="Filter" withArrow>
                                 <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -165,17 +114,18 @@ const AccountList = () => {
                     </Group>
                 </Grid.Col>
                 <Grid.Col span={12}>
-                    <Group justify="space-between">
+                    <Group justify="space-between" align='flex-end'>
                         <TextInput w={'60%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
-                            rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setStorage(AccountFilterProps.SEARCH, event.currentTarget.value) }}
-                            onKeyDown={onSearch}
+                            value={searchTerm}
+                            onChange={(event) => {
+                                event.preventDefault();
+                                setStorage(AccountFilterProps.SEARCH, event.currentTarget.value)
+                            }}
                         />
                         <Group>
-                            <Text>Search by: </Text>
                             <Select
-                                placeholder="Select"
+                                placeholder="Select" label="Search By"
                                 allowDeselect={false}
                                 value={searchBy}
                                 data={['Name', 'Email']}
@@ -184,56 +134,54 @@ const AccountList = () => {
                         </Group>
                     </Group>
                 </Grid.Col>
-
             </Grid>
 
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text>Filter Account</Text></Grid.Col>
+                <Grid mt={20} justify='space-between'>
+                    <Grid.Col span={6}><Text fw="bold">Filter Account</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
                     </Button>
                     </Grid.Col>
                 </Grid>
-                <Group mt="md">
-                    <Text size='sm' fw={"bold"}>Role: </Text>
-                    <RadioGroup name="role" size='sm' value={filterRole}
-                        onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
-                        <Group>
-                            <Radio value={Role.BrandManager} label={"Brand Manager"} />
-                            <Radio value={Role.ShopManager} label={"Shop Manager"} />
-                        </Group>
-                    </RadioGroup>
-                </Group>
-                <Group mt="md">
-                    <Text size='sm' fw={"bold"}>Status: </Text>
-                    <RadioGroup name="status" size='sm' value={filterStatus}
-                        onChange={(value) => setStorage(AccountFilterProps.FILTER_STATUS, value)}>
-                        <Group>
-                            <Radio value={AccountStatus.New} label={"New"} />
-                            <Radio value={AccountStatus.Active} label={"Active"} />
-                            <Radio value={AccountStatus.Inactive} label={"Inactive"} />
-                        </Group>
-                    </RadioGroup>
-                </Group>
-                <Group mt="md" mb="md">
-                    <Text size='sm' fw={"bold"}>Brand: </Text>
-                    <Select data={brandList || []} limit={5} size='sm'
-                        nothingFoundMessage={brandList && "Not Found"}
-                        value={filterSearchBrandId} placeholder="Pick value" clearable searchable
-                        searchValue={filterSearchBrand}
-                        onSearchChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, value)}
-                        onChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)}
-                    />
-                </Group>
+                <Grid mb={20}>
+                    <Grid.Col span={4}>
+                        <RadioGroup name="role" size='sm' value={filterRole} label="Role"
+                            onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
+                            <Group>
+                                <Radio value={Role.BrandManager} label={"Brand Manager"} />
+                                <Radio value={Role.ShopManager} label={"Shop Manager"} />
+                            </Group>
+                        </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <RadioGroup name="status" size='sm' value={filterStatus} label="Account Status"
+                            onChange={(value) => setStorage(AccountFilterProps.FILTER_STATUS, value)}>
+                            <Group>
+                                <Radio value={AccountStatus.New} label={"New"} />
+                                <Radio value={AccountStatus.Active} label={"Active"} />
+                                <Radio value={AccountStatus.Inactive} label={"Inactive"} />
+                            </Group>
+                        </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                        <Select data={brandList || []} limit={5} size='xs'
+                            nothingFoundMessage={brandList && "Not Found"} label="Brand"
+                            value={filterSearchBrandId} placeholder="Pick value" clearable searchable
+                            searchValue={filterSearchBrand}
+                            onSearchChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, value)}
+                            onChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)}
+                        />
+                    </Grid.Col>
+                </Grid>
                 <Divider />
             </Collapse>
 
             {/* Table */}
-            <ScrollArea.Autosize mah={400}>
+            <ScrollArea.Autosize mah={600}>
                 <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover captionSide="bottom">
                         <Table.Thead>
@@ -243,17 +191,16 @@ const AccountList = () => {
                                 <Table.Th>Brand</Table.Th>
                                 <Table.Th>Email</Table.Th>
                                 <Table.Th>Role</Table.Th>
-                                <Table.Th>Created Date</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
-                        <Table.Tbody>{isLoading || isFetching ? loadingData : rows}</Table.Tbody>
+                        <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>
                         {accountList?.totalCount == 0 && <Table.Caption>Nothing Found</Table.Caption>}
                     </Table>
                 </Table.ScrollContainer>
             </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || accountList?.totalCount ?
+                {isFetching || accountList?.totalCount ?
                     <>
                         <Pagination total={accountList?.totalCount ? Math.ceil(accountList?.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
                             onChange={(value) => setStorage(AccountFilterProps.PAGE_INDEX, value)} />

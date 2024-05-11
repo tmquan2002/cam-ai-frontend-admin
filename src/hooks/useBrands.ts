@@ -8,7 +8,7 @@ import { CommonResponse } from "../models/CommonResponse";
 export const useGetAllBrands = (params: GetBrandsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<CommonResponse<Brand>, Error> = useQuery({
-    queryKey: ["brandList", params.size, params.pageIndex],
+    queryKey: ["brandList", params],
     queryFn: async () => {
       return await BrandAPI.getAllFilter(params);
     },

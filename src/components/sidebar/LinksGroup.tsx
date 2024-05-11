@@ -19,7 +19,7 @@ export function LinksGroup({ icon: Icon, label, path, minimize }: LinksGroupProp
             <ThemeIcon size={30} variant="transparent" className={location.pathname.includes(path!) ? `${styled["activeicon"]}` : `${styled["mainicon"]}`}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            {!minimize && <Text fw={500} className={styled.label}>{label}</Text>}
+            {!minimize && <Text fw={500} className={styled.label} ta="left">{label}</Text>}
           </Box>
         </Group>
       </Link>

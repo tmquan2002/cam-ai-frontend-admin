@@ -14,7 +14,7 @@ const data = [
     { label: 'Brand', icon: IconNotes, path: '/brand' },
     { label: 'Shop', icon: AiFillShop, path: '/shop' },
     { label: 'Edge Box', icon: IconRouter, path: '/edgebox' },
-    { label: 'Install', icon: GrInstall, path: '/install' },
+    { label: 'Edge Box Installation', icon: GrInstall, path: '/install' },
     { label: 'Report', icon: TbReport, path: '/report' },
 ];
 

@@ -1,31 +1,28 @@
 import { ActionIcon, Avatar, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
-import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
+import * as _ from "lodash";
+import { useMemo } from 'react';
+import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { GetBrandsParams } from '../../../../apis/BrandAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { BrandStatus } from '../../../../types/enum';
-import { removeTime } from '../../../../utils/dateTimeFunction';
-import styled from "../styles/brand.module.scss";
 import { BrandFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { BrandStatus } from '../../../../types/enum';
+import styled from "../styles/brand.module.scss";
 
 const BrandList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(BrandFilterProps.FILTER, {
         pageIndex: 1,
-        size: "5",
+        size: "20",
         searchTerm: "",
         filterStatus: "None",
-        initialData: true
     })
 
-    const { pageIndex, size, searchTerm, filterStatus, initialData } = storage;
-
-    const [clear, setClear] = useState(false)
+    const { pageIndex, size, searchTerm, filterStatus } = storage;
+    const [debounced] = useDebouncedValue(searchTerm, 500)
     const [opened, { toggle }] = useDisclosure(false);
-    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -34,69 +31,26 @@ const BrandList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
     ))
 
-    const { data: brandList, isFetching, isLoading, refetch
-    } = useGetAllBrands({
-        pageIndex: (pageIndex - 1), size, name: searchTerm,
-        brandStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : ""
-    })
-
-    const onSearch = (e: any) => {
-        // console.log(e.key)
-        if (e.key == "Enter" && !isEmpty(searchTerm)) {
-            if (pageIndex == 1) {
-                refetch()
-                setRendered(a => a + 1)
-            } else {
-                setStorage(BrandFilterProps.PAGE_INDEX, 1);
-            }
-            setStorage(BrandFilterProps.INITIAL_DATA, false);
-        }
-    }
-
-    useEffect(() => {
-        if (searchTerm !== "" || !clear) {
-            return;
-        } else {
-            setClear(false)
-            refetch()
-            setRendered(a => a + 1)
-        }
-    }, [searchTerm, clear])
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (filterStatus !== "None" && rendered !== 0) {
-                refetch()
-                setRendered(a => a + 1)
-                setStorage(BrandFilterProps.PAGE_INDEX, 1);
-            } else {
-                setRendered(a => a + 1)
-            }
-        }, 500);
-        return () => {
-            clearTimeout(timer);
+    const searchParams: GetBrandsParams = useMemo(() => {
+        let sb: GetBrandsParams = {
+            pageIndex: (pageIndex - 1), size, name: debounced.toString(),
+            brandStatus: filterStatus !== "None" && filterStatus !== "" ? filterStatus : ""
         };
-    }, [filterStatus]);
+        sb = _.omitBy(sb, _.isNil) as GetBrandsParams;
+        sb = _.omitBy(sb, _.isNaN) as GetBrandsParams;
+        return sb;
+    }, [pageIndex, size, filterStatus, debounced]);
+
+    const { data: brandList, isFetching } = useGetAllBrands(searchParams)
+
 
     const onClearFilter = () => {
         setStorage(BrandFilterProps.FILTER_STATUS, "");
-    }
-
-    const onClearSearch = () => {
-        if (initialData) {
-            setStorage(BrandFilterProps.SEARCH, "");
-            return
-        } else {
-            onClearFilter();
-            setStorage(BrandFilterProps.SEARCH, "");
-            setStorage(BrandFilterProps.PAGE_INDEX, 1);
-            setStorage(BrandFilterProps.INITIAL_DATA, false);
-            setClear(true)
-        }
     }
 
     const rows = brandList?.values.map((e, i) => (
@@ -107,10 +61,12 @@ const BrandList = () => {
                 <Table.Td>
                     <Group>
                         <Avatar w={50} h={50} src={e.logo?.hostingUri} />{e.name}
-                    </Group></Table.Td>
-                <Table.Td>{removeTime(new Date(e.createdDate), "/")}</Table.Td>
-                <Table.Td>
-                    <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} fullWidth />
+                    </Group>
+                </Table.Td>
+                <Table.Td>{e?.email ?? "No Data"}</Table.Td>
+                <Table.Td>{e?.phone ?? "No Data"}</Table.Td>
+                <Table.Td ta="center">
+                    <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} padding={10} size='sm' />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -125,7 +81,7 @@ const BrandList = () => {
                     <Group justify="space-between">
                         <Text size='lg' fw="bold" fz='25px'
                             c={"light-blue.4"}
-                        >BRAND LIST</Text>
+                        >Brand List</Text>
                         <Group>
                             <Tooltip label="Filter" withArrow>
                                 <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -143,12 +99,14 @@ const BrandList = () => {
                 </Grid.Col>
 
                 <Grid.Col span={12}>
-                    <Group justify="space-between">
+                    <Group justify="space-between" align='flex-end'>
                         <TextInput w={'100%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
-                            rightSection={<MdClear style={{ cursor: 'pointer' }} onClick={onClearSearch} />}
-                            value={searchTerm} onChange={(event) => { event.preventDefault(); setStorage(BrandFilterProps.SEARCH, event.currentTarget.value); }}
-                            onKeyDown={onSearch}
+                            value={searchTerm}
+                            onChange={(event) => {
+                                event.preventDefault();
+                                setStorage(BrandFilterProps.SEARCH, event.currentTarget.value);
+                            }}
                         />
                     </Group>
                 </Grid.Col>
@@ -157,36 +115,38 @@ const BrandList = () => {
             {/* Filter Section*/}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text>Filter Brand</Text></Grid.Col>
+                <Grid mt={20} justify='space-between'>
+                    <Grid.Col span={6}><Text fw="bold">Filter Brand</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
                     </Button>
                     </Grid.Col>
                 </Grid>
-                <Group mb="md">
-                    <Text size='sm' fw={"bold"}>Status: </Text>
-                    <RadioGroup name="status" value={filterStatus}
-                        onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
-                        <Group>
-                            <Radio value={BrandStatus.Active.toString()} label={"Active"} />
-                            <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
-                        </Group>
-                    </RadioGroup>
-                </Group>
+                <Grid mb={20}>
+                    <Grid.Col span={2}>
+                        <RadioGroup name="status" value={filterStatus} label="Brand Status"
+                            onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
+                            <Group>
+                                <Radio value={BrandStatus.Active.toString()} label={"Active"} />
+                                <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
+                            </Group>
+                        </RadioGroup>
+                    </Grid.Col>
+                </Grid>
                 <Divider />
             </Collapse>
 
             {/* Table Section*/}
-            <ScrollArea.Autosize mah={400}>
+            <ScrollArea.Autosize mah={600}>
                 <Table.ScrollContainer minWidth={500} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover>
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Name</Table.Th>
-                                <Table.Th>Created Date</Table.Th>
+                                <Table.Th>Email</Table.Th>
+                                <Table.Th>Phone</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
@@ -196,7 +156,7 @@ const BrandList = () => {
                 </Table.ScrollContainer>
             </ScrollArea.Autosize>
             <div className={styled["table-footer"]}>
-                {isLoading || isFetching || brandList?.totalCount ?
+                {isFetching || brandList?.totalCount ?
                     <>
                         <Pagination total={brandList?.totalCount ? Math.ceil(brandList.totalCount / Number(size)) : 0}
                             value={pageIndex} mt="sm"

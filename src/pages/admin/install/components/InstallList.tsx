@@ -1,34 +1,33 @@
 import { ActionIcon, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import * as _ from "lodash";
 import { isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import { MdFilterAlt } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { GetEdgeBoxInstallParams } from '../../../../apis/EdgeBoxInstallAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllInstallsFilter } from '../../../../hooks/useEdgeBoxInstalls';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
 import { EdgeBoxInstallFilterProps, pageSizeSelect } from '../../../../types/constant';
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from '../../../../types/enum';
-import styled from "../styles/edgeboxinstall.module.scss";
-import { MdFilterAlt } from 'react-icons/md';
 import { removeTime } from '../../../../utils/dateTimeFunction';
+import styled from "../styles/edgeboxinstall.module.scss";
 
 const InstallList = () => {
 
     const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxInstallFilterProps.FILTER, {
         pageIndex: 1,
-        size: "5",
+        size: "10",
         filterInstallStatus: "None",
         filterActivationStatus: "None",
         filterSearchShop: "",
         filterSearchShopId: "None",
     })
 
-    const { pageIndex, size, filterInstallStatus, filterActivationStatus,
-        filterSearchShop, filterSearchShopId } = storage;
-
+    const { pageIndex, size, filterInstallStatus, filterActivationStatus, filterSearchShop, filterSearchShopId } = storage;
     const [opened, { toggle }] = useDisclosure(false);
-    const [rendered, setRendered] = useState(0)
 
     const navigate = useNavigate();
 
@@ -43,37 +42,25 @@ const InstallList = () => {
         </Table.Tr>
     ))
 
-    const { data: installList, isFetching, refetch
-    } = useGetAllInstallsFilter({
-        pageIndex: (pageIndex - 1), size,
-        edgeBoxInstallStatus: filterInstallStatus !== "None" && filterInstallStatus !== "" ? filterInstallStatus : "",
-        activationStatus: filterActivationStatus !== "None" && filterActivationStatus !== "" ? filterActivationStatus : "",
-        shopId: filterSearchShopId !== "None" && !isEmpty(filterSearchShopId) ? filterSearchShopId : "",
-    })
+    const searchParams: GetEdgeBoxInstallParams = useMemo(() => {
+        let sb: GetEdgeBoxInstallParams = {
+            pageIndex: (pageIndex - 1), size: Number(size),
+            edgeBoxInstallStatus: filterInstallStatus !== "None" && filterInstallStatus !== "" ? filterInstallStatus : "",
+            activationStatus: filterActivationStatus !== "None" && filterActivationStatus !== "" ? filterActivationStatus : "",
+            shopId: filterSearchShopId !== "None" && !isEmpty(filterSearchShopId) ? filterSearchShopId : "",
+        };
+        sb = _.omitBy(sb, _.isNil) as GetEdgeBoxInstallParams;
+        sb = _.omitBy(sb, _.isNaN) as GetEdgeBoxInstallParams;
+        return sb;
+    }, [pageIndex, size, filterInstallStatus, filterActivationStatus, filterSearchShopId]);
 
-    const { data: shopList, refetch: refetchShop
-    } = useGetAllShopsSelect({ name: filterSearchShop || "" });
+    const { data: installList, isFetching } = useGetAllInstallsFilter(searchParams)
+    const { data: shopList, refetch: refetchShop } = useGetAllShopsSelect({ name: filterSearchShop || "" });
 
     useEffect(() => {
         const timer = setTimeout(() => refetchShop(), 500);
         return () => { clearTimeout(timer); };
     }, [filterSearchShop]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if ((filterInstallStatus !== "None" || filterActivationStatus !== "None" || filterSearchShopId !== "None")
-                && rendered !== 0) {
-                refetch();
-                setRendered(a => a + 1)
-                setStorage(EdgeBoxInstallFilterProps.PAGE_INDEX, 1)
-            } else {
-                setRendered(x => x + 1)
-            }
-        }, 500);
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [filterInstallStatus, filterActivationStatus, filterSearchShopId]);
 
     const onClearFilter = () => {
         setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, "")
@@ -92,13 +79,13 @@ const InstallList = () => {
                 <Table.Td>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
                 <Table.Td>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.edgeBoxInstallStatus ?? "None"} />
+                    <StatusBadge statusName={e.edgeBoxInstallStatus ?? "None"} padding={10} size='sm' />
                 </Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} />
+                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} padding={10} size='sm' />
                 </Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.activationStatus ?? "None"} />
+                    <StatusBadge statusName={e.activationStatus ?? "None"} padding={10} size='sm' />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -113,7 +100,7 @@ const InstallList = () => {
                     <Group justify="space-between">
                         <Text size='lg' fw="bold" fz='25px'
                             c={"light-blue.4"}
-                        >EDGE BOX INSTALLATION LIST</Text>
+                        >Edge Box Installation List</Text>
                         <Tooltip label="Filter" withArrow>
                             <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
                                 <MdFilterAlt />
@@ -126,48 +113,47 @@ const InstallList = () => {
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={10} justify='space-between'>
-                    <Grid.Col span={6}><Text>Filter Install</Text></Grid.Col>
+                <Grid mt={20} justify='space-between'>
+                    <Grid.Col span={6}><Text fw="bold">Filter Install</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
                     </Button>
                     </Grid.Col>
                 </Grid>
-                <Group mb="md">
-                    <Text size='sm' fw={"bold"}>Health Status: </Text>
-                    <RadioGroup name="status" value={filterInstallStatus}
-                        onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, value)}>
-                        <Group>
-                            <Radio value={EdgeBoxInstallStatus.New.toString()} label={"New"} />
-                            <Radio value={EdgeBoxInstallStatus.Working.toString()} label={"Working"} />
-                            <Radio value={EdgeBoxInstallStatus.Unhealthy.toString()} label={"Unhealthy"} />
-                            <Radio value={EdgeBoxInstallStatus.Disabled.toString()} label={"Disabled"} />
-                        </Group>
-                    </RadioGroup>
-                </Group>
-                <Group mb="md">
-                    <Text size='sm' fw={"bold"}>Activation Status: </Text>
-                    <RadioGroup name="location" value={filterActivationStatus}
-                        onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
-                        <Group>
-                            <Radio value={EdgeBoxActivationStatus.Activated.toString()} label={"Activated"} />
-                            <Radio value={EdgeBoxActivationStatus.NotActivated.toString()} label={"NotActivated"} />
-                            <Radio value={EdgeBoxActivationStatus.Pending.toString()} label={"Pending"} />
-                            <Radio value={EdgeBoxActivationStatus.Failed.toString()} label={"Failed"} />
-                        </Group>
-                    </RadioGroup>
-                </Group>
-                <Group mt="md" mb="md">
-                    <Text size='sm' fw={"bold"}>Shop: </Text>
-                    <Select data={shopList || []} limit={5} size='sm'
-                        nothingFoundMessage={shopList && "Not Found"}
-                        value={filterSearchShopId} placeholder="Pick value" clearable searchable
-                        searchValue={filterSearchShop}
-                        onSearchChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP, value)}
-                        onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP_ID, value)}
-                    />
-                </Group>
+                <Grid mb={20}>
+                    <Grid.Col span={6}>
+                        <RadioGroup name="status" value={filterInstallStatus} label="Install Helath"
+                            onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, value)}>
+                            <Group>
+                                <Radio value={EdgeBoxInstallStatus.New.toString()} label={"New"} />
+                                <Radio value={EdgeBoxInstallStatus.Working.toString()} label={"Working"} />
+                                <Radio value={EdgeBoxInstallStatus.Unhealthy.toString()} label={"Unhealthy"} />
+                                <Radio value={EdgeBoxInstallStatus.Disabled.toString()} label={"Disabled"} />
+                            </Group>
+                        </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <RadioGroup name="location" value={filterActivationStatus} label="Activation Status"
+                            onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
+                            <Group>
+                                <Radio value={EdgeBoxActivationStatus.Activated.toString()} label={"Activated"} />
+                                <Radio value={EdgeBoxActivationStatus.NotActivated.toString()} label={"NotActivated"} />
+                                <Radio value={EdgeBoxActivationStatus.Pending.toString()} label={"Pending"} />
+                                <Radio value={EdgeBoxActivationStatus.Failed.toString()} label={"Failed"} />
+                            </Group>
+                        </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                        <Select data={shopList || []} limit={5} size='xs' label="Shop" w={300}
+                            nothingFoundMessage={shopList && "Not Found"}
+                            value={filterSearchShopId} placeholder="Pick value" clearable searchable
+                            searchValue={filterSearchShop}
+                            onSearchChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP, value)}
+                            onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP_ID, value)}
+                        />
+                    </Grid.Col>
+                </Grid>
                 <Divider />
             </Collapse>
 

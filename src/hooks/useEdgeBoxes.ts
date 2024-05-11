@@ -8,7 +8,7 @@ export const useGetAllEdgeBoxes = (params: GetEdgeBoxParams) => {
   const { isError, isLoading, isFetching, data, error,
     refetch,
   }: UseQueryResult<CommonResponse<EdgeBox>, Error> = useQuery({
-    queryKey: ["edgeBoxList", params.size, params.pageIndex],
+    queryKey: ["edgeBoxList", params],
     queryFn: async () => {
       return await EdgeBoxAPI.getAllFilter(params);
     },

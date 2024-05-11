@@ -94,18 +94,14 @@ const InstallDetail = () => {
                             <Box>
                                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Install</Text>
                                 <Group grow mb={10}>
-                                    {dataInstall?.edgeBoxInstallStatus &&
-                                        <Box>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
-                                            <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Install Health" />
-                                        </Box>
-                                    }
-                                    {dataInstall?.activationStatus &&
-                                        <Box mb={10}>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
-                                            <StatusBadge statusName={dataInstall?.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
-                                        </Box>
-                                    }
+                                    <Box>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
+                                        <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus ?? "None"} padding={10} size="sm" tooltip="Install Health" />
+                                    </Box>
+                                    <Box mb={10}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
+                                        <StatusBadge statusName={dataInstall?.activationStatus ?? "None"} padding={10} size="sm" tooltip="Activation Status" />
+                                    </Box>
                                 </Group>
                                 <Group grow mb={15}>
                                     <Box mb={10}>

@@ -6,7 +6,7 @@ import { Shop } from "../models/Shop";
 export const useGetAllShops = (params: GetShopsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<CommonResponse<Shop>, Error> = useQuery({
-    queryKey: ["shopList", params.size, params.pageIndex],
+    queryKey: ["shopList", params],
     queryFn: async () => {
       return await ShopAPI.getAllFilter(params);
     },

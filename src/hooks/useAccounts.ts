@@ -6,7 +6,7 @@ import { CommonResponse } from "../models/CommonResponse";
 export const useGetAllAccounts = (params: GetAccountsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<CommonResponse<Account>, Error> = useQuery({
-    queryKey: ["accountList", params.size, params.pageIndex],
+    queryKey: ["accountList", params],
     queryFn: async () => {
       return await AccountAPI.getAllFilter(params);
     },

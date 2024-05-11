@@ -108,18 +108,6 @@ const ReportMainPage = () => {
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} />
-            <div className={styled["table-container"]}>
-                <Box m={rem(32)}>
-                    <Grid>
-                        <Grid.Col span={6}>
-                            <DonutChartContainer type="edgeBox" />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                            <DonutChartContainer type="install" />
-                        </Grid.Col>
-                    </Grid>
-                </Box>
-            </div>
 
             <Box m={rem(32)} p={rem(32)} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} className={styled["static-card"]}>
                 {/* Top */}
@@ -214,6 +202,18 @@ const ReportMainPage = () => {
                     }
                 </Group>
             </Box>
+            <div className={styled["table-container"]}>
+                <Box m={rem(32)}>
+                    <Grid>
+                        <Grid.Col span={6}>
+                            <DonutChartContainer type="edgeBox" />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            <DonutChartContainer type="install" />
+                        </Grid.Col>
+                    </Grid>
+                </Box>
+            </div>
         </div>
     );
 };
