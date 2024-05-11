@@ -1,6 +1,5 @@
 .container-detail {
     width: calc(100% - 50px);
-    padding: rem(40) rem(20);
 
     @include light {
         background-color: #f6f8fc;

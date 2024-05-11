@@ -20,7 +20,7 @@ const BrandAdd = () => {
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
-                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>NEW BRAND</Text>
+                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>New Brand</Text>
                 <AddBrandForm />
             </div>
         </div>

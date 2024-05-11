@@ -13,6 +13,10 @@ import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from "../../../types/en
 import { removeTime } from "../../../utils/dateTimeFunction";
 import { DonutChartContainer } from "./components/DonutChartContainer";
 import styled from "./report.module.scss";
+import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import Navbar from "../../../components/navbar/Navbar";
+
+const breadcrumbs: BreadcrumbItem[] = []
 
 const ReportMainPage = () => {
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -99,7 +103,7 @@ const ReportMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
-
+            <Navbar items={breadcrumbs} />
             <Box m={rem(32)} p={rem(32)} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} className={styled["static-card"]}>
                 {/* Top */}
                 <Grid mt={5} mb={20} justify='space-between'>
