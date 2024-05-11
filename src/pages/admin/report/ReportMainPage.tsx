@@ -36,13 +36,12 @@ const ReportMainPage = () => {
     const { data: installList, isFetching, refetch
     } = useGetAllInstallsFilter({
         pageIndex: (pageIndex - 1), size,
-        edgeBoxInstallStatus: EdgeBoxInstallStatus.Disabled,
+        edgeBoxInstallStatus: EdgeBoxInstallStatus.Unhealthy,
         activationStatus: filterActivationStatus !== "None" && filterActivationStatus !== "" ? filterActivationStatus : "",
         shopId: filterSearchShopId !== "None" && !isEmpty(filterSearchShopId) ? filterSearchShopId : "",
     })
 
-    const { data: shopList, refetch: refetchShop
-    } = useGetAllShopsSelect({ name: filterSearchShop || "" });
+    const { data: shopList, refetch: refetchShop } = useGetAllShopsSelect({ name: filterSearchShop || "" });
 
     useEffect(() => {
         const timer = setTimeout(() => refetchShop(), 500);
@@ -92,10 +91,10 @@ const ReportMainPage = () => {
                 <Table.Td ta={"left"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"left"}>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} />
+                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} padding={10} size="sm"/>
                 </Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.activationStatus ?? "None"} />
+                    <StatusBadge statusName={e.activationStatus ?? "None"} padding={10} size="sm"/>
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -111,7 +110,7 @@ const ReportMainPage = () => {
                     <Grid.Col span={12}>
                         <Group justify="space-between">
                             <Text size='lg' fw="bold" fz='25px' c={"light-blue.4"}>
-                                Uninstalled Edge Box List
+                                Unhealthy Installs
                             </Text>
                             <Tooltip label="Filter" withArrow>
                                 <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
@@ -159,7 +158,7 @@ const ReportMainPage = () => {
                 </Collapse>
 
                 {/* Table */}
-                <Table.ScrollContainer minWidth={500} p={10}>
+                <Table.ScrollContainer minWidth={600} p={10}>
                     <Table verticalSpacing={"sm"} striped highlightOnHover>
                         <Table.Thead>
                             <Table.Tr>
