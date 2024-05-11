@@ -24,7 +24,7 @@ const AccountUpdate = () => {
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
-                <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>UPDATE BRAND MANAGER ACCOUNT</Text>
+                <Text size='lg' fw={'bold'} fz={25} p={10} c={"light-blue.4"}>Update Brand Manager</Text>
                 <UpdateAccountForm id={params.accountId!} />
             </div>
         </div>

@@ -54,7 +54,7 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     useEffect(() => {
         if (data) {
-            form.setValues({
+            form.initialize({
                 email: data?.email,
                 name: data?.name,
                 phone: data?.phone,
