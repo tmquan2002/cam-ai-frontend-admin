@@ -77,10 +77,10 @@ const AccountList = () => {
         <Tooltip label="View Detail" key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/account/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-                <Table.Td>{e?.name ?? "No Data"}</Table.Td>
-                <Table.Td>{e?.brand?.name ?? "No Data"}</Table.Td>
-                <Table.Td>{e?.email ?? "No Data"}</Table.Td>
-                <Table.Td>{e?.role ? e?.role.toString().replace(/([A-Z])/g, ' $1').trim() : "No Data"}</Table.Td>
+                <Table.Td c={e?.name ? "black" : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.brand?.name ? "black" : "#bbbbbb"}>{e?.brand?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.email ? "black" : "#bbbbbb"}>{e?.email ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.role ? "black" : "#bbbbbb"}>{e?.role ? e?.role.toString().replace(/([A-Z])/g, ' $1').trim() : "No Data"}</Table.Td>
                 <Table.Td ta="center">
                     <StatusBadge statusName={e.accountStatus ? e.accountStatus : "None"} padding={10} size='sm' />
                 </Table.Td>

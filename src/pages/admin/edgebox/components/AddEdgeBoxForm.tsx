@@ -19,7 +19,7 @@ export const AddEdgeBoxForm = ({ close, refetch }: { close: () => void, refetch:
 
         validate: {
             name: isNotEmpty("Name is required"),
-            serialNumber: isNotEmpty("Serail number is required"),
+            serialNumber: isNotEmpty("Serial number is required"),
             edgeBoxModelId: isNotEmpty("Please select a model"),
         },
     });

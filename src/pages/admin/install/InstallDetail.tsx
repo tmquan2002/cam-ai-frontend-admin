@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Grid, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconRouter } from "@tabler/icons-react";
 import axios from "axios";
@@ -92,37 +92,29 @@ const InstallDetail = () => {
                         <Text fs="italic" ta="center">No installation found</Text> :
                         <>
                             <Box>
-                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Install</Text>
-                                <Group grow mb={10}>
-                                    <Box>
+                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Installation Information</Text>
+                                <Grid>
+                                    <Grid.Col span={4}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
                                         <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus ?? "None"} padding={10} size="sm" tooltip="Install Health" />
-                                    </Box>
-                                    <Box mb={10}>
+                                    </Grid.Col>
+                                    <Grid.Col span={8}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
                                         <StatusBadge statusName={dataInstall?.activationStatus ?? "None"} padding={10} size="sm" tooltip="Activation Status" />
-                                    </Box>
-                                </Group>
-                                <Group grow mb={15}>
-                                    <Box mb={10}>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Ip Address</Text>
                                         <Text size="md" fw={500}>{dataInstall?.ipAddress ?? "No Data"}</Text>
-                                    </Box>
-                                    <Box mb={10}>
-                                        <Text size="xs" c={"dimmed"} fw={500}>Last Connected</Text>
-                                        <Text size="md" fw={500}>{dataInstall?.lastSeen ? getDateTime(new Date(dataInstall.lastSeen), true) : "No Data"}</Text>
-                                    </Box>
-                                    <Box mb={10}>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Operating System</Text>
                                         <Text size="md" fw={500}>{dataInstall?.operatingSystem ?? "No Data"}</Text>
-                                    </Box>
-                                </Group>
-                                <Group grow mb={15}>
-                                    {dataInstall?.activationCode &&
-                                        <Box mb={10}>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
-                                            <Group gap={5}>
-                                                <Text size="md" fw={500}>{addSpace(dataInstall?.activationCode, 4) || "No Data"}</Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
+                                        <Group gap={5}>
+                                            <Text size="md" fw={500}>{dataInstall?.activationCode ? addSpace(dataInstall?.activationCode, 4) : "No Data"}</Text>
+                                            {dataInstall?.activationCode &&
                                                 <CopyButton value={dataInstall?.activationCode}>
                                                     {({ copied, copy }) => (
                                                         <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
@@ -134,24 +126,22 @@ const InstallDetail = () => {
                                                         </Tooltip>
                                                     )}
                                                 </CopyButton>
-                                            </Group>
-                                        </Box>
-                                    }
-                                </Group>
-                                <Group grow mb={15}>
-                                    {dataInstall?.createdDate &&
-                                        <Box>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
-                                            <Text size="md" fw={500}>{removeTime(new Date(dataInstall?.createdDate || Date.now()), "/")}</Text>
-                                        </Box>
-                                    }
-                                    {dataInstall?.uninstalledTime &&
-                                        <Box>
-                                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
-                                            <Text size="md" fw={500}>{removeTime(new Date(dataInstall?.uninstalledTime), "/")}</Text>
-                                        </Box>
-                                    }
-                                </Group>
+                                            }
+                                        </Group>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
+                                        <Text size="md" fw={500}>{dataInstall?.createdDate ? removeTime(new Date(dataInstall?.createdDate), "/") : "No Data"}</Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
+                                        <Text size="md" fw={500}>{dataInstall?.uninstalledTime ? removeTime(new Date(dataInstall?.uninstalledTime), "/") : "No Data"}</Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <Text size="xs" c={"dimmed"} fw={500}>Last Connected</Text>
+                                        <Text size="md" fw={500}>{dataInstall?.lastSeen ? getDateTime(new Date(dataInstall.lastSeen), true) : "No Data"}</Text>
+                                    </Grid.Col>
+                                </Grid>
                             </Box>
                             <Divider my="md" />
                             <Box>

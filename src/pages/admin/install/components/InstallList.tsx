@@ -73,11 +73,10 @@ const InstallList = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-
-                <Table.Td>{e?.shop?.name ?? "No Data"}</Table.Td>
-                <Table.Td>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
-                <Table.Td>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
-                <Table.Td>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
+                <Table.Td c={e?.shop?.name ? "black" : "#bbbbbb"}>{e?.shop?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.edgeBox?.name ? "black" : "#bbbbbb"}>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.createdDate ? "black" : "#bbbbbb"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
+                <Table.Td c={e?.uninstalledTime ? "black" : "#bbbbbb"}>{e?.uninstalledTime ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBoxInstallStatus ?? "None"} padding={10} size='sm' />
                 </Table.Td>

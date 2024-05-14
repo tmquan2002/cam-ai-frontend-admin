@@ -85,16 +85,17 @@ const ReportMainPage = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
                 <Table.Td ta={"left"}>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-
-                <Table.Td ta={"left"}>{e?.shop?.name}</Table.Td>
-                <Table.Td ta={"left"}>{e?.edgeBox?.name}</Table.Td>
-                <Table.Td ta={"left"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
-                <Table.Td ta={"left"}>{e?.createdDate ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.shop?.name ? "black" : "#bbbbbb"}>{e?.shop?.name ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.edgeBox?.name ? "black" : "#bbbbbb"}>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.edgeBox?.serialNumber ? "black" : "#bbbbbb"}>{e?.edgeBox?.serialNumber ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.createdDate ? "black" : "#bbbbbb"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.uninstalledTime ? "black" : "#bbbbbb"}>{e?.uninstalledTime ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.lastSeen ? "black" : "#bbbbbb"}>{e?.lastSeen ? removeTime(new Date(e?.lastSeen), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} padding={10} size="sm"/>
+                    <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} padding={10} size="sm" />
                 </Table.Td>
                 <Table.Td ta={"center"}>
-                    <StatusBadge statusName={e.activationStatus ?? "None"} padding={10} size="sm"/>
+                    <StatusBadge statusName={e.activationStatus ?? "None"} padding={10} size="sm" />
                 </Table.Td>
             </Table.Tr>
         </Tooltip>
@@ -164,9 +165,11 @@ const ReportMainPage = () => {
                             <Table.Tr>
                                 <Table.Th>#</Table.Th>
                                 <Table.Th>Shop</Table.Th>
-                                <Table.Th>EdgeBox</Table.Th>
+                                <Table.Th>Edge Box</Table.Th>
+                                <Table.Th>Serial Number</Table.Th>
                                 <Table.Th>Created Date</Table.Th>
                                 <Table.Th>Uninstall Date</Table.Th>
+                                <Table.Th>Last Connected</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                                 <Table.Th ta={"center"}>Activation Status</Table.Th>
                             </Table.Tr>
