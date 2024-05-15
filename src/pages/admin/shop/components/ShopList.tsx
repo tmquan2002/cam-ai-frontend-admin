@@ -73,9 +73,9 @@ const ShopList = () => {
             events={{ hover: true, focus: true, touch: false }}>
             <Table.Tr onClick={() => navigate(`/shop/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-                <Table.Td c={e?.name ? "black" : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
-                <Table.Td c={e?.brand?.name ? "black" : "#bbbbbb"}>{e?.brand?.name ?? "No Data"}</Table.Td>
-                <Table.Td c={e?.phone ? "black" : "#bbbbbb"}>{e?.phone ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.name ? undefined : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.brand?.name ? undefined : "#bbbbbb"}>{e?.brand?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.phone ? undefined : "#bbbbbb"}>{e?.phone ?? "No Data"}</Table.Td>
                 <Table.Td ta="center">
                     <StatusBadge statusName={e.shopStatus ? e.shopStatus : "None"} padding={10} size='sm' />
                 </Table.Td>

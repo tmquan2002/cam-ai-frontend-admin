@@ -136,7 +136,7 @@ const AccountDetail = () => {
                                         </Group>
                                     }
                                 </div>
-                                {data?.role == Role.BrandManager && data?.brand &&
+                                {data?.role == Role.BrandManager &&
                                     <div>
                                         <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
                                             <Menu.Target>
@@ -151,7 +151,7 @@ const AccountDetail = () => {
 
                                             <Menu.Dropdown>
                                                 <Menu.Item leftSection={<MdEdit />}
-                                                    onClick={() => navigate(`/account/${params.accountId!}/update`)}>
+                                                    onClick={() => navigate(`/account/${params?.accountId!}/update`)}>
                                                     Update
                                                 </Menu.Item>
 
@@ -164,7 +164,7 @@ const AccountDetail = () => {
                                         </Menu>
                                     </div>
                                 }
-                                {data?.role == Role.ShopManager && data?.managingShop &&
+                                {data?.role == Role.ShopManager &&
                                     <Button
                                         variant="gradient" size="sm"
                                         onClick={open} loading={isLoading}

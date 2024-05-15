@@ -85,12 +85,12 @@ const ReportMainPage = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/install/${e.id}`)}>
                 <Table.Td ta={"left"}>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-                <Table.Td ta={"left"} c={e?.shop?.name ? "black" : "#bbbbbb"}>{e?.shop?.name ?? "No Data"}</Table.Td>
-                <Table.Td ta={"left"} c={e?.edgeBox?.name ? "black" : "#bbbbbb"}>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
-                <Table.Td ta={"left"} c={e?.edgeBox?.serialNumber ? "black" : "#bbbbbb"}>{e?.edgeBox?.serialNumber ?? "No Data"}</Table.Td>
-                <Table.Td ta={"left"} c={e?.createdDate ? "black" : "#bbbbbb"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
-                <Table.Td ta={"left"} c={e?.uninstalledTime ? "black" : "#bbbbbb"}>{e?.uninstalledTime ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
-                <Table.Td ta={"left"} c={e?.lastSeen ? "black" : "#bbbbbb"}>{e?.lastSeen ? removeTime(new Date(e?.lastSeen), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.shop?.name ? undefined : "#bbbbbb"}>{e?.shop?.name ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.edgeBox?.name ? undefined : "#bbbbbb"}>{e?.edgeBox?.name ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.edgeBox?.serialNumber ? undefined : "#bbbbbb"}>{e?.edgeBox?.serialNumber ?? "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.createdDate ? undefined : "#bbbbbb"}>{e?.createdDate ? removeTime(new Date(e?.createdDate), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.uninstalledTime ? undefined : "#bbbbbb"}>{e?.uninstalledTime ? removeTime(new Date(e?.uninstalledTime), "/") : "No Data"}</Table.Td>
+                <Table.Td ta={"left"} c={e?.lastSeen ? undefined : "#bbbbbb"}>{e?.lastSeen ? removeTime(new Date(e?.lastSeen), "/") : "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBox?.edgeBoxLocation ?? "None"} padding={10} size="sm" />
                 </Table.Td>

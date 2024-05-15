@@ -62,8 +62,8 @@ const BrandList = () => {
                         <Avatar w={50} h={50} src={e.logo?.hostingUri} />{e.name}
                     </Group>
                 </Table.Td>
-                <Table.Td c={e?.email ? "black" : "#bbbbbb"}>{e?.email ?? "No Data"}</Table.Td>
-                <Table.Td c={e?.phone ? "black" : "#bbbbbb"}>{e?.phone ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.email ? undefined : "#bbbbbb"}>{e?.email ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.phone ? undefined : "#bbbbbb"}>{e?.phone ?? "No Data"}</Table.Td>
                 <Table.Td ta="center">
                     <StatusBadge statusName={e.brandStatus ? e.brandStatus : "None"} padding={10} size='sm' />
                 </Table.Td>

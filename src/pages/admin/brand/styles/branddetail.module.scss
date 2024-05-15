@@ -1,5 +1,6 @@
 .container-right {
     width: calc(100% - 50px);
+    padding-bottom: rem(64);
 
     @include light {
         background-color: #f6f8fc;

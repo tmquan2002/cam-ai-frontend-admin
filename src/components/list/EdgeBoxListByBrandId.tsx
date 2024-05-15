@@ -78,7 +78,7 @@ export const EdgeBoxListByBrandId = ({ brandId }: EdgeBoxListParam) => {
                 </Box>
                 :
                 <div className={styled["card-detail"]}>
-                    {(edgeBoxData?.values.length == 0 || edgeBoxError) ? <Text c="dimmed" w={'100%'} ta={"center"} mt={20}>No Edge Box Found</Text> :
+                    {(edgeBoxData?.values.length == 0 || edgeBoxError) ? <Text fs="italic" ta="center" c="dimmed" mt={20}>No Edge Box Found</Text> :
                         <Grid mt={20}>
                             {edgeBoxData?.values.map((item, index) => (
                                 <Grid.Col key={index} span={{ base: 12, md: 4 }}>

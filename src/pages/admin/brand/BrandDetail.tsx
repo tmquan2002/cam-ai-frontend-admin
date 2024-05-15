@@ -1,11 +1,11 @@
-import { ActionIcon, Avatar, Box, Button, Divider, Group, Image, Loader, LoadingOverlay, Menu, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { Avatar, Box, Button, Divider, Grid, Group, Image, Loader, LoadingOverlay, Menu, Tabs, Text, rem } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconDots, IconNetwork, IconRouter } from "@tabler/icons-react";
+import { IconMail, IconNetwork, IconPhone, IconRouter, IconUser } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineSupervisorAccount, MdPhone } from "react-icons/md";
+import { MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdOutlineSupervisorAccount } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -18,7 +18,6 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
 import { BrandStatus } from "../../../types/enum";
-import { removeTime } from "../../../utils/dateTimeFunction";
 import styled from "./styles/branddetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,8 +44,6 @@ const BrandDetail = () => {
 
     const { mutate: deleteBrand, isLoading: isLoadingDelete } = useDeleteBrand();
     const { mutate: reactivateBrand, isLoading: isLoadingReactivate } = useReactivateBrand();
-
-    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
     const onDelete = () => {
         deleteBrand(params.brandId!, {
@@ -127,115 +124,111 @@ const BrandDetail = () => {
                     :
                     <div className={styled["container-detail"]}>
                         {error ? <Text fs="italic" ta="center">Brand not found</Text> :
-                            <>
-                                {data?.banner && <Image h={220} mb={20} radius={5} src={data?.banner?.hostingUri} />}
-                                <div className={styled["profile-header"]}>
-                                    <div className={styled["profile-header-left"]}>
-                                        <Avatar w={150} h={150} mr={20} src={data?.logo?.hostingUri} />
-                                        <div>
-                                            <Group mb={15}>
-                                                <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
-                                                <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"} />
+                            <Grid justify="space-around">
+                                <Grid.Col span={12}>
+                                    {data?.banner && <Image h={220} mb={20} radius={5} src={data?.banner?.hostingUri} />}
+                                </Grid.Col>
+
+                                <Grid.Col span={{ base: 12, lg: 3 }} mx={rem(20)} mb={50}>
+                                    <Box mb={20}>
+                                        <Group justify="center">
+                                            <Avatar w={200} h={200} src={data?.logo?.hostingUri} mb={20}
+                                                style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }} />
+                                        </Group>
+                                        <Box>
+                                            <Group mb={10} justify="center">
+                                                <Text size="xl" fw={500}>{data?.name}</Text>
+                                                <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"} padding={10} size="sm" />
                                             </Group>
 
-                                            {isLoadingManager ? <Loader size="sm" /> :
-                                                dataManager?.id ?
-                                                    <Group>
-                                                        <MdAccountCircle size={20} />
-                                                        Brand Manager: <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
-                                                            <Text size="md">{dataManager.name}</Text>
-                                                        </Link>
+                                            {/* Menu settings */}
+                                            <Menu shadow="md" width={200}>
+                                                <Menu.Target>
+                                                    <Group justify='center' mb={20}>
+                                                        <Button size="sm" variant="gradient"
+                                                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}>
+                                                            Brand Settings
+                                                        </Button>
+                                                        {!dataManager?.id &&
+                                                            <Button
+                                                                onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
+                                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
+                                                            >
+                                                                Add Manager
+                                                            </Button>
+                                                        }
                                                     </Group>
-                                                    :
-                                                    <Button
-                                                        onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
-                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} mb={10} size="sm"
-                                                    >
-                                                        Add Manager
-                                                    </Button>
+                                                </Menu.Target>
+
+                                                <Menu.Dropdown>
+                                                    <Menu.Item leftSection={<MdEdit />}
+                                                        onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
+                                                        Update
+                                                    </Menu.Item>
+                                                    {data?.brandStatus == BrandStatus.Active ?
+                                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
+                                                            onClick={open} >
+                                                            Delete
+                                                        </Menu.Item>
+                                                        :
+                                                        <Menu.Item leftSection={<MdAutorenew />}
+                                                            onClick={open} >
+                                                            Reactivate
+                                                        </Menu.Item>
+                                                    }
+                                                </Menu.Dropdown>
+                                            </Menu>
+
+                                            {isLoadingManager ? <Loader size="sm" /> :
+                                                dataManager?.id &&
+                                                <Group>
+                                                    <IconUser size={20} />
+                                                    <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
+                                                        <Text size="md">{dataManager.name}</Text>
+                                                    </Link>
+                                                </Group>
                                             }
                                             {data?.email &&
                                                 <Group>
-                                                    <MdEmail size={20} />
+                                                    <IconMail size={20} />
                                                     <Text size="md">{data?.email}</Text>
+                                                </Group>
+                                            }
+                                            {data?.phone &&
+                                                <Group>
+                                                    <IconPhone size={20} />
+                                                    <Text size="md">{data?.phone}</Text>
                                                 </Group>
                                             }
                                             {data?.brandWebsite &&
                                                 <Group>
                                                     <IconNetwork size={20} />
-                                                    <a href={data?.brandWebsite} style={{ textDecoration: "none" }} target="_blank">
+                                                    <a href={"https://" + data?.brandWebsite} style={{ textDecoration: "none" }} target="_blank">
                                                         <Text size="md">
                                                             {data?.brandWebsite}
                                                         </Text>
                                                     </a>
                                                 </Group>
                                             }
-                                            {data?.phone &&
-                                                <Group>
-                                                    <MdPhone size={20} />
-                                                    <Text size="md">{data?.phone}</Text>
-                                                </Group>
-                                            }
-                                            {data?.createdDate &&
-                                                <Group mb={20}>
-                                                    <MdAccessTime size={20} />
-                                                    <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
-                                                </Group>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <Menu shadow="md" width={200} offset={{ crossAxis: -80 }}>
-                                            <Menu.Target>
-                                                <Tooltip label="Actions" withArrow>
-                                                    <ActionIcon variant="transparent"
-                                                        color={computedColorScheme === "dark" ? "white" : "black"}
-                                                        size={"md"}>
-                                                        <IconDots style={{ width: 25, height: 25 }} />
-                                                    </ActionIcon>
-                                                </Tooltip>
-                                            </Menu.Target>
-
-                                            <Menu.Dropdown>
-                                                <Menu.Item leftSection={<MdEdit />}
-                                                    onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
-                                                    Update
-                                                </Menu.Item>
-                                                {data?.brandStatus == BrandStatus.Active ?
-                                                    <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
-                                                        onClick={open} >
-                                                        Delete
-                                                    </Menu.Item>
-                                                    :
-                                                    <Menu.Item leftSection={<MdAutorenew />}
-                                                        onClick={open} >
-                                                        Reactivate
-                                                    </Menu.Item>
-                                                }
-                                            </Menu.Dropdown>
-                                        </Menu>
-                                    </div>
-                                </div>
-                                {data?.description &&
-                                    <Box>
-                                        <Text size="sm" fw="bold">Description</Text>
-                                        <Text size="md">{data?.description}</Text>
+                                        </Box>
                                     </Box>
-                                }
-                                <Divider my="md" />
-                                <Box>
-                                    <Text size='md' fw={'bold'} fz={20} c={"light-blue.4"}>Company</Text>
-                                    <Text size='md' fw={'bold'} fz={17} mt={10}>{data?.companyName}</Text>
-                                    <Group>
-                                        <MdHome />
-                                        {(data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}, {data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
-                                        {(data?.companyWard && !data?.companyAddress) && <Text size="md">{data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
-                                        {(!data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}</Text>}
-                                        {(!data?.companyWard && !data?.companyAddress) && <Text size="md">No Data</Text>}
-                                    </Group>
-                                </Box>
-                                <Divider my="md" />
-                                <div className={styled["profile-detail"]}>
+
+                                    {data?.description &&
+                                        <>
+                                            <Text fz={16} fw={'bold'} c={"grey"}>About</Text>
+                                            <Divider />
+                                            <Text mt={10} mb={20}>{data?.description}</Text>
+                                        </>
+                                    }
+                                    <Text fz={16} fw={'bold'} c={"grey"}>Company</Text>
+                                    <Divider />
+                                    <Text mt={5} fw="bold">{data?.companyName || "No Information"}</Text>
+                                    {(data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}, {data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
+                                    {(data?.companyWard && !data?.companyAddress) && <Text size="md">{data?.companyWard?.name}, {data?.companyWard?.district?.name}, {data?.companyWard?.district?.province?.name}</Text>}
+                                    {(!data?.companyWard && data?.companyAddress) && <Text size="md">{data?.companyAddress}</Text>}
+                                </Grid.Col>
+
+                                <Grid.Col span={{ base: 12, lg: 8 }} mr={rem(32)}>
                                     <Tabs value={activeTab} onChange={setActiveTab}>
                                         <Tabs.List>
                                             <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
@@ -268,8 +261,8 @@ const BrandDetail = () => {
                                             <EdgeBoxListByBrandId brandId={params.brandId!} />
                                         </Tabs.Panel>
                                     </Tabs>
-                                </div>
-                            </>
+                                </Grid.Col>
+                            </Grid>
                         }
                     </div>
                 }

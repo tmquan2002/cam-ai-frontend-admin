@@ -89,9 +89,9 @@ const EdgeBoxList = () => {
         <Tooltip label="View Detail" withArrow key={e.id} openDelay={1000}>
             <Table.Tr onClick={() => navigate(`/edgebox/${e.id}`)}>
                 <Table.Td>{(i + 1 + Number(size) * (pageIndex - 1))}</Table.Td>
-                <Table.Td c={e?.name ? "black" : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
-                <Table.Td c={e?.serialNumber ? "black" : "#bbbbbb"}>{e?.serialNumber ?? "No Data"}</Table.Td>
-                <Table.Td c={e?.edgeBoxModel?.modelCode ? "black" : "#bbbbbb"}>{e?.edgeBoxModel?.modelCode ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.name ? undefined : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.serialNumber ? undefined : "#bbbbbb"}>{e?.serialNumber ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.edgeBoxModel?.modelCode ? undefined : "#bbbbbb"}>{e?.edgeBoxModel?.modelCode ?? "No Data"}</Table.Td>
                 <Table.Td ta={"center"}>
                     <StatusBadge statusName={e.edgeBoxStatus ? e.edgeBoxStatus : "None"} padding={10} size='sm' />
                 </Table.Td>
