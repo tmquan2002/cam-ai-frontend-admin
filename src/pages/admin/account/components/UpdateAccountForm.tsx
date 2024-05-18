@@ -3,6 +3,7 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateAccountParams } from "../../../../apis/AccountAPI";
@@ -10,9 +11,7 @@ import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccoun
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
-import { isEmpty } from "lodash";
 import { enumToSelect } from "../../../../utils/helperFunction";
-import { emailRegex, phoneRegex } from "../../../../types/constant";
 
 type UpdateAccountFieldValue = {
     email: string;
@@ -50,9 +49,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             name: (value: string) =>
                 isEmpty(value) ? "Name is required" : null,
             email: (value: string) => isEmpty(value) ? "Email is required"
-                : emailRegex.test(value) ? null : "Invalid email - ex: huy@gmail.com",
+                : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
             phone: (value) => isEmpty(value) ? null :
-                phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
+                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value) ? null : "A phone number should have a length of 10-12 characters",
             province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
             district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
             ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,

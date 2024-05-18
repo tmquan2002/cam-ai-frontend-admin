@@ -1,13 +1,12 @@
-import { TextInput, Button, Group } from "@mantine/core";
+import { Button, Group, TextInput } from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
+import { isEmpty } from "lodash";
+import { MdEmail, MdLockOutline } from "react-icons/md";
+import { useSession } from "../../../context/AuthContext";
 import { useLogin } from "../../../hooks/useAuth";
 import { Login } from "../../../models/Auth";
-import axios from "axios";
-import { notifications } from "@mantine/notifications";
-import { useSession } from "../../../context/AuthContext";
-import { isNotEmpty, useForm } from "@mantine/form";
-import { MdEmail, MdLockOutline } from "react-icons/md";
-import { isEmpty } from "lodash";
-import { emailRegex } from "../../../types/constant";
 
 export const LoginForm = () => {
   const sessionHook = useSession();
@@ -21,7 +20,7 @@ export const LoginForm = () => {
 
     validate: {
       email: (value: string) => isEmpty(value) ? "Email is required"
-        : emailRegex.test(value) ? null : "Invalid email - ex: name@gmail.com",
+        : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: name@gmail.com",
       password: isNotEmpty("Password is required")
     },
   });

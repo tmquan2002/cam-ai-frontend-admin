@@ -10,7 +10,6 @@ import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { emailRegex, phoneRegex } from "../../../../types/constant";
 import { Gender, Role } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { enumToSelect } from "../../../../utils/helperFunction";
@@ -52,9 +51,9 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         validate: {
             name: isNotEmpty("Name is required"),
             email: (value: string) => isEmpty(value) ? "Email is required"
-                : emailRegex.test(value) ? null : "Invalid email - ex: name@gmail.com",
+                : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: name@gmail.com",
             phone: (value: string) => isEmpty(value) ? null :
-                phoneRegex.test(value) ? null : "A phone number should have a length of 10-12 characters",
+                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value) ? null : "A phone number should have a length of 10-12 characters",
             gender: isNotEmpty("Please select a gender"),
             province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
             district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
