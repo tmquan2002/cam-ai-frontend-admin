@@ -1,9 +1,9 @@
-import { ActionIcon, Box, Button, Divider, Grid, Group, LoadingOverlay, Modal, Select, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Box, Button, CopyButton, Divider, Grid, Group, LoadingOverlay, Modal, Select, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -29,6 +29,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const EdgeBoxDetail = () => {
 
+    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const params = useParams();
     const navigate = useNavigate();
 
@@ -183,9 +184,9 @@ const EdgeBoxDetail = () => {
                                     {/* Edge Box section */}
                                     <Box>
                                         <Group justify="space-between" gap={0} mb={10}>
-                                            <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"}>{data?.name}</Text>
+                                            <Text size='md' fw={'bold'} fz={22} c={"light-blue.6"} mr={20} mb={10}>{data?.name}</Text>
                                             {data?.edgeBoxStatus && data?.edgeBoxStatus !== EdgeBoxStatus.Disposed &&
-                                                <Button variant="gradient" size="xs" onClick={openStatus}
+                                                <Button variant="gradient" size="xs" onClick={openStatus} mb={10}
                                                     gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
                                                 >
                                                     Change Status
@@ -193,37 +194,56 @@ const EdgeBoxDetail = () => {
                                             }
                                         </Group>
                                         <Grid justify="space-between">
-
-                                            <Grid.Col span={6}>
+                                            <Grid.Col span={12}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>ID</Text>
+                                                    <Group>
+                                                        <Text size="md" fw={500}>{data?.id || "No Data"}</Text>
+                                                        <CopyButton value={data?.id}>
+                                                            {({ copied, copy }) => (
+                                                                <Tooltip label={copied ? 'Copied' : 'Copy id'} withArrow>
+                                                                    <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                                                        {copied ? <MdCheck /> :
+                                                                            <MdContentCopy />
+                                                                        }
+                                                                    </ActionIcon>
+                                                                </Tooltip>
+                                                            )}
+                                                        </CopyButton>
+                                                    </Group>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Edge Box Status</Text>
                                                     <StatusBadge statusName={data?.edgeBoxStatus || "None"} padding={10} size="sm" tooltip="Edge Box Status" />
                                                 </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
                                                     <StatusBadge statusName={data?.edgeBoxLocation || "None"} padding={10} size="sm" tooltip="Location Status" />
                                                 </Box>
                                             </Grid.Col>
-
-                                            <Grid.Col span={6}>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
                                                     <Text size="md" fw={500}>{data?.version || "No Data"}</Text>
                                                 </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
                                                     <Text size="md" fw={500}>{data?.serialNumber || "No Data"}</Text>
                                                 </Box>
                                             </Grid.Col>
-
-                                            <Grid.Col span={12}>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>MAC Address</Text>
                                                     <Text size="md" fw={500}>{data?.macAddress || "No Data"}</Text>
                                                 </Box>
                                             </Grid.Col>
-
-                                            <Grid.Col span={12}>
+                                            <Grid.Col span={{ base: 12, sm: 6 }}>
                                                 <Box mb={10} ml={5}>
                                                     <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                                                     <Text size="md" fw={500}>{data?.createdDate ? removeTime(new Date(data?.createdDate), "/") : "No Data"}</Text>
@@ -276,7 +296,7 @@ const EdgeBoxDetail = () => {
                                         </form>
                                     </Modal>
 
-                                    <Divider orientation="vertical" ml={10} mr={10} />
+                                    <Divider orientation="vertical" ml={15} mr={15} />
                                     {/* Edge Box Model section */}
                                     <div className={styled["model-detail"]}>
                                         <Group justify="space-between">
@@ -325,7 +345,7 @@ const EdgeBoxDetail = () => {
                                             </Group>
                                         </Group>
                                         <Group grow mb={10} mt={10}>
-                                            <Box>
+                                            <Box ml={5}>
                                                 <Text size="xs" c={"dimmed"} fw={500}>Name</Text>
                                                 <Text size="md" fw={500}>{data?.edgeBoxModel?.name}</Text>
                                             </Box>
@@ -341,34 +361,44 @@ const EdgeBoxDetail = () => {
                                             </>
                                         }
                                         <Divider mb={10} />
-                                        <Group grow mb={15}>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>Model code</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.modelCode || "No Data"}</Text>
-                                            </Box>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>Manufacturer</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.manufacturer || "No Data"}</Text>
-                                            </Box>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>Storage</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.storage || "No Data"}</Text>
-                                            </Box>
-                                        </Group>
-                                        <Group grow>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>CPU</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.cpu || "No Data"}</Text>
-                                            </Box>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>RAM</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.ram || "No Data"}</Text>
-                                            </Box>
-                                            <Box>
-                                                <Text size="xs" c={"dimmed"} fw={500}>OS</Text>
-                                                <Text size="md" fw={500}>{data?.edgeBoxModel?.os || "No Data"}</Text>
-                                            </Box>
-                                        </Group>
+                                        <Grid>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Model code</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.modelCode || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Manufacturer</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.manufacturer || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>Storage</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.storage || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>CPU</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.cpu || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>RAM</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.ram || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                            <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                                                <Box mb={10} ml={5}>
+                                                    <Text size="xs" c={"dimmed"} fw={500}>OS</Text>
+                                                    <Text size="md" fw={500}>{data?.edgeBoxModel?.os || "No Data"}</Text>
+                                                </Box>
+                                            </Grid.Col>
+                                        </Grid>
                                     </div>
                                 </div>
                             </>

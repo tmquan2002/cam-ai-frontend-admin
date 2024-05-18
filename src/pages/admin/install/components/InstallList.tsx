@@ -113,7 +113,7 @@ const InstallList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Install</Text></Grid.Col>
+                    <Grid.Col span={6}><Text fw="bold">Filter Installation</Text></Grid.Col>
                     <Grid.Col span="content"><Button variant='transparent'
                         onClick={onClearFilter}>
                         Clear All Filters
@@ -122,7 +122,7 @@ const InstallList = () => {
                 </Grid>
                 <Grid mb={20}>
                     <Grid.Col span={6}>
-                        <RadioGroup name="status" value={filterInstallStatus} label="Install Helath"
+                        <RadioGroup name="status" value={filterInstallStatus} label="Installation Health"
                             onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, value)}>
                             <Group>
                                 <Radio value={EdgeBoxInstallStatus.New.toString()} label={"New"} />
@@ -167,7 +167,7 @@ const InstallList = () => {
                                 <Table.Th>EdgeBox</Table.Th>
                                 <Table.Th>Created Date</Table.Th>
                                 <Table.Th>Uninstall Date</Table.Th>
-                                <Table.Th ta={"center"}>Install Health</Table.Th>
+                                <Table.Th ta={"center"}>Installation Health</Table.Th>
                                 <Table.Th ta={"center"}>Location Status</Table.Th>
                                 <Table.Th ta={"center"}>Activation Status</Table.Th>
                             </Table.Tr>

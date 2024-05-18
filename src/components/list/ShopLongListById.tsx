@@ -141,7 +141,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
 
                     {/* Install Section */}
                     <Group mb={10}>
-                        <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
+                        <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Installation</Text>
                         <Tooltip label="View Installation" withArrow>
                             <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`, { state: { tab: "edge box" } })}>
                                 <MdRemoveRedEye />
@@ -150,8 +150,8 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                     </Group>
                     <Group grow mb={10}>
                         <Box mb={10}>
-                            <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
-                            <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Location Status" />
+                            <Text size="xs" c={"dimmed"} fw={500}>Installation Health</Text>
+                            <StatusBadge statusName={item.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Installation Health" />
                         </Box>
                         <Box mb={10}>
                             <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
@@ -176,12 +176,10 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                                 </CopyButton>
                             </Group>
                         </Box>
-                        {item.uninstalledTime &&
-                            <Box mb={10}>
-                                <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
-                                <Text size="md" fw={500}>{removeTime(new Date(item.uninstalledTime), "/")}</Text>
-                            </Box>
-                        }
+                        <Box mb={10}>
+                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
+                            <Text size="md" fw={500}>{item.uninstalledTime ? removeTime(new Date(item.uninstalledTime), "/") : "No Data"}</Text>
+                        </Box>
                     </Group>
                     <Group grow mb={15}>
                         <Box>
@@ -212,7 +210,7 @@ export const ShopLongListByEdgeBox = ({ edgeBoxLocation, dataInstalls, refetch, 
                         Current
                     </Tabs.Tab>
                     <Tabs.Tab value="history" leftSection={<MdHistory />}>
-                        History
+                        Past Installation
                     </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="current">

@@ -95,8 +95,8 @@ const InstallDetail = () => {
                                 <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"} mb={10}>Installation Information</Text>
                                 <Grid>
                                     <Grid.Col span={4}>
-                                        <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
-                                        <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus ?? "None"} padding={10} size="sm" tooltip="Install Health" />
+                                        <Text size="xs" c={"dimmed"} fw={500}>Installation Health</Text>
+                                        <StatusBadge statusName={dataInstall?.edgeBoxInstallStatus ?? "None"} padding={10} size="sm" tooltip="Installation Health" />
                                     </Grid.Col>
                                     <Grid.Col span={8}>
                                         <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>

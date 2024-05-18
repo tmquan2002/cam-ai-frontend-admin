@@ -131,7 +131,7 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 {/* Install section*/}
                 <Divider mb={10} />
                 <Group mb={10}>
-                    <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Install</Text>
+                    <Text fw={500} size="md" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Installation</Text>
                     <Tooltip label="View Installation" withArrow>
                         <ActionIcon variant="light" onClick={() => navigate(`/install/${item.id}`, { state: { tab: "shop" } })}>
                             <MdRemoveRedEye />
@@ -141,8 +141,8 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
 
                 <Group grow mb={10}>
                     <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Install Health</Text>
-                        <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Install Health" />
+                        <Text size="xs" c={"dimmed"} fw={500}>Installation Health</Text>
+                        <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Installation Health" />
                     </Box>
                     <Box mb={10}>
                         <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>

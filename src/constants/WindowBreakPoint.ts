@@ -1,1 +1,1 @@
-export const WINDOW_BREAK_POINT = 900
+export const WINDOW_BREAK_POINT = 1200

@@ -1,11 +1,8 @@
-import { Avatar, Box, Button, Divider, Grid, Group, Image, Loader, LoadingOverlay, Menu, Tabs, Text, rem } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
+import { Avatar, Box, Button, Divider, Grid, Group, Image, Loader, LoadingOverlay, Tabs, Text, rem } from "@mantine/core";
 import { IconMail, IconNetwork, IconPhone, IconRouter, IconUser } from "@tabler/icons-react";
-import axios from "axios";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdAccountCircle, MdAutorenew, MdDelete, MdEdit, MdOutlineSupervisorAccount } from "react-icons/md";
+import { MdAccountCircle, MdOutlineSupervisorAccount } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -13,11 +10,9 @@ import { AccountListById } from "../../../components/list/AccountListById";
 import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
-import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
 import { useGetAccountById } from "../../../hooks/useAccounts";
-import { useDeleteBrand, useGetBrandById, useReactivateBrand } from "../../../hooks/useBrands";
-import { BrandStatus } from "../../../types/enum";
+import { useGetBrandById } from "../../../hooks/useBrands";
 import styled from "./styles/branddetail.module.scss";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -36,82 +31,10 @@ const BrandDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     // console.log(params);
-    const [modalOpen, { open, close }] = useDisclosure(false);
     const [activeTab, setActiveTab] = useState<string | null>(location?.state?.tab ?? 'shops')
 
     const { data, isLoading, error } = useGetBrandById(params.brandId!);
     const { data: dataManager, isLoading: isLoadingManager } = useGetAccountById(data?.brandManagerId);
-
-    const { mutate: deleteBrand, isLoading: isLoadingDelete } = useDeleteBrand();
-    const { mutate: reactivateBrand, isLoading: isLoadingReactivate } = useReactivateBrand();
-
-    const onDelete = () => {
-        deleteBrand(params.brandId!, {
-            onSuccess() {
-                navigate('/brand')
-                notifications.show({
-                    title: "Successfully",
-                    message: "Brand disabled!",
-                    color: "green",
-                    withCloseButton: true,
-                });
-            },
-            onError(error) {
-                if (axios.isAxiosError(error)) {
-                    // console.error(error.response?.data as ApiErrorResponse);
-                    notifications.show({
-                        title: "Failed",
-                        message: error.response?.data.message,
-                        color: "pale-red.5",
-                        withCloseButton: true,
-                    });
-                } else {
-                    console.error(error);
-                    notifications.show({
-                        title: "Failed",
-                        message: "Something wrong happen when trying to remove this brand",
-                        color: "pale-red.5",
-                        withCloseButton: true,
-                    });
-                }
-                close();
-            },
-        });
-    }
-
-    const onReactivate = () => {
-        reactivateBrand(params.brandId!, {
-            onSuccess() {
-                navigate('/brand')
-                notifications.show({
-                    title: "Successfully",
-                    message: "Brand Reactivated!",
-                    color: "green",
-                    withCloseButton: true,
-                });
-            },
-            onError(error) {
-                if (axios.isAxiosError(error)) {
-                    // console.error(error.response?.data as ApiErrorResponse);
-                    notifications.show({
-                        title: "Failed",
-                        message: error.response?.data.message,
-                        color: "pale-red.5",
-                        withCloseButton: true,
-                    });
-                } else {
-                    console.error(error);
-                    notifications.show({
-                        title: "Failed",
-                        message: "Something wrong happen when trying to reactivate this brand",
-                        color: "pale-red.5",
-                        withCloseButton: true,
-                    });
-                }
-                close();
-            },
-        });
-    }
 
     return (
         <>
@@ -141,8 +64,24 @@ const BrandDetail = () => {
                                                 <StatusBadge statusName={data?.brandStatus ? data.brandStatus : "None"} padding={10} size="sm" />
                                             </Group>
 
+                                            <Group justify='center' mb={20}>
+                                                <Button size="sm" variant="gradient"
+                                                    gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}
+                                                    onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
+                                                    Brand Settings
+                                                </Button>
+                                                {!dataManager?.id &&
+                                                    <Button
+                                                        onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
+                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
+                                                    >
+                                                        Add Manager
+                                                    </Button>
+                                                }
+                                            </Group>
+
                                             {/* Menu settings */}
-                                            <Menu shadow="md" width={200}>
+                                            {/* <Menu shadow="md" width={200}>
                                                 <Menu.Target>
                                                     <Group justify='center' mb={20}>
                                                         <Button size="sm" variant="gradient"
@@ -177,7 +116,7 @@ const BrandDetail = () => {
                                                         </Menu.Item>
                                                     }
                                                 </Menu.Dropdown>
-                                            </Menu>
+                                            </Menu> */}
 
                                             {isLoadingManager ? <Loader size="sm" /> :
                                                 dataManager?.id &&
@@ -267,14 +206,6 @@ const BrandDetail = () => {
                     </div>
                 }
             </div>
-            {/* Delete Modal */}
-            {data?.brandStatus === BrandStatus.Active ?
-                <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={close} opened={modalOpen} label="Delete" topTitle="Delete Brand"
-                    title="Do you want to remove this brand?" centered loading={isLoadingDelete} />
-                :
-                <CustomModal cancelLabel="Cancel" onClickAction={onReactivate} onClose={close} opened={modalOpen} label="Reactivate" topTitle="Reactivate Brand"
-                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} blueModal />
-            }
         </>
     );
 };

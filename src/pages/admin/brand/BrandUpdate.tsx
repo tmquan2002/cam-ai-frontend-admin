@@ -1,4 +1,3 @@
-import { Text } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
 import Navbar from "../../../components/navbar/Navbar";
@@ -18,13 +17,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const BrandUpdate = () => {
 
     const params = useParams();
-    console.log(params);
+    // console.log(params);
 
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} goBack />
             <div className={styled["table-container"]}>
-                <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>Update Brand</Text>
+
                 <UpdateBrandForm id={params.brandId!} />
             </div>
         </div>

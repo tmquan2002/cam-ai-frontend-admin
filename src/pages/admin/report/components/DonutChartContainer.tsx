@@ -12,13 +12,13 @@ export const DonutChartContainer = ({ type }: { type: "edgeBox" | "install" }) =
         <Skeleton visible={type == "edgeBox" ? isLoadingEdgeBox : isLoadingEdgeBoxInstall}>
             <Box className={styled["static-card"]} pos={"relative"} >
                 <div className={styled["static-card-title"]}>
-                    {type == "edgeBox" ? "Edge Box" : "Install"}
+                    {type == "edgeBox" ? "Edge Box" : "Installation"}
                 </div>
                 <Text size="lg" fw={"bold"}>Total: {type == "edgeBox" ? edgeBoxReport?.total : type == "install" ? edgeBoxInstallReport?.total : 0}</Text>
 
                 <Group justify="center" mt={15}>
                     <Box>
-                        <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Edge Box Status" : type == "install" ? "Install Status" : 0}</Text>
+                        <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Edge Box Status" : type == "install" ? "Installation Status" : 0}</Text>
                         <DonutChart withLabelsLine={false} withLabels paddingAngle={5}
                             data={type == "edgeBox" ?
                                 convertReportResponseToChartFormat(edgeBoxReport, undefined, "edgeBoxStatus")

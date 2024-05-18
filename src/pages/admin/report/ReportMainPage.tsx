@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 import { MdFilterAlt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
+import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
+import Navbar from "../../../components/navbar/Navbar";
 import { useGetAllInstallsFilter } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetAllShopsSelect } from "../../../hooks/useShops";
 import { useLocalStorageCustomHook } from "../../../hooks/useStorageState";
 import { DisabledEdgeBoxInstallFilterProps, pageSizeSelect } from "../../../types/constant";
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
-import { DonutChartContainer } from "./components/DonutChartContainer";
+import { DonutChartContainerTest } from "./components/DonutChartContainerTest";
 import styled from "./report.module.scss";
-import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import Navbar from "../../../components/navbar/Navbar";
 
 const breadcrumbs: BreadcrumbItem[] = []
 
@@ -104,113 +104,127 @@ const ReportMainPage = () => {
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} />
-            <Box m={rem(32)} p={rem(32)} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} className={styled["static-card"]}>
-                {/* Top */}
-                <Grid mt={5} mb={20} justify='space-between'>
+            <Grid justify="space-around" gutter={20}>
+                <Grid.Col span={{ base: 12, md: 3 }}>
+                    <Group ml={30}>
+                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                            <DonutChartContainerTest />
+                        </Box>
+                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                            <DonutChartContainerTest />
+                        </Box>
+                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                            <DonutChartContainerTest />
+                        </Box>
+                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                            <DonutChartContainerTest />
+                        </Box>
+                    </Group>
+                </Grid.Col>
 
-                    <Grid.Col span={12}>
-                        <Group justify="space-between">
-                            <Text size='lg' fw="bold" fz='25px' c={"light-blue.4"}>
-                                Unhealthy Installs
-                            </Text>
-                            <Tooltip label="Filter" withArrow>
-                                <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
-                                    <MdFilterAlt />
-                                </ActionIcon>
-                            </Tooltip>
-                        </Group>
-                    </Grid.Col>
-                </Grid>
+                <Grid.Col span={{ base: 12, md: 9 }}>
+                    <Box p={rem(32)} mr={20} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                        style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                        {/* Top */}
+                        <Grid mt={5} mb={20} justify='space-between'>
+                            <Grid.Col span={12}>
+                                <Group justify="space-between">
+                                    <Text size='lg' fw="bold" fz='25px' c={"light-blue.4"}>
+                                        Unhealthy Installations
+                                    </Text>
+                                    <Tooltip label="Filter" withArrow>
+                                        <ActionIcon color="grey" size={"lg"} w={20} onClick={toggle}>
+                                            <MdFilterAlt />
+                                        </ActionIcon>
+                                    </Tooltip>
+                                </Group>
+                            </Grid.Col>
+                        </Grid>
 
-                {/* Filter */}
-                <Collapse in={opened}>
-                    <Divider />
-                    <Grid mt={10} justify='space-between'>
-                        <Grid.Col span={6}><Text ta="left">Filter Install</Text></Grid.Col>
-                        <Grid.Col span="content"><Button variant='transparent'
-                            onClick={onClearFilter}>
-                            Clear All Filters
-                        </Button>
-                        </Grid.Col>
-                    </Grid>
-                    <Group mb="md">
-                        <Text size='sm' fw={"bold"}>Activation Status: </Text>
-                        <RadioGroup name="location" value={filterActivationStatus}
-                            onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
-                            <Group>
-                                <Radio value={EdgeBoxActivationStatus.Activated.toString()} label={"Activated"} />
-                                <Radio value={EdgeBoxActivationStatus.NotActivated.toString()} label={"NotActivated"} />
-                                <Radio value={EdgeBoxActivationStatus.Pending.toString()} label={"Pending"} />
-                                <Radio value={EdgeBoxActivationStatus.Failed.toString()} label={"Failed"} />
+                        {/* Filter */}
+                        <Collapse in={opened}>
+                            <Divider />
+                            <Grid mt={10} justify='space-between'>
+                                <Grid.Col span={6}><Text ta="left">Filter Installation</Text></Grid.Col>
+                                <Grid.Col span="content"><Button variant='transparent'
+                                    onClick={onClearFilter}>
+                                    Clear All Filters
+                                </Button>
+                                </Grid.Col>
+                            </Grid>
+                            <Group mb="md">
+                                <Text size='sm' fw={"bold"}>Activation Status: </Text>
+                                <RadioGroup name="location" value={filterActivationStatus}
+                                    onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
+                                    <Group>
+                                        <Radio value={EdgeBoxActivationStatus.Activated.toString()} label={"Activated"} />
+                                        <Radio value={EdgeBoxActivationStatus.NotActivated.toString()} label={"NotActivated"} />
+                                        <Radio value={EdgeBoxActivationStatus.Pending.toString()} label={"Pending"} />
+                                        <Radio value={EdgeBoxActivationStatus.Failed.toString()} label={"Failed"} />
+                                    </Group>
+                                </RadioGroup>
                             </Group>
-                        </RadioGroup>
-                    </Group>
-                    <Group mt="md" mb="md">
-                        <Text size='sm' fw={"bold"}>Shop: </Text>
-                        <Select data={shopList || []} limit={5} size='sm'
-                            nothingFoundMessage={shopList && "Not Found"}
-                            value={filterSearchShopId} placeholder="Pick value" clearable searchable
-                            searchValue={filterSearchShop}
-                            onSearchChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP, value)}
-                            onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP_ID, value)}
-                        />
-                    </Group>
-                    <Divider />
-                </Collapse>
-
-                {/* Table */}
-                <Table.ScrollContainer minWidth={600} p={10}>
-                    <Table verticalSpacing={"sm"} striped highlightOnHover>
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>#</Table.Th>
-                                <Table.Th>Shop</Table.Th>
-                                <Table.Th>Edge Box</Table.Th>
-                                <Table.Th>Serial Number</Table.Th>
-                                <Table.Th>Created Date</Table.Th>
-                                <Table.Th>Uninstall Date</Table.Th>
-                                <Table.Th>Last Connected</Table.Th>
-                                <Table.Th ta={"center"}>Location Status</Table.Th>
-                                <Table.Th ta={"center"}>Activation Status</Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>
-                    </Table>
-                </Table.ScrollContainer>
-                <Group justify="space-between">
-                    {isFetching || installList?.totalCount ?
-                        <>
-                            <Pagination total={installList?.totalCount ? Math.ceil(installList.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
-                                onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, value)} />
-                            <Group style={{ marginTop: '12px' }}>
-                                <Text>Page Size: </Text>
-                                <Select
-                                    onChange={(value) => {
-                                        setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, 1)
-                                        setStorage(DisabledEdgeBoxInstallFilterProps.SIZE, value)
-                                    }}
-                                    allowDeselect={false}
-                                    placeholder="0" value={size}
-                                    data={pageSizeSelect} defaultValue={"5"}
+                            <Group mt="md" mb="md">
+                                <Text size='sm' fw={"bold"}>Shop: </Text>
+                                <Select data={shopList || []} limit={5} size='sm'
+                                    nothingFoundMessage={shopList && "Not Found"}
+                                    value={filterSearchShopId} placeholder="Pick value" clearable searchable
+                                    searchValue={filterSearchShop}
+                                    onSearchChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP, value)}
+                                    onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP_ID, value)}
                                 />
                             </Group>
-                        </> :
-                        <></>
-                    }
-                </Group>
-            </Box>
-            <div className={styled["table-container"]}>
-                <Box m={rem(32)}>
-                    <Grid>
-                        <Grid.Col span={6}>
-                            <DonutChartContainer type="edgeBox" />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                            <DonutChartContainer type="install" />
-                        </Grid.Col>
-                    </Grid>
-                </Box>
-            </div>
+                            <Divider />
+                        </Collapse>
+
+                        {/* Table */}
+                        <Table.ScrollContainer minWidth={600} p={10}>
+                            <Table verticalSpacing={"sm"} striped highlightOnHover>
+                                <Table.Thead>
+                                    <Table.Tr>
+                                        <Table.Th>#</Table.Th>
+                                        <Table.Th>Shop</Table.Th>
+                                        <Table.Th>Edge Box</Table.Th>
+                                        <Table.Th>Serial Number</Table.Th>
+                                        <Table.Th>Created Date</Table.Th>
+                                        <Table.Th>Uninstall Date</Table.Th>
+                                        <Table.Th>Last Connected</Table.Th>
+                                        <Table.Th ta={"center"}>Location Status</Table.Th>
+                                        <Table.Th ta={"center"}>Activation Status</Table.Th>
+                                    </Table.Tr>
+                                </Table.Thead>
+                                <Table.Tbody>{isFetching ? loadingData : rows}</Table.Tbody>
+                            </Table>
+                        </Table.ScrollContainer>
+                        <Group justify="space-between">
+                            {isFetching || installList?.totalCount ?
+                                <>
+                                    <Pagination total={installList?.totalCount ? Math.ceil(installList.totalCount / Number(size)) : 0} value={pageIndex} mt="sm"
+                                        onChange={(value) => setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, value)} />
+                                    <Group style={{ marginTop: '12px' }}>
+                                        <Text>Page Size: </Text>
+                                        <Select
+                                            onChange={(value) => {
+                                                setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, 1)
+                                                setStorage(DisabledEdgeBoxInstallFilterProps.SIZE, value)
+                                            }}
+                                            allowDeselect={false}
+                                            placeholder="0" value={size}
+                                            data={pageSizeSelect} defaultValue={"5"}
+                                        />
+                                    </Group>
+                                </> :
+                                <></>
+                            }
+                        </Group>
+                    </Box>
+                </Grid.Col>
+
+            </Grid>
         </div>
     );
 };

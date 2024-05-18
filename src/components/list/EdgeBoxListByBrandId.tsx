@@ -19,7 +19,7 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
         <Card shadow="sm" padding="lg" radius="md" m={10} withBorder
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <Group mb={10} justify="space-between">
-                <Text size='md' fw={'bold'} fz={25} c={"light-blue.6"} >{item.name}</Text>
+                <Text size='md' fw={'bold'} fz={20} >{item.name}</Text>
                 <Tooltip label="View Edge Box" withArrow>
                     <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
                         onClick={() => navigate(`/edgebox/${item.id}`)}>
