@@ -7,6 +7,7 @@ import { MdEmail, MdLockOutline } from "react-icons/md";
 import { useSession } from "../../../context/AuthContext";
 import { useLogin } from "../../../hooks/useAuth";
 import { Login } from "../../../models/Auth";
+import { EMAIL_REGEX } from "../../../types/constant";
 
 export const LoginForm = () => {
   const sessionHook = useSession();
@@ -20,7 +21,7 @@ export const LoginForm = () => {
 
     validate: {
       email: (value: string) => isEmpty(value) ? "Email is required"
-        : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: name@gmail.com",
+        : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
       password: isNotEmpty("Password is required")
     },
   });

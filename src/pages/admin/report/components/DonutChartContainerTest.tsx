@@ -1,5 +1,4 @@
 import { Box, Skeleton, rem } from "@mantine/core";
-import { useGetEdgeBoxReport } from "../../../../hooks/useReports";
 
 import { ArcElement, Chart as ChartJS, Legend, Tooltip, TooltipItem } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
@@ -49,14 +48,14 @@ const options = {
                 }
             }
         }
-    } 
+    }
 };
 
 export const DonutChartContainerTest = () => {
 
-    const { data: edgeBoxReport, isLoading: isLoadingEdgeBox } = useGetEdgeBoxReport();
+    // const { data: edgeBoxReport, isLoading: isLoadingEdgeBox } = useGetEdgeBoxReport();
     return (
-        <Skeleton visible={isLoadingEdgeBox}>
+        <Skeleton visible={false}>
             {/* <Box p={rem(32)}>
                 <Group justify="center" mt={15}>
                     <Box>
@@ -68,7 +67,7 @@ export const DonutChartContainerTest = () => {
                 </Group>
             </Box> */}
             <Box py={rem(32)} px={rem(16)}>
-                <Doughnut data={data} options={options} redraw/>
+                <Doughnut data={data} options={options} redraw />
             </Box>
         </Skeleton>
     );

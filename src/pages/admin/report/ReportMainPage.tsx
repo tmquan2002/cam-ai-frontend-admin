@@ -104,30 +104,20 @@ const ReportMainPage = () => {
     return (
         <div className={styled["container-detail"]}>
             <Navbar items={breadcrumbs} />
-            <Grid justify="space-around" gutter={20}>
-                <Grid.Col span={{ base: 12, md: 3 }}>
-                    <Group ml={30}>
-                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
-                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                            <DonutChartContainerTest />
-                        </Box>
-                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
-                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                            <DonutChartContainerTest />
-                        </Box>
-                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
-                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                            <DonutChartContainerTest />
-                        </Box>
-                        <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
-                            style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                            <DonutChartContainerTest />
-                        </Box>
-                    </Group>
+            <Grid justify="space-around" columns={24}>
+                <Grid.Col span={{ base: 24, lg: 7 }} >
+                    <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} mx={20} mb={20}
+                        style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                        <DonutChartContainerTest />
+                    </Box>
+                    <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} mx={20}
+                        style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
+                        <DonutChartContainerTest />
+                    </Box>
                 </Grid.Col>
 
-                <Grid.Col span={{ base: 12, md: 9 }}>
-                    <Box p={rem(32)} mr={20} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
+                <Grid.Col span={{ base: 24, lg: 16 }}>
+                    <Box p={rem(32)} mx={20} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
                         style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
                         {/* Top */}
                         <Grid mt={5} mb={20} justify='space-between'>

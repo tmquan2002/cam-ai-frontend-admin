@@ -11,6 +11,7 @@ import { CustomModal } from "../../../../components/modal/CustomSimleModel";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand, useUpdateBrand } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { BrandStatus } from "../../../../types/enum";
+import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
@@ -38,9 +39,9 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
         validate: {
             name: isNotEmpty("Brand name is required"),
             email: (value) => isEmpty(value) ? null
-                : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: name@gmail.com",
+                : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
             phone: (value) => isEmpty(value) ? null :
-                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value) ? null : "A phone number should have a length of 10-12 characters",
+                PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
             companyName: isNotEmpty("Company name is required"),
             province: isNotEmpty("Please select a province"),
             district: isNotEmpty("Please select a district"),

@@ -12,6 +12,7 @@ import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks
 import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { enumToSelect } from "../../../../utils/helperFunction";
+import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
 type UpdateAccountFieldValue = {
     email: string;
@@ -49,9 +50,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             name: (value: string) =>
                 isEmpty(value) ? "Name is required" : null,
             email: (value: string) => isEmpty(value) ? "Email is required"
-                : /^\S+@(\S+\.)+\S{2,4}$/g.test(value) ? null : "Invalid email - ex: huy@gmail.com",
+                : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: huy@gmail.com",
             phone: (value) => isEmpty(value) ? null :
-                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g.test(value) ? null : "A phone number should have a length of 10-12 characters",
+                PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
             province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
             district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
             ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,
