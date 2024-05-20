@@ -80,7 +80,7 @@ export enum NotificationColorPalette {
   DEVIATIONS = "#D35400",
 }
 
-export const pageSizeSelect = ['5', '10', '15', '20']
+export const pageSizeSelect = ['10', '15', '20']
 
 export const PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 export const EMAIL_REGEX = /^\S+@(\S+\.)+\S{2,4}$/;

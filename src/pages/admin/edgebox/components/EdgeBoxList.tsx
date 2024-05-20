@@ -60,7 +60,7 @@ const EdgeBoxList = () => {
         sb = _.omitBy(sb, _.isNil) as GetEdgeBoxParams;
         sb = _.omitBy(sb, _.isNaN) as GetEdgeBoxParams;
         return sb;
-    }, [pageIndex, size, filterStatus, debounced, filterSearchBrandId, filterSearchShopId]);
+    }, [pageIndex, size, filterStatus, filterLocation, debounced, filterSearchBrandId, filterSearchShopId]);
 
     const { data: edgeBoxList, isFetching, refetch } = useGetAllEdgeBoxes(searchParams)
     const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: filterSearchBrand || "" });

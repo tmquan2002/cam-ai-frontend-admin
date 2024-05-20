@@ -15,7 +15,7 @@ import styled from "../styles/brand.module.scss";
 const BrandList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(BrandFilterProps.FILTER, {
         pageIndex: 1,
-        size: "20",
+        size: "10",
         searchTerm: "",
         filterStatus: "None",
     })
