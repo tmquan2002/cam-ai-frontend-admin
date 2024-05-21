@@ -4,15 +4,15 @@ import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateAccountParams } from "../../../../apis/AccountAPI";
 import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccounts";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
+import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 import { Gender } from "../../../../types/enum";
 import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
 import { enumToSelect } from "../../../../utils/helperFunction";
-import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
 type UpdateAccountFieldValue = {
     email: string;
@@ -21,16 +21,12 @@ type UpdateAccountFieldValue = {
     phone: string;
     birthday: Date | null;
     addressLine: string;
-    province: string;
-    district: string;
+    province: string | null;
+    district: string | null;
     ward: string | null;
 };
 
 export const UpdateAccountForm = ({ id }: { id: string }) => {
-    const [provinceSearch, setProvinceSearch] = useState<string>("");
-    const [districtSearch, setDistrictSearch] = useState<string>("");
-    const [wardSearch, setWardSearch] = useState<string>("");
-
     const { data, isLoading: initialDataLoading, error } = useGetAccountById(id);
 
     const form = useForm<UpdateAccountFieldValue>({
@@ -41,9 +37,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             phone: "",
             birthday: new Date("01/01/2000"),
             addressLine: "",
-            province: "",
-            district: "",
-            ward: "",
+            province: null,
+            district: null,
+            ward: null,
         },
 
         validate: {
@@ -53,9 +49,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: huy@gmail.com",
             phone: (value) => isEmpty(value) ? null :
                 PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
-            province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
-            district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
-            ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,
+            province: (value, values) => !isEmpty(value) && (isEmpty(values.district) || isEmpty(values.ward)) ? "Please select a district and ward or leave all 3 fields empty" : null,
+            district: (value, values) => isEmpty(value) && !isEmpty(values.province) ? "Please select a district" : null,
+            ward: (value, values) => isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.district)) ? "Please select a ward" : null,
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {
@@ -82,9 +78,9 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 addressLine: data?.addressLine || "",
                 gender: data?.gender || Gender.Male,
                 birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
-                province: data?.ward?.district?.province?.id.toString() || "",
-                district: data?.ward?.district?.id.toString() || "",
-                ward: data?.ward?.id.toString() || ""
+                province: data?.ward?.district?.province?.id.toString() ?? null,
+                district: data?.ward?.district?.id.toString() ?? null,
+                ward: data?.ward?.id.toString() ?? null
             })
         }
     }, [data]);
@@ -153,7 +149,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                 withAsterisk label="Email"
                                 placeholder="your@email.com"
                                 {...form.getInputProps("email")} />
-                            <Group grow mt={10}>
+                            <Group grow mt={10} align="flex-start">
                                 <DateInput
                                     label="Birthday"
                                     placeholder="Birthday"
@@ -167,38 +163,35 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                     data={enumToSelect(Gender ?? {})}
                                     {...form.getInputProps('gender')} />
                             </Group>
-                            <Group grow mt={10}>
+                            <Group grow mt={10} align="flex-start">
                                 <Select label="Province" placeholder="Select"
-                                    data={provinceList || []}
+                                    data={provinceList ?? []}
                                     // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                                     {...form.getInputProps('province')}
                                     onChange={(value) => {
-                                        form.setFieldValue('province', value || "")
-                                        setDistrictSearch("");
-                                        setWardSearch("");
+                                        form.setFieldValue('province', value ?? null)
+                                        form.setFieldValue('district', null)
+                                        form.setFieldValue('ward', null)
                                     }}
-                                    searchValue={provinceSearch} onSearchChange={setProvinceSearch}
-                                    searchable nothingFoundMessage="Not Found"
+                                    searchable clearable nothingFoundMessage="Not Found"
                                 />
                                 <Select label="District" placeholder="Select"
-                                    disabled={form.values.province == ""}
-                                    data={districtList || []}
-                                    rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                                    disabled={form.values.province == null}
+                                    data={districtList ?? []}
+                                    rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                                     {...form.getInputProps('district')}
                                     onChange={(value) => {
-                                        form.setFieldValue('district', value || "")
-                                        setWardSearch("");
+                                        form.setFieldValue('district', value ?? null)
+                                        form.setFieldValue('ward', null)
                                     }}
-                                    searchValue={districtSearch} onSearchChange={setDistrictSearch}
-                                    searchable nothingFoundMessage="Not Found"
+                                    searchable clearable nothingFoundMessage="Not Found"
                                 />
                                 <Select label="Ward" placeholder="Select"
-                                    disabled={form.values.province == "" || districtSearch == ""}
-                                    data={wardList || []}
-                                    rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                                    disabled={form.values.province == null || form.values.district == null}
+                                    data={wardList ?? []}
+                                    rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
                                     {...form.getInputProps('ward')}
-                                    searchValue={wardSearch} onSearchChange={setWardSearch}
-                                    searchable nothingFoundMessage="Not Found"
+                                    searchable clearable nothingFoundMessage="Not Found"
                                 />
                             </Group>
                             <TextInput mt={10}
@@ -222,13 +215,10 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                             addressLine: data?.addressLine ? data.addressLine : "",
                                             gender: data?.gender || Gender.Male,
                                             birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
-                                            province: data?.ward?.district.province.id ? data?.ward?.district.province.id.toString() : "",
-                                            district: data?.ward?.district?.id.toString() || "",
-                                            ward: data?.ward?.id.toString() || ""
+                                            province: data?.ward?.district.province.id.toString() ?? null,
+                                            district: data?.ward?.district?.id.toString() ?? null,
+                                            ward: data?.ward?.id.toString() ?? null
                                         })
-                                        setProvinceSearch(data?.ward?.district?.province?.name || "")
-                                        setDistrictSearch(data?.ward?.district.name || "")
-                                        setWardSearch(data?.ward?.name || "")
                                     }}>
                                     Reset
                                 </Button>

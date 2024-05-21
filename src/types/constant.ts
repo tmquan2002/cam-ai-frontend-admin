@@ -80,8 +80,8 @@ export enum NotificationColorPalette {
   DEVIATIONS = "#D35400",
 }
 
-export const pageSizeSelect = ['10', '15', '20']
-
+export const PAGE_SIZE_DEFAULT = "10"
+export const PAGE_SIZE_SELECT = ['10', '15', '20']
 export const PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 export const EMAIL_REGEX = /^\S+@(\S+\.)+\S{2,4}$/;
 export const urlRegex = /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;

@@ -20,7 +20,7 @@ export const useGetAllBrands = (params: GetBrandsParams) => {
 export const useGetAllBrandsSelect = (params: GetBrandsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<SelectType[], Error> = useQuery({
-    queryKey: ["brandListSelect"],
+    queryKey: ["brandListSelect", params],
     queryFn: async () => {
       const res = await BrandAPI.getAllFilter(params);
       return res.values.map((items) => ({

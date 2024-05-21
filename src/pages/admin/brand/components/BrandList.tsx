@@ -8,14 +8,14 @@ import { GetBrandsParams } from '../../../../apis/BrandAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrands } from '../../../../hooks/useBrands';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { BrandFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { BrandFilterProps, PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT } from '../../../../types/constant';
 import { BrandStatus } from '../../../../types/enum';
 import styled from "../styles/brand.module.scss";
 
 const BrandList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(BrandFilterProps.FILTER, {
         pageIndex: 1,
-        size: "10",
+        size: PAGE_SIZE_DEFAULT,
         searchTerm: "",
         filterStatus: "None",
     })
@@ -169,7 +169,8 @@ const BrandList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={pageSizeSelect} defaultValue={"5"}
+                                data={PAGE_SIZE_SELECT} 
+                                defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>
                     </> :

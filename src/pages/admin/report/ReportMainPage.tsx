@@ -10,7 +10,7 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useGetAllInstallsFilter } from "../../../hooks/useEdgeBoxInstalls";
 import { useGetAllShopsSelect } from "../../../hooks/useShops";
 import { useLocalStorageCustomHook } from "../../../hooks/useStorageState";
-import { DisabledEdgeBoxInstallFilterProps, pageSizeSelect } from "../../../types/constant";
+import { DisabledEdgeBoxInstallFilterProps, PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT } from "../../../types/constant";
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from "../../../types/enum";
 import { removeTime } from "../../../utils/dateTimeFunction";
 import { DonutChartContainerTest } from "./components/DonutChartContainerTest";
@@ -22,7 +22,7 @@ const ReportMainPage = () => {
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
     const [storage, setStorage] = useLocalStorageCustomHook(DisabledEdgeBoxInstallFilterProps.FILTER, {
         pageIndex: 1,
-        size: "10",
+        size: PAGE_SIZE_DEFAULT,
         filterActivationStatus: "None",
         filterSearchShop: "",
         filterSearchShopId: "None",
@@ -204,7 +204,8 @@ const ReportMainPage = () => {
                                             }}
                                             allowDeselect={false}
                                             placeholder="0" value={size}
-                                            data={pageSizeSelect} defaultValue={"5"}
+                                            data={PAGE_SIZE_SELECT}
+                                            defaultValue={PAGE_SIZE_DEFAULT}
                                         />
                                     </Group>
                                 </> :

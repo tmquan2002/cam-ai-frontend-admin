@@ -11,7 +11,7 @@ import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { useGetAllEdgeBoxes } from '../../../../hooks/useEdgeBoxes';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { EdgeBoxFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { EdgeBoxFilterProps, PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT } from '../../../../types/constant';
 import { EdgeBoxLocationStatus, EdgeBoxStatus } from '../../../../types/enum';
 import styled from "../styles/edgebox.module.scss";
 import { AddEdgeBoxForm } from './AddEdgeBoxForm';
@@ -20,7 +20,7 @@ import { AddEdgeBoxForm } from './AddEdgeBoxForm';
 const EdgeBoxList = () => {
     const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxFilterProps.FILTER, {
         pageIndex: 1,
-        size: "10",
+        size: PAGE_SIZE_DEFAULT,
         searchTerm: "",
         filterStatus: "None",
         filterLocation: "None",
@@ -231,7 +231,8 @@ const EdgeBoxList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={pageSizeSelect} defaultValue={"5"}
+                                data={PAGE_SIZE_SELECT} 
+                                defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>
                     </> :

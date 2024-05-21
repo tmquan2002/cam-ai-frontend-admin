@@ -4,34 +4,44 @@ import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateBrandParams } from "../../../../apis/BrandAPI";
 import { CustomModal } from "../../../../components/modal/CustomSimleModel";
 import { useDeleteBrand, useGetBrandById, useReactivateBrand, useUpdateBrand } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { BrandStatus } from "../../../../types/enum";
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
+import { BrandStatus } from "../../../../types/enum";
+
+type UpdateBrandFieldValue = {
+    email: string;
+    name: string;
+    phone: string;
+    brandWebsite: string;
+    description: string;
+    companyName: string;
+    companyAddress: string;
+    province: string | null;
+    district: string | null;
+    ward: string | null;
+};
 
 export const UpdateBrandForm = ({ id }: { id: string }) => {
 
-    const [provinceSearch, setProvinceSearch] = useState<string>("");
-    const [districtSearch, setDistrictSearch] = useState<string>("");
-    const [wardSearch, setWardSearch] = useState<string>("");
     const [modalOpen, { open, close }] = useDisclosure(false);
     const { mutate: deleteBrand, isLoading: isLoadingDelete } = useDeleteBrand();
     const { mutate: reactivateBrand, isLoading: isLoadingReactivate } = useReactivateBrand();
 
-    const form = useForm({
+    const form = useForm<UpdateBrandFieldValue>({
         initialValues: {
             name: "",
             email: "",
             phone: "",
             brandWebsite: "",
             description: "",
-            province: "",
-            district: "",
-            ward: "",
+            province: null,
+            district: null,
+            ward: null,
             companyAddress: "",
             companyName: "",
         },
@@ -264,37 +274,34 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                         <Group grow mt={10} align="baseline">
                                             <Select label="Province" placeholder="Select"
                                                 withAsterisk
-                                                data={provinceList || []}
+                                                data={provinceList ?? []}
                                                 // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                                                 {...form.getInputProps('province')}
                                                 onChange={(value) => {
-                                                    form.setFieldValue('province', value || "")
-                                                    setDistrictSearch("");
-                                                    setWardSearch("");
+                                                    form.setFieldValue('province', value ?? null)
+                                                    form.setFieldValue('district', null)
+                                                    form.setFieldValue('ward', null)
                                                 }}
-                                                searchValue={provinceSearch} onSearchChange={setProvinceSearch}
-                                                searchable nothingFoundMessage="Not Found"
+                                                searchable clearable nothingFoundMessage="Not Found"
                                             />
                                             <Select label="District" placeholder="Select"
                                                 withAsterisk
-                                                disabled={form.values.province == ""}
-                                                data={districtList || []}
-                                                rightSection={form.values.province != "" && isFetchingDistricts ? <Loader size="1rem" /> : null}
+                                                disabled={form.values.province == null}
+                                                data={districtList ?? []}
+                                                rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                                                 {...form.getInputProps('district')}
                                                 onChange={(value) => {
-                                                    form.setFieldValue('district', value || "")
-                                                    setWardSearch("");
+                                                    form.setFieldValue('district', value ?? null)
+                                                    form.setFieldValue('ward', null)
                                                 }}
-                                                searchValue={districtSearch} onSearchChange={setDistrictSearch}
-                                                searchable nothingFoundMessage="Not Found"
+                                                searchable clearable nothingFoundMessage="Not Found"
                                             />
                                             <Select label="Ward" placeholder="Select"
                                                 withAsterisk
-                                                disabled={form.values.province == "" || districtSearch == ""}
-                                                data={wardList || []}
-                                                rightSection={form.values.province != "" && districtSearch != "" && isFetchingWards ? <Loader size="1rem" /> : null}
+                                                disabled={form.values.province == null || form.values.district == null}
+                                                data={wardList ?? []}
+                                                rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
                                                 {...form.getInputProps('ward')}
-                                                searchValue={wardSearch} onSearchChange={setWardSearch}
                                                 searchable nothingFoundMessage="Not Found"
                                             />
                                         </Group>
@@ -329,15 +336,12 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                                 phone: data?.phone ?? "",
                                                 brandWebsite: data?.brandWebsite ?? "",
                                                 description: data?.description ?? "",
-                                                province: data?.companyWard?.district?.province?.id.toString() || "",
-                                                district: data?.companyWard?.district?.id.toString() || "",
-                                                ward: data?.companyWard?.id.toString() || "",
-                                                companyAddress: data?.companyAddress || "",
+                                                province: data?.companyWard?.district?.province?.id.toString() ?? null,
+                                                district: data?.companyWard?.district?.id.toString() ?? null,
+                                                ward: data?.companyWard?.id.toString() ?? null,
+                                                companyAddress: data?.companyAddress ?? "",
                                                 companyName: data?.companyName ?? "",
                                             })
-                                            setProvinceSearch(data?.companyWard?.district?.province?.name || "")
-                                            setDistrictSearch(data?.companyWard?.district?.name || "")
-                                            setWardSearch(data?.companyWard?.name || "")
                                         }}>
                                         Reset
                                     </Button>

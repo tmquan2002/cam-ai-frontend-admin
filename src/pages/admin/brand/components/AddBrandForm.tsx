@@ -3,30 +3,39 @@ import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddBrandParams } from "../../../../apis/BrandAPI";
 import { useAddBrand } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
+type AddBrandFieldValue = {
+    email: string;
+    name: string;
+    phone: string;
+    brandWebsite: string;
+    description: string;
+    companyName: string;
+    addressLine: string;
+    province: string | null;
+    district: string | null;
+    ward: string | null;
+};
 export const AddBrandForm = () => {
 
     const { mutate: addBrand, isLoading } = useAddBrand();
     const navigate = useNavigate();
-    const [districtSearch, setDistrictSearch] = useState<string>("");
-    const [wardSearch, setWardSearch] = useState<string>("");
 
-    const form = useForm({
+    const form = useForm<AddBrandFieldValue>({
         initialValues: {
             name: "",
             email: "",
             phone: "",
             brandWebsite: "",
             description: "",
-            province: "",
-            district: "",
-            ward: "",
+            province: null,
+            district: null,
+            ward: null,
             addressLine: "",
             companyName: "",
         },
@@ -148,37 +157,35 @@ export const AddBrandForm = () => {
                     <Group grow mt={10} align="baseline">
                         <Select label="Province" placeholder="Select"
                             withAsterisk
-                            data={provincesList || []}
+                            data={provincesList ?? []}
                             // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('province')}
                             onChange={(value) => {
-                                form.setFieldValue('province', value || "")
-                                setDistrictSearch("");
-                                setWardSearch("");
+                                form.setFieldValue('province', value ?? null)
+                                form.setFieldValue('district', null)
+                                form.setFieldValue('ward', null)
                             }}
-                            searchable nothingFoundMessage="Not Found"
+                            searchable clearable nothingFoundMessage="Not Found"
                         />
                         <Select label="District" placeholder="Select"
                             withAsterisk
-                            disabled={form.values.province == ""}
-                            data={districtsList || []}
+                            disabled={form.values.province == null}
+                            data={districtsList ?? []}
                             rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('district')}
                             onChange={(value) => {
-                                form.setFieldValue('district', value || "")
-                                setWardSearch("");
+                                form.setFieldValue('district', value ?? null)
+                                form.setFieldValue('ward', null)
                             }}
-                            searchValue={districtSearch} onSearchChange={setDistrictSearch}
-                            searchable nothingFoundMessage="Not Found"
+                            searchable clearable nothingFoundMessage="Not Found"
                         />
                         <Select label="Ward" placeholder="Select"
                             withAsterisk
-                            disabled={form.values.province == "" || districtSearch == ""}
-                            data={wardsList || []}
+                            disabled={form.values.province == null || form.values.district == null}
+                            data={wardsList ?? []}
                             rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
                             {...form.getInputProps('ward')}
-                            searchValue={wardSearch} onSearchChange={setWardSearch}
-                            searchable nothingFoundMessage="Not Found"
+                            searchable clearable nothingFoundMessage="Not Found"
                         />
                     </Group>
                     <TextInput mt={10}

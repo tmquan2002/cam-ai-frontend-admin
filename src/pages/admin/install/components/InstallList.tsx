@@ -10,7 +10,7 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllInstallsFilter } from '../../../../hooks/useEdgeBoxInstalls';
 import { useGetAllShopsSelect } from '../../../../hooks/useShops';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { EdgeBoxInstallFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { EdgeBoxInstallFilterProps, PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT } from '../../../../types/constant';
 import { EdgeBoxActivationStatus, EdgeBoxInstallStatus } from '../../../../types/enum';
 import { removeTime } from '../../../../utils/dateTimeFunction';
 import styled from "../styles/edgeboxinstall.module.scss";
@@ -19,7 +19,7 @@ const InstallList = () => {
 
     const [storage, setStorage] = useLocalStorageCustomHook(EdgeBoxInstallFilterProps.FILTER, {
         pageIndex: 1,
-        size: "10",
+        size: PAGE_SIZE_DEFAULT,
         filterInstallStatus: "None",
         filterActivationStatus: "None",
         filterSearchShop: "",
@@ -190,7 +190,8 @@ const InstallList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={pageSizeSelect} defaultValue={"5"}
+                                data={PAGE_SIZE_SELECT} 
+                                defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>
                     </> :

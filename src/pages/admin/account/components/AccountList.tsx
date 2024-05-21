@@ -10,7 +10,7 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllAccounts } from '../../../../hooks/useAccounts';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { AccountFilterProps, pageSizeSelect } from '../../../../types/constant';
+import { AccountFilterProps, PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT } from '../../../../types/constant';
 import { AccountStatus, Role } from '../../../../types/enum';
 import styled from "../styles/account.module.scss";
 
@@ -18,7 +18,7 @@ const AccountList = () => {
 
     const [storage, setStorage] = useLocalStorageCustomHook(AccountFilterProps.FILTER, {
         pageIndex: 1,
-        size: "10",
+        size: PAGE_SIZE_DEFAULT,
         searchTerm: "",
         searchBy: "Name",
         filterRole: "None",
@@ -213,7 +213,8 @@ const AccountList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={pageSizeSelect} defaultValue={"5"}
+                                data={PAGE_SIZE_SELECT} 
+                                defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>
                     </>

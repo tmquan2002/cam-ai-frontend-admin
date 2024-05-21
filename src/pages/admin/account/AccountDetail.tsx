@@ -44,7 +44,7 @@ const AccountDetail = () => {
                 navigate('/account')
                 notifications.show({
                     title: "Successfully",
-                    message: "Account disabled!",
+                    message: "This account is now Inactive",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -62,7 +62,7 @@ const AccountDetail = () => {
                     console.error(error);
                     notifications.show({
                         title: "Failed",
-                        message: "Something wrong happen when trying to remove this account",
+                        message: "Something wrong happen when trying to delete this account",
                         color: "pale-red.5",
                         withCloseButton: true,
                     });

@@ -18,7 +18,7 @@ export const useGetProvinces = () => {
     return { isError, isLoading, data, error, refetch };
 };
 
-export const useGetDistricts = (provinceId: string) => {
+export const useGetDistricts = (provinceId: string | null) => {
     const { isError, isLoading, isFetching, data, error, refetch,
     }: UseQueryResult<SelectType[], Error> = useQuery({
         queryKey: ["districts", provinceId],
@@ -35,7 +35,7 @@ export const useGetDistricts = (provinceId: string) => {
     return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetWards = (districtId: string) => {
+export const useGetWards = (districtId: string | null) => {
     const { isError, isLoading, isFetching, data, error, refetch,
     }: UseQueryResult<SelectType[], Error> = useQuery({
         queryKey: ["wards", districtId],

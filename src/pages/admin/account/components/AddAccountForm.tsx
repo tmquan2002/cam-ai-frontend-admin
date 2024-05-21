@@ -22,17 +22,15 @@ type AddAccountFieldValue = {
     phone: string;
     birthday: Date | null;
     addressLine: string;
-    province: string;
-    district: string;
+    province: string | null;
+    district: string | null;
     ward: string | null;
     role: Role;
-    brandId: string;
+    brandId: string | null;
 };
 
 export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBrandId?: string, initialBrandName?: string }) => {
     const [brand, setBrand] = useState<string>(initialBrandName || "");
-    const [districtSearch, setDistrictSearch] = useState<string>("");
-    const [wardSearch, setWardSearch] = useState<string>("");
 
     const form = useForm<AddAccountFieldValue>({
         initialValues: {
@@ -43,10 +41,10 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             birthday: new Date("01/01/2000"),
             addressLine: "",
             role: Role.BrandManager,
-            province: "",
-            district: "",
-            ward: "",
-            brandId: initialBrandId || "",
+            province: null,
+            district: null,
+            ward: null,
+            brandId: initialBrandId ?? null,
         },
 
         validate: {
@@ -55,16 +53,16 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
             phone: (value: string) => isEmpty(value) ? null :
                 PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
+            province: (value, values) => !isEmpty(value) && (isEmpty(values.district) || isEmpty(values.ward)) ? "Please select a district and ward or leave all 3 fields empty" : null,
+            district: (value, values) => isEmpty(value) && !isEmpty(values.province) ? "Please select a district" : null,
+            ward: (value, values) => isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.district)) ? "Please select a ward" : null,
             gender: isNotEmpty("Please select a gender"),
-            province: (value, values) => !isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a district and ward or leave all 3 fields empty" : null,
-            district: (value, values) => !isEmpty(value) ? null : !isEmpty(values.province) ? "Please select a district" : null,
-            ward: (value, values) => !isEmpty(value) ? null : (!isEmpty(values.province) || !isEmpty(values.province)) ? "Please select a ward" : null,
             brandId: isNotEmpty("Please select a brand"),
         },
     });
 
     const { mutate: addAccount, isLoading } = useAddAccount();
-    const { data: brandList, refetch: refetchBrand } = useGetAllBrandsSelect({ name: brand, hasManager: false });
+    const { data: brandList, refetch: refetchBrand, isFetching: isFetchingBrandList } = useGetAllBrandsSelect({ name: brand, hasManager: false });
 
     const { data: provincesList } = useGetProvinces();
     const { data: districtsList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
@@ -85,7 +83,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             brandId: form.values.brandId,
             wardId: isEmpty(form.values.ward) ? null : form.values.ward,
         };
-        console.log(addAccountParams)
+        // console.log(addAccountParams)
 
         addAccount(addAccountParams, {
             onSuccess(data) {
@@ -127,12 +125,13 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
 
     return (
         <form style={{ textAlign: "left" }} onSubmit={form.onSubmit(() => onSubmitForm())}>
-            <Select label="Brand" data={brandList || []} limit={5}
+            <Select label="Brand" data={brandList ?? []} limit={5}
                 withAsterisk
                 disabled={!isEmpty(initialBrandId)}
                 nothingFoundMessage={brandList && "Not Found"}
                 searchValue={brand} onSearchChange={setBrand}
-                placeholder="Pick value" clearable searchable
+                rightSection={isFetchingBrandList ? <Loader size="1rem" /> : null}
+                placeholder="Pick value" searchable
                 {...form.getInputProps("brandId")}
             />
             <TextInput mt={10}
@@ -159,35 +158,33 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
             </Group>
             <Group grow mt={10} align="baseline">
                 <Select label="Province" placeholder="Select"
-                    data={provincesList || []}
+                    data={provincesList ?? []}
                     // rightSection={isLoadingProvinces ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('province')}
                     onChange={(value) => {
-                        form.setFieldValue('province', value || "")
-                        setDistrictSearch("");
-                        setWardSearch("");
+                        form.setFieldValue('province', value ?? null)
+                        form.setFieldValue('district', null)
+                        form.setFieldValue('ward', null)
                     }}
-                    searchable nothingFoundMessage="Not Found"
+                    searchable clearable nothingFoundMessage="Not Found"
                 />
                 <Select label="District" placeholder="Select"
-                    disabled={form.values.province == ""}
-                    data={districtsList || []}
+                    disabled={form.values.province == null}
+                    data={districtsList ?? []}
                     rightSection={isFetchingDistricts ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('district')}
                     onChange={(value) => {
-                        form.setFieldValue('district', value || "")
-                        setWardSearch("");
+                        form.setFieldValue('district', value ?? null)
+                        form.setFieldValue('ward', null)
                     }}
-                    searchValue={districtSearch} onSearchChange={setDistrictSearch}
-                    searchable nothingFoundMessage="Not Found"
+                    searchable clearable nothingFoundMessage="Not Found"
                 />
                 <Select label="Ward" placeholder="Select"
-                    disabled={form.values.province == "" || districtSearch == ""}
-                    data={wardsList || []}
+                    disabled={form.values.province == null || form.values.district == null}
+                    data={wardsList ?? []}
                     rightSection={isFetchingWards ? <Loader size="1rem" /> : null}
                     {...form.getInputProps('ward')}
-                    searchValue={wardSearch} onSearchChange={setWardSearch}
-                    searchable nothingFoundMessage="Not Found"
+                    searchable clearable nothingFoundMessage="Not Found"
                 />
             </Group>
             <TextInput mt={10}
