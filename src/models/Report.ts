@@ -16,16 +16,6 @@ export type ReportEdgeBox = {
 
 export type ReportEdgeBoxInstall = {
     total: number;
-    status: {
-        Working: number,
-        Unhealthy: number,
-        Disabled: number,
-        New: number,
-    },
-    activationStatus: {
-        NotActivated: number,
-        Activated: number,
-        Pending: number,
-        Failed: number,
-    },
+    status: { [key: string]: number },
+    activationStatus: { [key: string]: number },
 };

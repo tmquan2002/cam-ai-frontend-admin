@@ -18,7 +18,7 @@ export type GetAccountsParams = {
 export type AddAccountParams = {
   email: string;
   name: string;
-  gender: Gender;
+  gender: Gender | null;
   phone: string;
   birthday: string | null;
   wardId: string | null;
@@ -31,7 +31,7 @@ export type UpdateAccountParams = {
   id: string;
   values: {
     name: string;
-    gender: Gender;
+    gender: Gender | null;
     email: string;
     phone: string;
     birthday: string | null;

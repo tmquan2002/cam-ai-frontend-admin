@@ -145,17 +145,9 @@ const EdgeBoxList = () => {
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Edge Box</Text></Grid.Col>
-                    <Grid.Col span="content"><Button variant='transparent'
-                        onClick={onClearFilter}>
-                        Clear All Filters
-                    </Button>
-                    </Grid.Col>
-                </Grid>
-                <Grid mb={20}>
-                    <Grid.Col span={6}>
-                        <RadioGroup name="status" value={filterStatus} label="Edge Box Status"
+                <Grid my={10} align='flex-end'>
+                    <Grid.Col span={4}>
+                        <RadioGroup name="status" value={filterStatus} label="Edge Box Status" size='xs'
                             onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_STATUS, value)}>
                             <Group>
                                 <Radio value={EdgeBoxStatus.Active.toString()} label={"Active"} />
@@ -165,8 +157,8 @@ const EdgeBoxList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={6}>
-                        <RadioGroup name="location" value={filterLocation} label="Location Status"
+                    <Grid.Col span={4}>
+                        <RadioGroup name="location" value={filterLocation} label="Location Status" size='xs'
                             onChange={(value) => setStorage(EdgeBoxFilterProps.FILTER_LOCATION, value)}>
                             <Group>
                                 <Radio value={EdgeBoxLocationStatus.Idle.toString()} label={"Idle"} />
@@ -175,6 +167,12 @@ const EdgeBoxList = () => {
                                 <Radio value={EdgeBoxLocationStatus.Uninstalling.toString()} label={"Uninstalling"} />
                             </Group>
                         </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={4} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <Select data={brandList || []} limit={5} size='xs' label="Brand" w={300}
@@ -231,7 +229,7 @@ const EdgeBoxList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={PAGE_SIZE_SELECT} 
+                                data={PAGE_SIZE_SELECT}
                                 defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>

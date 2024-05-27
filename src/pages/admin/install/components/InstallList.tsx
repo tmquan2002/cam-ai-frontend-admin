@@ -112,16 +112,8 @@ const InstallList = () => {
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Installation</Text></Grid.Col>
-                    <Grid.Col span="content"><Button variant='transparent'
-                        onClick={onClearFilter}>
-                        Clear All Filters
-                    </Button>
-                    </Grid.Col>
-                </Grid>
-                <Grid mb={20}>
-                    <Grid.Col span={6}>
+                <Grid my={10} align='flex-end'>
+                    <Grid.Col span={4}>
                         <RadioGroup name="status" value={filterInstallStatus} label="Installation Health"
                             onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, value)}>
                             <Group>
@@ -132,7 +124,7 @@ const InstallList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={4}>
                         <RadioGroup name="location" value={filterActivationStatus} label="Activation Status"
                             onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
                             <Group>
@@ -142,6 +134,12 @@ const InstallList = () => {
                                 <Radio value={EdgeBoxActivationStatus.Failed.toString()} label={"Failed"} />
                             </Group>
                         </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={4} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
                     </Grid.Col>
                     <Grid.Col span={12}>
                         <Select data={shopList || []} limit={5} size='xs' label="Shop" w={300}
@@ -190,7 +188,7 @@ const InstallList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={PAGE_SIZE_SELECT} 
+                                data={PAGE_SIZE_SELECT}
                                 defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>

@@ -16,6 +16,10 @@ const queryClient = new QueryClient({
   },
 });
 
+//TODO: Move all list in brand detail to the left
+//TODO: All fields has to be null at first (Especially Birthday and Gender, do manager webpage as well)
+//TODO: Design report page
+
 const theme = createTheme({
   // fontFamily: "DVN-Poppins",
   primaryColor: "light-blue",

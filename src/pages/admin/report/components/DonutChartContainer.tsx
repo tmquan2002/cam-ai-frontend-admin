@@ -1,40 +1,37 @@
-import { DonutChart } from "@mantine/charts";
-import { Box, Group, Skeleton, Text } from "@mantine/core";
+import { Box, ColorSwatch, Group, RingProgress, Skeleton, Text } from "@mantine/core";
+import { useGetEdgeBoxInstallReport } from "../../../../hooks/useReports";
+import { convertEdgeBoxReportToRingChart } from "../../../../utils/chartFunction";
 import styled from "../report.module.scss";
-import { useGetEdgeBoxInstallReport, useGetEdgeBoxReport } from "../../../../hooks/useReports";
-import { convertReportResponseToChartFormat } from "../../../../utils/chartFunction";
+import { EdgeBoxInstallStatus } from "../../../../types/enum";
+import { getColorFromStatusName } from "../../../../utils/helperFunction";
 
-export const DonutChartContainer = ({ type }: { type: "edgeBox" | "install" }) => {
+export const DonutChartContainer = () => {
 
-    const { data: edgeBoxReport, isLoading: isLoadingEdgeBox } = useGetEdgeBoxReport();
     const { data: edgeBoxInstallReport, isLoading: isLoadingEdgeBoxInstall } = useGetEdgeBoxInstallReport();
     return (
-        <Skeleton visible={type == "edgeBox" ? isLoadingEdgeBox : isLoadingEdgeBoxInstall}>
+        <Skeleton visible={isLoadingEdgeBoxInstall}>
             <Box className={styled["static-card"]} pos={"relative"} >
-                <div className={styled["static-card-title"]}>
-                    {type == "edgeBox" ? "Edge Box" : "Installation"}
-                </div>
-                <Text size="lg" fw={"bold"}>Total: {type == "edgeBox" ? edgeBoxReport?.total : type == "install" ? edgeBoxInstallReport?.total : 0}</Text>
-
-                <Group justify="center" mt={15}>
+                <Group>
+                    <RingProgress size={150} thickness={20}
+                        sections={convertEdgeBoxReportToRingChart(edgeBoxInstallReport, "installationStatus")}
+                    />
                     <Box>
-                        <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Edge Box Status" : type == "install" ? "Installation Status" : 0}</Text>
-                        <DonutChart withLabelsLine={false} withLabels paddingAngle={5}
-                            data={type == "edgeBox" ?
-                                convertReportResponseToChartFormat(edgeBoxReport, undefined, "edgeBoxStatus")
-                                : convertReportResponseToChartFormat(undefined, edgeBoxInstallReport, "installationStatus")
-                            }
-                        />
-                    </Box>
-                    
-                    <Box>
-                        <Text size="lg" fw={"bold"}>{type == "edgeBox" ? "Location Status" : type == "install" ? "Activation Status" : 0}</Text>
-                        <DonutChart withLabelsLine={false} withLabels paddingAngle={5}
-                            data={type == "edgeBox" ?
-                                convertReportResponseToChartFormat(edgeBoxReport, undefined, "locationStatus")
-                                : convertReportResponseToChartFormat(undefined, edgeBoxInstallReport, "activationStatus")
-                            }
-                        />
+                        <Group>
+                            <ColorSwatch color={getColorFromStatusName(EdgeBoxInstallStatus.Working)} size={15} />
+                            <Text>{EdgeBoxInstallStatus.Working}</Text>
+                        </Group>
+                        <Group>
+                            <ColorSwatch color={getColorFromStatusName(EdgeBoxInstallStatus.New)} size={15} />
+                            <Text>{EdgeBoxInstallStatus.New}</Text>
+                        </Group>
+                        <Group>
+                            <ColorSwatch color={getColorFromStatusName(EdgeBoxInstallStatus.Unhealthy)} size={15} />
+                            <Text>{EdgeBoxInstallStatus.Unhealthy}</Text>
+                        </Group>
+                        <Group>
+                            <ColorSwatch color={getColorFromStatusName(EdgeBoxInstallStatus.Disabled)} size={15} />
+                            <Text>{EdgeBoxInstallStatus.Disabled}</Text>
+                        </Group>
                     </Box>
                 </Group>
             </Box>

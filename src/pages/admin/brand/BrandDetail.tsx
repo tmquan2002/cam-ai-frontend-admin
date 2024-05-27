@@ -1,8 +1,8 @@
 import { Avatar, Box, Button, Divider, Grid, Group, Image, Loader, LoadingOverlay, Tabs, Text, rem } from "@mantine/core";
-import { IconMail, IconNetwork, IconPhone, IconRouter, IconUser } from "@tabler/icons-react";
+import { IconMail, IconNetwork, IconPhone, IconRouter, IconUser, IconUserCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdAccountCircle, MdOutlineSupervisorAccount } from "react-icons/md";
+import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -80,44 +80,6 @@ const BrandDetail = () => {
                                                 }
                                             </Group>
 
-                                            {/* Menu settings */}
-                                            {/* <Menu shadow="md" width={200}>
-                                                <Menu.Target>
-                                                    <Group justify='center' mb={20}>
-                                                        <Button size="sm" variant="gradient"
-                                                            gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }}>
-                                                            Brand Settings
-                                                        </Button>
-                                                        {!dataManager?.id &&
-                                                            <Button
-                                                                onClick={() => navigate("/account/add", { state: { brandId: params.brandId!, name: data?.name } })} variant="gradient"
-                                                                gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
-                                                            >
-                                                                Add Manager
-                                                            </Button>
-                                                        }
-                                                    </Group>
-                                                </Menu.Target>
-
-                                                <Menu.Dropdown>
-                                                    <Menu.Item leftSection={<MdEdit />}
-                                                        onClick={() => navigate(`/brand/${params.brandId!}/update`)}>
-                                                        Update
-                                                    </Menu.Item>
-                                                    {data?.brandStatus == BrandStatus.Active ?
-                                                        <Menu.Item color="red" leftSection={<MdDelete style={{ color: "red" }} />}
-                                                            onClick={open} >
-                                                            Delete
-                                                        </Menu.Item>
-                                                        :
-                                                        <Menu.Item leftSection={<MdAutorenew />}
-                                                            onClick={open} >
-                                                            Reactivate
-                                                        </Menu.Item>
-                                                    }
-                                                </Menu.Dropdown>
-                                            </Menu> */}
-
                                             {isLoadingManager ? <Loader size="sm" /> :
                                                 dataManager?.id &&
                                                 <Group>
@@ -170,16 +132,16 @@ const BrandDetail = () => {
                                 <Grid.Col span={{ base: 12, lg: 8 }} mr={rem(32)}>
                                     <Tabs value={activeTab} onChange={setActiveTab}>
                                         <Tabs.List>
-                                            <Tabs.Tab value="shops" leftSection={<AiFillShop />}>
+                                            <Tabs.Tab value="shops" leftSection={<AiFillShop size={20} />}>
                                                 Shops
                                             </Tabs.Tab>
-                                            <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount />}>
+                                            <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount size={20} />}>
                                                 Managers
                                             </Tabs.Tab>
-                                            <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
+                                            <Tabs.Tab value="employees" leftSection={<IconUserCircle size={20} />}>
                                                 Employees
                                             </Tabs.Tab>
-                                            <Tabs.Tab value="edge boxes" leftSection={<IconRouter />}>
+                                            <Tabs.Tab value="edge boxes" leftSection={<IconRouter size={20} />}>
                                                 Edge Boxes
                                             </Tabs.Tab>
                                         </Tabs.List>

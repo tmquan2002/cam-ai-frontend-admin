@@ -114,23 +114,21 @@ const BrandList = () => {
             {/* Filter Section*/}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Brand</Text></Grid.Col>
-                    <Grid.Col span="content"><Button variant='transparent'
-                        onClick={onClearFilter}>
-                        Clear All Filters
-                    </Button>
-                    </Grid.Col>
-                </Grid>
-                <Grid mb={20}>
-                    <Grid.Col span={2}>
-                        <RadioGroup name="status" value={filterStatus} label="Brand Status"
+                <Grid my={10} align='flex-end'>
+                    <Grid.Col span={3}>
+                        <RadioGroup name="status" value={filterStatus} label="Brand Status" size='xs'
                             onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
                             <Group>
                                 <Radio value={BrandStatus.Active.toString()} label={"Active"} />
                                 <Radio value={BrandStatus.Inactive.toString()} label={"Inactive"} />
                             </Group>
                         </RadioGroup>
+                    </Grid.Col>
+                    <Grid.Col span={3} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
                     </Grid.Col>
                 </Grid>
                 <Divider />
@@ -169,7 +167,7 @@ const BrandList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={PAGE_SIZE_SELECT} 
+                                data={PAGE_SIZE_SELECT}
                                 defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>

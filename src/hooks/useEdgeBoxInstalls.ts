@@ -7,7 +7,7 @@ export const useGetAllInstallsFilter = (params: GetEdgeBoxInstallParams) => {
     const { isError, isLoading, isFetching, data, error,
         refetch,
     }: UseQueryResult<CommonResponse<EdgeBoxInstall>, Error> = useQuery({
-        queryKey: ["edgeBoxInstallList", params.size, params.pageIndex],
+        queryKey: ["edgeBoxInstallList", params],
         queryFn: async () => {
             return await EdgeBoxInstallAPI.getAllFilter(params);
         },

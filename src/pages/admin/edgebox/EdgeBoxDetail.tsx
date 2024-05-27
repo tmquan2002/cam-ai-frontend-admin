@@ -47,6 +47,7 @@ const EdgeBoxDetail = () => {
     const isAllInstallsDisabled = dataInstall?.values.filter((e) => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length === 0;
     const isEdgeBoxActive = data?.edgeBoxStatus === EdgeBoxStatus.Active;
     const isEdgeBoxBroken = data?.edgeBoxStatus === EdgeBoxStatus.Broken;
+    const isEdgeBoxDisposed = data?.edgeBoxStatus === EdgeBoxStatus.Disposed;
 
     const form = useForm<{ edgeBoxStatus: EdgeBoxStatus | null }>({
         initialValues: {
@@ -259,10 +260,10 @@ const EdgeBoxDetail = () => {
                                                 placeholder="Select a status"
                                                 label="Edge Box Status"
                                                 data={[
-                                                    // {
-                                                    //     label: EdgeBoxStatus.Active, value: EdgeBoxStatus.Active,
-                                                    //     disabled: true
-                                                    // },
+                                                    {
+                                                        label: EdgeBoxStatus.Active, value: EdgeBoxStatus.Active,
+                                                        disabled: isEdgeBoxDisposed
+                                                    },
                                                     {
                                                         label: EdgeBoxStatus.Inactive, value: EdgeBoxStatus.Inactive,
                                                         disabled: !isEdgeBoxActive || !isAllInstallsDisabled

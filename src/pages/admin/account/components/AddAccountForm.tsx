@@ -10,15 +10,15 @@ import { AddAccountParams } from "../../../../apis/AccountAPI";
 import { useAddAccount } from "../../../../hooks/useAccounts";
 import { useGetAllBrandsSelect } from "../../../../hooks/useBrands";
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
-import { Gender, Role } from "../../../../types/enum";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
-import { enumToSelect } from "../../../../utils/helperFunction";
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
+import { Gender, Role } from "../../../../types/enum";
+import { removeTime } from "../../../../utils/dateTimeFunction";
+import { enumToSelect } from "../../../../utils/helperFunction";
 
 type AddAccountFieldValue = {
     email: string;
     name: string;
-    gender: Gender;
+    gender: Gender | null;
     phone: string;
     birthday: Date | null;
     addressLine: string;
@@ -36,9 +36,9 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         initialValues: {
             email: "",
             name: "",
-            gender: Gender.Male,
+            gender: null,
             phone: "",
-            birthday: new Date("01/01/2000"),
+            birthday: null,
             addressLine: "",
             role: Role.BrandManager,
             province: null,
@@ -146,7 +146,6 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
                 <DateInput
                     label="Birthday"
                     placeholder="Birthday"
-                    maxDate={getDateFromSetYear(18)}
                     {...form.getInputProps('birthday')} />
                 <TextInput
                     label="Phone" placeholder="Phone Number"

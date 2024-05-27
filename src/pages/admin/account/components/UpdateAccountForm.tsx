@@ -1,6 +1,6 @@
 import { Button, Group, Loader, Select, Text, TextInput } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { isEmpty } from "lodash";
@@ -11,13 +11,13 @@ import { useGetAccountById, useUpdateAccount } from "../../../../hooks/useAccoun
 import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks/useLocation";
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 import { Gender } from "../../../../types/enum";
-import { getDateFromSetYear, removeTime } from "../../../../utils/dateTimeFunction";
+import { removeTime } from "../../../../utils/dateTimeFunction";
 import { enumToSelect } from "../../../../utils/helperFunction";
 
 type UpdateAccountFieldValue = {
     email: string;
     name: string;
-    gender: Gender;
+    gender: Gender | null;
     phone: string;
     birthday: Date | null;
     addressLine: string;
@@ -33,7 +33,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
         initialValues: {
             email: "",
             name: "",
-            gender: Gender.Male,
+            gender: null,
             phone: "",
             birthday: new Date("01/01/2000"),
             addressLine: "",
@@ -52,6 +52,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             province: (value, values) => !isEmpty(value) && (isEmpty(values.district) || isEmpty(values.ward)) ? "Please select a district and ward or leave all 3 fields empty" : null,
             district: (value, values) => isEmpty(value) && !isEmpty(values.province) ? "Please select a district" : null,
             ward: (value, values) => isEmpty(value) && (!isEmpty(values.province) || !isEmpty(values.district)) ? "Please select a ward" : null,
+            gender: isNotEmpty("Please select a gender"),
         },
         enhanceGetInputProps: (payload) => {
             if (!payload.form.initialized) {
@@ -76,8 +77,8 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                 name: data?.name || "",
                 phone: data?.phone || "",
                 addressLine: data?.addressLine || "",
-                gender: data?.gender || Gender.Male,
-                birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
+                gender: data?.gender || null,
+                birthday: data?.birthday ? new Date(data?.birthday) : null,
                 province: data?.ward?.district?.province?.id.toString() ?? null,
                 district: data?.ward?.district?.id.toString() ?? null,
                 ward: data?.ward?.id.toString() ?? null
@@ -153,7 +154,6 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                 <DateInput
                                     label="Birthday"
                                     placeholder="Birthday"
-                                    maxDate={getDateFromSetYear(18)}
                                     {...form.getInputProps('birthday')} />
                                 <TextInput
                                     label="Phone" placeholder="Phone Number"
@@ -214,7 +214,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
                                             phone: data?.phone ? data.phone : "",
                                             addressLine: data?.addressLine ? data.addressLine : "",
                                             gender: data?.gender || Gender.Male,
-                                            birthday: data?.birthday ? new Date(data?.birthday) : new Date(2000, 0),
+                                            birthday: data?.birthday ? new Date(data?.birthday) : null,
                                             province: data?.ward?.district.province.id.toString() ?? null,
                                             district: data?.ward?.district?.id.toString() ?? null,
                                             ward: data?.ward?.id.toString() ?? null

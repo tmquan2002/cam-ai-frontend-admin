@@ -139,17 +139,9 @@ const AccountList = () => {
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Account</Text></Grid.Col>
-                    <Grid.Col span="content"><Button variant='transparent'
-                        onClick={onClearFilter}>
-                        Clear All Filters
-                    </Button>
-                    </Grid.Col>
-                </Grid>
-                <Grid mb={20}>
-                    <Grid.Col span={4}>
-                        <RadioGroup name="role" size='sm' value={filterRole} label="Role"
+                <Grid my={10} align='flex-end'>
+                    <Grid.Col span={3}>
+                        <RadioGroup name="role" size='xs' value={filterRole} label="Role"
                             onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
                             <Group>
                                 <Radio value={Role.BrandManager} label={"Brand Manager"} />
@@ -157,8 +149,8 @@ const AccountList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={4}>
-                        <RadioGroup name="status" size='sm' value={filterStatus} label="Account Status"
+                    <Grid.Col span={3}>
+                        <RadioGroup name="status" size='xs' value={filterStatus} label="Account Status"
                             onChange={(value) => setStorage(AccountFilterProps.FILTER_STATUS, value)}>
                             <Group>
                                 <Radio value={AccountStatus.New} label={"New"} />
@@ -167,14 +159,20 @@ const AccountList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={2}>
-                        <Select data={brandList || []} limit={5} size='xs'
+                    <Grid.Col span={3}>
+                        <Select data={brandList || []} limit={5} size='xs' w={300}
                             nothingFoundMessage={brandList && "Not Found"} label="Brand"
                             value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                             searchValue={filterSearchBrand}
                             onSearchChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, value)}
                             onChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)}
                         />
+                    </Grid.Col>
+                    <Grid.Col span={3} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
                     </Grid.Col>
                 </Grid>
                 <Divider />
@@ -213,7 +211,7 @@ const AccountList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={PAGE_SIZE_SELECT} 
+                                data={PAGE_SIZE_SELECT}
                                 defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>

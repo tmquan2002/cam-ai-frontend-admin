@@ -128,16 +128,8 @@ const ShopList = () => {
             {/* Filter */}
             <Collapse in={opened}>
                 <Divider />
-                <Grid mt={20} justify='space-between'>
-                    <Grid.Col span={6}><Text fw="bold">Filter Shop</Text></Grid.Col>
-                    <Grid.Col span="content"><Button variant='transparent'
-                        onClick={onClearFilter}>
-                        Clear All Filters
-                    </Button>
-                    </Grid.Col>
-                </Grid>
-                <Grid mb={20}>
-                    <Grid.Col span={6}>
+                <Grid my={10} align='flex-end'>
+                    <Grid.Col span={4}>
                         <RadioGroup name="status" size='xs' value={filterStatus} label="Shop Status"
                             onChange={(value) => setStorage(ShopFilterProps.FILTER_STATUS, value)}>
                             <Group>
@@ -146,14 +138,20 @@ const ShopList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={2}>
-                        <Select data={brandList || []} limit={5} size='xs' label="Brand"
+                    <Grid.Col span={4}>
+                        <Select data={brandList || []} limit={5} size='xs' label="Brand" w={300}
                             nothingFoundMessage={brandList && "Not Found"}
                             value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                             searchValue={filterSearchBrand}
                             onSearchChange={(value) => setStorage(ShopFilterProps.FILTER_SEARCH_BRAND, value)}
                             onChange={(value) => setStorage(ShopFilterProps.FILTER_SEARCH_BRAND_ID, value)}
                         />
+                    </Grid.Col>
+                    <Grid.Col span={4} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
                     </Grid.Col>
                 </Grid>
                 <Divider />
@@ -191,7 +189,7 @@ const ShopList = () => {
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}
-                                data={PAGE_SIZE_SELECT} 
+                                data={PAGE_SIZE_SELECT}
                                 defaultValue={PAGE_SIZE_DEFAULT}
                             />
                         </Group>
