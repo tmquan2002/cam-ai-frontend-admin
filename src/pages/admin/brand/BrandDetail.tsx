@@ -47,7 +47,7 @@ const BrandDetail = () => {
                         {error ? <Text fs="italic" ta="center">Brand not found</Text> :
                             <Grid justify="space-around">
                                 <Grid.Col span={12}>
-                                    {data?.banner && <Image h={220} mb={20} radius={5} src={data?.banner?.hostingUri} />}
+                                    {data?.banner && <Image h={270} mb={20} radius={5} src={data?.banner?.hostingUri} />}
                                 </Grid.Col>
 
                                 <Grid.Col span={{ base: 12, lg: 3 }} mx={rem(20)} mb={50}>
