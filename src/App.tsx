@@ -16,8 +16,6 @@ const queryClient = new QueryClient({
   },
 });
 
-//TODO: Design report page
-
 const theme = createTheme({
   // fontFamily: "DVN-Poppins",
   primaryColor: "light-blue",
