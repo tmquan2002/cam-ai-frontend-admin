@@ -46,7 +46,7 @@ const EdgeBoxDetail = () => {
 
     const isAllInstallsDisabled = dataInstall?.values.filter((e) => e.edgeBoxInstallStatus !== EdgeBoxInstallStatus.Disabled).length === 0;
     const isEdgeBoxActive = data?.edgeBoxStatus === EdgeBoxStatus.Active;
-    const isEdgeBoxBroken = data?.edgeBoxStatus === EdgeBoxStatus.Broken;
+    // const isEdgeBoxBroken = data?.edgeBoxStatus === EdgeBoxStatus.Broken;
     const isEdgeBoxDisposed = data?.edgeBoxStatus === EdgeBoxStatus.Disposed;
 
     const form = useForm<{ edgeBoxStatus: EdgeBoxStatus | null }>({
@@ -336,7 +336,7 @@ const EdgeBoxDetail = () => {
                                                             <MdEdit />
                                                         </ActionIcon>
                                                     </Tooltip>
-                                                    {(isEdgeBoxActive || isEdgeBoxBroken) && isAllInstallsDisabled &&
+                                                    {!isEdgeBoxDisposed && isAllInstallsDisabled &&
                                                         <Tooltip label="Delete Edge Box" withArrow>
                                                             <ActionIcon variant="outline" size="lg" aria-label="Delete Edge Box" color="pale-red.4"
                                                                 onClick={openDelete}>
