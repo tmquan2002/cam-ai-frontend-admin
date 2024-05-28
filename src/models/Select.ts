@@ -1,4 +1,5 @@
 type SelectType = {
     value: string,
-    label: string
+    label: string,
+    status?: string,
 }

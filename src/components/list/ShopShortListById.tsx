@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Group, LoadingOverlay, Paper, Text } from "@mantine/core";
-import { MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { IconClock, IconHome, IconPhone } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllShops } from "../../hooks/useShops";
 import { Shop } from "../../models/Shop";
@@ -35,13 +35,13 @@ const ShopCard = ({ item }: { item: Shop }) => {
             </Group>
             <Box>
                 <div className={styled["icon-text"]}>
-                    <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
+                    <IconClock size={20} />
                     <span className={styled["information"]}><b>Open:</b> {item?.openTime ? formatTime(item?.openTime, false, false) : "No Data"} - <b>Close:</b> {item?.closeTime ? formatTime(item?.closeTime, false, false) : "No Data"}</span>
                 </div>
 
                 {(item.addressLine || item.ward) &&
                     <div className={styled["icon-text"]}>
-                        <MdHome style={{ width: '20px', height: '20px' }} />
+                        <IconHome size={20} />
                         {item.addressLine && item.ward ?
                             <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
                             : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>
@@ -53,7 +53,7 @@ const ShopCard = ({ item }: { item: Shop }) => {
 
                 {item.phone &&
                     <div className={styled["icon-text"]}>
-                        <MdPhone style={{ width: '20px', height: '20px' }} />
+                        <IconPhone size={20} />
                         <span className={styled["information"]}>{item.phone}</span>
                     </div>
                 }

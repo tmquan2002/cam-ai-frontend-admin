@@ -14,13 +14,13 @@ import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 import { BrandStatus } from "../../../../types/enum";
 
 type UpdateBrandFieldValue = {
-    email: string;
-    name: string;
-    phone: string;
-    brandWebsite: string;
-    description: string;
-    companyName: string;
-    companyAddress: string;
+    email: string | null;
+    name: string | null;
+    phone: string | null;
+    brandWebsite: string | null;
+    description: string | null;
+    companyName: string | null;
+    companyAddress: string | null;
     province: string | null;
     district: string | null;
     ward: string | null;
@@ -34,23 +34,23 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
 
     const form = useForm<UpdateBrandFieldValue>({
         initialValues: {
-            name: "",
-            email: "",
-            phone: "",
-            brandWebsite: "",
-            description: "",
+            name: null,
+            email: null,
+            phone: null,
+            brandWebsite: null,
+            description: null,
             province: null,
             district: null,
             ward: null,
-            companyAddress: "",
-            companyName: "",
+            companyAddress: null,
+            companyName: null,
         },
 
         validate: {
             name: isNotEmpty("Brand name is required"),
-            email: (value) => isEmpty(value) ? null
+            email: (value) => isEmpty(value) || value == null ? null
                 : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
-            phone: (value) => isEmpty(value) ? null :
+            phone: (value) => isEmpty(value) || value == null ? null :
                 PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
             companyName: isNotEmpty("Company name is required"),
             province: isNotEmpty("Please select a province"),
@@ -75,11 +75,11 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                 phone: data?.phone,
                 brandWebsite: data?.brandWebsite,
                 description: data?.description,
-                province: data?.companyWard?.district?.province?.id.toString() || null,
-                district: data?.companyWard?.district?.id.toString() || null,
-                ward: data?.companyWard?.id.toString() || null,
-                companyAddress: data?.companyAddress || "",
-                companyName: data?.companyName || "",
+                province: data?.companyWard?.district?.province?.id.toString() ?? null,
+                district: data?.companyWard?.district?.id.toString() ?? null,
+                ward: data?.companyWard?.id.toString() ?? null,
+                companyAddress: data?.companyAddress ?? null,
+                companyName: data?.companyName ?? null,
             });
         }
     }, [data]);
@@ -91,8 +91,8 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
             id: id,
             values: {
                 name: form.values.name,
-                email: form.values.email,
-                phone: form.values.phone,
+                email: isEmpty(form.values.email) ? null : form.values.email,
+                phone: isEmpty(form.values.phone) ? null : form.values.phone,
                 description: form.values.description,
                 companyAddress: form.values.companyAddress,
                 brandWebsite: form.values.brandWebsite,
@@ -331,11 +331,11 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                     <Button loading={isLoading} variant="outline" size="md" mt={20} color="pale-red.9"
                                         onClick={() => {
                                             form.setValues({
-                                                email: data?.email ?? "",
-                                                name: data?.name ?? "",
-                                                phone: data?.phone ?? "",
-                                                brandWebsite: data?.brandWebsite ?? "",
-                                                description: data?.description ?? "",
+                                                email: data?.email ?? null,
+                                                name: data?.name ?? null,
+                                                phone: data?.phone ?? null,
+                                                brandWebsite: data?.brandWebsite ?? null,
+                                                description: data?.description ?? null,
                                                 province: data?.companyWard?.district?.province?.id.toString() ?? null,
                                                 district: data?.companyWard?.district?.id.toString() ?? null,
                                                 ward: data?.companyWard?.id.toString() ?? null,

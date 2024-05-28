@@ -1,12 +1,11 @@
 import { Box, Card, Group, LoadingOverlay, Text } from "@mantine/core";
-import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
-import { MdCalendarToday, MdEmail, MdHome, MdPhone } from "react-icons/md";
+import { IconCake, IconGenderFemale, IconGenderMale, IconHome, IconMail, IconPhone } from "@tabler/icons-react";
 import { useGetAllEmployees } from "../../hooks/useEmployees";
 import { Employee } from "../../models/Employee";
+import { Gender } from "../../types/enum";
+import { removeTime } from "../../utils/dateTimeFunction";
 import StatusBadge from "../badge/StatusBadge";
 import styled from "./list.module.scss";
-import { removeTime } from "../../utils/dateTimeFunction";
-import { Gender } from "../../types/enum";
 
 interface EmployeeListParam {
     id: string;
@@ -29,33 +28,33 @@ const EmployeeCard = ({ item }: { item: Employee }) => {
             {item?.gender &&
                 <div className={styled["icon-text"]}>
                     {item?.gender == Gender.Female ?
-                        <BsGenderFemale style={{ width: '20px', height: '20px' }} /> :
-                        <BsGenderMale style={{ width: '20px', height: '20px' }} />
+                        <IconGenderFemale size={20} /> :
+                        <IconGenderMale size={20} />
                     }
                     <span className={styled["information"]}>{item?.gender}</span>
                 </div>
             }
             {item?.birthday &&
                 <div className={styled["icon-text"]}>
-                    <MdCalendarToday style={{ width: '20px', height: '20px' }} />
+                    <IconCake size={20} />
                     <span className={styled["information"]}>{removeTime(new Date(item?.birthday), "/", "dd/MM/yyyy")}</span>
                 </div>
             }
             {item?.email &&
                 <div className={styled["icon-text"]}>
-                    <MdEmail style={{ width: '20px', height: '20px' }} />
+                    <IconMail size={20} />
                     <span className={styled["information"]}>{item.email}</span>
                 </div>
             }
             {item?.phone &&
                 <div className={styled["icon-text"]}>
-                    <MdPhone style={{ width: '20px', height: '20px' }} />
+                    <IconPhone size={20} />
                     <span className={styled["information"]}>{item.phone}</span>
                 </div>
             }
             {(item.addressLine || item.ward) &&
                 <div className={styled["icon-text"]}>
-                    <MdHome style={{ width: '20px', height: '20px' }} />
+                    <IconHome size={20} />
                     {item.addressLine && item.ward ?
                         <span className={styled["information"]}>{item.addressLine}, {item.ward?.name}, {item.ward?.district?.name}, {item.ward?.district?.province?.name}</span>
                         : item.addressLine ? <span className={styled["information"]}>{item.addressLine}</span>

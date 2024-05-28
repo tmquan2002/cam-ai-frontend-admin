@@ -259,6 +259,7 @@ const EdgeBoxDetail = () => {
                                             <Select
                                                 placeholder="Select a status"
                                                 label="Edge Box Status"
+                                                allowDeselect={false}
                                                 data={[
                                                     {
                                                         label: EdgeBoxStatus.Active, value: EdgeBoxStatus.Active,
@@ -272,10 +273,10 @@ const EdgeBoxDetail = () => {
                                                         label: EdgeBoxStatus.Broken, value: EdgeBoxStatus.Broken,
                                                         disabled: !isEdgeBoxActive
                                                     },
-                                                    {
-                                                        label: EdgeBoxStatus.Disposed, value: EdgeBoxStatus.Disposed,
-                                                        disabled: !(isEdgeBoxActive || isEdgeBoxBroken) && isAllInstallsDisabled
-                                                    },
+                                                    // {
+                                                    //     label: EdgeBoxStatus.Disposed, value: EdgeBoxStatus.Disposed,
+                                                    //     disabled: !(isEdgeBoxActive || isEdgeBoxBroken) && isAllInstallsDisabled
+                                                    // },
                                                 ]}
                                                 {...form.getInputProps("edgeBoxStatus")}
                                             />
@@ -306,7 +307,7 @@ const EdgeBoxDetail = () => {
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Installing &&
                                                     <Button
                                                         onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Installing)} variant="filled"
-                                                        color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
+                                                        color={StatusColor.ACTIVE} size="xs" loading={isLoadingLocation}
                                                     >
                                                         Finish Installing
                                                     </Button>
@@ -314,7 +315,7 @@ const EdgeBoxDetail = () => {
                                                 {data?.edgeBoxLocation == EdgeBoxLocationStatus.Uninstalling &&
                                                     <Button
                                                         onClick={() => onUpdateLocation(EdgeBoxLocationStatus.Uninstalling)} variant="filled"
-                                                        color={StatusColor.ACTIVE} size="sm" loading={isLoadingLocation}
+                                                        color={StatusColor.ACTIVE} size="xs" loading={isLoadingLocation}
                                                     >
                                                         Finish Uninstalling
                                                     </Button>
@@ -323,7 +324,7 @@ const EdgeBoxDetail = () => {
                                                     && data?.edgeBoxLocation !== EdgeBoxLocationStatus.Uninstalling && data?.edgeBoxStatus === EdgeBoxStatus.Active) &&
                                                     <Button
                                                         onClick={openAssign} variant="gradient"
-                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="sm"
+                                                        gradient={{ from: "light-blue.5", to: "light-blue.7", deg: 90 }} size="xs"
                                                     >
                                                         Assign to Shop
                                                     </Button>
@@ -335,13 +336,14 @@ const EdgeBoxDetail = () => {
                                                             <MdEdit />
                                                         </ActionIcon>
                                                     </Tooltip>
-
-                                                    <Tooltip label="Delete Edge Box" withArrow>
-                                                        <ActionIcon variant="outline" size="lg" aria-label="Delete Edge Box" color="pale-red.4"
-                                                            onClick={openDelete}>
-                                                            <MdDelete />
-                                                        </ActionIcon>
-                                                    </Tooltip>
+                                                    {(isEdgeBoxActive || isEdgeBoxBroken) && isAllInstallsDisabled &&
+                                                        <Tooltip label="Delete Edge Box" withArrow>
+                                                            <ActionIcon variant="outline" size="lg" aria-label="Delete Edge Box" color="pale-red.4"
+                                                                onClick={openDelete}>
+                                                                <MdDelete />
+                                                            </ActionIcon>
+                                                        </Tooltip>
+                                                    }
                                                 </ActionIcon.Group>
                                             </Group>
                                         </Group>
@@ -424,7 +426,7 @@ const EdgeBoxDetail = () => {
                         }
                     </>
                 }
-            </div>
+            </div >
 
             {/* Modal section*/}
             {/* Delete */}
@@ -438,7 +440,7 @@ const EdgeBoxDetail = () => {
             </Modal>
 
             {/* Modal Assign Section */}
-            <Modal opened={modalAssignOpen} onClose={closeAssign}
+            <Modal opened={modalAssignOpen} onClose={closeAssign} closeOnClickOutside={false}
                 title="Assign to Shop" centered>
                 <ShopEdgeBoxAssignForm edgeBoxId={params.edgeBoxId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall} />
             </Modal>

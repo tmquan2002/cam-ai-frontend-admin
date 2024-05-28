@@ -13,27 +13,27 @@ export type GetBrandsParams = {
 };
 
 export type AddBrandParams = {
-  name: string;
-  email: string;
-  phone: string;
-  brandWebsite: string;
-  description: string;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  brandWebsite: string | null;
+  description: string | null;
   wardId: string | null;
-  addressLine: string;
-  companyName: string;
+  addressLine: string | null;
+  companyName: string | null;
 };
 
 export type UpdateBrandParams = {
   id: string;
   values: {
-    name: string;
-    email: string;
-    phone: string;
-    brandWebsite: string;
-    description: string;
+    name: string | null;
+    email: string | null;
+    phone: string | null;
+    brandWebsite: string | null;
+    description: string | null;
     companyWardId: string | null;
-    companyAddress: string;
-    companyName: string;
+    companyAddress: string | null;
+    companyName: string | null;
   }
 };
 
@@ -63,13 +63,13 @@ export const BrandAPI = {
   add: async (params: AddBrandParams) => {
     const token = getAccessToken();
     const form = new FormData();
-    form.append("Brand.Name", params.name);
-    form.append("Brand.Email", params.email);
-    form.append("Brand.Phone", params.phone);
-    form.append("Brand.Description", params.description);
-    form.append("Brand.CompanyName", params.companyName);
-    form.append("Brand.BrandWebsite", params.brandWebsite);
-    form.append("Brand.CompanyAddress", params.addressLine);
+    form.append("Brand.Name", params.name ?? "");
+    form.append("Brand.Email", params.email ?? "");
+    form.append("Brand.Phone", params.phone ?? "");
+    form.append("Brand.Description", params.description ?? "");
+    form.append("Brand.CompanyName", params.companyName ?? "");
+    form.append("Brand.BrandWebsite", params.brandWebsite ?? "");
+    form.append("Brand.CompanyAddress", params.addressLine ?? "");
     form.append("Brand.CompanyWardId", params.wardId ?? "");
 
     const res = await http.post<Brand>(`/api/brands`, form, {

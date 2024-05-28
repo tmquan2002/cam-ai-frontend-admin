@@ -1,8 +1,7 @@
 import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconNotes, IconRouter, IconUserCircle } from "@tabler/icons-react";
+import { IconClock, IconHome, IconMail, IconNotes, IconPhone, IconRouter, IconUserCircle } from "@tabler/icons-react";
 import { useState } from "react";
-import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -54,38 +53,32 @@ const ShopDetail = () => {
                                             <StatusBadge statusName={data?.shopStatus ? data.shopStatus : "None"} />
                                         </Group>
                                         <Group>
-                                            <MdAccountCircle style={{ width: 18, height: 18 }} />
+                                            <IconUserCircle size={20} />
                                             Shop Manager:
                                             {data?.shopManager ?
                                                 <Link to={`/account/${data?.shopManager.id}`} style={{ textDecoration: 'none' }}>
-                                                    <Text size="md">{data?.shopManager.name}</Text>
+                                                    <Text>{data?.shopManager.name}</Text>
                                                 </Link>
                                                 :
-                                                <Text size="md">None</Text>
+                                                <Text>None</Text>
                                             }
                                         </Group>
                                         <Group>
-                                            <MdOutlineAccessTime />
-                                            <Text size="md"><b>Open:</b> {data?.openTime ? formatTime(data?.openTime, false, false) : "No Data"} - <b>Close:</b> {data?.closeTime ? formatTime(data?.closeTime, false, false) : "No Data"} </Text>
+                                            <IconClock size={20} />
+                                            <Text><b>Open:</b> {data?.openTime ? formatTime(data?.openTime, false, false) : "No Data"} - <b>Close:</b> {data?.closeTime ? formatTime(data?.closeTime, false, false) : "No Data"} </Text>
                                         </Group>
                                         {data?.phone &&
                                             <Group>
-                                                <MdPhone style={{ width: 18, height: 18 }} />
-                                                <Text size="md">{data?.phone}</Text>
+                                                <IconPhone size={20} />
+                                                <Text>{data?.phone}</Text>
                                             </Group>
                                         }
                                         {(data?.ward || data?.addressLine) &&
                                             <Group>
-                                                <MdHome style={{ width: 18, height: 18 }} />
-                                                {(data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                                {(data?.ward && !data?.addressLine) && <Text size="md">{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                                {(!data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}</Text>}
-                                            </Group>
-                                        }
-                                        {data?.createdDate &&
-                                            <Group mb={20}>
-                                                <MdAccessTime style={{ width: 18, height: 18 }} />
-                                                <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                                <IconHome size={20} />
+                                                {(data?.ward && data?.addressLine) && <Text>{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                                {(data?.ward && !data?.addressLine) && <Text>{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                                {(!data?.ward && data?.addressLine) && <Text>{data.addressLine}</Text>}
                                             </Group>
                                         }
                                     </div>
@@ -121,32 +114,32 @@ const ShopDetail = () => {
                                             </Box>
                                             :
                                             <div className={styled["tab-detail"]}>
-                                                <Group className={styled["brand-profile"]} mt={20}>
+                                                <Group className={styled["brand-profile"]} mt={20} align="flex-start">
                                                     <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
-                                                    <div>
-                                                        <Group>
+                                                    <Box>
+                                                        <Group mb={10} align="flex-end">
                                                             <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
                                                             <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} />
                                                         </Group>
                                                         {data?.brand?.email &&
-                                                            <Group>
-                                                                <MdEmail />
-                                                                <Text size="md">{data?.brand?.email}</Text>
+                                                            <Group align="flex-end">
+                                                                <IconMail size={20} />
+                                                                <Text>{data?.brand?.email}</Text>
                                                             </Group>
                                                         }
                                                         {data?.brand?.phone &&
-                                                            <Group>
-                                                                <MdPhone />
-                                                                <Text size="md">{data?.brand?.phone}</Text>
+                                                            <Group align="flex-end">
+                                                                <IconPhone size={20} />
+                                                                <Text>{data?.brand?.phone}</Text>
                                                             </Group>
                                                         }
                                                         {data?.brand?.createdDate &&
-                                                            <Group mb={20}>
-                                                                <MdAccessTime />
-                                                                <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
+                                                            <Group mb={20} align="flex-end">
+                                                                <IconClock size={20} />
+                                                                <Text>Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                                             </Group>
                                                         }
-                                                    </div>
+                                                    </Box>
                                                 </Group>
                                                 <Button variant="filled" size="sm" color="light-blue.6" mt={20}
                                                     onClick={() => navigate(`/brand/${data?.brand.id}`, {
@@ -187,7 +180,7 @@ const ShopDetail = () => {
                             </div>
 
                             {/* Modal Assign Section */}
-                            <Modal opened={modalAssignOpen} onClose={closeAssign}
+                            <Modal opened={modalAssignOpen} onClose={closeAssign} closeOnClickOutside={false}
                                 title="Assign Edge Box" centered>
                                 <ShopEdgeBoxAssignForm shopId={params.shopId!} close={closeAssign} refetch={refetch} refetchInstall={refetchInstall} />
                             </Modal>

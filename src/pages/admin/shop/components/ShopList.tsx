@@ -10,8 +10,9 @@ import StatusBadge from '../../../../components/badge/StatusBadge';
 import { useGetAllBrandsSelect } from '../../../../hooks/useBrands';
 import { useGetAllShops } from '../../../../hooks/useShops';
 import { useLocalStorageCustomHook } from '../../../../hooks/useStorageState';
-import { ShopFilterProps, PAGE_SIZE_SELECT, PAGE_SIZE_DEFAULT } from '../../../../types/constant';
+import { PAGE_SIZE_DEFAULT, PAGE_SIZE_SELECT, ShopFilterProps } from '../../../../types/constant';
 import { ShopStatus } from '../../../../types/enum';
+import { formatTime } from '../../../../utils/dateTimeFunction';
 import styled from "../styles/shop.module.scss";
 
 const ShopList = () => {
@@ -33,6 +34,8 @@ const ShopList = () => {
 
     const loadingData = [...Array(Number(size))].map((_, i) => (
         <Table.Tr key={i}>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
@@ -80,6 +83,8 @@ const ShopList = () => {
                 <Table.Td c={e?.name ? undefined : "#bbbbbb"}>{e?.name ?? "No Data"}</Table.Td>
                 <Table.Td c={e?.brand?.name ? undefined : "#bbbbbb"}>{e?.brand?.name ?? "No Data"}</Table.Td>
                 <Table.Td c={e?.phone ? undefined : "#bbbbbb"}>{e?.phone ?? "No Data"}</Table.Td>
+                <Table.Td c={e?.openTime ? undefined : "#bbbbbb"}>{e?.openTime ? formatTime(e?.openTime) : "No Data"}</Table.Td>
+                <Table.Td c={e?.closeTime ? undefined : "#bbbbbb"}>{e?.closeTime ? formatTime(e?.closeTime) : "No Data"}</Table.Td>
                 <Table.Td ta="center">
                     <StatusBadge statusName={e.shopStatus ? e.shopStatus : "None"} padding={10} size='sm' />
                 </Table.Td>
@@ -107,7 +112,7 @@ const ShopList = () => {
                     </Group>
                 </Grid.Col>
                 <Grid.Col span={12}>
-                    <Group justify="space-between">
+                    <Group justify="space-between" align='flex-end'>
                         <TextInput w={'60%'}
                             placeholder="Search" leftSection={<MdOutlineSearch />}
                             value={searchTerm}
@@ -174,6 +179,8 @@ const ShopList = () => {
                                 <Table.Th>Name</Table.Th>
                                 <Table.Th>Brand</Table.Th>
                                 <Table.Th>Phone</Table.Th>
+                                <Table.Th>Open Time</Table.Th>
+                                <Table.Th>Close Time</Table.Th>
                                 <Table.Th ta={"center"}>Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>

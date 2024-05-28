@@ -1,8 +1,9 @@
 import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { IconClock, IconHome, IconPhone } from "@tabler/icons-react";
 import axios from "axios";
-import { MdCheck, MdContentCopy, MdHistory, MdHome, MdOutlineAccessTime, MdPhone, MdPlayArrow, MdRemoveRedEye } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdHistory, MdPlayArrow, MdRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUninstallEdgeBox } from "../../hooks/useEdgeBoxInstalls";
 import { CommonResponse } from "../../models/CommonResponse";
@@ -112,7 +113,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
                     }
 
                     <div className={styled["icon-text"]}>
-                        <MdOutlineAccessTime style={{ width: '20px', height: '20px' }} />
+                        <IconClock size={20} />
                         <span className={styled["information"]}>
                             <b>Open:</b> {item?.shop?.openTime ? formatTime(item?.shop?.openTime, false, false) : "No Data"} - <b>Close:</b> {item?.shop?.closeTime ? formatTime(item?.shop?.closeTime, false, false) : "No Data"}
                         </span>
@@ -120,7 +121,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
 
                     {(item?.shop.addressLine || item?.shop.ward) &&
                         <div className={styled["icon-text"]}>
-                            <MdHome style={{ width: '20px', height: '20px' }} />
+                            <IconHome size={20} />
                             {item.shop.addressLine && item.shop.ward ?
                                 <span className={styled["information"]}>{item.shop.addressLine}, {item.shop.ward?.name}, {item.shop.ward?.district?.name}, {item.shop.ward?.district?.province?.name}</span>
                                 : item.shop.addressLine ? <span className={styled["information"]}>{item.shop.addressLine}</span>
@@ -132,7 +133,7 @@ const ShopCard = ({ item, edgeBoxLocation, refetch, refetchInstall }: ShopCardPa
 
                     {item.shop.phone &&
                         <div className={styled["icon-text"]}>
-                            <MdPhone style={{ width: '20px', height: '20px' }} />
+                            <IconPhone size={20} />
                             <span className={styled["information"]}>{item.shop.phone}</span>
                         </div>
                     }

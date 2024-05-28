@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Grid, Group, LoadingOverlay, Paper, Text, Tooltip } from "@mantine/core";
-import { MdOutlineTaskAlt, MdPageview } from "react-icons/md";
+import { MdPageview } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllEdgeBoxes } from "../../hooks/useEdgeBoxes";
 import { EdgeBox } from "../../models/EdgeBox";
@@ -16,51 +16,37 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
     const navigate = useNavigate();
 
     return (
-        <Paper shadow="sm" p="lg" radius="md" withBorder m={10} h={230}>
-            <Group mb={20} justify="space-between">
-                <Text size='md' fw={'bold'} fz={20} >{item.name}</Text>
+        <Paper shadow="sm" p="lg" radius="md" withBorder m={5}>
+            <Group mb={20} justify="space-between" wrap="nowrap">
+                <Text fw={500} fz={17} truncate="end" >{item.name}</Text>
                 <Tooltip label="View Edge Box" withArrow>
-                    <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
+                    <ActionIcon variant="filled" size="md" aria-label="View Edge Box" color="light-blue.6"
                         onClick={() => navigate(`/edgebox/${item.id}`)}>
                         <MdPageview />
                     </ActionIcon>
                 </Tooltip>
             </Group>
 
-            <Group grow>
-                {item?.edgeBoxStatus &&
-                    <Box mb={10} ml={5}>
+            <Grid>
+                <Grid.Col span={4}>
+                    <Box>
                         <Text size="xs" c={"dimmed"} fw={500}>Edge Box Status</Text>
                         <StatusBadge statusName={item?.edgeBoxStatus} padding={10} size="sm" tooltip="Edge Box Status" />
                     </Box>
-                }
-                {item?.edgeBoxLocation &&
-                    <Box mb={10} ml={5}>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                    <Box>
                         <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
                         <StatusBadge statusName={item?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
                     </Box>
-                }
-                {item?.version &&
-                    <Box mb={10} ml={5}>
-                        <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
-                        <Text size="md" fw={500}>{item?.version}</Text>
-                    </Box>
-                }
-                {item?.createdDate &&
-                    <Box mb={10} ml={5}>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                    <Box>
                         <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
                         <Text size="md" fw={500}>{removeTime(new Date(item?.createdDate || Date.now()), "/")}</Text>
                     </Box>
-                }
-            </Group>
-
-            {item.version &&
-                <div className={styled["icon-text"]}>
-                    <MdOutlineTaskAlt style={{ width: '20px', height: '20px' }} />
-                    <span className={styled["information"]}>{item.version}</span>
-                </div>
-            }
-
+                </Grid.Col>
+            </Grid>
         </Paper>
     )
 }
@@ -78,9 +64,9 @@ export const EdgeBoxListByBrandId = ({ brandId }: EdgeBoxListParam) => {
                 :
                 <Box>
                     {(edgeBoxData?.values.length == 0 || edgeBoxError) ? <Text fs="italic" ta="center" c="dimmed" mt={20}>No Edge Box Found</Text> :
-                        <Grid mt={20} justify="flex-start">
+                        <Grid mt={20} justify="flex-start" align="stretch">
                             {edgeBoxData?.values.map((item, index) => (
-                                <Grid.Col key={index} span={{ base: 12, md: 4 }}>
+                                <Grid.Col key={index} span={{ md: 12, lg: 6 }} >
                                     <EdgeBoxCard item={item} />
                                 </Grid.Col>
                             ))}

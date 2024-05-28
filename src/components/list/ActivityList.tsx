@@ -23,7 +23,7 @@ const ActivityCard = ({ activity, index }: { activity: EdgeBoxActivity, index: n
 
             <Grid.Col span={4}>
                 <Text fz={10} c="dimmed">Type</Text>
-                <Text fz={13} fw={500}>{activity?.type}</Text>
+                <Text fz={13} fw={500}>{activity?.type ? activity.type.toString().replace(/([A-Z])/g, ' $1').trim() : ""}</Text>
             </Grid.Col>
         </Grid>
     )

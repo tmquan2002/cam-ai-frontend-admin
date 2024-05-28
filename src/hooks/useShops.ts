@@ -2,6 +2,7 @@ import { UseQueryResult, useQuery } from "react-query";
 import { GetShopsParams, ShopAPI } from "../apis/ShopAPI";
 import { CommonResponse } from "../models/CommonResponse";
 import { Shop } from "../models/Shop";
+import { ShopStatus } from "../types/enum";
 
 export const useGetAllShops = (params: GetShopsParams) => {
   const { isError, isLoading, isFetching, data, error, refetch,
@@ -27,16 +28,23 @@ export const useGetAllShopsInstalling = (params: { q: boolean }) => {
   return { isError, isLoading, isFetching, data, error, refetch };
 };
 
-export const useGetAllShopsInstallingSelect = (params: { q: boolean }) => {
+export const useGetAllShopsInstallingSelect = (params: { q: boolean, filterRemoveInactive?: boolean }) => {
   const { isError, isLoading, isFetching, data, error, refetch,
   }: UseQueryResult<SelectType[], Error> = useQuery({
     queryKey: ["shopListInstallSelect"],
     queryFn: async () => {
       const res = await ShopAPI.getAllInstalling(params);
-      return res.values.map((items) => ({
-        value: items.id,
-        label: items.name
-      }))
+      if (params.filterRemoveInactive) {
+        return res.values.filter((item) => item.shopStatus !== ShopStatus.Inactive).map((items) => ({
+          value: items.id,
+          label: items.name
+        }))
+      } else {
+        return res.values.map((items) => ({
+          value: items.id,
+          label: items.name
+        }))
+      }
     },
   });
 

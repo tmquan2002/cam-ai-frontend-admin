@@ -1,10 +1,9 @@
 import { ActionIcon, Avatar, Box, Button, Divider, Group, LoadingOverlay, Menu, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconDots } from "@tabler/icons-react";
+import { IconCake, IconClock, IconDots, IconEdit, IconGenderFemale, IconGenderMale, IconHome, IconMail, IconPhone, IconRepeat, IconTrash } from "@tabler/icons-react";
 import axios from "axios";
-import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
-import { MdAccessTime, MdCalendarToday, MdDelete, MdEdit, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
@@ -44,7 +43,7 @@ const AccountDetail = () => {
                 navigate('/account')
                 notifications.show({
                     title: "Successfully",
-                    message: "This account is now Inactive",
+                    message: "Account Delete successful",
                     color: "green",
                     withCloseButton: true,
                 });
@@ -89,7 +88,7 @@ const AccountDetail = () => {
                                     <Group mb={15} gap={30}>
                                         <div>
                                             <Text size='md' fw={'bold'} fz={25} c={"light-blue.4"}>{data?.name}</Text>
-                                            {data?.role && <Text size="md" fw="bold">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
+                                            {data?.role && <Text fw="bold">{data.role.replace(/([A-Z])/g, ' $1').trim()}</Text>}
                                         </div>
                                         <StatusBadge statusName={data?.accountStatus ? data.accountStatus : "None"}
                                             mb={15} mt={15} />
@@ -97,42 +96,42 @@ const AccountDetail = () => {
                                     {data?.gender &&
                                         <Group>
                                             {data?.gender == "Female" ?
-                                                <BsGenderFemale /> :
-                                                <BsGenderMale />
+                                                <IconGenderFemale size={20} /> :
+                                                <IconGenderMale size={20} />
                                             }
-                                            <Text size="md">{data?.gender}</Text>
+                                            <Text>{data?.gender}</Text>
                                         </Group>
                                     }
                                     {data?.email &&
                                         <Group>
-                                            <MdEmail />
-                                            <Text size="md">{data?.email}</Text>
+                                            <IconMail size={20} />
+                                            <Text>{data?.email}</Text>
                                         </Group>
                                     }
                                     {data?.phone &&
                                         <Group>
-                                            <MdPhone />
-                                            <Text size="md">{data?.phone}</Text>
+                                            <IconPhone size={20} />
+                                            <Text>{data?.phone}</Text>
                                         </Group>
                                     }
                                     {data?.birthday &&
                                         <Group>
-                                            <MdCalendarToday />
-                                            <Text size="md">{removeTime(new Date(data?.birthday), "/", "dd/MM/yyyy")}</Text>
+                                            <IconCake size={20} />
+                                            <Text>{removeTime(new Date(data?.birthday), "/", "dd/MM/yyyy")}</Text>
                                         </Group>
                                     }
                                     {(data?.ward || data?.addressLine) &&
                                         <Group>
-                                            <MdHome />
-                                            {(data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                            {(data?.ward && !data?.addressLine) && <Text size="md">{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
-                                            {(!data?.ward && data?.addressLine) && <Text size="md">{data.addressLine}</Text>}
+                                            <IconHome size={20} />
+                                            {(data?.ward && data?.addressLine) && <Text>{data.addressLine}, {data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                            {(data?.ward && !data?.addressLine) && <Text>{data.ward?.name}, {data.ward?.district?.name}, {data.ward?.district?.province?.name}</Text>}
+                                            {(!data?.ward && data?.addressLine) && <Text>{data.addressLine}</Text>}
                                         </Group>
                                     }
                                     {data?.createdDate &&
                                         <Group mb={20}>
-                                            <MdAccessTime />
-                                            <Text size="md">Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
+                                            <IconClock size={20} />
+                                            <Text>Created on: {data?.createdDate && removeTime(new Date(data?.createdDate), "/")}</Text>
                                         </Group>
                                     }
                                 </div>
@@ -150,16 +149,23 @@ const AccountDetail = () => {
                                             </Menu.Target>
 
                                             <Menu.Dropdown>
-                                                <Menu.Item leftSection={<MdEdit />}
+                                                <Menu.Item leftSection={<IconEdit size={20} />}
                                                     onClick={() => navigate(`/account/${params?.accountId!}/update`)}>
                                                     Update
                                                 </Menu.Item>
-
-                                                <Menu.Item color="red" leftSection={<MdDelete style={{ color: data?.accountStatus == AccountStatus.Inactive ? "grey" : "red" }} />}
-                                                    disabled={data?.accountStatus == AccountStatus.Inactive}
-                                                    onClick={open} >
-                                                    Delete
-                                                </Menu.Item>
+                                                {data?.accountStatus !== AccountStatus.Inactive &&
+                                                    <Menu.Item color="red" leftSection={<IconTrash style={{ color: "red" }} size={20} />}
+                                                        onClick={open} >
+                                                        Delete
+                                                    </Menu.Item>
+                                                }
+                                                {/* //TODO: Add Reactivate API here */}
+                                                {data?.accountStatus == AccountStatus.Inactive &&
+                                                    <Menu.Item color="green" leftSection={<IconRepeat style={{ color: "green" }} size={20} />}
+                                                        onClick={open} >
+                                                        Reactivate
+                                                    </Menu.Item>
+                                                }
                                             </Menu.Dropdown>
                                         </Menu>
                                     </div>
@@ -193,30 +199,29 @@ const AccountDetail = () => {
                                                 </Button>
                                             </Group>
                                             <div className={styled["shop-brand-detail"]}>
-                                                <Group mt={20}>
+                                                <Group mt={20} align="flex-start">
                                                     <Avatar w={150} h={150} mr={20} src={data?.brand?.logo?.hostingUri} />
                                                     <div>
-                                                        <Group>
+                                                        <Group mb={5}>
                                                             <Text size="lg" style={{ fontWeight: 'bold' }}>{data?.brand?.name}</Text>
-                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"}
-                                                            />
+                                                            <StatusBadge statusName={data?.brand?.brandStatus ? data?.brand?.brandStatus : "None"} padding={10} size="sm" />
                                                         </Group>
                                                         {data?.brand?.email &&
-                                                            <Group>
-                                                                <MdEmail />
-                                                                <Text size="md">{data?.brand?.email}</Text>
+                                                            <Group mb={5}>
+                                                                <IconMail size={20} />
+                                                                <Text>{data?.brand?.email}</Text>
                                                             </Group>
                                                         }
                                                         {data?.brand?.phone &&
-                                                            <Group>
-                                                                <MdPhone />
-                                                                <Text size="md">{data?.brand?.phone}</Text>
+                                                            <Group mb={5}>
+                                                                <IconPhone size={20} />
+                                                                <Text>{data?.brand?.phone}</Text>
                                                             </Group>
                                                         }
                                                         {data?.brand?.createdDate &&
                                                             <Group mb={20}>
-                                                                <MdAccessTime />
-                                                                <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
+                                                                <IconClock size={20} />
+                                                                <Text>Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                                             </Group>
                                                         }
                                                     </div>
@@ -271,29 +276,29 @@ const AccountDetail = () => {
                                                         />
                                                     </Group>
                                                     <Group>
-                                                        <MdOutlineAccessTime />
-                                                        <Text size="md">
+                                                        <MdOutlineAccessTime size={20} />
+                                                        <Text>
                                                             <b>Open:</b> {data?.managingShop?.openTime ? formatTime(data?.managingShop?.openTime, false, false) : "No Data"} - <b>Close:</b> {data?.managingShop?.closeTime ? formatTime(data?.managingShop?.closeTime, false, false) : "No Data"}
                                                         </Text>
                                                     </Group>
                                                     {data?.brand?.phone &&
                                                         <Group>
-                                                            <MdPhone />
-                                                            <Text size="md">{data?.brand?.phone}</Text>
+                                                            <MdPhone size={20} />
+                                                            <Text>{data?.brand?.phone}</Text>
                                                         </Group>
                                                     }
                                                     {(data?.managingShop?.ward || data?.managingShop?.addressLine) &&
                                                         <Group>
-                                                            <MdHome />
-                                                            {(data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.addressLine}, {data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
-                                                            {(data?.managingShop?.ward && !data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
-                                                            {(!data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text size="md">{data?.managingShop.addressLine}</Text>}
+                                                            <MdHome size={20} />
+                                                            {(data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text>{data?.managingShop.addressLine}, {data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
+                                                            {(data?.managingShop?.ward && !data?.managingShop?.addressLine) && <Text>{data?.managingShop.ward?.name}, {data?.managingShop.ward?.district?.name}, {data?.managingShop.ward?.district?.province?.name}</Text>}
+                                                            {(!data?.managingShop?.ward && data?.managingShop?.addressLine) && <Text>{data?.managingShop.addressLine}</Text>}
                                                         </Group>
                                                     }
                                                     {data?.brand?.createdDate &&
                                                         <Group mb={20}>
-                                                            <MdAccessTime />
-                                                            <Text size="md">Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
+                                                            <MdAccessTime size={20} />
+                                                            <Text>Created on: {data?.brand?.createdDate && removeTime(new Date(data?.brand?.createdDate), "/")}</Text>
                                                         </Group>
                                                     }
                                                 </div>

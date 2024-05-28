@@ -10,13 +10,13 @@ import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
 type AddBrandFieldValue = {
-    email: string;
-    name: string;
-    phone: string;
-    brandWebsite: string;
-    description: string;
-    companyName: string;
-    addressLine: string;
+    email: string | null;
+    name: string | null;
+    phone: string | null;
+    brandWebsite: string | null;
+    description: string | null;
+    companyName: string | null;
+    addressLine: string | null;
     province: string | null;
     district: string | null;
     ward: string | null;
@@ -28,23 +28,23 @@ export const AddBrandForm = () => {
 
     const form = useForm<AddBrandFieldValue>({
         initialValues: {
-            name: "",
-            email: "",
-            phone: "",
-            brandWebsite: "",
-            description: "",
+            name: null,
+            email: null,
+            phone: null,
+            brandWebsite: null,
+            description: null,
             province: null,
             district: null,
             ward: null,
-            addressLine: "",
-            companyName: "",
+            addressLine: null,
+            companyName: null,
         },
 
         validate: {
             name: isNotEmpty("Brand name is required"),
-            email: (value) => isEmpty(value) ? null
+            email: (value) => isEmpty(value) || value == null ? null
                 : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
-            phone: (value) => isEmpty(value) ? null :
+            phone: (value) => isEmpty(value) || value == null ? null :
                 PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
             companyName: isNotEmpty("Company name is required"),
             province: isNotEmpty("Please select a province"),
@@ -63,8 +63,8 @@ export const AddBrandForm = () => {
 
         const addBrandParams: AddBrandParams = {
             name: form.values.name,
-            email: form.values.email,
-            phone: form.values.phone,
+            email: isEmpty(form.values.email) ? null : form.values.email,
+            phone: isEmpty(form.values.phone) ? null : form.values.phone,
             description: form.values.description,
             addressLine: form.values.addressLine,
             brandWebsite: form.values.brandWebsite,

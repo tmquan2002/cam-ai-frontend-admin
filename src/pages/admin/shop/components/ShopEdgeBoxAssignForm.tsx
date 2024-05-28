@@ -7,7 +7,7 @@ import { AddEdgeBoxInstallParams } from "../../../../apis/EdgeBoxInstallAPI";
 import { useInstallEdgeBox } from "../../../../hooks/useEdgeBoxInstalls";
 import { useGetAllEdgeBoxesSelect } from "../../../../hooks/useEdgeBoxes";
 import { useGetAllShopsInstallingSelect } from "../../../../hooks/useShops";
-import { EdgeBoxLocationStatus } from "../../../../types/enum";
+import { EdgeBoxLocationStatus, EdgeBoxStatus } from "../../../../types/enum";
 
 interface AssignFormParams {
     shopId?: string;
@@ -20,13 +20,11 @@ interface AssignFormParams {
 export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refetchInstall }: AssignFormParams) => {
 
     const [edgeBoxSearch, setEdgeBoxSearch] = useState<string>("");
-    const [shopSearch, setShopSearch] = useState<string>("");
 
     const { mutate: installEdgeBox, isLoading: isLoadingInstall } = useInstallEdgeBox();
     const { data: edgeBoxList, isFetching: isFetchingEdgeBox, refetch: refetchSearchEdgeBox
-    } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch })
-    const { data: shopList, isFetching: isFetchingShop
-    } = useGetAllShopsInstallingSelect({ q: false })
+    } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch, edgeBoxStatus: EdgeBoxStatus.Active })
+    const { data: shopList, isFetching: isFetchingShop } = useGetAllShopsInstallingSelect({ q: false, filterRemoveInactive: true })
 
     useEffect(() => {
         const timer = setTimeout(() => refetchSearchEdgeBox(), 500);
@@ -99,23 +97,22 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
             onSubmit={form.onSubmit((values) => onSubmitForm(values))}
             style={{ textAlign: "left", marginTop: 5 }}
         >
-            <Select data={edgeBoxList || []} limit={5} size='sm' mb={10}
-                label="Edge Box" allowDeselect={false}
+            <Select data={edgeBoxList ?? []} limit={5} size='sm' mb={10}
+                label="Edge Box" clearable
                 disabled={edgeBoxId ? true : false}
                 nothingFoundMessage={edgeBoxList && "Not Found"}
                 rightSection={isFetchingEdgeBox ? <Loader size="1rem" /> : null}
                 placeholder="Pick value" searchable
-                searchValue={edgeBoxSearch} onSearchChange={setEdgeBoxSearch}
+                onSearchChange={setEdgeBoxSearch} searchValue={edgeBoxSearch}
                 {...form.getInputProps("edgeBoxId")}
             />
 
-            <Select data={shopList || []} limit={5} size='sm'
-                label="Shop" allowDeselect={false}
+            <Select data={shopList ?? []} size='sm'
+                label="Shop" clearable
                 disabled={shopId ? true : false}
                 nothingFoundMessage={shopList && "Not Found"}
                 rightSection={isFetchingShop ? <Loader size="1rem" /> : null}
                 placeholder="Pick value" searchable
-                searchValue={shopSearch} onSearchChange={setShopSearch}
                 {...form.getInputProps("shopId")}
             />
 

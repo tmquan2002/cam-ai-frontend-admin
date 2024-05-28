@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Card, CopyButton, Divider, Group, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, CopyButton, Divider, Grid, Group, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
@@ -99,34 +99,45 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                 {/* Edgebox section*/}
                 <Group mb={10} mt={10}>
                     <Text fw={500} size="sm" c={computedColorScheme == "dark" ? "light-blue.3" : "light-blue.6"}>Edge Box</Text>
-                    {item?.edgeBox?.edgeBoxStatus &&
-                        <StatusBadge statusName={item?.edgeBox?.edgeBoxStatus} padding={10} size="sm" tooltip="Edge Box Status" />
-                    }
                 </Group>
-                <Group grow mb={20}>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
-                        <StatusBadge statusName={item?.edgeBox?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
-                    </Box>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
-                        <Text size="md" fw={500}>{item?.edgeBox?.serialNumber || "No Data"}</Text>
-                    </Box>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
-                        <Text size="md" fw={500}>{item?.edgeBox?.version || "No Data"}</Text>
-                    </Box>
-                </Group>
-                <Group grow mb={15}>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Model</Text>
-                        <Text size="md" fw={500}>{item?.edgeBox?.edgeBoxModel?.name || "No Data"}</Text>
-                    </Box>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Created On</Text>
-                        <Text size="md" fw={500}>{removeTime(new Date(item?.edgeBox?.createdDate || Date.now()), "/")}</Text>
-                    </Box>
-                </Group>
+                <Grid mb={20}>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Edge Box Status</Text>
+                            <StatusBadge statusName={item?.edgeBox?.edgeBoxStatus} padding={10} size="sm" tooltip="Edge Box Status" />
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Location Status</Text>
+                            <StatusBadge statusName={item?.edgeBox?.edgeBoxLocation} padding={10} size="sm" tooltip="Location Status" />
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Serial Number</Text>
+                            <Text size="md" fw={500}>{item?.edgeBox?.serialNumber || "No Data"}</Text>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Version</Text>
+                            <Text size="md" fw={500}>{item?.edgeBox?.version || "No Data"}</Text>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Model</Text>
+                            <Text size="md" fw={500}>{item?.edgeBox?.edgeBoxModel?.name || "No Data"}</Text>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Created On</Text>
+                            <Text size="md" fw={500}>{removeTime(new Date(item?.edgeBox?.createdDate || Date.now()), "/")}</Text>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
 
                 {/* Install section*/}
                 <Divider mb={10} />
@@ -139,47 +150,51 @@ const InstallCard = ({ item, refetch, refetchInstall }: InstallCardParams) => {
                     </Tooltip>
                 </Group>
 
-                <Group grow mb={10}>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Installation Health</Text>
-                        <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Installation Health" />
-                    </Box>
-                    <Box mb={10}>
-                        <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
-                        <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
-                    </Box>
-                </Group>
-                <Group grow mb={15}>
-                    <Box mb={10}>
-                        <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
-                        <Group gap={5}>
-                            <Text size="md" fw={500}>{addSpace(item?.activationCode, 4) || "No Data"}</Text>
-                            <CopyButton value={item?.activationCode}>
-                                {({ copied, copy }) => (
-                                    <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
-                                        <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
-                                            {copied ? <MdCheck /> :
-                                                <MdContentCopy />
-                                            }
-                                        </ActionIcon>
-                                    </Tooltip>
-                                )}
-                            </CopyButton>
-                        </Group>
-                    </Box>
-                    {item.uninstalledTime &&
-                        <Box mb={10}>
-                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
-                            <Text size="md" fw={500}>{removeTime(new Date(item.uninstalledTime), "/")}</Text>
+                <Grid>
+                    <Grid.Col span={4}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Installation Health</Text>
+                            <StatusBadge statusName={item?.edgeBoxInstallStatus} padding={10} size="sm" tooltip="Installation Health" />
                         </Box>
-                    }
-                </Group>
-                <Group>
-                    <Box>
-                        <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
-                        <Text size="md" fw={500}>{removeTime(new Date(item.createdDate || Date.now()), "/")}</Text>
-                    </Box>
-                </Group>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Activation Status</Text>
+                            <StatusBadge statusName={item.activationStatus} padding={10} size="sm" tooltip="Activation Status" />
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Activation Code</Text>
+                            <Group gap={5}>
+                                <Text size="md" fw={500}>{addSpace(item?.activationCode, 4) || "No Data"}</Text>
+                                <CopyButton value={item?.activationCode}>
+                                    {({ copied, copy }) => (
+                                        <Tooltip label={copied ? 'Copied' : 'Copy code'} withArrow>
+                                            <ActionIcon color={computedColorScheme == "dark" ? 'light-blue.3' : 'light-blue.6'} onClick={copy} variant="transparent">
+                                                {copied ? <MdCheck /> :
+                                                    <MdContentCopy />
+                                                }
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    )}
+                                </CopyButton>
+                            </Group>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Uninstalled Date</Text>
+                            <Text size="md" fw={500}>{item.uninstalledTime ? removeTime(new Date(item.uninstalledTime), "/") : "No Data"}</Text>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <Box>
+                            <Text size="xs" c={"dimmed"} fw={500}>Created Date</Text>
+                            <Text size="md" fw={500}>{removeTime(new Date(item.createdDate || Date.now()), "/")}</Text>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
             </Card>
 
             {/* Modal section */}

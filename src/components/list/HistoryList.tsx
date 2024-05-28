@@ -27,7 +27,7 @@ export const ShopHistoryList = ({ disabledEdgeBoxList }: { disabledEdgeBoxList: 
                         <Text size="xs" c="dimmed">
                             {install?.createdDate ? removeTime(new Date(install?.createdDate), "/") : "No Data"} - {install?.uninstalledTime ? removeTime(new Date(install?.uninstalledTime), "/") : "No Data"}
                         </Text>
-                        <Text size="sm">{install.shop.name}</Text>
+                        <Text size="sm">{install?.shop?.name}</Text>
                     </List.Item>
                 ))}
             </List>

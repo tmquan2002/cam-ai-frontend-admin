@@ -27,6 +27,7 @@ export const ShopAPI = {
     );
     return res.data;
   },
+  //Note: q means that this shop has edge box installing or not
   getAllInstalling: async (params: { q: boolean }) => {
     const token = getAccessToken();
     const res = await http.get<CommonResponse<Shop>>(

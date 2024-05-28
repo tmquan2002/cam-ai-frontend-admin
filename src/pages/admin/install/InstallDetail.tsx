@@ -1,10 +1,10 @@
 import { ActionIcon, Box, Button, CopyButton, Divider, Flex, Grid, Group, LoadingOverlay, Tabs, Text, Tooltip, useComputedColorScheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconRouter } from "@tabler/icons-react";
+import { IconClock, IconHome, IconPhone, IconRouter, IconUserCircle } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdAccessTime, MdAccountCircle, MdCheck, MdContentCopy, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
+import { MdCheck, MdContentCopy } from "react-icons/md";
 import { TbActivity } from "react-icons/tb";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
@@ -147,13 +147,13 @@ const InstallDetail = () => {
                             <Box>
                                 <Tabs value={activeTab} onChange={setActiveTab}>
                                     <Tabs.List>
-                                        <Tabs.Tab value="shop" leftSection={<AiFillShop size={20}/>}>
+                                        <Tabs.Tab value="shop" leftSection={<AiFillShop size={20} />}>
                                             Shop
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="edge box" leftSection={<IconRouter size={20}/>}>
+                                        <Tabs.Tab value="edge box" leftSection={<IconRouter size={20} />}>
                                             Edge Box
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="activities" leftSection={<TbActivity size={20}/>} ml="auto">
+                                        <Tabs.Tab value="activities" leftSection={<TbActivity size={20} />} ml="auto">
                                             Activities
                                         </Tabs.Tab>
                                     </Tabs.List>
@@ -176,7 +176,7 @@ const InstallDetail = () => {
                                                         </Button>
                                                     </Group>
                                                     <Group>
-                                                        <MdAccountCircle style={{ width: 18, height: 18 }} />
+                                                        <IconUserCircle size={20} />
                                                         Shop Manager:
                                                         {dataInstall?.shop?.shopManager ?
                                                             <Link to={`/account/${dataInstall?.shop?.shopManager?.id}`} style={{ textDecoration: 'none' }}>
@@ -187,7 +187,7 @@ const InstallDetail = () => {
                                                         }
                                                     </Group>
                                                     <Group>
-                                                        <MdOutlineAccessTime />
+                                                        <IconClock size={20} />
                                                         <Text size="md">
                                                             <b>Open:</b> {dataInstall?.shop?.openTime ? formatTime(dataInstall?.shop?.openTime, false, false) : "No Data"} - <b>Close:</b> {dataInstall?.shop?.closeTime ? formatTime(dataInstall?.shop?.closeTime, false, false) : "No Data"}
                                                         </Text>
@@ -195,22 +195,16 @@ const InstallDetail = () => {
 
                                                     {dataInstall?.shop?.phone &&
                                                         <Group>
-                                                            <MdPhone style={{ width: 18, height: 18 }} />
+                                                            <IconPhone size={20} />
                                                             <Text size="md">{dataInstall?.shop?.phone}</Text>
                                                         </Group>
                                                     }
                                                     {(dataInstall?.shop?.ward || dataInstall?.shop?.addressLine) &&
                                                         <Group>
-                                                            <MdHome style={{ width: 18, height: 18 }} />
+                                                            <IconHome size={20} />
                                                             {(dataInstall?.shop?.ward && dataInstall?.shop?.addressLine) && <Text size="md">{dataInstall?.shop.addressLine}, {dataInstall?.shop.ward?.name}, {dataInstall?.shop.ward?.district?.name}, {dataInstall?.shop.ward?.district?.province?.name}</Text>}
                                                             {(dataInstall?.shop?.ward && !dataInstall?.shop?.addressLine) && <Text size="md">{dataInstall?.shop.ward?.name}, {dataInstall?.shop.ward?.district?.name}, {dataInstall?.shop.ward?.district?.province?.name}</Text>}
                                                             {(!dataInstall?.shop?.ward && dataInstall?.shop?.addressLine) && <Text size="md">{dataInstall?.shop.addressLine}</Text>}
-                                                        </Group>
-                                                    }
-                                                    {dataInstall?.shop?.createdDate &&
-                                                        <Group mb={20}>
-                                                            <MdAccessTime style={{ width: 18, height: 18 }} />
-                                                            <Text size="md">Created on: {dataInstall?.shop?.createdDate && removeTime(new Date(dataInstall?.shop?.createdDate), "/")}</Text>
                                                         </Group>
                                                     }
                                                 </div>
