@@ -2,11 +2,9 @@ import { Avatar, Box, Button, Divider, Grid, Group, Image, Loader, LoadingOverla
 import { IconMail, IconNetwork, IconPhone, IconRouter, IconUser, IconUserCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
-import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusBadge from "../../../components/badge/StatusBadge";
 import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb";
-import { AccountListById } from "../../../components/list/AccountListById";
 import { EdgeBoxListByBrandId } from "../../../components/list/EdgeBoxListByBrandId";
 import { EmployeeListById } from "../../../components/list/EmployeeListById";
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
@@ -84,31 +82,41 @@ const BrandDetail = () => {
                                                 dataManager?.id &&
                                                 <Group>
                                                     <IconUser size={20} />
-                                                    <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
-                                                        <Text size="md">{dataManager.name}</Text>
-                                                    </Link>
+                                                    <Text c="dimmed">Brand Manager :
+                                                        <Text span fw="bold">
+                                                            <Link to={`/account/${dataManager.id}`} style={{ textDecoration: 'none' }}>
+                                                                {" " + data?.brandManager?.name}
+                                                            </Link>
+                                                        </Text>
+                                                    </Text>
                                                 </Group>
                                             }
                                             {data?.email &&
                                                 <Group>
                                                     <IconMail size={20} />
-                                                    <Text size="md">{data?.email}</Text>
+                                                    <Text c="dimmed">Email :
+                                                        <Text span fw="bold" c="black">{" " + data?.email}</Text>
+                                                    </Text>
                                                 </Group>
                                             }
                                             {data?.phone &&
                                                 <Group>
                                                     <IconPhone size={20} />
-                                                    <Text size="md">{data?.phone}</Text>
+                                                    <Text c="dimmed">Phone :
+                                                        <Text span fw="bold" c="black">{" " + data?.phone}</Text>
+                                                    </Text>
                                                 </Group>
                                             }
                                             {data?.brandWebsite &&
                                                 <Group>
                                                     <IconNetwork size={20} />
-                                                    <a href={"https://" + data?.brandWebsite} style={{ textDecoration: "none" }} target="_blank">
-                                                        <Text size="md">
-                                                            {data?.brandWebsite}
+                                                    <Text c="dimmed">Website :
+                                                        <Text span fw="bold">
+                                                            <a href={"https://" + data?.brandWebsite} style={{ textDecoration: "none" }} target="_blank">
+                                                                {" " + data?.brandWebsite}
+                                                            </a>
                                                         </Text>
-                                                    </a>
+                                                    </Text>
                                                 </Group>
                                             }
                                         </Box>
@@ -135,9 +143,6 @@ const BrandDetail = () => {
                                             <Tabs.Tab value="shops" leftSection={<AiFillShop size={20} />}>
                                                 Shops
                                             </Tabs.Tab>
-                                            <Tabs.Tab value="managers" leftSection={<MdOutlineSupervisorAccount size={20} />}>
-                                                Managers
-                                            </Tabs.Tab>
                                             <Tabs.Tab value="employees" leftSection={<IconUserCircle size={20} />}>
                                                 Employees
                                             </Tabs.Tab>
@@ -148,10 +153,6 @@ const BrandDetail = () => {
 
                                         <Tabs.Panel value="shops">
                                             <ShopShortListById id={params.brandId!} idType="brand" />
-                                        </Tabs.Panel>
-
-                                        <Tabs.Panel value="managers">
-                                            <AccountListById id={params.brandId!} type="manager" />
                                         </Tabs.Panel>
 
                                         <Tabs.Panel value="employees">

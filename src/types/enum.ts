@@ -4,6 +4,7 @@ export enum Role {
   Technician = "Technician",
   BrandManager = "BrandManager",
   ShopManager = "ShopManager",
+  ShopSupervisor = "ShopSupervisor",
   Employee = "Employee",
 }
 

@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
   },
 });
 
-//TODO: Move all list in brand detail to the left
+//TODO: All filter revert back to page 1
 //TODO: All fields has to be null at first (Especially Birthday and Gender, do manager webpage as well)
 //TODO: Design report page
 

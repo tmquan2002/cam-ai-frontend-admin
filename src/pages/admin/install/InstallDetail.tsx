@@ -147,13 +147,13 @@ const InstallDetail = () => {
                             <Box>
                                 <Tabs value={activeTab} onChange={setActiveTab}>
                                     <Tabs.List>
-                                        <Tabs.Tab value="shop" leftSection={<AiFillShop />}>
+                                        <Tabs.Tab value="shop" leftSection={<AiFillShop size={20}/>}>
                                             Shop
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="edge box" leftSection={<IconRouter />}>
+                                        <Tabs.Tab value="edge box" leftSection={<IconRouter size={20}/>}>
                                             Edge Box
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="activities" leftSection={<TbActivity />} ml="auto">
+                                        <Tabs.Tab value="activities" leftSection={<TbActivity size={20}/>} ml="auto">
                                             Activities
                                         </Tabs.Tab>
                                     </Tabs.List>

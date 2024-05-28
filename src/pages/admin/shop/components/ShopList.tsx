@@ -3,7 +3,7 @@ import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import * as _ from "lodash";
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo } from 'react';
-import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { GetShopsParams } from '../../../../apis/ShopAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
@@ -62,6 +62,10 @@ const ShopList = () => {
         return () => { clearTimeout(timer); };
     }, [filterSearchBrand]);
 
+    useEffect(() => {
+        setStorage(ShopFilterProps.PAGE_INDEX, 1)
+    }, [size, filterStatus, debounced, filterSearchBrandId, searchBy])
+
     const onClearFilter = () => {
         setStorage(ShopFilterProps.FILTER_STATUS, "")
         setStorage(ShopFilterProps.FILTER_SEARCH_BRAND, "")
@@ -111,6 +115,9 @@ const ShopList = () => {
                                 event.preventDefault();
                                 setStorage(ShopFilterProps.SEARCH, event.currentTarget.value)
                             }}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }}
+                                onClick={() => setStorage(ShopFilterProps.SEARCH, "")}
+                            />}
                         />
                         <Group>
                             <Select
@@ -184,7 +191,6 @@ const ShopList = () => {
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setStorage(ShopFilterProps.PAGE_INDEX, 1)
                                     setStorage(ShopFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}

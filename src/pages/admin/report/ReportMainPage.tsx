@@ -39,7 +39,10 @@ const ReportMainPage = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
-            <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
         </Table.Tr>
@@ -64,7 +67,11 @@ const ReportMainPage = () => {
         const timer = setTimeout(() => refetchShop(), 500);
         return () => { clearTimeout(timer); };
     }, [filterSearchShop]);
-    
+
+    useEffect(() => {
+        setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, 1)
+    }, [size, filterActivationStatus, filterSearchShopId])
+
     const onClearFilter = () => {
         setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, "")
         setStorage(DisabledEdgeBoxInstallFilterProps.FILTER_SEARCH_SHOP, "")
@@ -187,7 +194,6 @@ const ReportMainPage = () => {
                                         <Text>Page Size: </Text>
                                         <Select
                                             onChange={(value) => {
-                                                setStorage(DisabledEdgeBoxInstallFilterProps.PAGE_INDEX, 1)
                                                 setStorage(DisabledEdgeBoxInstallFilterProps.SIZE, value)
                                             }}
                                             allowDeselect={false}

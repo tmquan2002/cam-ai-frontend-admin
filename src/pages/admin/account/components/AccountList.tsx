@@ -3,7 +3,7 @@ import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import * as _ from "lodash";
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo } from 'react';
-import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { GetAccountsParams } from '../../../../apis/AccountAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
@@ -66,6 +66,10 @@ const AccountList = () => {
         return () => { clearTimeout(timer); };
     }, [filterSearchBrand]);
 
+    useEffect(() => {
+        setStorage(AccountFilterProps.PAGE_INDEX, 1)
+    }, [size, filterStatus, debounced, filterSearchBrandId, searchBy, filterRole])
+
     const onClearFilter = () => {
         setStorage(AccountFilterProps.FILTER_ROLE, "")
         setStorage(AccountFilterProps.FILTER_STATUS, "")
@@ -122,6 +126,9 @@ const AccountList = () => {
                                 event.preventDefault();
                                 setStorage(AccountFilterProps.SEARCH, event.currentTarget.value)
                             }}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }}
+                                onClick={() => setStorage(AccountFilterProps.SEARCH, "")}
+                            />}
                         />
                         <Group>
                             <Select
@@ -140,18 +147,23 @@ const AccountList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid my={10} align='flex-end'>
-                    <Grid.Col span={3}>
+                    <Grid.Col span={4}>
                         <RadioGroup name="role" size='xs' value={filterRole} label="Role"
-                            onChange={(value) => setStorage(AccountFilterProps.FILTER_ROLE, value)}>
+                            onChange={(value) => {
+                                setStorage(AccountFilterProps.FILTER_ROLE, value)
+                            }}>
                             <Group>
                                 <Radio value={Role.BrandManager} label={"Brand Manager"} />
                                 <Radio value={Role.ShopManager} label={"Shop Manager"} />
+                                <Radio value={Role.ShopSupervisor} label={"Shop Supervisor"} />
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={3}>
+                    <Grid.Col span={4}>
                         <RadioGroup name="status" size='xs' value={filterStatus} label="Account Status"
-                            onChange={(value) => setStorage(AccountFilterProps.FILTER_STATUS, value)}>
+                            onChange={(value) => {
+                                setStorage(AccountFilterProps.FILTER_STATUS, value)
+                            }}>
                             <Group>
                                 <Radio value={AccountStatus.New} label={"New"} />
                                 <Radio value={AccountStatus.Active} label={"Active"} />
@@ -159,20 +171,22 @@ const AccountList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={3}>
+                    <Grid.Col span={4} ta="right">
+                        <Button variant='transparent'
+                            onClick={onClearFilter}>
+                            Clear All Filters
+                        </Button>
+                    </Grid.Col>
+                    <Grid.Col span={12}>
                         <Select data={brandList || []} limit={5} size='xs' w={300}
                             nothingFoundMessage={brandList && "Not Found"} label="Brand"
                             value={filterSearchBrandId} placeholder="Pick value" clearable searchable
                             searchValue={filterSearchBrand}
                             onSearchChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND, value)}
-                            onChange={(value) => setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)}
+                            onChange={(value) => {
+                                setStorage(AccountFilterProps.FILTER_SEARCH_BRAND_ID, value)
+                            }}
                         />
-                    </Grid.Col>
-                    <Grid.Col span={3} ta="right">
-                        <Button variant='transparent'
-                            onClick={onClearFilter}>
-                            Clear All Filters
-                        </Button>
                     </Grid.Col>
                 </Grid>
                 <Divider />
@@ -206,7 +220,6 @@ const AccountList = () => {
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setStorage(AccountFilterProps.PAGE_INDEX, 1)
                                     setStorage(AccountFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}

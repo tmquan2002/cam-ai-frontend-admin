@@ -202,7 +202,7 @@ export const EdgeBoxInstallListByShopId = ({ refetch, dataInstalls, refetchInsta
                         Current
                     </Tabs.Tab>
                     <Tabs.Tab value="history" leftSection={<MdHistory />}>
-                        History
+                        Past Installation
                     </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="current">

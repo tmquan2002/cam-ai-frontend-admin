@@ -35,7 +35,7 @@ export const UpdateAccountForm = ({ id }: { id: string }) => {
             name: "",
             gender: null,
             phone: "",
-            birthday: new Date("01/01/2000"),
+            birthday: null,
             addressLine: "",
             province: null,
             district: null,

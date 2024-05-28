@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Card, Grid, Group, LoadingOverlay, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Box, Grid, Group, LoadingOverlay, Paper, Text, Tooltip } from "@mantine/core";
 import { MdOutlineTaskAlt, MdPageview } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useGetAllEdgeBoxes } from "../../hooks/useEdgeBoxes";
@@ -16,9 +16,8 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
     const navigate = useNavigate();
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" m={10} withBorder
-            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-            <Group mb={10} justify="space-between">
+        <Paper shadow="sm" p="lg" radius="md" withBorder m={10} h={230}>
+            <Group mb={20} justify="space-between">
                 <Text size='md' fw={'bold'} fz={20} >{item.name}</Text>
                 <Tooltip label="View Edge Box" withArrow>
                     <ActionIcon variant="filled" size="lg" aria-label="View Edge Box" color="light-blue.6"
@@ -62,7 +61,7 @@ const EdgeBoxCard = ({ item }: { item: EdgeBox }) => {
                 </div>
             }
 
-        </Card>
+        </Paper>
     )
 }
 export const EdgeBoxListByBrandId = ({ brandId }: EdgeBoxListParam) => {
@@ -71,15 +70,15 @@ export const EdgeBoxListByBrandId = ({ brandId }: EdgeBoxListParam) => {
 
     // console.log(installData)
     return (
-        <div className={styled["list-container"]}>
+        <Box>
             {isLoadingEdgeBox ?
                 <Box className={styled["loader"]}>
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box>
                 :
-                <div className={styled["card-detail"]}>
+                <Box>
                     {(edgeBoxData?.values.length == 0 || edgeBoxError) ? <Text fs="italic" ta="center" c="dimmed" mt={20}>No Edge Box Found</Text> :
-                        <Grid mt={20}>
+                        <Grid mt={20} justify="flex-start">
                             {edgeBoxData?.values.map((item, index) => (
                                 <Grid.Col key={index} span={{ base: 12, md: 4 }}>
                                     <EdgeBoxCard item={item} />
@@ -87,8 +86,8 @@ export const EdgeBoxListByBrandId = ({ brandId }: EdgeBoxListParam) => {
                             ))}
                         </Grid>
                     }
-                </div>
+                </Box>
             }
-        </div>
+        </Box>
     )
 }

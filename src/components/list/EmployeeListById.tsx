@@ -72,12 +72,12 @@ export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
     const { isLoading, data, error } = type == "shop" ? useGetAllEmployees({ shopId: id }) : useGetAllEmployees({ brandId: id })
 
     return (
-        <div className={styled["list-container"]}>
+        <Box>
             {isLoading ?
                 <Box className={styled["loader"]}>
                     <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 </Box> :
-                <div className={styled["card-detail"]}>
+                <Box>
                     {(data?.values.length == 0 || error) ? <Text fs="italic" ta="center" c="dimmed" mt={20}>No Employee Found</Text> :
                         <Box mt={20}>
                             {data?.values.map((item, index) => (
@@ -85,8 +85,8 @@ export const EmployeeListById = ({ id, type }: EmployeeListParam) => {
                             ))}
                         </Box>
                     }
-                </div>
+                </Box>
             }
-        </div>
+        </Box>
     )
 }

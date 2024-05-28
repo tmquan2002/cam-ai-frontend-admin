@@ -3,7 +3,7 @@ import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import * as _ from "lodash";
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo } from 'react';
-import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { GetEdgeBoxParams } from '../../../../apis/EdgeBoxAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
@@ -76,6 +76,10 @@ const EdgeBoxList = () => {
         return () => { clearTimeout(timer); };
     }, [filterSearchShop]);
 
+    useEffect(() => {
+        setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1)
+    }, [size, filterStatus, filterLocation, debounced, filterSearchBrandId, filterSearchShopId])
+
     const onClearFilter = () => {
         setStorage(EdgeBoxFilterProps.FILTER_STATUS, "")
         setStorage(EdgeBoxFilterProps.FILTER_LOCATION, "")
@@ -137,6 +141,9 @@ const EdgeBoxList = () => {
                                 event.preventDefault();
                                 setStorage(EdgeBoxFilterProps.SEARCH, event.currentTarget.value)
                             }}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }}
+                                onClick={() => setStorage(EdgeBoxFilterProps.SEARCH, "")}
+                            />}
                         />
                     </Group>
                 </Grid.Col>
@@ -224,7 +231,6 @@ const EdgeBoxList = () => {
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setStorage(EdgeBoxFilterProps.PAGE_INDEX, 1)
                                     setStorage(EdgeBoxFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}

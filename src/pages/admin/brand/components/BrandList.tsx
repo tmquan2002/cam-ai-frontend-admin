@@ -1,8 +1,8 @@
 import { ActionIcon, Avatar, Button, Collapse, Divider, Grid, Group, Loader, Pagination, Radio, RadioGroup, ScrollArea, Select, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
 import * as _ from "lodash";
-import { useMemo } from 'react';
-import { MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
+import { useEffect, useMemo } from 'react';
+import { MdClear, MdFilterAlt, MdOutlineSearch } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { GetBrandsParams } from '../../../../apis/BrandAPI';
 import StatusBadge from '../../../../components/badge/StatusBadge';
@@ -48,6 +48,9 @@ const BrandList = () => {
 
     const { data: brandList, isFetching } = useGetAllBrands(searchParams)
 
+    useEffect(() => {
+        setStorage(BrandFilterProps.PAGE_INDEX, 1);
+    }, [size, filterStatus, debounced])
 
     const onClearFilter = () => {
         setStorage(BrandFilterProps.FILTER_STATUS, "");
@@ -106,6 +109,9 @@ const BrandList = () => {
                                 event.preventDefault();
                                 setStorage(BrandFilterProps.SEARCH, event.currentTarget.value);
                             }}
+                            rightSection={<MdClear style={{ cursor: 'pointer' }}
+                                onClick={() => setStorage(BrandFilterProps.SEARCH, "")}
+                            />}
                         />
                     </Group>
                 </Grid.Col>
@@ -115,7 +121,7 @@ const BrandList = () => {
             <Collapse in={opened}>
                 <Divider />
                 <Grid my={10} align='flex-end'>
-                    <Grid.Col span={3}>
+                    <Grid.Col span={6}>
                         <RadioGroup name="status" value={filterStatus} label="Brand Status" size='xs'
                             onChange={(value) => setStorage(BrandFilterProps.FILTER_STATUS, value)}>
                             <Group>
@@ -124,7 +130,7 @@ const BrandList = () => {
                             </Group>
                         </RadioGroup>
                     </Grid.Col>
-                    <Grid.Col span={3} ta="right">
+                    <Grid.Col span={6} ta="right">
                         <Button variant='transparent'
                             onClick={onClearFilter}>
                             Clear All Filters
@@ -163,7 +169,6 @@ const BrandList = () => {
                             <Select
                                 onChange={(value) => {
                                     setStorage(BrandFilterProps.SIZE, value);
-                                    setStorage(BrandFilterProps.PAGE_INDEX, 1);
                                 }}
                                 allowDeselect={false}
                                 placeholder="0" value={size}

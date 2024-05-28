@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Divider, Group, Loader, LoadingOverlay, Modal, Tabs, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconNotes, IconRouter } from "@tabler/icons-react";
+import { IconNotes, IconRouter, IconUserCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { MdAccessTime, MdAccountCircle, MdEmail, MdHome, MdOutlineAccessTime, MdPhone } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -103,13 +103,13 @@ const ShopDetail = () => {
                             <div className={styled["profile-detail"]}>
                                 <Tabs value={activeTab} onChange={setActiveTab}>
                                     <Tabs.List>
-                                        <Tabs.Tab value="brand" leftSection={<IconNotes />}>
+                                        <Tabs.Tab value="brand" leftSection={<IconNotes size={20} />}>
                                             Brand
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="employees" leftSection={<MdAccountCircle />}>
+                                        <Tabs.Tab value="employees" leftSection={<IconUserCircle size={20} />}>
                                             Employees
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="edge boxes" leftSection={<IconRouter/>}>
+                                        <Tabs.Tab value="edge boxes" leftSection={<IconRouter size={20} />}>
                                             Edge Boxes
                                         </Tabs.Tab>
                                     </Tabs.List>

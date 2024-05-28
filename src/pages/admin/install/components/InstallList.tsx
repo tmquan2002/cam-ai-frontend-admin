@@ -36,6 +36,8 @@ const InstallList = () => {
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
+            <Table.Td><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
             <Table.Td align={"center"}><Loader color="rgba(122, 122, 122, 1)" type="bars" size={'xs'} /></Table.Td>
@@ -61,6 +63,10 @@ const InstallList = () => {
         const timer = setTimeout(() => refetchShop(), 500);
         return () => { clearTimeout(timer); };
     }, [filterSearchShop]);
+
+    useEffect(() => {
+        setStorage(EdgeBoxInstallFilterProps.PAGE_INDEX, 1)
+    }, [size, filterInstallStatus, filterActivationStatus, filterSearchShopId])
 
     const onClearFilter = () => {
         setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, "")
@@ -114,7 +120,7 @@ const InstallList = () => {
                 <Divider />
                 <Grid my={10} align='flex-end'>
                     <Grid.Col span={4}>
-                        <RadioGroup name="status" value={filterInstallStatus} label="Installation Health"
+                        <RadioGroup name="status" value={filterInstallStatus} label="Installation Health" size='xs'
                             onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_INSTALL_STATUS, value)}>
                             <Group>
                                 <Radio value={EdgeBoxInstallStatus.New.toString()} label={"New"} />
@@ -125,7 +131,7 @@ const InstallList = () => {
                         </RadioGroup>
                     </Grid.Col>
                     <Grid.Col span={4}>
-                        <RadioGroup name="location" value={filterActivationStatus} label="Activation Status"
+                        <RadioGroup name="location" value={filterActivationStatus} label="Activation Status" size='xs'
                             onChange={(value) => setStorage(EdgeBoxInstallFilterProps.FILTER_ACTIVATION_STATUS, value)}>
                             <Group>
                                 <Radio value={EdgeBoxActivationStatus.Activated.toString()} label={"Activated"} />
@@ -183,7 +189,6 @@ const InstallList = () => {
                             <Text>Page Size: </Text>
                             <Select
                                 onChange={(value) => {
-                                    setStorage(EdgeBoxInstallFilterProps.PAGE_INDEX, 1)
                                     setStorage(EdgeBoxInstallFilterProps.SIZE, value)
                                 }}
                                 allowDeselect={false}
