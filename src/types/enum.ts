@@ -150,3 +150,14 @@ export enum StatusColorLight {
   IDLE = "#E7E48C",
   NONE = "#c4cbda"
 }
+
+export enum InstallStatusChartColor {
+  NotActivated = "#2d4b81",
+  Activated = "#5474b4",
+  Pending = "#94a8d0",
+  Failed = "#eef3ff",
+  Working = "#2d4b81",
+  Unhealthy = "#5474b4",
+  Disabled = "#94a8d0",
+  New = "#eef3ff",
+}

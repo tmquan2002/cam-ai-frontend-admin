@@ -81,10 +81,16 @@ export function countDataByDate(data: CommonResponse<DataWithDate> | undefined, 
 // }
 type RingProgressParams = {
     value: number,
+    valueNotPercent?: number,
     color: string;
     tooltip?: string;
+    key?: string;
 }
-export function convertEdgeBoxReportToRingChart(dataInstall: ReportEdgeBoxInstall | undefined, type: "activationStatus" | "installationStatus"): RingProgressParams[] {
+
+
+export type InstallStatusType = "activationStatus" | "installationStatus"
+
+export function convertInstallReportToRingChart(dataInstall: ReportEdgeBoxInstall | undefined, type: InstallStatusType): RingProgressParams[] {
 
     if (dataInstall) {
 
@@ -96,8 +102,10 @@ export function convertEdgeBoxReportToRingChart(dataInstall: ReportEdgeBoxInstal
             // console.log(total)
             return Object.keys(dataInstall.status).map((key) => ({
                 value: total !== 0 ? Math.round(dataInstall.status[key] / total * 100) : 0,
-                color: getColorFromStatusName(key, true),
-                tooltip: key
+                valueNotPercent: dataInstall.status[key],
+                color: getColorFromStatusName(key, false, true),
+                tooltip: key + " - " + (total !== 0 ? Math.round(dataInstall.status[key] / total * 100) : 0) + "%",
+                key: key
             }))
         }
         if (type == "activationStatus") {
@@ -108,8 +116,10 @@ export function convertEdgeBoxReportToRingChart(dataInstall: ReportEdgeBoxInstal
             // console.log(total)
             return Object.keys(dataInstall.activationStatus).map((key) => ({
                 value: total !== 0 ? Math.round(dataInstall.activationStatus[key] / total * 100) : 0,
-                color: getColorFromStatusName(key, true),
-                tooltip: key
+                valueNotPercent: dataInstall.activationStatus[key],
+                color: getColorFromStatusName(key, false, true),
+                tooltip: key + " - " + (total !== 0 ? Math.round(dataInstall.activationStatus[key] / total * 100) : 0) + "%",
+                key: key
             }))
         }
     }

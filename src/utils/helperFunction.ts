@@ -1,4 +1,4 @@
-import { ActiveStatusGroup, IdleStatusGroup, InactiveStatusGroup, MiddleStatusGroup, StatusColor, StatusColorLight } from "../types/enum";
+import { ActiveStatusGroup, IdleStatusGroup, InactiveStatusGroup, InstallStatusChartColor, MiddleStatusGroup, StatusColor, StatusColorLight } from "../types/enum";
 
 export function isEmpty(value: string | null | undefined) {
   return (
@@ -43,6 +43,10 @@ export function enumToSelect<T extends { [key: string]: string }>(value: T): { l
   });
 }
 
+export function enumToArray<T extends { [key: string]: string }>(value: T): string[] {
+  return Object.keys(value);
+}
+
 /**
  * Add a space after amount of characters
  * @param str The string to add space
@@ -58,7 +62,10 @@ export function addSpace(str: string, atEvery: number) {
   return result.trim();
 }
 
-export function getColorFromStatusName(statusName: string, light?: boolean) {
+export function getColorFromStatusName(statusName: string, light?: boolean, reportChartType?: boolean) {
+
+  if (reportChartType)
+    return InstallStatusChartColor[statusName as keyof typeof InstallStatusChartColor];
 
   if (light)
     return Object.values(ActiveStatusGroup).includes(statusName as ActiveStatusGroup) ? StatusColorLight.ACTIVE :

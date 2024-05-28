@@ -100,20 +100,20 @@ const ReportMainPage = () => {
 
     return (
         <div className={styled["container-detail"]}>
-            <Navbar items={breadcrumbs} />
-            <Grid justify="center">
-                <Grid.Col span={{ base: 12, lg: 4 }} >
+            <Navbar items={breadcrumbs}/>
+            <Grid justify="center" columns={24}>
+                <Grid.Col span={{ base: 24, lg: 7 }} >
                     <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} ml={32} mb={20}
                         style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                        <DonutChartContainer />
+                        <DonutChartContainer type="installationStatus"/>
                     </Box>
                     <Box bg={computedColorScheme == "light" ? "white" : "#1f1f1f"} ml={32}
                         style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
-                        <DonutChartContainer />
+                        <DonutChartContainer type="activationStatus"/>
                     </Box>
                 </Grid.Col>
 
-                <Grid.Col span={{ base: 12, lg: 8 }}>
+                <Grid.Col span={{ base: 24, lg: 17 }}>
                     <Box p={rem(32)} mr={20} bg={computedColorScheme == "light" ? "white" : "#1f1f1f"}
                         style={{ boxShadow: "0px 3px 4px #00000024, 0px 3px 3px #0000001f, 0px 1px 8px #00000033" }}>
                         {/* Top */}

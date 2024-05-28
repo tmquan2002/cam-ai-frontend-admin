@@ -75,11 +75,11 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                 phone: data?.phone,
                 brandWebsite: data?.brandWebsite,
                 description: data?.description,
-                province: data?.companyWard?.district?.province?.id.toString() || "",
-                district: data?.companyWard?.district?.id.toString() || "",
-                ward: data?.companyWard?.id.toString() || "",
+                province: data?.companyWard?.district?.province?.id.toString() || null,
+                district: data?.companyWard?.district?.id.toString() || null,
+                ward: data?.companyWard?.id.toString() || null,
                 companyAddress: data?.companyAddress || "",
-                companyName: data?.companyName,
+                companyName: data?.companyName || "",
             });
         }
     }, [data]);
