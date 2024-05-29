@@ -93,4 +93,13 @@ export const AccountAPI = {
     });
     return res.data;
   },
+  activate: async (id: string) => {
+    const token = getAccessToken();
+    const res = await http.put(`/api/accounts/${id}/activate`, {}, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return res?.data;
+  },
 };

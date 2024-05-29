@@ -80,3 +80,14 @@ export const useDeleteAccount = () => {
 
   return { mutate, isLoading, error, data };
 };
+
+export const useActivateAccount = () => {
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationKey: "activateAccount",
+    mutationFn: async (id: string) => {
+      return await AccountAPI.activate(id);
+    },
+  });
+
+  return { mutate, isLoading, error, data };
+};

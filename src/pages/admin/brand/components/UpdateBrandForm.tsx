@@ -61,7 +61,7 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
     });
 
     const { mutate: updateBrand, isLoading } = useUpdateBrand();
-    const { data, isLoading: initialDataLoading, error } = useGetBrandById(id);
+    const { data, isLoading: initialDataLoading, error, refetch } = useGetBrandById(id);
     const { data: provinceList, isLoading: isLoadingProvinces } = useGetProvinces();
     const { data: districtList, isFetching: isFetchingDistricts } = useGetDistricts(form.values.province);
     const { data: wardList, isFetching: isFetchingWards } = useGetWards(form.values.district);
@@ -171,13 +171,14 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
     const onReactivate = () => {
         reactivateBrand(id, {
             onSuccess() {
-                navigate('/brand')
                 notifications.show({
                     title: "Successfully",
                     message: "Brand Reactivated!",
                     color: "green",
                     withCloseButton: true,
                 });
+                refetch();
+                close();
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
@@ -212,16 +213,18 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                 <Text size='lg' style={{ fontWeight: 'bold', fontSize: '25px' }} c={"light-blue.4"}>Brand Settings</Text>
                                 {data?.brandStatus == BrandStatus.Active ?
                                     <Button
-                                        onClick={open} variant="filled"
-                                        color="pale-red.4" size="sm"
+                                        onClick={open} variant="gradient"
+                                        size="sm"
+                                        gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                                     >
                                         Delete
                                     </Button>
                                     :
                                     <Button
-                                        onClick={open} variant="filled"
+                                        onClick={open} variant="gradient"
+                                        gradient={{ from: "green.5", to: "green.7", deg: 90 }} size="sm"
                                     >
-                                        Delete
+                                        Reactivate
                                     </Button>
                                 }
                             </Group>
@@ -353,7 +356,7 @@ export const UpdateBrandForm = ({ id }: { id: string }) => {
                                     title="Do you want to remove this brand?" centered loading={isLoadingDelete} />
                                 :
                                 <CustomModal cancelLabel="Cancel" onClickAction={onReactivate} onClose={close} opened={modalOpen} label="Reactivate" topTitle="Reactivate Brand"
-                                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} blueModal />
+                                    title="Do you want to reactivate this brand?" centered loading={isLoadingReactivate} color="green"/>
                             }
                         </>
                     }

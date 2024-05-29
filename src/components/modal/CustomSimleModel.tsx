@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Text } from "@mantine/core";
 
 interface RedModalParams {
-    blueModal?: boolean
+    color?: "red" | "green" | "blue"
     topTitle?: string;
     label?: string;
     cancelLabel: string;
@@ -13,7 +13,7 @@ interface RedModalParams {
     onClickAction: () => void;
     loading?: boolean;
 }
-export const CustomModal = ({ opened, onClose, withCloseButton, onClickAction, title, centered, loading, cancelLabel, label, topTitle, blueModal }: RedModalParams) => {
+export const CustomModal = ({ opened, onClose, withCloseButton, onClickAction, title, centered, loading, cancelLabel, label, topTitle, color }: RedModalParams) => {
     return (
         <Modal opened={opened} onClose={onClose} withCloseButton={withCloseButton} centered={centered} title={topTitle}>
             <Text>
@@ -23,7 +23,8 @@ export const CustomModal = ({ opened, onClose, withCloseButton, onClickAction, t
                 <Button
                     variant="gradient" size="md" mt={20}
                     onClick={onClickAction} loading={loading}
-                    gradient={blueModal ? { from: "light-blue.5", to: "light-blue.7", deg: 90 } : { from: "pale-red.5", to: "pale-red.7", deg: 90 }}
+                    gradient={color == "blue" ? { from: "light-blue.5", to: "light-blue.7", deg: 90 } :
+                        color == "green" ? { from: "green.5", to: "green.7", deg: 90 } : { from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                 >
                     {label}
                 </Button>

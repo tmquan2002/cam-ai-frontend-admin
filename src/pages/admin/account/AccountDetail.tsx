@@ -10,7 +10,7 @@ import { BreadcrumbItem } from "../../../components/breadcrumbs/CustomBreadcrumb
 import { ShopShortListById } from "../../../components/list/ShopShortListById";
 import { CustomModal } from "../../../components/modal/CustomSimleModel";
 import Navbar from "../../../components/navbar/Navbar";
-import { useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
+import { useActivateAccount, useDeleteAccount, useGetAccountById } from "../../../hooks/useAccounts";
 import { AccountStatus, Role } from "../../../types/enum";
 import { formatTime, removeTime } from "../../../utils/dateTimeFunction";
 import styled from "./styles/accountdetail.module.scss";
@@ -31,9 +31,11 @@ const AccountDetail = () => {
     const navigate = useNavigate();
     // console.log(params);
     const [modalOpen, { open, close }] = useDisclosure(false);
+    const [modalOpenActive, { open: openActive, close: closeActive }] = useDisclosure(false);
 
-    const { data, isLoading, error } = useGetAccountById(params.accountId!);
+    const { data, isLoading, error, refetch } = useGetAccountById(params.accountId!);
     const { mutate: deleteAccount, isLoading: isLoadingDelete } = useDeleteAccount();
+    const { mutate: activateAccount, isLoading: isLoadingActivate } = useActivateAccount();
 
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -47,6 +49,41 @@ const AccountDetail = () => {
                     color: "green",
                     withCloseButton: true,
                 });
+            },
+            onError(error) {
+                if (axios.isAxiosError(error)) {
+                    // console.error(error.response?.data as ApiErrorResponse);
+                    notifications.show({
+                        title: "Failed",
+                        message: error.response?.data.message,
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                } else {
+                    console.error(error);
+                    notifications.show({
+                        title: "Failed",
+                        message: "Something wrong happen when trying to delete this account",
+                        color: "pale-red.5",
+                        withCloseButton: true,
+                    });
+                }
+                close();
+            },
+        });
+    }
+
+    const onActivate = () => {
+        activateAccount(params.accountId!, {
+            onSuccess() {
+                notifications.show({
+                    title: "Successfully",
+                    message: "Account Delete successful",
+                    color: "green",
+                    withCloseButton: true,
+                });
+                refetch();
+                closeActive();
             },
             onError(error) {
                 if (axios.isAxiosError(error)) {
@@ -159,10 +196,9 @@ const AccountDetail = () => {
                                                         Delete
                                                     </Menu.Item>
                                                 }
-                                                {/* //TODO: Add Reactivate API here */}
                                                 {data?.accountStatus == AccountStatus.Inactive &&
                                                     <Menu.Item color="green" leftSection={<IconRepeat style={{ color: "green" }} size={20} />}
-                                                        onClick={open} >
+                                                        onClick={openActive} >
                                                         Reactivate
                                                     </Menu.Item>
                                                 }
@@ -170,13 +206,22 @@ const AccountDetail = () => {
                                         </Menu>
                                     </div>
                                 }
-                                {data?.role == Role.ShopManager &&
+                                {data?.role == Role.ShopManager && data?.accountStatus !== AccountStatus.Inactive &&
                                     <Button
                                         variant="gradient" size="sm"
                                         onClick={open} loading={isLoading}
                                         gradient={{ from: "pale-red.5", to: "pale-red.7", deg: 90 }}
                                     >
                                         Delete
+                                    </Button>
+                                }
+                                {data?.role == Role.ShopManager && data?.accountStatus == AccountStatus.Inactive &&
+                                    <Button
+                                        variant="gradient" size="sm"
+                                        onClick={openActive} loading={isLoading}
+                                        gradient={{ from: "green.5", to: "green.7", deg: 90 }}
+                                    >
+                                        Reactivate
                                     </Button>
                                 }
                             </div>
@@ -318,6 +363,9 @@ const AccountDetail = () => {
             </div >
             <CustomModal cancelLabel="Cancel" onClickAction={onDelete} onClose={close} opened={modalOpen} label="Delete" topTitle="Delete Account"
                 title="Do you want to remove this account?" centered loading={isLoadingDelete} />
+
+            <CustomModal cancelLabel="Cancel" onClickAction={onActivate} onClose={closeActive} opened={modalOpenActive} label="Reactivate" topTitle="Reactivate Account"
+                title="Do you want to reactivate this account?" centered loading={isLoadingActivate} color="green"/>
         </>
     );
 };
