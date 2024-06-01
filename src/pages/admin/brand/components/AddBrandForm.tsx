@@ -10,13 +10,13 @@ import { useGetDistricts, useGetProvinces, useGetWards } from "../../../../hooks
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../types/constant";
 
 type AddBrandFieldValue = {
-    email: string | null;
-    name: string | null;
-    phone: string | null;
-    brandWebsite: string | null;
-    description: string | null;
-    companyName: string | null;
-    addressLine: string | null;
+    email: string;
+    name: string;
+    phone: string;
+    brandWebsite: string;
+    description: string;
+    companyName: string;
+    addressLine: string;
     province: string | null;
     district: string | null;
     ward: string | null;
@@ -28,23 +28,23 @@ export const AddBrandForm = () => {
 
     const form = useForm<AddBrandFieldValue>({
         initialValues: {
-            name: null,
-            email: null,
-            phone: null,
-            brandWebsite: null,
-            description: null,
+            name: "",
+            email: "",
+            phone: "",
+            brandWebsite: "",
+            description: "",
             province: null,
             district: null,
             ward: null,
-            addressLine: null,
-            companyName: null,
+            addressLine: "",
+            companyName: "",
         },
 
         validate: {
             name: isNotEmpty("Brand name is required"),
-            email: (value) => isEmpty(value) || value == null ? null
+            email: (value) => isEmpty(value) ? null
                 : EMAIL_REGEX.test(value) ? null : "Invalid email - ex: name@gmail.com",
-            phone: (value) => isEmpty(value) || value == null ? null :
+            phone: (value) => isEmpty(value) ? null :
                 PHONE_REGEX.test(value) ? null : "A phone number should have a length of 10-12 characters",
             companyName: isNotEmpty("Company name is required"),
             province: isNotEmpty("Please select a province"),

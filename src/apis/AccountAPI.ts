@@ -19,7 +19,7 @@ export type AddAccountParams = {
   email: string;
   name: string;
   gender: Gender | null;
-  phone: string;
+  phone: string | null;
   birthday: string | null;
   wardId: string | null;
   addressLine: string;

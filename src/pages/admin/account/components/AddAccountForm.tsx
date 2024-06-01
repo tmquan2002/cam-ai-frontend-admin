@@ -75,7 +75,7 @@ export const AddAccountForm = ({ initialBrandId, initialBrandName }: { initialBr
         const addAccountParams: AddAccountParams = {
             name: form.values.name,
             email: form.values.email,
-            phone: form.values.phone,
+            phone: isEmpty(form.values.phone) ? null : form.values.phone,
             addressLine: form.values.addressLine,
             birthday: form.values.birthday ? removeTime(new Date(form.values.birthday), "-", "yyyy/MM/dd") : null,
             gender: form.values.gender,
