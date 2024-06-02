@@ -22,6 +22,7 @@ export const ShopEdgeBoxAssignForm = ({ shopId, edgeBoxId, close, refetch, refet
     const [edgeBoxSearch, setEdgeBoxSearch] = useState<string>("");
 
     const { mutate: installEdgeBox, isLoading: isLoadingInstall } = useInstallEdgeBox();
+    //Edge Box must not have installed on any shop
     const { data: edgeBoxList, isFetching: isFetchingEdgeBox, refetch: refetchSearchEdgeBox
     } = useGetAllEdgeBoxesSelect({ edgeBoxLocation: EdgeBoxLocationStatus.Idle, name: edgeBoxSearch, edgeBoxStatus: EdgeBoxStatus.Active })
     const { data: shopList, isFetching: isFetchingShop } = useGetAllShopsInstallingSelect({ q: false, filterRemoveInactive: true })

@@ -29,9 +29,9 @@ export const UpdateEdgeBoxForm = ({ id, close, refetch, refetchInstall }: { id: 
     useEffect(() => {
         if (data) {
             form.setValues({
-                name: data?.name,
-                edgeBoxModelId: data?.edgeBoxModelId,
-                serialNumber: data?.serialNumber,
+                name: data?.name ?? "",
+                edgeBoxModelId: data?.edgeBoxModelId ?? "",
+                serialNumber: data?.serialNumber ?? "",
             });
         }
     }, [data]);

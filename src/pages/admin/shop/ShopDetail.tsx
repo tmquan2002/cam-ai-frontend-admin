@@ -161,7 +161,7 @@ const ShopDetail = () => {
                                                 {!isLoadingInstall ?
                                                     <Box ml={10} mt={10}>
                                                         <div>
-                                                            <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text>
+                                                            {/* <Text size='lg' fw={'bold'} fz={25} c={"light-blue.4"}>Shop Installed</Text> */}
                                                             <EdgeBoxInstallListByShopId dataInstalls={dataInstall}
                                                                 refetch={refetch} refetchInstall={refetchInstall} />
                                                         </div>
